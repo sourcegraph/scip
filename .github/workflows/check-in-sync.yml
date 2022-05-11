@@ -1,0 +1,29 @@
+name: 'Check synced and well-formed generated output'
+
+on:
+  pull_request:
+    paths:
+      - '**/scip.*'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with: { go-version: '1.18' }
+      - uses: actions-rs/toolchains@v1
+      - name: Generate files based on protobuf definitions.
+        run: ./dev/proto-generate.sh
+      - name: Check if synced
+        run: |
+          set -e
+          git diff --quiet
+      - name: Check well-formed
+        run: |
+          set -e
+          go test github.com/sourcegraph/scip/go/scip
+          go test github.com/sourcegraph/scip/cmd
+          cd rust
+          cargo check
+          cd ..
