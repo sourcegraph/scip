@@ -1,0 +1,15 @@
+{
+  "name": "@sourcegraph/scip",
+  "version": "0.1.0",
+  "description": "Generated TypeScript definitions for the Semantic Code Intelligence Protocol.",
+  "repository": "https://github.com/sourcegraph/scip",
+  "author": "Sourcegraph",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "private": false,
+  "devDependencies": {
+    "google-protobuf": "^3.20.1",
+    "protoc-gen-ts": "^0.8.2",
+    "typescript": "^4.6.4"
+  }
+}

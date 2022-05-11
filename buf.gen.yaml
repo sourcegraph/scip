@@ -1,0 +1,28 @@
+# Configuration file for https://buf.build/, which we use for Protobuf code generation.
+version: v1
+plugins:
+  - name: doc
+    path: ./.bin/protoc-gen-doc
+    out: ./docs/
+    opt: docs/scip.sprig,scip.md
+    # NOTE: the sprig file is a template, it is not generated.
+  - remote: buf.build/library/plugins/go:v1.27.1-1
+    out: ./go/scip/
+    opt:
+      - paths=source_relative
+  # FIXME: This seems to give a crash inside protoc-gen-ts
+  #
+  # /Users/varun/Code/scip/node_modules/protoc-gen-ts/src/index.js:60
+  #     const { major = 0, minor = 0, patch = 0 } = request.compiler_version;
+  #             ^
+  # TypeError: Cannot read property 'major' of undefined
+  #     at Object.<anonymous> (/Users/varun/Code/scip/node_modules/protoc-gen-ts/src/index.js:60:13)
+  #     at Module._compile (node:internal/modules/cjs/loader:1101:14)
+  #
+  # - name: ts
+  #  path: ./node_modules/.bin/protoc-gen-ts
+  #  out: ./typescript/
+  #
+  - name: rust
+    path: ./.bin/bin/protoc-gen-rust
+    out: ./rust/src/

@@ -1,0 +1,18 @@
+[package]
+name = "scip"
+version = "0.1.0"
+edition = "2021"
+
+# We need >= 1.60.0 because the generated code uses
+# https://doc.rust-lang.org/std/vec/struct.Vec.html#method.spare_capacity_mut
+rust-version = "1.60.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# Keep in sync with dev/proto-generate.sh
+protobuf = "3.0.2"
+
+[lib]
+name = "rust"
+path = "src/scip.rs"
