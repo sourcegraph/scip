@@ -9,6 +9,7 @@ runs:
       # Go, Rust etc. Maintaining all toolchain versions with asdf using
       # a single .tool-versions file is easier.
     - name: Install asdf
+      shell: bash
       run: |
         set -e
         git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
