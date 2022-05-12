@@ -13,11 +13,11 @@ inputs:
     required: false
     type: boolean
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
-      # Avoid using separate GitHub Actions for installing toolchains for
-      # Go, Rust etc. Maintaining all toolchain versions with asdf using
-      # a single .tool-versions file is easier.
+    # Avoid using separate GitHub Actions for installing toolchains for
+    # Go, Rust etc. Maintaining all toolchain versions with asdf using
+    # a single .tool-versions file is easier.
     - name: Install asdf
       shell: bash
       run: |
