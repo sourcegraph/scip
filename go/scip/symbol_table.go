@@ -1,7 +1,7 @@
 package scip
 
 // SymbolTable returns a map of SymbolInformation values keyed by the symbol field.
-func symbolTableForDocument(x *Document) map[string]*SymbolInformation {
+func (x *Document) SymbolTable() map[string]*SymbolInformation {
 	symtab := map[string]*SymbolInformation{}
 	for _, info := range x.Symbols {
 		symtab[info.Symbol] = info
