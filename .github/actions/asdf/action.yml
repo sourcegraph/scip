@@ -23,7 +23,7 @@ runs:
       run: |
         set -e
         git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
-        echo "{path}" >> $GITHUB_PATH
+        echo $HOME/.asdf/bin >> $GITHUB_PATH
     - name: Install JS
       if: ${{ inputs.js }}
       shell: bash
