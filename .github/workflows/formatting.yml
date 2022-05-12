@@ -3,6 +3,7 @@ name: Formatting
 on:
   pull_request:
     paths:
+      - '.github/workflows/**'
       - '**.md'
       - '**.yml'
       - '**.yaml'

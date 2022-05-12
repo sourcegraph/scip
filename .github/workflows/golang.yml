@@ -3,6 +3,7 @@ name: Go
 on:
   pull_request:
     paths:
+      - '.github/workflows/**'
       - '**.go'
       - '**/go.mod'
       - '**/go.sum'

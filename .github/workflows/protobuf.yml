@@ -3,6 +3,7 @@ name: Protobuf
 on:
   pull_request:
     paths:
+      - '.github/workflows/**'
       - 'docs/**'
       - 'bindings/**'
       - 'scip.proto'

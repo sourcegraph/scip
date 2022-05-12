@@ -3,6 +3,7 @@ name: Reprolang
 on:
   pull_request:
     paths:
+      - '.github/workflows/**'
       - 'reprolang/**'
 
 jobs:

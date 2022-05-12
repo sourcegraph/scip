@@ -3,6 +3,7 @@ name: Rust
 on:
   pull_request:
     paths:
+      - '.github/workflows/**'
       - '**.rs'
       - '**/Cargo.toml'
       - '**/Cargo.lock'

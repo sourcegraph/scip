@@ -3,6 +3,7 @@ name: TypeScript
 on:
   pull_request:
     paths:
+      - '.github/workflows/**'
       - '**.ts'
       - '**/package.json'
       - '**/tsconfig.json'
