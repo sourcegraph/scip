@@ -19,11 +19,9 @@ var updateSnapshots = flag.Bool("update-snapshots", false, "update SCIP snapshot
 
 type indexFunction = func(inputDirectory, outputDirectory string, sources []*scip.SourceFile) []*scip.SourceFile
 
-func SnapshotTest(t *testing.T, indexFunction indexFunction) {
-	cwd, err := os.Getwd()
-	require.Nil(t, err)
-	inputDirectory := filepath.Join(cwd, "snapshots", "input")
-	outputDirectory := filepath.Join(cwd, "snapshots", "output")
+func SnapshotTest(t *testing.T, baseDir string, indexFunction indexFunction) {
+	inputDirectory := filepath.Join(baseDir, "snapshots", "input")
+	outputDirectory := filepath.Join(baseDir, "snapshots", "output")
 	SnapshotTestDirectories(t, inputDirectory, outputDirectory, indexFunction)
 }
 

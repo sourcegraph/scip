@@ -5,12 +5,13 @@
 - [bindings/](./bindings/): Contains a mix of generated and hand-written
   bindings for different languages.
 - [cmd/](./cmd/): CLI for SCIP.
+  - [cmd/tests/](./cmd/tests/): Test data and packages for SCIP.
+    - [cmd/tests/reprolang/](./cmd/tests/reprolang/): A verbose, small language
+      which consists of declarations, references, imports and other minor bits
+      of functionality, which is used to test the SCIP CLI. The language is
+      defined using a [tree-sitter grammar](cmd/tests/reprolang/grammar.js).
+      This functionality not meant for use outside of this repository.
 - [docs/](./docs/): Auto-generated documentation.
-- [reprolang/](./reprolang/): A verbose, small language which consists
-  of declarations, references, imports and other minor bits of functionality,
-  which is used to test the SCIP CLI. The language is defined using a
-  [tree-sitter grammar](./reprolang/grammar.js).
-  This functionality not meant for use outside of this repository.
 
 ## Code generation
 
@@ -24,6 +25,6 @@
    ```
 3. Regenerating parser for Repro after editing its grammar.
    ```
-   cd reprolang
+   cd cmd/tests/reprolang
    ./generate-tree-sitter-parser.sh
    ```

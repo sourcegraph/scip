@@ -2,11 +2,11 @@ package repro
 
 import (
 	"context"
+	reproGrammar "github.com/sourcegraph/scip/cmd/tests/reprolang/src"
 
 	sitter "github.com/smacker/go-tree-sitter"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
-	reproGrammar "github.com/sourcegraph/scip/reprolang/src"
 )
 
 func parseSourceFile(ctx context.Context, source *scip.SourceFile) (*reproSourceFile, error) {

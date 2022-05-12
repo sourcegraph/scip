@@ -13,5 +13,5 @@ jobs:
       - uses: ./.github/actions/asdf
         with:
           js: true
-      - run: ./reprolang/generate-tree-sitter-parser.sh
+      - run: ./cmd/tests/reprolang/generate-tree-sitter-parser.sh
       - run: git diff --exit-code

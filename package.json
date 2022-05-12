@@ -11,7 +11,7 @@
   },
   "workspaces": {
     "packages": [
-      "reprolang",
+      "cmd/tests/reprolang",
       "bindings/typescript"
     ]
   },

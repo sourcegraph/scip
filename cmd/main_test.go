@@ -12,12 +12,15 @@ import (
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
-	"github.com/sourcegraph/scip/reprolang/bindings/go/repro"
+	"github.com/sourcegraph/scip/cmd/tests/reprolang/bindings/go/repro"
 )
 
 // TestSCIPSnapshots runs all the snapshot tests.
 func TestSCIPSnapshots(t *testing.T) {
-	testutil.SnapshotTest(t, func(inputDirectory, outputDirectory string, sources []*scip.SourceFile) []*scip.SourceFile {
+	cwd, err := os.Getwd()
+	require.Nil(t, err)
+	testDir := filepath.Join(cwd, "tests")
+	testutil.SnapshotTest(t, testDir, func(inputDirectory, outputDirectory string, sources []*scip.SourceFile) []*scip.SourceFile {
 		testName := filepath.Base(inputDirectory)
 		var dependencies []*repro.Dependency
 		rootDirectory := filepath.Dir(inputDirectory)
