@@ -12,21 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        # Avoid using separate GitHub Actions for installing toolchains for
-        # Go, Rust etc. Maintaining all toolchain versions with asdf using
-        # a single .tool-versions file is easier.
-      - name: Install asdf
-        run: |
-          set -e
-          git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
-
-      - name: Install Go
-        run: |
-          source ~/.asdf/asdf.sh
-          asdf plugin-add golang
-          asdf install golang
-
-      - name: Check Go
-      - run: |
-          set -e
-          go test ./...
+      - uses: ./.github/actions/asdf
+        with:
+          golang: true
+      - run: go test ./...

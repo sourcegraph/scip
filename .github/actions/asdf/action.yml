@@ -2,6 +2,19 @@ name: asdf
 description: Installs system dependencies (Go, Rust, Nodejs) from .tool-versions file
 on:
   workflow_call:
+    inputs:
+      js:
+        required: false
+        type: boolean
+      golang:
+        required: false
+        type: boolean
+      rust:
+        required: false
+        type: boolean
+    secrets:
+      token:
+        required: true
 runs:
   using: "composite"
   steps:
@@ -13,12 +26,21 @@ runs:
       run: |
         set -e
         git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
-        source ~/.asdf/asdf.sh
+        echo "{path}" >> $GITHUB_PATH
+    - name: Install JS
+      if: ${{ inputs.js }}
+      run: |
         asdf plugin-add yarn
         asdf install yarn
         asdf plugin-add nodejs
         asdf install nodejs
+    - name: Install Rust
+      if: ${{ inputs.rust }}
+      run: |
         asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
         asdf install rust
+    - name: Install Go
+      if: ${{ inputs.golang }}
+      run: |
         asdf plugin-add golang
         asdf install golang
