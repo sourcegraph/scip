@@ -10,20 +10,48 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with: { go-version: '1.18' }
-      - uses: actions-rs/toolchain@v1
-      - name: Generate files based on protobuf definitions.
-        run: ./dev/proto-generate.sh
-      - name: Check if synced
+        # Avoid using separate GitHub Actions for installing toolchains for
+        # Go, Rust etc. Maintaining all toolchain versions with asdf using
+        # a single .tool-versions file is easier.
+      - name: Install asdf
         run: |
           set -e
+          git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
+
+      - name: Install Go for protobuf conversion
+        run: |
+          source ~/.asdf/asdf.sh
+          asdf plugin-add golang
+          asdf install golang
+
+      - name: Check that generated files are up-to-date
+        run: |
+          set -e
+          ./dev/proto-generate.sh
           git diff --quiet
-      - name: Check well-formed
+
+      - name: Check Go
+      - run: |
+          set -e
+          go test ./...
+
+      - name: Check Rust
         run: |
           set -e
-          go test github.com/sourcegraph/scip/go/scip
-          go test github.com/sourcegraph/scip/cmd
-          cd rust
+          source ~/.asdf/asdf.sh
+          asdf plugin-add rust
+          asdf install rust
+          cd bindings/rust
           cargo check
-          cd ..
+
+      - name: Check TypeScript
+        run: |
+          set -e
+          source ~/.asdf/asdf.sh
+          asdf plugin-add yarn
+          asdf install yarn
+          asdf plugin-add nodejs
+          asdf install nodejs
+          cd bindings/typescript
+          yarn install --frozen-lockfile
+          ./node_modules/typescript/bin/tsc -b .
