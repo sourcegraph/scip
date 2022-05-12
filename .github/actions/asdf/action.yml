@@ -2,19 +2,16 @@ name: asdf
 description: Installs system dependencies (Go, Rust, Nodejs) from .tool-versions file
 on:
   workflow_call:
-    inputs:
-      js:
-        required: false
-        type: boolean
-      golang:
-        required: false
-        type: boolean
-      rust:
-        required: false
-        type: boolean
-    secrets:
-      token:
-        required: true
+inputs:
+  js:
+    required: false
+    type: boolean
+  golang:
+    required: false
+    type: boolean
+  rust:
+    required: false
+    type: boolean
 runs:
   using: "composite"
   steps:
