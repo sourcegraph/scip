@@ -1,4 +1,4 @@
-name: Go
+name: Formatting
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - '**.{md,yml,yaml,js,ts}'
 
 jobs:
-  check:
+  prettier:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
