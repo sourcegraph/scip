@@ -1,0 +1,19 @@
+name: Go
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '**.go'
+      - '**/go.mod'
+      - '**/go.sum'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/asdf
+        with:
+          golang: true
+      - run: go test ./...

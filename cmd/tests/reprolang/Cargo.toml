@@ -1,0 +1,24 @@
+[package]
+name = "tree-sitter-repro"
+description = "repro grammar for the tree-sitter parsing library"
+version = "0.1.0"
+repository = "https://github.com/sourcegraph/scip/cmd/tests/reprolang"
+edition = "2021"
+license = "Apache-2.0"
+
+build = "bindings/rust/build.rs"
+include = [
+  "bindings/rust/*",
+  "grammar.js",
+  "queries/*",
+  "src/*",
+]
+
+[lib]
+path = "bindings/rust/lib.rs"
+
+[dependencies]
+tree-sitter = "~0.20"
+
+[build-dependencies]
+cc = "1.0"

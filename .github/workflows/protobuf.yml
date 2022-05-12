@@ -1,0 +1,23 @@
+name: Protobuf
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'docs/**'
+      - 'bindings/**'
+      - 'scip.proto'
+      - 'buf**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/asdf
+        with:
+          js: true
+          rust: true
+          golang: true
+      - run: ./dev/proto-generate.sh
+      - run: git diff --exit-code

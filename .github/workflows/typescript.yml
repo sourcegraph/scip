@@ -1,0 +1,22 @@
+name: TypeScript
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '**.ts'
+      - '**/package.json'
+      - '**/tsconfig.json'
+      - '**/yarn.lock'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/asdf
+        with:
+          js: true
+      - run: yarn install
+      - name: Check TypeScript
+        run: ./node_modules/.bin/tsc -b bindings/typescript

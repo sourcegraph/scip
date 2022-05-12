@@ -1,0 +1,21 @@
+{
+  "name": "@sourcegraph/scip-root",
+  "private": true,
+  "version": "0.1.0",
+  "repository": "git@github.com:sourcegraph/scip.git",
+  "author": "SCIP authors",
+  "license": "MIT",
+  "scripts": {
+    "prettier": "./node_modules/prettier/bin-prettier.js --write --list-different '**/*.{ts,js(on)?,md,yml}'",
+    "prettier-check": "./node_modules/prettier/bin-prettier.js --check '**/*.{ts,js(on)?,md,yml}'"
+  },
+  "workspaces": {
+    "packages": [
+      "cmd/tests/reprolang",
+      "bindings/typescript"
+    ]
+  },
+  "devDependencies": {
+    "prettier": "^2.6.2"
+  }
+}

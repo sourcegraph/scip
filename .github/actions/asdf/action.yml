@@ -1,0 +1,47 @@
+name: asdf
+description: Installs system dependencies (Go, Rust, Nodejs) from .tool-versions file
+on:
+  workflow_call:
+inputs:
+  js:
+    required: false
+    type: boolean
+  golang:
+    required: false
+    type: boolean
+  rust:
+    required: false
+    type: boolean
+runs:
+  using: 'composite'
+  steps:
+    # Avoid using separate GitHub Actions for installing toolchains for
+    # Go, Rust etc. Maintaining all toolchain versions with asdf using
+    # a single .tool-versions file is easier.
+    - name: Install asdf
+      shell: bash
+      run: |
+        set -e
+        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
+        echo $HOME/.asdf/bin >> $GITHUB_PATH
+        echo $HOME/.asdf/shims >> $GITHUB_PATH
+    - name: Install JS
+      if: ${{ inputs.js }}
+      shell: bash
+      run: |
+        asdf plugin-add yarn
+        asdf install yarn
+        asdf plugin-add nodejs
+        asdf install nodejs
+    - name: Install Rust
+      if: ${{ inputs.rust }}
+      shell: bash
+      run: |
+        RUST_WITHOUT=rust-docs asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
+        asdf install rust
+    - name: Install Go
+      if: ${{ inputs.golang }}
+      shell: bash
+      run: |
+        asdf plugin-add golang
+        asdf install golang
