@@ -1,0 +1,14 @@
+{
+  "name": "@sourcegraph/scip-root",
+  "private": true,
+  "version": "0.1.0",
+  "repository": "git@github.com:sourcegraph/scip.git",
+  "author": "SCIP authors",
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "reprolang",
+      "bindings/typescript"
+    ]
+  }
+}

@@ -12,10 +12,20 @@ google-protobuf@^3.20.1:
   resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.20.1.tgz#1b255c2b59bcda7c399df46c65206aa3c7a0ce8b"
   integrity sha512-XMf1+O32FjYIV3CYu6Tuh5PNbfNEU5Xu22X+Xkdb/DUexFlCzhvv7d5Iirm4AOwn8lv4al1YvIhzGrg2j9Zfzw==
 
+nan@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
+  integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
+
 protoc-gen-ts@0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/protoc-gen-ts/-/protoc-gen-ts-0.8.1.tgz#9d4d5ac9ad884151bf28be66b906a08d4f50645d"
   integrity sha512-T1Gqw8ekPeSmB6vAhpBKT77Fu0gRThwz3QqQ+dhohz/I554a6YhsoF/nKy4Qo1C8Ukoag3RVcYeXz4IBC4643Q==
+
+tree-sitter-cli@^0.20.4:
+  version "0.20.6"
+  resolved "https://registry.yarnpkg.com/tree-sitter-cli/-/tree-sitter-cli-0.20.6.tgz#2a7202190d7bd64e112b451f94573dbe40a04f04"
+  integrity sha512-tjbAeuGSMhco/EnsThjWkQbDIYMDmdkWsTPsa/NJAW7bjaki9P7oM9TkLxfdlnm4LXd1wR5wVSM2/RTLtZbm6A==
 
 typescript@^4.6.4:
   version "4.6.4"
