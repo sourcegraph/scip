@@ -31,4 +31,4 @@ jobs:
         run: |
           set -e
           ./dev/proto-generate.sh
-          git diff --quiet
+          git diff --exit-code

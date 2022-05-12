@@ -31,4 +31,4 @@ jobs:
           set -e
           cd reprolang
           ./generate-tree-sitter-parser.sh
-          git diff --quiet
+          git diff --exit-code
