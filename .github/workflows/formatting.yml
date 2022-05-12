@@ -1,0 +1,14 @@
+name: Go
+
+on:
+  pull_request:
+    paths:
+      - '**.{md,yml,yaml,js,ts}'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: yarn install
+      - run: yarn run prettier-check

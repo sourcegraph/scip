@@ -21,3 +21,5 @@ GOBIN="$PWD/.bin" go install google.golang.org/protobuf/cmd/protoc-gen-go
 
 GOBIN="$PWD/.bin" ./.bin/buf generate
 ./.bin/goimports -w ./bindings/go/scip/scip.pb.go
+yarn run prettier
+

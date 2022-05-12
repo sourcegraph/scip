@@ -5,10 +5,17 @@
   "repository": "git@github.com:sourcegraph/scip.git",
   "author": "SCIP authors",
   "license": "MIT",
+  "scripts": {
+    "prettier": "prettier --write --list-different '**/*.{ts,js?(on),md,yml}'",
+    "prettier-check": "prettier --check '**/*.{ts,js?(on),md,yml}'"
+  },
   "workspaces": {
     "packages": [
       "reprolang",
       "bindings/typescript"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^2.6.2"
   }
 }
