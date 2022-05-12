@@ -21,7 +21,7 @@ import (
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/writer"
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 
-	"github.com/sourcegraph/scip/go/scip"
+	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
 // convertSCIPToLSIF takes a SCIP index and returns the equivalent LSIF index.

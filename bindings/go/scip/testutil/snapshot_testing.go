@@ -12,7 +12,7 @@ import (
 	"github.com/hexops/gotextdiff/span"
 	"github.com/stretchr/testify/require"
 
-	"github.com/sourcegraph/scip/go/scip"
+	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
 var updateSnapshots = flag.Bool("update-snapshots", false, "update SCIP snapshots files")

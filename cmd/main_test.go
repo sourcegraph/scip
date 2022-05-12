@@ -11,8 +11,8 @@ import (
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
 	reproLang "github.com/sourcegraph/sourcegraph/lib/codeintel/reprolang/bindings/golang"
 
-	"github.com/sourcegraph/scip/go/scip"
-	"github.com/sourcegraph/scip/go/scip/testutil"
+	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
 )
 
 // TestScipSnapshots runs all the snapshot tests from the "snapshot-input" directory.

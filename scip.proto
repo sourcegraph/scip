@@ -12,7 +12,7 @@ syntax = "proto3";
 
 package scip;
 
-option go_package = "github.com/sourcegraph/scip/go/scip/";
+option go_package = "github.com/sourcegraph/scip/bindings/go/scip/";
 
 // Index represents a complete SCIP index for a workspace this is rooted at a
 // single directory. An Index message payload can have a large memory footprint

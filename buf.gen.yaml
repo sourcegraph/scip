@@ -7,7 +7,7 @@ plugins:
     opt: docs/scip.sprig,scip.md
     # NOTE: the sprig file is a template, it is not generated.
   - remote: buf.build/library/plugins/go:v1.27.1-1
-    out: ./go/scip/
+    out: ./bindings/go/scip/
     opt:
       - paths=source_relative
   # FIXME: This seems to give a crash inside protoc-gen-ts
@@ -20,9 +20,9 @@ plugins:
   #     at Module._compile (node:internal/modules/cjs/loader:1101:14)
   #
   # - name: ts
-  #  path: ./node_modules/.bin/protoc-gen-ts
-  #  out: ./typescript/
+  #  path: ./bindings/typescript/node_modules/.bin/protoc-gen-ts
+  #  out: ./bindings/typescript/
   #
   - name: rust
     path: ./.bin/bin/protoc-gen-rust
-    out: ./rust/src/
+    out: ./bindings/rust/src/

@@ -2,7 +2,7 @@
   "name": "@sourcegraph/scip",
   "version": "0.1.0",
   "description": "Generated TypeScript definitions for the Semantic Code Intelligence Protocol.",
-  "repository": "https://github.com/sourcegraph/scip",
+  "repository": "https://github.com/sourcegraph/scip/bindings/typescript",
   "author": "Sourcegraph",
   "license": "Apache-2.0",
   "sideEffects": false,

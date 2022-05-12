@@ -9,7 +9,7 @@ import (
 
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 
-	"github.com/sourcegraph/scip/go/scip"
+	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
 // FormatSnapshots renders the provided SCIP index into a pretty-printed text format

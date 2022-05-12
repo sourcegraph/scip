@@ -10,7 +10,7 @@ import (
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
 
-	"github.com/sourcegraph/scip/go/scip"
+	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
 func printHelpAndExit() {

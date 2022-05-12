@@ -8,7 +8,7 @@
 
 ## Project structure
 
+- [bindings/](./bindings/): Contains a mix of generated and hand-written
+  bindings for different languages.
 - [cmd/](./cmd/): CLI for SCIP.
-- [doc/](./doc/): Auto-generated documentation.
-- [go/](./go/): Convenience Go package, partly auto-generated.
-- [rust/](./rust/): Auto-generated Rust crate.
+- [docs/](./docs/): Auto-generated documentation.
