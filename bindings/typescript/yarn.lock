@@ -2,15 +2,20 @@
 # yarn lockfile v1
 
 
+"@types/google-protobuf@^3.15.6":
+  version "3.15.6"
+  resolved "https://registry.yarnpkg.com/@types/google-protobuf/-/google-protobuf-3.15.6.tgz#674a69493ef2c849b95eafe69167ea59079eb504"
+  integrity sha512-pYVNNJ+winC4aek+lZp93sIKxnXt5qMkuKmaqS3WGuTq0Bw1ZDYNBgzG5kkdtwcv+GmYJGo3yEg6z2cKKAiEdw==
+
 google-protobuf@^3.20.1:
   version "3.20.1"
   resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.20.1.tgz#1b255c2b59bcda7c399df46c65206aa3c7a0ce8b"
   integrity sha512-XMf1+O32FjYIV3CYu6Tuh5PNbfNEU5Xu22X+Xkdb/DUexFlCzhvv7d5Iirm4AOwn8lv4al1YvIhzGrg2j9Zfzw==
 
-protoc-gen-ts@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/protoc-gen-ts/-/protoc-gen-ts-0.8.2.tgz#d762eef409cc3721684078b2b9a2bf5a0c2e761a"
-  integrity sha512-KRHMRLQqhDnaGq31qLDxhW4vcGmPqS2NS1XflDJyUBt2G6Egy9exBKFA2leyDgRab0BBRshoSXpJMkqmRtoQ6w==
+protoc-gen-ts@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/protoc-gen-ts/-/protoc-gen-ts-0.8.1.tgz#9d4d5ac9ad884151bf28be66b906a08d4f50645d"
+  integrity sha512-T1Gqw8ekPeSmB6vAhpBKT77Fu0gRThwz3QqQ+dhohz/I554a6YhsoF/nKy4Qo1C8Ukoag3RVcYeXz4IBC4643Q==
 
 typescript@^4.6.4:
   version "4.6.4"
