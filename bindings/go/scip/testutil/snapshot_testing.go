@@ -22,8 +22,8 @@ type indexFunction = func(inputDirectory, outputDirectory string, sources []*sci
 func SnapshotTest(t *testing.T, indexFunction indexFunction) {
 	cwd, err := os.Getwd()
 	require.Nil(t, err)
-	inputDirectory := filepath.Join(cwd, "snapshots-input")
-	outputDirectory := filepath.Join(cwd, "snapshots-output")
+	inputDirectory := filepath.Join(cwd, "snapshots", "input")
+	outputDirectory := filepath.Join(cwd, "snapshots", "output")
 	SnapshotTestDirectories(t, inputDirectory, outputDirectory, indexFunction)
 }
 

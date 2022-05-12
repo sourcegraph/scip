@@ -3,7 +3,9 @@ name: 'Check synced and well-formed generated output'
 on:
   pull_request:
     paths:
-      - '**/scip.*'
+      - 'docs/**'
+      - 'bindings/**'
+      - 'scip.proto'
 
 jobs:
   check:

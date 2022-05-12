@@ -9,17 +9,17 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
-	reproLang "github.com/sourcegraph/sourcegraph/lib/codeintel/reprolang/bindings/golang"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
+	"github.com/sourcegraph/scip/reprolang/bindings/go/repro"
 )
 
-// TestScipSnapshots runs all the snapshot tests from the "snapshot-input" directory.
-func TestScipSnapshots(t *testing.T) {
+// TestSCIPSnapshots runs all the snapshot tests.
+func TestSCIPSnapshots(t *testing.T) {
 	testutil.SnapshotTest(t, func(inputDirectory, outputDirectory string, sources []*scip.SourceFile) []*scip.SourceFile {
 		testName := filepath.Base(inputDirectory)
-		var dependencies []*reproLang.Dependency
+		var dependencies []*repro.Dependency
 		rootDirectory := filepath.Dir(inputDirectory)
 		dirs, err := os.ReadDir(rootDirectory)
 		require.Nil(t, err)
@@ -33,7 +33,7 @@ func TestScipSnapshots(t *testing.T) {
 			dependencyRoot := filepath.Join(rootDirectory, dir.Name())
 			dependencySources, err := scip.NewSourcesFromDirectory(dependencyRoot)
 			require.Nil(t, err)
-			dependencies = append(dependencies, &reproLang.Dependency{
+			dependencies = append(dependencies, &repro.Dependency{
 				Package: &scip.Package{
 					Manager: "repro_manager",
 					Name:    dir.Name(),
@@ -42,14 +42,14 @@ func TestScipSnapshots(t *testing.T) {
 				Sources: dependencySources,
 			})
 		}
-		index, err := reproLang.Index("file:/"+inputDirectory, testName, sources, dependencies)
+		index, err := repro.Index("file:/"+inputDirectory, testName, sources, dependencies)
 		require.Nil(t, err)
 		symbolFormatter := scip.DescriptorOnlyFormatter
 		symbolFormatter.IncludePackageName = func(name string) bool { return name != testName }
 		snapshots, err := testutil.FormatSnapshots(index, "#", symbolFormatter)
 		require.Nil(t, err)
 		index.Metadata.ProjectRoot = "file:/root"
-		lsif, err := reader.ConvertTypedIndexToGraphIndex(index)
+		lsif, err := convertSCIPToLSIF(index)
 		require.Nil(t, err)
 		var obtained bytes.Buffer
 		err = reader.WriteNDJSON(reader.ElementsToJsonElements(lsif), &obtained)
