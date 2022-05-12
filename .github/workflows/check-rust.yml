@@ -1,0 +1,33 @@
+name: Check Rust
+
+on:
+  pull_request:
+    paths:
+      - '**.rs'
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+
+jobs:
+  check-go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        # Avoid using separate GitHub Actions for installing toolchains for
+        # Go, Rust etc. Maintaining all toolchain versions with asdf using
+        # a single .tool-versions file is easier.
+      - name: Install asdf
+        run: |
+          set -e
+          git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
+
+      - name: Check Rust
+      - run: |
+          set -e
+
+          cd bindings/rust
+          cargo check
+          cd -
+
+          cd reprolang
+          cargo check
+          cd -

@@ -1,4 +1,4 @@
-name: 'Check synced and well-formed generated output'
+name: Check schema in sync
 
 on:
   pull_request:
@@ -6,6 +6,7 @@ on:
       - 'docs/**'
       - 'bindings/**'
       - 'scip.proto'
+      - 'buf**'
 
 jobs:
   check:
@@ -31,29 +32,3 @@ jobs:
           set -e
           ./dev/proto-generate.sh
           git diff --quiet
-
-      - name: Check Go
-      - run: |
-          set -e
-          go test ./...
-
-      - name: Check Rust
-        run: |
-          set -e
-          source ~/.asdf/asdf.sh
-          asdf plugin-add rust
-          asdf install rust
-          cd bindings/rust
-          cargo check
-
-      - name: Check TypeScript
-        run: |
-          set -e
-          source ~/.asdf/asdf.sh
-          asdf plugin-add yarn
-          asdf install yarn
-          asdf plugin-add nodejs
-          asdf install nodejs
-          cd bindings/typescript
-          yarn install --frozen-lockfile
-          ./node_modules/typescript/bin/tsc -b .

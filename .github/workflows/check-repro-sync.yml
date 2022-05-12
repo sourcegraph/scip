@@ -1,0 +1,34 @@
+name: Check reprolang in sync
+
+on:
+  pull_request:
+    paths:
+      - 'reprolang/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        # Avoid using separate GitHub Actions for installing toolchains for
+        # Go, Rust etc. Maintaining all toolchain versions with asdf using
+        # a single .tool-versions file is easier.
+      - name: Install asdf
+        run: |
+          set -e
+          git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
+
+      - name: Install Toolchains
+        run: |
+          source ~/.asdf/asdf.sh
+          asdf plugin-add yarn
+          asdf install yarn
+          asdf plugin-add nodejs
+          asdf install nodejs
+
+      - name: Check that generated files are up-to-date
+        run: |
+          set -e
+          cd reprolang
+          ./generate-tree-sitter-parser.sh
+          git diff --quiet
