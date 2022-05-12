@@ -6,8 +6,8 @@
   "author": "SCIP authors",
   "license": "MIT",
   "scripts": {
-    "prettier": "./node_modules/prettier/bin-prettier.js --write --list-different '**/*.{ts,js?(on),md,yml}'",
-    "prettier-check": "./node_modules/prettier/bin-prettier.js --check '**/*.{ts,js?(on),md,yml}'"
+    "prettier": "./node_modules/prettier/bin-prettier.js --write --list-different '**/*.{ts,js(on)?,md,yml}'",
+    "prettier-check": "./node_modules/prettier/bin-prettier.js --check '**/*.{ts,js(on)?,md,yml}'"
   },
   "workspaces": {
     "packages": [
