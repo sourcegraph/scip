@@ -1,9 +1,10 @@
 package scip
 
 // Range represents a range between two offset positions.
-// NOTE: the lsif/protocol package contains similarly shaped structs but this
-// one exists primarily to make it easier to work with SCIP encoded positions,
-// which have the type []int32 in Protobuf payloads.
+// NOTE: the github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol package
+// contains similarly shaped structs but this one exists primarily to make it
+// easier to work with SCIP encoded positions, which have the type []int32
+// in Protobuf payloads.
 type Range struct {
 	Start Position
 	End   Position
@@ -16,20 +17,20 @@ type Position struct {
 }
 
 // NewRange converts an SCIP range into `Range`
-func NewRange(lsifRange []int32) *Range {
+func NewRange(scipRange []int32) *Range {
 	var endLine int32
 	var endCharacter int32
-	if len(lsifRange) == 3 { // single line
-		endLine = lsifRange[0]
-		endCharacter = lsifRange[2]
-	} else if len(lsifRange) == 4 { // multi-line
-		endLine = lsifRange[2]
-		endCharacter = lsifRange[3]
+	if len(scipRange) == 3 { // single line
+		endLine = scipRange[0]
+		endCharacter = scipRange[2]
+	} else if len(scipRange) == 4 { // multi-line
+		endLine = scipRange[2]
+		endCharacter = scipRange[3]
 	}
 	return &Range{
 		Start: Position{
-			Line:      lsifRange[0],
-			Character: lsifRange[1],
+			Line:      scipRange[0],
+			Character: scipRange[1],
 		},
 		End: Position{
 			Line:      endLine,
@@ -42,7 +43,7 @@ func (r Range) IsSingleLine() bool {
 	return r.Start.Line == r.End.Line
 }
 
-func (r Range) LsifRange() []int32 {
+func (r Range) SCIPRange() []int32 {
 	if r.Start.Line == r.End.Line {
 		return []int32{r.Start.Line, r.Start.Character, r.End.Character}
 	}

@@ -30,7 +30,7 @@ import (
 // This conversion is lossy because SCIP includes metadata that has no equivalent encoding in
 // LSIF, such as scip.SymbolRole beyond the definition role.
 //
-// Also, LSIF allows encoding certain behaviors that SCIP Typed current doesn't support,
+// Also, LSIF allows encoding certain behaviors that SCIP current doesn't support,
 // such as asymmetric references/definitions.
 func convertSCIPToLSIF(index *scip.Index) ([]reader.Element, error) {
 	g := newGraph()
@@ -88,7 +88,7 @@ func convertSCIPToLSIF(index *scip.Index) ([]reader.Element, error) {
 	return g.Elements, nil
 }
 
-// graph is a helper struct to emit an LSIF.
+// graph is a helper struct to emit LSIF.
 type graph struct {
 	ID                   int
 	Elements             []reader.Element
@@ -138,7 +138,7 @@ func (g *graph) emitResultSet(info *scip.SymbolInformation, monikerKind string) 
 	if ids, ok := g.symbolToResultSet[info.Symbol]; ok {
 		return ids
 	}
-	// NOTE: merge separate documentation sections with a horizontal Markdown rule. Indexers that emit LSIF graph
+	// NOTE: merge separate documentation sections with a horizontal Markdown rule. Indexers that emit LSIF
 	// directly need to emit this separator directly while with SCIP we render the horizontal rule here.
 	hover := strings.Join(info.Documentation, "\n\n---\n\n")
 	definitionResult := -1
@@ -283,7 +283,9 @@ func (g *graph) emitMonikerVertex(symbolID string, kind string, resultSetID int)
 		// it should use the "manager" field of packageInformation instead.
 		switch symbol.Scheme {
 		case "lsif-java":
+		case "scip-java":
 			scheme = "semanticdb"
+		case "scip-typescript":
 		case "lsif-typescript":
 			scheme = "npm"
 		}
@@ -303,8 +305,8 @@ func (g *graph) emitMonikerVertex(symbolID string, kind string, resultSetID int)
 	}
 }
 
-func (g *graph) emitRange(lsifRange []int32) (int, error) {
-	startLine, startCharacter, endLine, endCharacter, err := interpretLsifRange(lsifRange)
+func (g *graph) emitRange(scipRange []int32) (int, error) {
+	startLine, startCharacter, endLine, endCharacter, err := interpretSCIPRange(scipRange)
 	if err != nil {
 		return 0, err
 	}
@@ -360,15 +362,15 @@ func (g *graph) registerInverseRelationships(info *scip.SymbolInformation) {
 	}
 }
 
-// interpretLsifRange handles the difference between single-line and multi-line encoding of range positions.
-func interpretLsifRange(lsifRange []int32) (startLine, startCharacter, endLine, endCharacter int32, err error) {
-	if len(lsifRange) == 3 {
-		return lsifRange[0], lsifRange[1], lsifRange[0], lsifRange[2], nil
+// interpretSCIPRange handles the difference between single-line and multi-line encoding of range positions.
+func interpretSCIPRange(scipRange []int32) (startLine, startCharacter, endLine, endCharacter int32, err error) {
+	if len(scipRange) == 3 {
+		return scipRange[0], scipRange[1], scipRange[0], scipRange[2], nil
 	}
-	if len(lsifRange) == 4 {
-		return lsifRange[0], lsifRange[1], lsifRange[2], lsifRange[3], nil
+	if len(scipRange) == 4 {
+		return scipRange[0], scipRange[1], scipRange[2], scipRange[3], nil
 	}
-	return 0, 0, 0, 0, errors.Newf("invalid LSIF range %v", lsifRange)
+	return 0, 0, 0, 0, errors.Newf("invalid SCIP range %v", scipRange)
 }
 
 func (g *graph) getOrInsertSymbolInformationIDs(symbol string, localResultSetTable map[string]symbolInformationIDs) symbolInformationIDs {

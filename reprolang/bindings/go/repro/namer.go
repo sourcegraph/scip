@@ -58,7 +58,7 @@ func (s *reproSourceFile) resolveReferences(context *reproContext) {
 	}
 }
 
-// newGlobalSymbol returns an LSIF Typed symbol for the given definition.
+// newGlobalSymbol returns an SCIP symbol for the given definition.
 func newGlobalSymbol(pkg *scip.Package, document *reproSourceFile, definition *definitionStatement) string {
 	return fmt.Sprintf(
 		"reprolang repro_manager %v %v %v/%v",

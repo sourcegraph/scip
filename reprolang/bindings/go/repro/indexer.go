@@ -6,7 +6,7 @@ import (
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
-// Index returns an LSIF Typed index for all of the provided source files, which should use the syntax of
+// Index returns an SCIP index for all of the provided source files, which should use the syntax of
 // the "reprolang" programming language. Search for files with the `*.repro` file extension to see examples
 // of how reprolang programs looks like. Search for "grammar.js" to see the tree-sitter grammar of the reprolang syntax.
 func Index(
@@ -73,14 +73,14 @@ func Index(
 		file.resolveReferences(ctx)
 	}
 
-	// Phase 4: emit LSIF Typed
+	// Phase 4: emit SCIP
 	for _, file := range reproSources {
-		lsifDocument := &scip.Document{
+		scipDocument := &scip.Document{
 			RelativePath: file.Source.RelativePath,
 			Occurrences:  file.occurrences(),
 			Symbols:      file.symbols(),
 		}
-		index.Documents = append(index.Documents, lsifDocument)
+		index.Documents = append(index.Documents, scipDocument)
 	}
 
 	return index, nil

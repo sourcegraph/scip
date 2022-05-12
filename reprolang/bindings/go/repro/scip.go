@@ -8,7 +8,7 @@ import (
 
 func (i *identifier) occurrence(roles scip.SymbolRole) *scip.Occurrence {
 	return &scip.Occurrence{
-		Range:       i.position.LsifRange(),
+		Range:       i.position.SCIPRange(),
 		Symbol:      i.symbol,
 		SymbolRoles: int32(roles),
 	}
