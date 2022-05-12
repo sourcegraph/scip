@@ -5,6 +5,10 @@
 *.so
 *.dylib
 
+# Editor directories
+.idea/
+.vscode/
+
 # Test binary, built with `go test -c`
 *.test
 
