@@ -26,9 +26,5 @@ jobs:
           asdf plugin-add nodejs
           asdf install nodejs
 
-      - name: Check that generated files are up-to-date
-        run: |
-          set -e
-          cd reprolang
-          ./generate-tree-sitter-parser.sh
-          git diff --exit-code
+      - run: ./reprolang/generate-tree-sitter-parser.sh
+      - run: git diff --exit-code

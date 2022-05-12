@@ -27,8 +27,5 @@ jobs:
           asdf plugin-add golang
           asdf install golang
 
-      - name: Check that generated files are up-to-date
-        run: |
-          set -e
-          ./dev/proto-generate.sh
-          git diff --exit-code
+      - run: ./dev/proto-generate.sh
+      - run: git diff --exit-code
