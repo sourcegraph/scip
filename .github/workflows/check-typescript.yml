@@ -32,4 +32,4 @@ jobs:
 
           cd bindings/typescript
           yarn install --frozen-lockfile
-          ./node_modules/typescript/bin/tsc -b .
+          ./node_modules/.bin/tsc -b .
