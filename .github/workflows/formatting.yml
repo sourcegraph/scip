@@ -3,7 +3,11 @@ name: Formatting
 on:
   pull_request:
     paths:
-      - '**.{md,yml,yaml,js,ts}'
+      - '**.md'
+      - '**.yml'
+      - '**.yaml'
+      - '**.js'
+      - '**.ts'
 
 jobs:
   prettier:
