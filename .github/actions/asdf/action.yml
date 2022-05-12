@@ -37,7 +37,7 @@ runs:
       if: ${{ inputs.rust }}
       shell: bash
       run: |
-        asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
+        RUST_WITHOUT=rust-docs asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
         asdf install rust
     - name: Install Go
       if: ${{ inputs.golang }}
