@@ -15,7 +15,6 @@ package scip;
 option go_package = "github.com/sourcegraph/scip/bindings/go/scip/";
 
 // Index represents a complete SCIP index for a workspace this is rooted at a
-// BOOM, let's break CI
 // single directory. An Index message payload can have a large memory footprint
 // and it's therefore recommended to emit and consume an Index payload one field
 // value at a time.  To permit streaming consumption of an Index payload, the
