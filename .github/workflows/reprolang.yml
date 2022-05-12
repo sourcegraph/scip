@@ -1,0 +1,15 @@
+name: Reprolang
+
+on:
+  pull_request:
+    paths:
+      - 'reprolang/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/asdf
+      - run: ./reprolang/generate-tree-sitter-parser.sh
+      - run: git diff --exit-code

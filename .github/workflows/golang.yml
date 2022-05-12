@@ -1,12 +1,14 @@
-name: Check reprolang in sync
+name: Go
 
 on:
   pull_request:
     paths:
-      - 'reprolang/**'
+      - '**.go'
+      - '**/go.mod'
+      - '**/go.sum'
 
 jobs:
-  check:
+  check-go:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,13 +20,13 @@ jobs:
           set -e
           git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0 --depth=1
 
-      - name: Install Toolchains
+      - name: Install Go
         run: |
           source ~/.asdf/asdf.sh
-          asdf plugin-add yarn
-          asdf install yarn
-          asdf plugin-add nodejs
-          asdf install nodejs
+          asdf plugin-add golang
+          asdf install golang
 
-      - run: ./reprolang/generate-tree-sitter-parser.sh
-      - run: git diff --exit-code
+      - name: Check Go
+      - run: |
+          set -e
+          go test ./...

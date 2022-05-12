@@ -1,0 +1,19 @@
+name: Rust
+
+on:
+  pull_request:
+    paths:
+      - '**.rs'
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+
+jobs:
+  check-go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/asdf
+      - run: cargo check
+        working-directory: bindings/rust
+      - run: cargo check
+        working-directory: reprolang
