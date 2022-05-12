@@ -29,6 +29,7 @@ runs:
         echo "{path}" >> $GITHUB_PATH
     - name: Install JS
       if: ${{ inputs.js }}
+      shell: bash
       run: |
         asdf plugin-add yarn
         asdf install yarn
@@ -36,11 +37,13 @@ runs:
         asdf install nodejs
     - name: Install Rust
       if: ${{ inputs.rust }}
+      shell: bash
       run: |
         asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
         asdf install rust
     - name: Install Go
       if: ${{ inputs.golang }}
+      shell: bash
       run: |
         asdf plugin-add golang
         asdf install golang

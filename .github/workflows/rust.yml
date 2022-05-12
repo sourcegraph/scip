@@ -8,7 +8,7 @@ on:
       - '**/Cargo.lock'
 
 jobs:
-  check-go:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
