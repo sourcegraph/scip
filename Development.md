@@ -4,6 +4,11 @@
 
 - [bindings/](./bindings/): Contains a mix of generated and hand-written
   bindings for different languages.
+  - The TypeScript and Rust bindings are auto-generated.
+  - The Go bindings include protoc-generated code as well as extra
+    functionality, such as for converting a SCIP index into an LSIF index.
+    This is used by the CLI below as well as the
+    [Sourcegraph CLI](https://github.com/sourcegraph/src-cli).
 - [cmd/](./cmd/): CLI for SCIP.
   - [cmd/tests/](./cmd/tests/): Test data and packages for SCIP.
     - [cmd/tests/reprolang/](./cmd/tests/reprolang/): A verbose, small language
