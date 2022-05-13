@@ -7,8 +7,8 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	"github.com/sourcegraph/sourcegraph/lib/errors"
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
+	"github.com/sourcegraph/sourcegraph/lib/errors"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
@@ -41,7 +41,7 @@ func main() {
 			if err != nil {
 				panic(errors.Wrapf(err, "failed to parse protobuf file '%s'", file))
 			}
-			els, err := convertSCIPToLSIF(&index)
+			els, err := scip.ConvertSCIPToLSIF(&index)
 			if err != nil {
 				panic(errors.Wrapf(err, "failed reader.ConvertSCIPIndexToLSIFIndex"))
 			}

@@ -52,7 +52,7 @@ func TestSCIPSnapshots(t *testing.T) {
 		snapshots, err := testutil.FormatSnapshots(index, "#", symbolFormatter)
 		require.Nil(t, err)
 		index.Metadata.ProjectRoot = "file:/root"
-		lsif, err := convertSCIPToLSIF(index)
+		lsif, err := scip.ConvertSCIPToLSIF(index)
 		require.Nil(t, err)
 		var obtained bytes.Buffer
 		err = reader.WriteNDJSON(reader.ElementsToJsonElements(lsif), &obtained)
