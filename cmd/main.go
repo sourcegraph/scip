@@ -1,28 +1,26 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
+	"regexp"
 
 	"github.com/docopt/docopt-go"
 )
 
-const helpText string = `Semantic Code Intelligence Protocol CLI.
+//go:embed Readme.md
+var readme string
 
-Usage:
-  scip convert [--from=<path>] [--to=<path>]
-  scip --version
-  scip -h | --help
+func helpText() string {
+	usageRegexp := regexp.MustCompile("(?s)<!-- begin usage -->\n\n```\n(.*)\n```\n\n<!-- end usage -->")
+	usageText := usageRegexp.FindStringSubmatch(readme)[1]
+	return fmt.Sprintf(helpTextTemplate, usageText)
+}
 
-Options:
-  --from=<path>  Input file for conversion [default: index.scip].
-  --to=<path>    Output file for conversion [default: dump.lsif].
-  --version      Show version.
-  -h --help      Show help text.
+const helpTextTemplate string = `Semantic Code Intelligence Protocol CLI.
 
-A single dash path ('-') for --from (--to) is interpreted as stdin (stdout).
-
-The 'convert' subcommand currently only supports conversion from SCIP to LSIF.
+%s
 
 For more details, see the project README: https://github.com/sourcegraph/scip
 `
@@ -35,7 +33,7 @@ func bailIfError(err error) {
 }
 
 func main() {
-	parsedArgs, err := docopt.ParseDoc(helpText)
+	parsedArgs, err := docopt.ParseDoc(helpText())
 	bailIfError(err)
 	// --help is handled by docopt
 	if parsedArgs["--version"].(bool) {
@@ -48,6 +46,6 @@ func main() {
 	}
 	// Normally, this should be impossible as docopt should properly handle
 	// incorrect arguments, but might as well exit nicely. 🤷🏽
-	os.Stderr.WriteString(helpText)
+	os.Stderr.WriteString(helpText())
 	os.Exit(1)
 }
