@@ -14,6 +14,8 @@ import (
 
 // FormatSnapshots renders the provided SCIP index into a pretty-printed text format
 // that is suitable for snapshot testing.
+//
+// commentSyntax should contain a <content> substring for replacement.
 func FormatSnapshots(
 	index *scip.Index,
 	commentSyntax string,
@@ -37,6 +39,14 @@ func FormatSnapshots(
 		result = append(result, sourceFile)
 	}
 	return result, nil
+}
+
+func parseCommentSyntax(commentSyntax string) (prefix string, suffix string) {
+	contentIndex := strings.Index(commentSyntax, "<content>")
+	if contentIndex == -1 {
+		panic("comment syntax without <content> string; this should've been diagnosed as an error earlier")
+	}
+	return commentSyntax[:contentIndex], commentSyntax[contentIndex+len("<content>"):]
 }
 
 // FormatSnapshot renders the provided SCIP index into a pretty-printed text format
@@ -72,10 +82,11 @@ func FormatSnapshot(
 		}
 		return formatted
 	}
+	commentPrefix, commentSuffix := parseCommentSyntax(commentSyntax)
 	i := 0
 	for lineNumber, line := range strings.Split(string(data), "\n") {
 		line = strings.TrimSuffix(line, "\r")
-		b.WriteString(strings.Repeat(" ", len(commentSyntax)))
+		b.WriteString(strings.Repeat(" ", len(commentPrefix)))
 		b.WriteString(strings.ReplaceAll(line, "\t", " "))
 		b.WriteString("\n")
 		for i < len(document.Occurrences) && document.Occurrences[i].Range[0] == int32(lineNumber) {
@@ -84,7 +95,7 @@ func FormatSnapshot(
 			if !pos.IsSingleLine() {
 				continue
 			}
-			b.WriteString(commentSyntax)
+			b.WriteString(commentPrefix)
 			for indent := int32(0); indent < pos.Start.Character; indent++ {
 				b.WriteRune(' ')
 			}
@@ -103,7 +114,7 @@ func FormatSnapshot(
 			b.WriteString(formatSymbol(occ.Symbol))
 
 			if info, ok := symtab[occ.Symbol]; ok && isDefinition {
-				prefix := "\n" + commentSyntax + strings.Repeat(" ", int(pos.Start.Character))
+				prefix := commentSuffix + "\n" + commentPrefix + strings.Repeat(" ", int(pos.Start.Character))
 				for _, documentation := range info.Documentation {
 					b.WriteString(prefix)
 					b.WriteString("documentation ")
@@ -132,7 +143,7 @@ func FormatSnapshot(
 					}
 				}
 			}
-
+			b.WriteString(commentSuffix)
 			b.WriteString("\n")
 			i++
 		}

@@ -31,3 +31,14 @@ func TestIsScipRangeLess(t *testing.T) {
 	}
 
 }
+
+// small test for off-by-one errors
+func TestParseCommentSyntax(t *testing.T) {
+	require.Panics(t, func() { parseCommentSyntax("# ") })
+	pre, post := parseCommentSyntax("# <content>")
+	require.Equal(t, pre, "# ")
+	require.Equal(t, post, "")
+	pre, post = parseCommentSyntax("(* <content> *)")
+	require.Equal(t, pre, "(* ")
+	require.Equal(t, post, " *)")
+}

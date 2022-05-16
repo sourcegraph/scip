@@ -5,8 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"google.golang.org/protobuf/proto"
-
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 
@@ -14,20 +12,12 @@ import (
 )
 
 func convertMain(parsedArgs map[string]interface{}) error {
-	var scipReader io.Reader
 	fromPath := parsedArgs["from"].(string)
-	if fromPath == "-" {
-		scipReader = os.Stdin
-	} else if !strings.HasSuffix(fromPath, ".scip") && !strings.HasSuffix(fromPath, ".lsif-typed") {
-		return errors.Newf("expected file with .scip extension but found %s", fromPath)
-	} else {
-		scipFile, err := os.Open(fromPath)
-		defer scipFile.Close()
-		if err != nil {
-			return err
-		}
-		scipReader = scipFile
+	scipReader, err := makeSCIPReader(fromPath)
+	if err != nil {
+		return err
 	}
+	defer scipReader.Close()
 
 	var lsifWriter io.Writer
 	toPath := parsedArgs["to"].(string)
@@ -44,18 +34,12 @@ func convertMain(parsedArgs map[string]interface{}) error {
 		lsifWriter = lsifFile
 	}
 
-	scipBytes, err := io.ReadAll(scipReader)
+	scipIndex, err := readAndParseSCIP(scipReader, fromPath)
 	if err != nil {
-		return errors.Wrapf(err, "failed to read SCIP index at path %s", fromPath)
+		return err
 	}
 
-	scipIndex := scip.Index{}
-	err = proto.Unmarshal(scipBytes, &scipIndex)
-	if err != nil {
-		return errors.Wrapf(err, "failed to parse SCIP index at path %s", fromPath)
-	}
-
-	lsifIndex, err := scip.ConvertSCIPToLSIF(&scipIndex)
+	lsifIndex, err := scip.ConvertSCIPToLSIF(scipIndex)
 	if err != nil {
 		return errors.Wrap(err, "failed to convert SCIP index to LSIF index")
 	}
