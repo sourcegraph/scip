@@ -3,54 +3,51 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
 
-	"google.golang.org/protobuf/proto"
-
-	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
-	"github.com/sourcegraph/sourcegraph/lib/errors"
-
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/docopt/docopt-go"
 )
 
-func printHelpAndExit() {
-	fmt.Println(
-		`usage: scip [FILE]
+const helpText string = `Semantic Code Intelligence Protocol CLI.
 
-FILE path to a single file that contains a Protobuf-encoded SCIP payload.`,
-	)
-	os.Exit(0)
+Usage:
+  scip convert [--from=<path>] [--to=<path>]
+  scip --version
+  scip -h | --help
+
+Options:
+  --from=<path>  Input file for conversion [default: index.scip].
+  --to=<path>    Output file for conversion [default: dump.lsif].
+  --version      Show version.
+  -h --help      Show help text.
+
+A single dash path ('-') for --from (--to) is interpreted as stdin (stdout).
+
+The 'convert' subcommand currently only supports conversion from SCIP to LSIF.
+
+For more details, see the project README: https://github.com/sourcegraph/scip
+`
+
+func bailIfError(err error) {
+	if err != nil {
+		os.Stderr.WriteString(err.Error())
+		os.Exit(1)
+	}
 }
 
 func main() {
-	if len(os.Args) == 1 {
-		printHelpAndExit()
+	parsedArgs, err := docopt.ParseDoc(helpText)
+	bailIfError(err)
+	// --help is handled by docopt
+	if parsedArgs["--version"].(bool) {
+		fmt.Println("0.1.0")
+		os.Exit(0)
 	}
-	switch os.Args[1] {
-	case "help", "-help", "--help":
-		printHelpAndExit()
-	default:
-		file := os.Args[1]
-		if strings.HasSuffix(file, ".scip") || strings.HasSuffix(file, ".lsif-typed") {
-			data, err := os.ReadFile(file)
-			if err != nil {
-				panic(err)
-			}
-			index := scip.Index{}
-			err = proto.Unmarshal(data, &index)
-			if err != nil {
-				panic(errors.Wrapf(err, "failed to parse protobuf file '%s'", file))
-			}
-			els, err := scip.ConvertSCIPToLSIF(&index)
-			if err != nil {
-				panic(errors.Wrapf(err, "failed reader.ConvertSCIPIndexToLSIFIndex"))
-			}
-			err = reader.WriteNDJSON(reader.ElementsToJsonElements(els), os.Stdout)
-			if err != nil {
-				panic(err)
-			}
-		} else {
-			panic(fmt.Sprintf("unexpected file format (must have extension .scip): %s\n", file))
-		}
+	if parsedArgs["convert"].(bool) {
+		bailIfError(convertMain(parsedArgs))
+		os.Exit(0)
 	}
+	// Normally, this should be impossible as docopt should properly handle
+	// incorrect arguments, but might as well exit nicely. 🤷🏽
+	os.Stderr.WriteString(helpText)
+	os.Exit(1)
 }

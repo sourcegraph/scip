@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/bufbuild/buf v1.4.0
+	github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815
 	github.com/google/go-cmp v0.5.7
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/pseudomuto/protoc-gen-doc v1.5.1

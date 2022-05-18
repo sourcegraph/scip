@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	docopt "github.com/docopt/docopt-go"
 	"github.com/stretchr/testify/require"
 
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
@@ -14,6 +15,34 @@ import (
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
 	"github.com/sourcegraph/scip/cmd/tests/reprolang/bindings/go/repro"
 )
+
+func TestArgumentParsing(t *testing.T) {
+	type argMap = map[string]any
+	testCases := []struct {
+		argv []string
+		keys argMap
+	}{
+		{[]string{"-h"}, argMap{"--help": true}},
+		{[]string{"--help"}, argMap{"--help": true}},
+		{[]string{"convert"}, argMap{"--from": "index.scip", "--to": "dump.lsif"}},
+		{[]string{"convert", "--from", "tmp.scip"}, argMap{"--from": "tmp.scip"}},
+		{[]string{"convert", "--from=tmp.scip"}, argMap{"--from": "tmp.scip"}},
+		{[]string{"convert", "--to=tmp.lsif"}, argMap{"--to": "tmp.lsif"}},
+		{[]string{"convert", "--from=tmp.scip", "--to=tmp.lsif"}, argMap{"--from": "tmp.scip", "--to": "tmp.lsif"}},
+		{[]string{"convert", "--to=tmp.lsif", "--from=tmp.scip"}, argMap{"--from": "tmp.scip", "--to": "tmp.lsif"}},
+	}
+	parser := docopt.Parser{SkipHelpFlags: true}
+	for _, testCase := range testCases {
+		parsedArgs, err := parser.ParseArgs(helpText, testCase.argv, "")
+		if testCase.keys == nil {
+			require.Error(t, err)
+			continue
+		}
+		for k, v := range testCase.keys {
+			require.Equal(t, v, parsedArgs[k])
+		}
+	}
+}
 
 // TestSCIPSnapshots runs all the snapshot tests.
 func TestSCIPSnapshots(t *testing.T) {
