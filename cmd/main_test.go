@@ -33,7 +33,7 @@ func TestArgumentParsing(t *testing.T) {
 	}
 	parser := docopt.Parser{SkipHelpFlags: true}
 	for _, testCase := range testCases {
-		parsedArgs, err := parser.ParseArgs(helpText, testCase.argv, "")
+		parsedArgs, err := parser.ParseArgs(helpText(), testCase.argv, "")
 		if testCase.keys == nil {
 			require.Error(t, err)
 			continue
