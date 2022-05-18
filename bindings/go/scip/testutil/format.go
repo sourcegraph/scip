@@ -152,8 +152,10 @@ func isSCIPRangeLess(a []int32, b []int32) bool {
 		return len(a) < len(b)
 	}
 	if a[2] != b[2] { // end line
-		return a[2] < b[1]
+		return a[2] < b[2]
 	}
-	// end character
-	return a[3] < b[2]
+	if len(a) == 4 {
+		return a[3] < b[3]
+	}
+	return false
 }
