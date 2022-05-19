@@ -16,6 +16,7 @@ instead of being present at the root because:
 ```
 Usage:
   scip convert [--from=<path>] [--to=<path>]
+  scip stats [--from=<path>]
   scip --version
   scip -h | --help
 

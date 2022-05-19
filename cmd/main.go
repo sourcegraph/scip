@@ -44,6 +44,10 @@ func main() {
 		bailIfError(convertMain(parsedArgs))
 		os.Exit(0)
 	}
+	if parsedArgs["stats"].(bool) {
+		bailIfError(statsMain(parsedArgs))
+		os.Exit(0)
+	}
 	// Normally, this should be impossible as docopt should properly handle
 	// incorrect arguments, but might as well exit nicely. 🤷🏽
 	os.Stderr.WriteString(helpText())
