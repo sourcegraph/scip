@@ -17,14 +17,16 @@ instead of being present at the root because:
 Usage:
   scip convert [--from=<path>] [--to=<path>]
   scip stats [--from=<path>]
+  scip snapshot [--from=<path>] [--output=<path>]
   scip --version
   scip -h | --help
 
 Options:
-  --from=<path>  Input file for conversion [default: index.scip].
-  --to=<path>    Output file for conversion [default: dump.lsif].
-  --version      Show version.
-  -h --help      Show help text.
+  --from=<path>   Input file for conversion [default: index.scip].
+  --to=<path>     Output file for conversion [default: dump.lsif].
+  --output=<path> Output directory [default: scip-snapshot].
+  --version       Show version.
+  -h --help       Show help text.
 
 A single dash path ('-') for --from (--to) is interpreted as stdin (stdout).
 
