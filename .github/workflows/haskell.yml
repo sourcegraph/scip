@@ -45,8 +45,8 @@ jobs:
       - name: Build proto-lens-protoc wrapper
         run: cabal install proto-lens-protoc
         working-directory: bindings/haskell
-      - name: Generlate Haskell
-        run: protoc --plugin=protoc-gen-haskell="$HOME/.cabal/bin/proto-lens-protoc" --haskell_out=src --proto_path=proto scip.proto
+      - name: Generate Haskell
+        run: protoc --plugin=protoc-gen-haskell="$HOME/.cabal/bin/proto-lens-protoc" --haskell_out=src --proto_path=../.. scip.proto
         working-directory: bindings/haskell
       - name: Build source
         run: cabal build
