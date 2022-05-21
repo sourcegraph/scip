@@ -1,0 +1,21 @@
+cabal-version:      3.6
+
+name:               if-proto-scip-hs
+version:            0.1.0.0
+synopsis:           Haskell client for SCIP indexers
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Don Stewart
+maintainer:         dons00@gmail.com
+homepage:           https://github.com/donsbot/if-proto-scip-hs
+category:           Language
+build-type:         Simple
+
+library
+    ghc-options: -Wall
+    exposed-modules:
+        Proto.Scip,
+        Proto.Scip_Fields
+    hs-source-dirs:   src
+    default-language: Haskell2010
+    build-depends: proto-lens-runtime, base
