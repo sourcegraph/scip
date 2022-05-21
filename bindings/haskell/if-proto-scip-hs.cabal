@@ -2,12 +2,12 @@ cabal-version:      3.6
 
 name:               if-proto-scip-hs
 version:            0.1.0.0
-synopsis:           Haskell client for SCIP indexers
-license:            BSD-3-Clause
+synopsis:           Haskell bindings for SCIP Code Intelligence Protocol
+license:            Apache-2.0
 license-file:       LICENSE
-author:             Don Stewart
-maintainer:         dons00@gmail.com
-homepage:           https://github.com/donsbot/if-proto-scip-hs
+author:             SCIP Maintainers
+maintainer:         code-intel@sourcegraph.com
+homepage:           https://github.com/sourcegraph/scip
 category:           Language
 build-type:         Simple
 
