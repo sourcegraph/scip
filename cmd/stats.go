@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"os"
 	"path/filepath"
 
 	"github.com/hhatto/gocloc"
@@ -54,7 +55,7 @@ func countStatistics(index *scip.Index) (*indexStatistics, error) {
 	for _, document := range index.Documents {
 		for _, occurrence := range document.Occurrences {
 			stats.Occurrences += 1
-			if occurrence.SymbolRoles&int32(scip.SymbolRole_Definition) > 0 {
+			if scip.SymbolRole_Definition.Matches(occurrence) {
 				stats.Definitions += 1
 			}
 		}
@@ -66,6 +67,13 @@ func countLinesOfCode(index *scip.Index) (*gocloc.Result, error) {
 	root, err := url.Parse(index.Metadata.ProjectRoot)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to parse Index.Metadata.ProjectRoot as a URI %s", index.Metadata.ProjectRoot)
+	}
+	stat, err := os.Stat(root.Path)
+	if err != nil {
+		return nil, err
+	}
+	if !stat.IsDir() {
+		return nil, errors.Errorf("index.Metadata.ProjectRoot is not a directory: %s", root.Path)
 	}
 	processor := gocloc.NewProcessor(gocloc.NewDefinedLanguages(), gocloc.NewClocOptions())
 	var paths []string
