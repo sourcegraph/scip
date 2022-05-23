@@ -1,7 +1,10 @@
 name: Haskell
 on:
-  push:
   pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '**.hs'
+      - '**.cabal'
 
 jobs:
   ci:
@@ -11,7 +14,7 @@ jobs:
         ghc: [8.10.7]
     runs-on: ubuntu-latest
     container:
-      # ubuntu with ghcup already installed
+      # Ubuntu with ghcup already installed
       image: ghcr.io/facebookincubator/hsthrift/ci-base:ghcup
       options: --cpus 2 --security-opt=seccomp=unconfined
     steps:
@@ -21,16 +24,12 @@ jobs:
         run: |
           apt-get update
           apt install -y unzip
-        working-directory: bindings/haskell
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set
-        working-directory: bindings/haskell
       - name: Install cabal-install 3.6
-        run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-x86_64-linux.tar.xz 3.6.0.0 --set
-        working-directory: bindings/haskell
+        run: ghcup install cabal 3.6.0.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
-        working-directory: bindings/haskell
       - name: Install protoc
         run: |
           PROTOC_ZIP=protoc-3.14.0-linux-x86_64.zip
@@ -38,7 +37,6 @@ jobs:
           unzip -o "$PROTOC_ZIP" -d /usr/local bin/protoc
           unzip -o "$PROTOC_ZIP" -d /usr/local 'include/*'
           rm -f $PROTOC_ZIP
-        working-directory: bindings/haskell
       - name: Populate hackage index
         run: cabal update
         working-directory: bindings/haskell
