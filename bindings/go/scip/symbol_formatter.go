@@ -13,13 +13,22 @@ type SymbolFormatter struct {
 	IncludeDescriptor     func(descriptor string) bool
 }
 
+// VerboseSymbolFormatter formats all parts of the symbol.
+var VerboseSymbolFormatter = SymbolFormatter{
+	IncludeScheme:         func(_ string) bool { return true },
+	IncludePackageManager: func(_ string) bool { return true },
+	IncludePackageName:    func(_ string) bool { return true },
+	IncludePackageVersion: func(_ string) bool { return true },
+	IncludeDescriptor:     func(_ string) bool { return true },
+}
+
 // DescriptorOnlyFormatter formats only the descriptor part of the symbol.
 var DescriptorOnlyFormatter = SymbolFormatter{
 	IncludeScheme:         func(scheme string) bool { return scheme == "local" },
-	IncludePackageManager: func(_unused string) bool { return false },
-	IncludePackageName:    func(_unused string) bool { return false },
-	IncludePackageVersion: func(_unused string) bool { return false },
-	IncludeDescriptor:     func(_unused string) bool { return true },
+	IncludePackageManager: func(_ string) bool { return false },
+	IncludePackageName:    func(_ string) bool { return false },
+	IncludePackageVersion: func(_ string) bool { return false },
+	IncludeDescriptor:     func(_ string) bool { return true },
 }
 
 func (f *SymbolFormatter) Format(symbol string) (string, error) {
