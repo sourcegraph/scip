@@ -1,4 +1,4 @@
-[![CI](https://github.com/donsbot/if-proto-scip-hs/actions/workflows/ci.yml/badge.svg)](https://github.com/donsbot/if-proto-scip-hs/actions/workflows/ci.yml)
+[![CI](https://github.com/sourcegraph/scip/actions/workflows/haskell.yml/badge.svg)](https://github.com/sourcegraph/scip/actions/workflows/haskell.yml/badge.svg)
 
 # Haskell bindings for SCIP
 
@@ -7,7 +7,7 @@ These bindings use Google's proto-lens generator for Haskell. More details at:
 https://github.com/google/proto-lens#readme
 
 Building: see the following workflow file for most up to date:
-https://github.com/donsbot/if-proto-scip-hs/blob/main/.github/workflows/ci.yml
+https://github.com/sourcegraph/scip/blob/main/.github/workflows/haskell.yml
 
 First, get a working GHC environment:
 
