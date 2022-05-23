@@ -2,9 +2,7 @@
 
 # Haskell bindings for SCIP
 
-These bindings use Google's proto-lens generator for Haskell. More details at:
-
-https://github.com/google/proto-lens#readme
+These bindings use [Google's proto-lens generator for Haskell](https://github.com/google/proto-lens).
 
 Building: see the following workflow file for most up to date:
 https://github.com/sourcegraph/scip/blob/main/.github/workflows/haskell.yml
