@@ -1,0 +1,23 @@
+cabal-version:      3.6
+
+name:               scip
+version:            0.1.0.0
+synopsis:           Haskell bindings for SCIP Code Intelligence Protocol
+license:            Apache-2.0
+license-file:       LICENSE
+author:             SCIP Maintainers
+maintainer:         code-intel@sourcegraph.com
+homepage:           https://github.com/sourcegraph/scip
+category:           Language
+build-type:         Simple
+
+library
+    ghc-options: -Wall
+    exposed-modules:
+        Proto.Scip,
+        Proto.Scip_Fields
+    hs-source-dirs:   src
+    default-language: Haskell2010
+    build-depends:
+        proto-lens-runtime ^>= 0.7.0.0,
+        base ^>= 4.14.0.0
