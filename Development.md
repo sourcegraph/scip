@@ -4,7 +4,7 @@
 
 - [bindings/](./bindings/): Contains a mix of generated and hand-written
   bindings for different languages.
-  - The TypeScript and Rust bindings are auto-generated.
+  - The TypeScript, Rust and Haskell bindings are auto-generated.
   - The Go bindings include protoc-generated code as well as extra
     functionality, such as for converting a SCIP index into an LSIF index.
     This is used by the CLI below as well as the
@@ -24,6 +24,7 @@
    ```
    ./dev/proto-generate.sh
    ```
+   For the Haskell bindings, see `bindings/haskell/README.md`.
 2. Regenerating snapshots after making changes to the CLI.
    ```
    go test ./cmd -update-snapshots
