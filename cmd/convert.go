@@ -12,13 +12,13 @@ import (
 )
 
 func convertMain(parsedArgs map[string]interface{}) error {
-	scipIndex, err := readFromOption(parsedArgs["from"].(string))
+	scipIndex, err := readFromOption(parsedArgs["--from"].(string))
 	if err != nil {
 		return err
 	}
 
 	var lsifWriter io.Writer
-	toPath := parsedArgs["to"].(string)
+	toPath := parsedArgs["--to"].(string)
 	if toPath == "-" {
 		lsifWriter = os.Stdout
 	} else if !strings.HasSuffix(toPath, ".lsif") {
