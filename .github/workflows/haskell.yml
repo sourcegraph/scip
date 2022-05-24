@@ -10,41 +10,32 @@ jobs:
   ci:
     strategy:
       fail-fast: false
-      matrix:
-        ghc: [8.10.7]
     runs-on: ubuntu-latest
-    container:
-      # Ubuntu with ghcup already installed
-      image: ghcr.io/facebookincubator/hsthrift/ci-base:ghcup
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up Haskell
+        uses: haskell/actions/setup@v2
+        with:
+          ghc-version: '8.10'
+          cabal-version: 'latest'
       - name: Install additional tools
         run: |
-          apt-get update
-          apt install -y unzip
-      - name: Install GHC ${{ matrix.ghc }}
-        run: ghcup install ghc ${{ matrix.ghc }} --set
-      - name: Install cabal-install 3.6
-        run: ghcup install cabal 3.6.0.0 --set
-      - name: Add GHC and cabal to PATH
-        run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+          sudo apt-get update
+          sudo apt install -y unzip curl
       - name: Install protoc
         run: |
           PROTOC_ZIP=protoc-3.14.0-linux-x86_64.zip
           curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/"$PROTOC_ZIP"
-          unzip -o "$PROTOC_ZIP" -d /usr/local bin/protoc
-          unzip -o "$PROTOC_ZIP" -d /usr/local 'include/*'
-          rm -f $PROTOC_ZIP
-      - name: Populate hackage index
-        run: cabal update
-        working-directory: bindings/haskell
+          unzip -o "$PROTOC_ZIP" -d "$HOME/.protoc" bin/protoc
+          unzip -o "$PROTOC_ZIP" -d "$HOME/.protoc" 'include/*'
+          echo "$HOME/.protoc/bin" >> "$GITHUB_PATH"
       - name: Build proto-lens-protoc wrapper
-        run: cabal install proto-lens-protoc
+        run: cabal install proto-lens-protoc --ghc-options='-j2 +RTS -A32m'
         working-directory: bindings/haskell
       - name: Generate Haskell
         run: protoc --plugin=protoc-gen-haskell="$HOME/.cabal/bin/proto-lens-protoc" --haskell_out=src --proto_path=../.. scip.proto
         working-directory: bindings/haskell
       - name: Build source
-        run: cabal build
+        run: cabal build --ghc-options='-j2 +RTS -A32m'
         working-directory: bindings/haskell
