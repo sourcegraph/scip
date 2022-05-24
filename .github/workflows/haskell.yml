@@ -7,7 +7,7 @@ on:
       - '**.cabal'
 
 jobs:
-  ci:
+  haskell-typecheck:
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
