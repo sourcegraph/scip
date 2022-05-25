@@ -7,4 +7,9 @@
 #           documentation signature of dog#
 #           relationship animal.repro/animal# implementation
 #                           ^^^^^^^ reference animal.repro/animal#
+ definition cat# implements animal#
+#           ^^^^ definition animal.repro/cat#
+#           documentation signature of cat#
+#           relationship animal.repro/animal# implementation
+#                           ^^^^^^^ reference animal.repro/animal#
  

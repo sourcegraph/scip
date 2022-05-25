@@ -92,7 +92,7 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 type graph struct {
 	ID                   int
 	Elements             []reader.Element
-	symbolToResultSet    map[string]symbolInformationIDs
+	symbolToResultSet    map[string]*symbolInformationIDs
 	inverseRelationships map[string][]*Relationship
 	packageToGraphID     map[string]int
 }
@@ -110,7 +110,7 @@ func newGraph() graph {
 	return graph{
 		ID:                   0,
 		Elements:             []reader.Element{},
-		symbolToResultSet:    map[string]symbolInformationIDs{},
+		symbolToResultSet:    map[string]*symbolInformationIDs{},
 		packageToGraphID:     map[string]int{},
 		inverseRelationships: map[string][]*Relationship{},
 	}
@@ -134,7 +134,7 @@ func (g *graph) emitPackage(pkg *Package) int {
 
 // emitResultSet emits the associated resultSet, definitionResult, referenceResult, implementationResult and hoverResult
 // for the provided scip.SymbolInformation.
-func (g *graph) emitResultSet(info *SymbolInformation, monikerKind string) symbolInformationIDs {
+func (g *graph) emitResultSet(info *SymbolInformation, monikerKind string) *symbolInformationIDs {
 	if ids, ok := g.symbolToResultSet[info.Symbol]; ok {
 		return ids
 	}
@@ -146,7 +146,7 @@ func (g *graph) emitResultSet(info *SymbolInformation, monikerKind string) symbo
 	if hasDefinition {
 		definitionResult = g.emitVertex("definitionResult", nil)
 	}
-	ids := symbolInformationIDs{
+	ids := &symbolInformationIDs{
 		ResultSet:            g.emitVertex("resultSet", reader.ResultSet{}),
 		DefinitionResult:     definitionResult,
 		ReferenceResult:      g.emitVertex("referenceResult", nil),
@@ -171,7 +171,7 @@ func (g *graph) emitDocument(index *Index, doc *Document) {
 	documentID := g.emitVertex("document", uri)
 
 	documentSymbolTable := map[string]*SymbolInformation{}
-	localSymbolInformationTable := map[string]symbolInformationIDs{}
+	localSymbolInformationTable := map[string]*symbolInformationIDs{}
 	for _, info := range doc.Symbols {
 		documentSymbolTable[info.Symbol] = info
 
@@ -220,7 +220,7 @@ func (g *graph) emitDocument(index *Index, doc *Document) {
 }
 
 // emitRelationships emits "referenceResults" and "implementationResult" based on the value of scip.SymbolInformation.Relationships
-func (g *graph) emitRelationships(rangeID, documentID int, resultIDs symbolInformationIDs, localResultIDs map[string]symbolInformationIDs, info *SymbolInformation) {
+func (g *graph) emitRelationships(rangeID, documentID int, resultIDs *symbolInformationIDs, localResultIDs map[string]*symbolInformationIDs, info *SymbolInformation) {
 	var allReferenceResultIds []int
 	relationships := g.inverseRelationships[info.Symbol]
 	for _, relationship := range relationships {
@@ -240,7 +240,7 @@ func (g *graph) emitRelationships(rangeID, documentID int, resultIDs symbolInfor
 	}
 }
 
-func (g *graph) emitRelationship(relationship *Relationship, rangeID, documentID int, localResultIDs map[string]symbolInformationIDs) []int {
+func (g *graph) emitRelationship(relationship *Relationship, rangeID, documentID int, localResultIDs map[string]*symbolInformationIDs) []int {
 	relationshipIDs := g.getOrInsertSymbolInformationIDs(relationship.Symbol, localResultIDs)
 
 	if relationship.IsImplementation {
@@ -373,7 +373,7 @@ func interpretSCIPRange(scipRange []int32) (startLine, startCharacter, endLine, 
 	return 0, 0, 0, 0, errors.Newf("invalid SCIP range %v", scipRange)
 }
 
-func (g *graph) getOrInsertSymbolInformationIDs(symbol string, localResultSetTable map[string]symbolInformationIDs) symbolInformationIDs {
+func (g *graph) getOrInsertSymbolInformationIDs(symbol string, localResultSetTable map[string]*symbolInformationIDs) *symbolInformationIDs {
 	resultSetTable := g.symbolToResultSet
 	if IsLocalSymbol(symbol) {
 		resultSetTable = localResultSetTable
