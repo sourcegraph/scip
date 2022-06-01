@@ -1377,229 +1377,382 @@ newtype Language'UnrecognizedValue
   deriving stock (Prelude.Eq, Prelude.Ord, Prelude.Show)
 data Language
   = UnspecifiedLanguage |
-    Java |
-    Scala |
+    CSharp |
+    Swift |
+    Dart |
     Kotlin |
-    Go |
-    TypeScript |
-    JavaScript |
+    Scala |
+    Java |
+    Groovy |
+    Clojure |
+    CommonLisp |
+    Scheme |
+    Racket |
+    Lua |
+    Perl |
+    Raku |
     Python |
     Ruby |
-    C_Sharp |
-    C_PlusPlus |
-    Objective_C |
-    Swift |
+    Elixir |
+    Erlang |
     PHP |
-    CSS |
-    C |
-    R |
-    Shell |
-    PowerShell |
-    Rust |
-    Dart |
-    Matlab |
-    VBA |
-    Ada |
-    Idris |
-    Visual_Basic |
-    Abap |
-    Lua |
-    Groovy |
-    Perl |
-    Julia |
-    Cobol |
-    Haskell |
-    Delphi |
-    Assembly |
-    SQL |
-    Prolog |
-    SAS |
-    Scratch |
-    Fortran |
-    Lisp |
-    PL_SQL |
-    YAML |
-    JSON |
-    TOML |
-    Jsonnet |
-    Awk |
     Hack |
-    Racket |
+    Coffeescript |
+    JavaScript |
+    TypeScript |
     Flow |
     Vue |
-    Elixir |
+    CSS |
+    Less |
+    Sass |
+    SCSS |
+    HTML |
+    XML |
+    XSL |
+    Go |
+    C |
+    CPlusPlus |
+    ObjectiveC |
+    ObjectiveCPlusPlus |
+    Zig |
+    Ada |
+    Rust |
+    OCaml |
+    FSharp |
+    SML |
+    Haskell |
+    Agda |
+    Idris |
+    Coq |
+    Lean |
+    APL |
+    Dyalog |
+    J |
+    Matlab |
+    Wolfram |
+    R |
+    Julia |
+    Fortran |
+    Delphi |
+    Assembly |
+    COBOL |
+    ABAP |
+    SAS |
+    Razor |
+    VisualBasic |
+    Shell |
+    Fish |
+    Awk |
+    PowerShell |
+    WindowsBat |
+    SQL |
+    PLSQL |
+    Prolog |
+    Ini |
+    TOML |
+    YAML |
+    JSON |
+    Jsonnet |
+    Nix |
+    Bazel |
+    Makefile |
+    Dockerfile |
+    BibTeX |
+    TeX |
+    LaTeX |
+    Markdown |
+    ReST |
+    AsciiDoc |
+    Diff |
+    GitConfig |
+    Handlebars |
     Language'Unrecognized !Language'UnrecognizedValue
   deriving stock (Prelude.Show, Prelude.Eq, Prelude.Ord)
 instance Data.ProtoLens.MessageEnum Language where
   maybeToEnum 0 = Prelude.Just UnspecifiedLanguage
-  maybeToEnum 1 = Prelude.Just Java
-  maybeToEnum 2 = Prelude.Just Scala
-  maybeToEnum 3 = Prelude.Just Kotlin
-  maybeToEnum 4 = Prelude.Just Go
-  maybeToEnum 5 = Prelude.Just TypeScript
-  maybeToEnum 6 = Prelude.Just JavaScript
-  maybeToEnum 7 = Prelude.Just Python
-  maybeToEnum 8 = Prelude.Just Ruby
-  maybeToEnum 9 = Prelude.Just C_Sharp
-  maybeToEnum 10 = Prelude.Just C_PlusPlus
-  maybeToEnum 11 = Prelude.Just Objective_C
-  maybeToEnum 12 = Prelude.Just Swift
-  maybeToEnum 13 = Prelude.Just PHP
-  maybeToEnum 14 = Prelude.Just CSS
-  maybeToEnum 15 = Prelude.Just C
-  maybeToEnum 16 = Prelude.Just R
-  maybeToEnum 17 = Prelude.Just Shell
-  maybeToEnum 18 = Prelude.Just PowerShell
-  maybeToEnum 19 = Prelude.Just Rust
-  maybeToEnum 20 = Prelude.Just Dart
-  maybeToEnum 21 = Prelude.Just Matlab
-  maybeToEnum 22 = Prelude.Just VBA
-  maybeToEnum 23 = Prelude.Just Ada
-  maybeToEnum 24 = Prelude.Just Idris
-  maybeToEnum 25 = Prelude.Just Visual_Basic
-  maybeToEnum 26 = Prelude.Just Abap
-  maybeToEnum 27 = Prelude.Just Lua
-  maybeToEnum 28 = Prelude.Just Groovy
-  maybeToEnum 29 = Prelude.Just Perl
-  maybeToEnum 30 = Prelude.Just Julia
-  maybeToEnum 31 = Prelude.Just Cobol
-  maybeToEnum 32 = Prelude.Just Haskell
-  maybeToEnum 33 = Prelude.Just Delphi
-  maybeToEnum 34 = Prelude.Just Assembly
-  maybeToEnum 35 = Prelude.Just SQL
-  maybeToEnum 36 = Prelude.Just Prolog
-  maybeToEnum 37 = Prelude.Just SAS
-  maybeToEnum 38 = Prelude.Just Scratch
-  maybeToEnum 39 = Prelude.Just Fortran
-  maybeToEnum 40 = Prelude.Just Lisp
-  maybeToEnum 41 = Prelude.Just PL_SQL
-  maybeToEnum 42 = Prelude.Just YAML
-  maybeToEnum 43 = Prelude.Just JSON
-  maybeToEnum 44 = Prelude.Just TOML
-  maybeToEnum 45 = Prelude.Just Jsonnet
-  maybeToEnum 46 = Prelude.Just Awk
-  maybeToEnum 47 = Prelude.Just Hack
-  maybeToEnum 48 = Prelude.Just Racket
-  maybeToEnum 49 = Prelude.Just Flow
-  maybeToEnum 50 = Prelude.Just Vue
-  maybeToEnum 51 = Prelude.Just Elixir
+  maybeToEnum 1 = Prelude.Just CSharp
+  maybeToEnum 2 = Prelude.Just Swift
+  maybeToEnum 3 = Prelude.Just Dart
+  maybeToEnum 4 = Prelude.Just Kotlin
+  maybeToEnum 5 = Prelude.Just Scala
+  maybeToEnum 6 = Prelude.Just Java
+  maybeToEnum 7 = Prelude.Just Groovy
+  maybeToEnum 8 = Prelude.Just Clojure
+  maybeToEnum 9 = Prelude.Just CommonLisp
+  maybeToEnum 10 = Prelude.Just Scheme
+  maybeToEnum 11 = Prelude.Just Racket
+  maybeToEnum 12 = Prelude.Just Lua
+  maybeToEnum 13 = Prelude.Just Perl
+  maybeToEnum 14 = Prelude.Just Raku
+  maybeToEnum 15 = Prelude.Just Python
+  maybeToEnum 16 = Prelude.Just Ruby
+  maybeToEnum 17 = Prelude.Just Elixir
+  maybeToEnum 18 = Prelude.Just Erlang
+  maybeToEnum 19 = Prelude.Just PHP
+  maybeToEnum 20 = Prelude.Just Hack
+  maybeToEnum 21 = Prelude.Just Coffeescript
+  maybeToEnum 22 = Prelude.Just JavaScript
+  maybeToEnum 23 = Prelude.Just TypeScript
+  maybeToEnum 24 = Prelude.Just Flow
+  maybeToEnum 25 = Prelude.Just Vue
+  maybeToEnum 26 = Prelude.Just CSS
+  maybeToEnum 27 = Prelude.Just Less
+  maybeToEnum 28 = Prelude.Just Sass
+  maybeToEnum 29 = Prelude.Just SCSS
+  maybeToEnum 30 = Prelude.Just HTML
+  maybeToEnum 31 = Prelude.Just XML
+  maybeToEnum 32 = Prelude.Just XSL
+  maybeToEnum 33 = Prelude.Just Go
+  maybeToEnum 34 = Prelude.Just C
+  maybeToEnum 35 = Prelude.Just CPlusPlus
+  maybeToEnum 36 = Prelude.Just ObjectiveC
+  maybeToEnum 37 = Prelude.Just ObjectiveCPlusPlus
+  maybeToEnum 38 = Prelude.Just Zig
+  maybeToEnum 39 = Prelude.Just Ada
+  maybeToEnum 40 = Prelude.Just Rust
+  maybeToEnum 41 = Prelude.Just OCaml
+  maybeToEnum 42 = Prelude.Just FSharp
+  maybeToEnum 43 = Prelude.Just SML
+  maybeToEnum 44 = Prelude.Just Haskell
+  maybeToEnum 45 = Prelude.Just Agda
+  maybeToEnum 46 = Prelude.Just Idris
+  maybeToEnum 47 = Prelude.Just Coq
+  maybeToEnum 48 = Prelude.Just Lean
+  maybeToEnum 49 = Prelude.Just APL
+  maybeToEnum 50 = Prelude.Just Dyalog
+  maybeToEnum 51 = Prelude.Just J
+  maybeToEnum 52 = Prelude.Just Matlab
+  maybeToEnum 53 = Prelude.Just Wolfram
+  maybeToEnum 54 = Prelude.Just R
+  maybeToEnum 55 = Prelude.Just Julia
+  maybeToEnum 56 = Prelude.Just Fortran
+  maybeToEnum 57 = Prelude.Just Delphi
+  maybeToEnum 58 = Prelude.Just Assembly
+  maybeToEnum 59 = Prelude.Just COBOL
+  maybeToEnum 60 = Prelude.Just ABAP
+  maybeToEnum 61 = Prelude.Just SAS
+  maybeToEnum 62 = Prelude.Just Razor
+  maybeToEnum 63 = Prelude.Just VisualBasic
+  maybeToEnum 64 = Prelude.Just Shell
+  maybeToEnum 65 = Prelude.Just Fish
+  maybeToEnum 66 = Prelude.Just Awk
+  maybeToEnum 67 = Prelude.Just PowerShell
+  maybeToEnum 68 = Prelude.Just WindowsBat
+  maybeToEnum 69 = Prelude.Just SQL
+  maybeToEnum 70 = Prelude.Just PLSQL
+  maybeToEnum 71 = Prelude.Just Prolog
+  maybeToEnum 72 = Prelude.Just Ini
+  maybeToEnum 73 = Prelude.Just TOML
+  maybeToEnum 74 = Prelude.Just YAML
+  maybeToEnum 75 = Prelude.Just JSON
+  maybeToEnum 76 = Prelude.Just Jsonnet
+  maybeToEnum 77 = Prelude.Just Nix
+  maybeToEnum 78 = Prelude.Just Bazel
+  maybeToEnum 79 = Prelude.Just Makefile
+  maybeToEnum 80 = Prelude.Just Dockerfile
+  maybeToEnum 81 = Prelude.Just BibTeX
+  maybeToEnum 82 = Prelude.Just TeX
+  maybeToEnum 83 = Prelude.Just LaTeX
+  maybeToEnum 84 = Prelude.Just Markdown
+  maybeToEnum 85 = Prelude.Just ReST
+  maybeToEnum 86 = Prelude.Just AsciiDoc
+  maybeToEnum 88 = Prelude.Just Diff
+  maybeToEnum 89 = Prelude.Just GitConfig
+  maybeToEnum 90 = Prelude.Just Handlebars
   maybeToEnum k
     = Prelude.Just
         (Language'Unrecognized
            (Language'UnrecognizedValue (Prelude.fromIntegral k)))
   showEnum UnspecifiedLanguage = "UnspecifiedLanguage"
-  showEnum Java = "Java"
-  showEnum Scala = "Scala"
+  showEnum CSharp = "CSharp"
+  showEnum Swift = "Swift"
+  showEnum Dart = "Dart"
   showEnum Kotlin = "Kotlin"
-  showEnum Go = "Go"
-  showEnum TypeScript = "TypeScript"
-  showEnum JavaScript = "JavaScript"
+  showEnum Scala = "Scala"
+  showEnum Java = "Java"
+  showEnum Groovy = "Groovy"
+  showEnum Clojure = "Clojure"
+  showEnum CommonLisp = "CommonLisp"
+  showEnum Scheme = "Scheme"
+  showEnum Racket = "Racket"
+  showEnum Lua = "Lua"
+  showEnum Perl = "Perl"
+  showEnum Raku = "Raku"
   showEnum Python = "Python"
   showEnum Ruby = "Ruby"
-  showEnum C_Sharp = "C_Sharp"
-  showEnum C_PlusPlus = "C_PlusPlus"
-  showEnum Objective_C = "Objective_C"
-  showEnum Swift = "Swift"
+  showEnum Elixir = "Elixir"
+  showEnum Erlang = "Erlang"
   showEnum PHP = "PHP"
-  showEnum CSS = "CSS"
-  showEnum C = "C"
-  showEnum R = "R"
-  showEnum Shell = "Shell"
-  showEnum PowerShell = "PowerShell"
-  showEnum Rust = "Rust"
-  showEnum Dart = "Dart"
-  showEnum Matlab = "Matlab"
-  showEnum VBA = "VBA"
-  showEnum Ada = "Ada"
-  showEnum Idris = "Idris"
-  showEnum Visual_Basic = "Visual_Basic"
-  showEnum Abap = "Abap"
-  showEnum Lua = "Lua"
-  showEnum Groovy = "Groovy"
-  showEnum Perl = "Perl"
-  showEnum Julia = "Julia"
-  showEnum Cobol = "Cobol"
-  showEnum Haskell = "Haskell"
-  showEnum Delphi = "Delphi"
-  showEnum Assembly = "Assembly"
-  showEnum SQL = "SQL"
-  showEnum Prolog = "Prolog"
-  showEnum SAS = "SAS"
-  showEnum Scratch = "Scratch"
-  showEnum Fortran = "Fortran"
-  showEnum Lisp = "Lisp"
-  showEnum PL_SQL = "PL_SQL"
-  showEnum YAML = "YAML"
-  showEnum JSON = "JSON"
-  showEnum TOML = "TOML"
-  showEnum Jsonnet = "Jsonnet"
-  showEnum Awk = "Awk"
   showEnum Hack = "Hack"
-  showEnum Racket = "Racket"
+  showEnum Coffeescript = "Coffeescript"
+  showEnum JavaScript = "JavaScript"
+  showEnum TypeScript = "TypeScript"
   showEnum Flow = "Flow"
   showEnum Vue = "Vue"
-  showEnum Elixir = "Elixir"
+  showEnum CSS = "CSS"
+  showEnum Less = "Less"
+  showEnum Sass = "Sass"
+  showEnum SCSS = "SCSS"
+  showEnum HTML = "HTML"
+  showEnum XML = "XML"
+  showEnum XSL = "XSL"
+  showEnum Go = "Go"
+  showEnum C = "C"
+  showEnum CPlusPlus = "CPlusPlus"
+  showEnum ObjectiveC = "ObjectiveC"
+  showEnum ObjectiveCPlusPlus = "ObjectiveCPlusPlus"
+  showEnum Zig = "Zig"
+  showEnum Ada = "Ada"
+  showEnum Rust = "Rust"
+  showEnum OCaml = "OCaml"
+  showEnum FSharp = "FSharp"
+  showEnum SML = "SML"
+  showEnum Haskell = "Haskell"
+  showEnum Agda = "Agda"
+  showEnum Idris = "Idris"
+  showEnum Coq = "Coq"
+  showEnum Lean = "Lean"
+  showEnum APL = "APL"
+  showEnum Dyalog = "Dyalog"
+  showEnum J = "J"
+  showEnum Matlab = "Matlab"
+  showEnum Wolfram = "Wolfram"
+  showEnum R = "R"
+  showEnum Julia = "Julia"
+  showEnum Fortran = "Fortran"
+  showEnum Delphi = "Delphi"
+  showEnum Assembly = "Assembly"
+  showEnum COBOL = "COBOL"
+  showEnum ABAP = "ABAP"
+  showEnum SAS = "SAS"
+  showEnum Razor = "Razor"
+  showEnum VisualBasic = "VisualBasic"
+  showEnum Shell = "Shell"
+  showEnum Fish = "Fish"
+  showEnum Awk = "Awk"
+  showEnum PowerShell = "PowerShell"
+  showEnum WindowsBat = "WindowsBat"
+  showEnum SQL = "SQL"
+  showEnum PLSQL = "PLSQL"
+  showEnum Prolog = "Prolog"
+  showEnum Ini = "Ini"
+  showEnum TOML = "TOML"
+  showEnum YAML = "YAML"
+  showEnum JSON = "JSON"
+  showEnum Jsonnet = "Jsonnet"
+  showEnum Nix = "Nix"
+  showEnum Bazel = "Bazel"
+  showEnum Makefile = "Makefile"
+  showEnum Dockerfile = "Dockerfile"
+  showEnum BibTeX = "BibTeX"
+  showEnum TeX = "TeX"
+  showEnum LaTeX = "LaTeX"
+  showEnum Markdown = "Markdown"
+  showEnum ReST = "ReST"
+  showEnum AsciiDoc = "AsciiDoc"
+  showEnum Diff = "Diff"
+  showEnum GitConfig = "GitConfig"
+  showEnum Handlebars = "Handlebars"
   showEnum (Language'Unrecognized (Language'UnrecognizedValue k))
     = Prelude.show k
   readEnum k
     | (Prelude.==) k "UnspecifiedLanguage"
     = Prelude.Just UnspecifiedLanguage
-    | (Prelude.==) k "Java" = Prelude.Just Java
-    | (Prelude.==) k "Scala" = Prelude.Just Scala
+    | (Prelude.==) k "CSharp" = Prelude.Just CSharp
+    | (Prelude.==) k "Swift" = Prelude.Just Swift
+    | (Prelude.==) k "Dart" = Prelude.Just Dart
     | (Prelude.==) k "Kotlin" = Prelude.Just Kotlin
-    | (Prelude.==) k "Go" = Prelude.Just Go
-    | (Prelude.==) k "TypeScript" = Prelude.Just TypeScript
-    | (Prelude.==) k "JavaScript" = Prelude.Just JavaScript
+    | (Prelude.==) k "Scala" = Prelude.Just Scala
+    | (Prelude.==) k "Java" = Prelude.Just Java
+    | (Prelude.==) k "Groovy" = Prelude.Just Groovy
+    | (Prelude.==) k "Clojure" = Prelude.Just Clojure
+    | (Prelude.==) k "CommonLisp" = Prelude.Just CommonLisp
+    | (Prelude.==) k "Scheme" = Prelude.Just Scheme
+    | (Prelude.==) k "Racket" = Prelude.Just Racket
+    | (Prelude.==) k "Lua" = Prelude.Just Lua
+    | (Prelude.==) k "Perl" = Prelude.Just Perl
+    | (Prelude.==) k "Raku" = Prelude.Just Raku
     | (Prelude.==) k "Python" = Prelude.Just Python
     | (Prelude.==) k "Ruby" = Prelude.Just Ruby
-    | (Prelude.==) k "C_Sharp" = Prelude.Just C_Sharp
-    | (Prelude.==) k "C_PlusPlus" = Prelude.Just C_PlusPlus
-    | (Prelude.==) k "Objective_C" = Prelude.Just Objective_C
-    | (Prelude.==) k "Swift" = Prelude.Just Swift
+    | (Prelude.==) k "Elixir" = Prelude.Just Elixir
+    | (Prelude.==) k "Erlang" = Prelude.Just Erlang
     | (Prelude.==) k "PHP" = Prelude.Just PHP
-    | (Prelude.==) k "CSS" = Prelude.Just CSS
-    | (Prelude.==) k "C" = Prelude.Just C
-    | (Prelude.==) k "R" = Prelude.Just R
-    | (Prelude.==) k "Shell" = Prelude.Just Shell
-    | (Prelude.==) k "PowerShell" = Prelude.Just PowerShell
-    | (Prelude.==) k "Rust" = Prelude.Just Rust
-    | (Prelude.==) k "Dart" = Prelude.Just Dart
-    | (Prelude.==) k "Matlab" = Prelude.Just Matlab
-    | (Prelude.==) k "VBA" = Prelude.Just VBA
-    | (Prelude.==) k "Ada" = Prelude.Just Ada
-    | (Prelude.==) k "Idris" = Prelude.Just Idris
-    | (Prelude.==) k "Visual_Basic" = Prelude.Just Visual_Basic
-    | (Prelude.==) k "Abap" = Prelude.Just Abap
-    | (Prelude.==) k "Lua" = Prelude.Just Lua
-    | (Prelude.==) k "Groovy" = Prelude.Just Groovy
-    | (Prelude.==) k "Perl" = Prelude.Just Perl
-    | (Prelude.==) k "Julia" = Prelude.Just Julia
-    | (Prelude.==) k "Cobol" = Prelude.Just Cobol
-    | (Prelude.==) k "Haskell" = Prelude.Just Haskell
-    | (Prelude.==) k "Delphi" = Prelude.Just Delphi
-    | (Prelude.==) k "Assembly" = Prelude.Just Assembly
-    | (Prelude.==) k "SQL" = Prelude.Just SQL
-    | (Prelude.==) k "Prolog" = Prelude.Just Prolog
-    | (Prelude.==) k "SAS" = Prelude.Just SAS
-    | (Prelude.==) k "Scratch" = Prelude.Just Scratch
-    | (Prelude.==) k "Fortran" = Prelude.Just Fortran
-    | (Prelude.==) k "Lisp" = Prelude.Just Lisp
-    | (Prelude.==) k "PL_SQL" = Prelude.Just PL_SQL
-    | (Prelude.==) k "YAML" = Prelude.Just YAML
-    | (Prelude.==) k "JSON" = Prelude.Just JSON
-    | (Prelude.==) k "TOML" = Prelude.Just TOML
-    | (Prelude.==) k "Jsonnet" = Prelude.Just Jsonnet
-    | (Prelude.==) k "Awk" = Prelude.Just Awk
     | (Prelude.==) k "Hack" = Prelude.Just Hack
-    | (Prelude.==) k "Racket" = Prelude.Just Racket
+    | (Prelude.==) k "Coffeescript" = Prelude.Just Coffeescript
+    | (Prelude.==) k "JavaScript" = Prelude.Just JavaScript
+    | (Prelude.==) k "TypeScript" = Prelude.Just TypeScript
     | (Prelude.==) k "Flow" = Prelude.Just Flow
     | (Prelude.==) k "Vue" = Prelude.Just Vue
-    | (Prelude.==) k "Elixir" = Prelude.Just Elixir
+    | (Prelude.==) k "CSS" = Prelude.Just CSS
+    | (Prelude.==) k "Less" = Prelude.Just Less
+    | (Prelude.==) k "Sass" = Prelude.Just Sass
+    | (Prelude.==) k "SCSS" = Prelude.Just SCSS
+    | (Prelude.==) k "HTML" = Prelude.Just HTML
+    | (Prelude.==) k "XML" = Prelude.Just XML
+    | (Prelude.==) k "XSL" = Prelude.Just XSL
+    | (Prelude.==) k "Go" = Prelude.Just Go
+    | (Prelude.==) k "C" = Prelude.Just C
+    | (Prelude.==) k "CPlusPlus" = Prelude.Just CPlusPlus
+    | (Prelude.==) k "ObjectiveC" = Prelude.Just ObjectiveC
+    | (Prelude.==) k "ObjectiveCPlusPlus"
+    = Prelude.Just ObjectiveCPlusPlus
+    | (Prelude.==) k "Zig" = Prelude.Just Zig
+    | (Prelude.==) k "Ada" = Prelude.Just Ada
+    | (Prelude.==) k "Rust" = Prelude.Just Rust
+    | (Prelude.==) k "OCaml" = Prelude.Just OCaml
+    | (Prelude.==) k "FSharp" = Prelude.Just FSharp
+    | (Prelude.==) k "SML" = Prelude.Just SML
+    | (Prelude.==) k "Haskell" = Prelude.Just Haskell
+    | (Prelude.==) k "Agda" = Prelude.Just Agda
+    | (Prelude.==) k "Idris" = Prelude.Just Idris
+    | (Prelude.==) k "Coq" = Prelude.Just Coq
+    | (Prelude.==) k "Lean" = Prelude.Just Lean
+    | (Prelude.==) k "APL" = Prelude.Just APL
+    | (Prelude.==) k "Dyalog" = Prelude.Just Dyalog
+    | (Prelude.==) k "J" = Prelude.Just J
+    | (Prelude.==) k "Matlab" = Prelude.Just Matlab
+    | (Prelude.==) k "Wolfram" = Prelude.Just Wolfram
+    | (Prelude.==) k "R" = Prelude.Just R
+    | (Prelude.==) k "Julia" = Prelude.Just Julia
+    | (Prelude.==) k "Fortran" = Prelude.Just Fortran
+    | (Prelude.==) k "Delphi" = Prelude.Just Delphi
+    | (Prelude.==) k "Assembly" = Prelude.Just Assembly
+    | (Prelude.==) k "COBOL" = Prelude.Just COBOL
+    | (Prelude.==) k "ABAP" = Prelude.Just ABAP
+    | (Prelude.==) k "SAS" = Prelude.Just SAS
+    | (Prelude.==) k "Razor" = Prelude.Just Razor
+    | (Prelude.==) k "VisualBasic" = Prelude.Just VisualBasic
+    | (Prelude.==) k "Shell" = Prelude.Just Shell
+    | (Prelude.==) k "Fish" = Prelude.Just Fish
+    | (Prelude.==) k "Awk" = Prelude.Just Awk
+    | (Prelude.==) k "PowerShell" = Prelude.Just PowerShell
+    | (Prelude.==) k "WindowsBat" = Prelude.Just WindowsBat
+    | (Prelude.==) k "SQL" = Prelude.Just SQL
+    | (Prelude.==) k "PLSQL" = Prelude.Just PLSQL
+    | (Prelude.==) k "Prolog" = Prelude.Just Prolog
+    | (Prelude.==) k "Ini" = Prelude.Just Ini
+    | (Prelude.==) k "TOML" = Prelude.Just TOML
+    | (Prelude.==) k "YAML" = Prelude.Just YAML
+    | (Prelude.==) k "JSON" = Prelude.Just JSON
+    | (Prelude.==) k "Jsonnet" = Prelude.Just Jsonnet
+    | (Prelude.==) k "Nix" = Prelude.Just Nix
+    | (Prelude.==) k "Bazel" = Prelude.Just Bazel
+    | (Prelude.==) k "Makefile" = Prelude.Just Makefile
+    | (Prelude.==) k "Dockerfile" = Prelude.Just Dockerfile
+    | (Prelude.==) k "BibTeX" = Prelude.Just BibTeX
+    | (Prelude.==) k "TeX" = Prelude.Just TeX
+    | (Prelude.==) k "LaTeX" = Prelude.Just LaTeX
+    | (Prelude.==) k "Markdown" = Prelude.Just Markdown
+    | (Prelude.==) k "ReST" = Prelude.Just ReST
+    | (Prelude.==) k "AsciiDoc" = Prelude.Just AsciiDoc
+    | (Prelude.==) k "Diff" = Prelude.Just Diff
+    | (Prelude.==) k "GitConfig" = Prelude.Just GitConfig
+    | (Prelude.==) k "Handlebars" = Prelude.Just Handlebars
     | Prelude.otherwise
     = (Prelude.>>=) (Text.Read.readMaybe k) Data.ProtoLens.maybeToEnum
 instance Prelude.Bounded Language where
   minBound = UnspecifiedLanguage
-  maxBound = Elixir
+  maxBound = Handlebars
 instance Prelude.Enum Language where
   toEnum k__
     = Prelude.maybe
@@ -1608,169 +1761,283 @@ instance Prelude.Enum Language where
               "toEnum: unknown value for enum Language: " (Prelude.show k__)))
         Prelude.id (Data.ProtoLens.maybeToEnum k__)
   fromEnum UnspecifiedLanguage = 0
-  fromEnum Java = 1
-  fromEnum Scala = 2
-  fromEnum Kotlin = 3
-  fromEnum Go = 4
-  fromEnum TypeScript = 5
-  fromEnum JavaScript = 6
-  fromEnum Python = 7
-  fromEnum Ruby = 8
-  fromEnum C_Sharp = 9
-  fromEnum C_PlusPlus = 10
-  fromEnum Objective_C = 11
-  fromEnum Swift = 12
-  fromEnum PHP = 13
-  fromEnum CSS = 14
-  fromEnum C = 15
-  fromEnum R = 16
-  fromEnum Shell = 17
-  fromEnum PowerShell = 18
-  fromEnum Rust = 19
-  fromEnum Dart = 20
-  fromEnum Matlab = 21
-  fromEnum VBA = 22
-  fromEnum Ada = 23
-  fromEnum Idris = 24
-  fromEnum Visual_Basic = 25
-  fromEnum Abap = 26
-  fromEnum Lua = 27
-  fromEnum Groovy = 28
-  fromEnum Perl = 29
-  fromEnum Julia = 30
-  fromEnum Cobol = 31
-  fromEnum Haskell = 32
-  fromEnum Delphi = 33
-  fromEnum Assembly = 34
-  fromEnum SQL = 35
-  fromEnum Prolog = 36
-  fromEnum SAS = 37
-  fromEnum Scratch = 38
-  fromEnum Fortran = 39
-  fromEnum Lisp = 40
-  fromEnum PL_SQL = 41
-  fromEnum YAML = 42
-  fromEnum JSON = 43
-  fromEnum TOML = 44
-  fromEnum Jsonnet = 45
-  fromEnum Awk = 46
-  fromEnum Hack = 47
-  fromEnum Racket = 48
-  fromEnum Flow = 49
-  fromEnum Vue = 50
-  fromEnum Elixir = 51
+  fromEnum CSharp = 1
+  fromEnum Swift = 2
+  fromEnum Dart = 3
+  fromEnum Kotlin = 4
+  fromEnum Scala = 5
+  fromEnum Java = 6
+  fromEnum Groovy = 7
+  fromEnum Clojure = 8
+  fromEnum CommonLisp = 9
+  fromEnum Scheme = 10
+  fromEnum Racket = 11
+  fromEnum Lua = 12
+  fromEnum Perl = 13
+  fromEnum Raku = 14
+  fromEnum Python = 15
+  fromEnum Ruby = 16
+  fromEnum Elixir = 17
+  fromEnum Erlang = 18
+  fromEnum PHP = 19
+  fromEnum Hack = 20
+  fromEnum Coffeescript = 21
+  fromEnum JavaScript = 22
+  fromEnum TypeScript = 23
+  fromEnum Flow = 24
+  fromEnum Vue = 25
+  fromEnum CSS = 26
+  fromEnum Less = 27
+  fromEnum Sass = 28
+  fromEnum SCSS = 29
+  fromEnum HTML = 30
+  fromEnum XML = 31
+  fromEnum XSL = 32
+  fromEnum Go = 33
+  fromEnum C = 34
+  fromEnum CPlusPlus = 35
+  fromEnum ObjectiveC = 36
+  fromEnum ObjectiveCPlusPlus = 37
+  fromEnum Zig = 38
+  fromEnum Ada = 39
+  fromEnum Rust = 40
+  fromEnum OCaml = 41
+  fromEnum FSharp = 42
+  fromEnum SML = 43
+  fromEnum Haskell = 44
+  fromEnum Agda = 45
+  fromEnum Idris = 46
+  fromEnum Coq = 47
+  fromEnum Lean = 48
+  fromEnum APL = 49
+  fromEnum Dyalog = 50
+  fromEnum J = 51
+  fromEnum Matlab = 52
+  fromEnum Wolfram = 53
+  fromEnum R = 54
+  fromEnum Julia = 55
+  fromEnum Fortran = 56
+  fromEnum Delphi = 57
+  fromEnum Assembly = 58
+  fromEnum COBOL = 59
+  fromEnum ABAP = 60
+  fromEnum SAS = 61
+  fromEnum Razor = 62
+  fromEnum VisualBasic = 63
+  fromEnum Shell = 64
+  fromEnum Fish = 65
+  fromEnum Awk = 66
+  fromEnum PowerShell = 67
+  fromEnum WindowsBat = 68
+  fromEnum SQL = 69
+  fromEnum PLSQL = 70
+  fromEnum Prolog = 71
+  fromEnum Ini = 72
+  fromEnum TOML = 73
+  fromEnum YAML = 74
+  fromEnum JSON = 75
+  fromEnum Jsonnet = 76
+  fromEnum Nix = 77
+  fromEnum Bazel = 78
+  fromEnum Makefile = 79
+  fromEnum Dockerfile = 80
+  fromEnum BibTeX = 81
+  fromEnum TeX = 82
+  fromEnum LaTeX = 83
+  fromEnum Markdown = 84
+  fromEnum ReST = 85
+  fromEnum AsciiDoc = 86
+  fromEnum Diff = 88
+  fromEnum GitConfig = 89
+  fromEnum Handlebars = 90
   fromEnum (Language'Unrecognized (Language'UnrecognizedValue k))
     = Prelude.fromIntegral k
-  succ Elixir
+  succ Handlebars
     = Prelude.error
-        "Language.succ: bad argument Elixir. This value would be out of bounds."
-  succ UnspecifiedLanguage = Java
-  succ Java = Scala
-  succ Scala = Kotlin
-  succ Kotlin = Go
-  succ Go = TypeScript
-  succ TypeScript = JavaScript
-  succ JavaScript = Python
+        "Language.succ: bad argument Handlebars. This value would be out of bounds."
+  succ UnspecifiedLanguage = CSharp
+  succ CSharp = Swift
+  succ Swift = Dart
+  succ Dart = Kotlin
+  succ Kotlin = Scala
+  succ Scala = Java
+  succ Java = Groovy
+  succ Groovy = Clojure
+  succ Clojure = CommonLisp
+  succ CommonLisp = Scheme
+  succ Scheme = Racket
+  succ Racket = Lua
+  succ Lua = Perl
+  succ Perl = Raku
+  succ Raku = Python
   succ Python = Ruby
-  succ Ruby = C_Sharp
-  succ C_Sharp = C_PlusPlus
-  succ C_PlusPlus = Objective_C
-  succ Objective_C = Swift
-  succ Swift = PHP
-  succ PHP = CSS
-  succ CSS = C
-  succ C = R
-  succ R = Shell
-  succ Shell = PowerShell
-  succ PowerShell = Rust
-  succ Rust = Dart
-  succ Dart = Matlab
-  succ Matlab = VBA
-  succ VBA = Ada
-  succ Ada = Idris
-  succ Idris = Visual_Basic
-  succ Visual_Basic = Abap
-  succ Abap = Lua
-  succ Lua = Groovy
-  succ Groovy = Perl
-  succ Perl = Julia
-  succ Julia = Cobol
-  succ Cobol = Haskell
-  succ Haskell = Delphi
-  succ Delphi = Assembly
-  succ Assembly = SQL
-  succ SQL = Prolog
-  succ Prolog = SAS
-  succ SAS = Scratch
-  succ Scratch = Fortran
-  succ Fortran = Lisp
-  succ Lisp = PL_SQL
-  succ PL_SQL = YAML
-  succ YAML = JSON
-  succ JSON = TOML
-  succ TOML = Jsonnet
-  succ Jsonnet = Awk
-  succ Awk = Hack
-  succ Hack = Racket
-  succ Racket = Flow
+  succ Ruby = Elixir
+  succ Elixir = Erlang
+  succ Erlang = PHP
+  succ PHP = Hack
+  succ Hack = Coffeescript
+  succ Coffeescript = JavaScript
+  succ JavaScript = TypeScript
+  succ TypeScript = Flow
   succ Flow = Vue
-  succ Vue = Elixir
+  succ Vue = CSS
+  succ CSS = Less
+  succ Less = Sass
+  succ Sass = SCSS
+  succ SCSS = HTML
+  succ HTML = XML
+  succ XML = XSL
+  succ XSL = Go
+  succ Go = C
+  succ C = CPlusPlus
+  succ CPlusPlus = ObjectiveC
+  succ ObjectiveC = ObjectiveCPlusPlus
+  succ ObjectiveCPlusPlus = Zig
+  succ Zig = Ada
+  succ Ada = Rust
+  succ Rust = OCaml
+  succ OCaml = FSharp
+  succ FSharp = SML
+  succ SML = Haskell
+  succ Haskell = Agda
+  succ Agda = Idris
+  succ Idris = Coq
+  succ Coq = Lean
+  succ Lean = APL
+  succ APL = Dyalog
+  succ Dyalog = J
+  succ J = Matlab
+  succ Matlab = Wolfram
+  succ Wolfram = R
+  succ R = Julia
+  succ Julia = Fortran
+  succ Fortran = Delphi
+  succ Delphi = Assembly
+  succ Assembly = COBOL
+  succ COBOL = ABAP
+  succ ABAP = SAS
+  succ SAS = Razor
+  succ Razor = VisualBasic
+  succ VisualBasic = Shell
+  succ Shell = Fish
+  succ Fish = Awk
+  succ Awk = PowerShell
+  succ PowerShell = WindowsBat
+  succ WindowsBat = SQL
+  succ SQL = PLSQL
+  succ PLSQL = Prolog
+  succ Prolog = Ini
+  succ Ini = TOML
+  succ TOML = YAML
+  succ YAML = JSON
+  succ JSON = Jsonnet
+  succ Jsonnet = Nix
+  succ Nix = Bazel
+  succ Bazel = Makefile
+  succ Makefile = Dockerfile
+  succ Dockerfile = BibTeX
+  succ BibTeX = TeX
+  succ TeX = LaTeX
+  succ LaTeX = Markdown
+  succ Markdown = ReST
+  succ ReST = AsciiDoc
+  succ AsciiDoc = Diff
+  succ Diff = GitConfig
+  succ GitConfig = Handlebars
   succ (Language'Unrecognized _)
     = Prelude.error "Language.succ: bad argument: unrecognized value"
   pred UnspecifiedLanguage
     = Prelude.error
         "Language.pred: bad argument UnspecifiedLanguage. This value would be out of bounds."
-  pred Java = UnspecifiedLanguage
-  pred Scala = Java
-  pred Kotlin = Scala
-  pred Go = Kotlin
-  pred TypeScript = Go
-  pred JavaScript = TypeScript
-  pred Python = JavaScript
+  pred CSharp = UnspecifiedLanguage
+  pred Swift = CSharp
+  pred Dart = Swift
+  pred Kotlin = Dart
+  pred Scala = Kotlin
+  pred Java = Scala
+  pred Groovy = Java
+  pred Clojure = Groovy
+  pred CommonLisp = Clojure
+  pred Scheme = CommonLisp
+  pred Racket = Scheme
+  pred Lua = Racket
+  pred Perl = Lua
+  pred Raku = Perl
+  pred Python = Raku
   pred Ruby = Python
-  pred C_Sharp = Ruby
-  pred C_PlusPlus = C_Sharp
-  pred Objective_C = C_PlusPlus
-  pred Swift = Objective_C
-  pred PHP = Swift
-  pred CSS = PHP
-  pred C = CSS
-  pred R = C
-  pred Shell = R
-  pred PowerShell = Shell
-  pred Rust = PowerShell
-  pred Dart = Rust
-  pred Matlab = Dart
-  pred VBA = Matlab
-  pred Ada = VBA
-  pred Idris = Ada
-  pred Visual_Basic = Idris
-  pred Abap = Visual_Basic
-  pred Lua = Abap
-  pred Groovy = Lua
-  pred Perl = Groovy
-  pred Julia = Perl
-  pred Cobol = Julia
-  pred Haskell = Cobol
-  pred Delphi = Haskell
-  pred Assembly = Delphi
-  pred SQL = Assembly
-  pred Prolog = SQL
-  pred SAS = Prolog
-  pred Scratch = SAS
-  pred Fortran = Scratch
-  pred Lisp = Fortran
-  pred PL_SQL = Lisp
-  pred YAML = PL_SQL
-  pred JSON = YAML
-  pred TOML = JSON
-  pred Jsonnet = TOML
-  pred Awk = Jsonnet
-  pred Hack = Awk
-  pred Racket = Hack
-  pred Flow = Racket
+  pred Elixir = Ruby
+  pred Erlang = Elixir
+  pred PHP = Erlang
+  pred Hack = PHP
+  pred Coffeescript = Hack
+  pred JavaScript = Coffeescript
+  pred TypeScript = JavaScript
+  pred Flow = TypeScript
   pred Vue = Flow
-  pred Elixir = Vue
+  pred CSS = Vue
+  pred Less = CSS
+  pred Sass = Less
+  pred SCSS = Sass
+  pred HTML = SCSS
+  pred XML = HTML
+  pred XSL = XML
+  pred Go = XSL
+  pred C = Go
+  pred CPlusPlus = C
+  pred ObjectiveC = CPlusPlus
+  pred ObjectiveCPlusPlus = ObjectiveC
+  pred Zig = ObjectiveCPlusPlus
+  pred Ada = Zig
+  pred Rust = Ada
+  pred OCaml = Rust
+  pred FSharp = OCaml
+  pred SML = FSharp
+  pred Haskell = SML
+  pred Agda = Haskell
+  pred Idris = Agda
+  pred Coq = Idris
+  pred Lean = Coq
+  pred APL = Lean
+  pred Dyalog = APL
+  pred J = Dyalog
+  pred Matlab = J
+  pred Wolfram = Matlab
+  pred R = Wolfram
+  pred Julia = R
+  pred Fortran = Julia
+  pred Delphi = Fortran
+  pred Assembly = Delphi
+  pred COBOL = Assembly
+  pred ABAP = COBOL
+  pred SAS = ABAP
+  pred Razor = SAS
+  pred VisualBasic = Razor
+  pred Shell = VisualBasic
+  pred Fish = Shell
+  pred Awk = Fish
+  pred PowerShell = Awk
+  pred WindowsBat = PowerShell
+  pred SQL = WindowsBat
+  pred PLSQL = SQL
+  pred Prolog = PLSQL
+  pred Ini = Prolog
+  pred TOML = Ini
+  pred YAML = TOML
+  pred JSON = YAML
+  pred Jsonnet = JSON
+  pred Nix = Jsonnet
+  pred Bazel = Nix
+  pred Makefile = Bazel
+  pred Dockerfile = Makefile
+  pred BibTeX = Dockerfile
+  pred TeX = BibTeX
+  pred LaTeX = TeX
+  pred Markdown = LaTeX
+  pred ReST = Markdown
+  pred AsciiDoc = ReST
+  pred Diff = AsciiDoc
+  pred GitConfig = Diff
+  pred Handlebars = GitConfig
   pred (Language'Unrecognized _)
     = Prelude.error "Language.pred: bad argument: unrecognized value"
   enumFrom = Data.ProtoLens.Message.Enum.messageEnumFrom
@@ -4455,76 +4722,123 @@ packedFileDescriptor
     \\CANUnspecifiedDiagnosticTag\DLE\NUL\DC2\SI\n\
     \\vUnnecessary\DLE\SOH\DC2\SO\n\
     \\n\
-    \Deprecated\DLE\STX*\226\EOT\n\
+    \Deprecated\DLE\STX*\158\b\n\
     \\bLanguage\DC2\ETB\n\
-    \\DC3UnspecifiedLanguage\DLE\NUL\DC2\b\n\
-    \\EOTJava\DLE\SOH\DC2\t\n\
-    \\ENQScala\DLE\STX\DC2\n\
+    \\DC3UnspecifiedLanguage\DLE\NUL\DC2\n\
     \\n\
-    \\ACKKotlin\DLE\ETX\DC2\ACK\n\
-    \\STXGo\DLE\EOT\DC2\SO\n\
+    \\ACKCSharp\DLE\SOH\DC2\t\n\
+    \\ENQSwift\DLE\STX\DC2\b\n\
+    \\EOTDart\DLE\ETX\DC2\n\
     \\n\
-    \TypeScript\DLE\ENQ\DC2\SO\n\
+    \\ACKKotlin\DLE\EOT\DC2\t\n\
+    \\ENQScala\DLE\ENQ\DC2\b\n\
+    \\EOTJava\DLE\ACK\DC2\n\
     \\n\
-    \JavaScript\DLE\ACK\DC2\n\
+    \\ACKGroovy\DLE\a\DC2\v\n\
+    \\aClojure\DLE\b\DC2\SO\n\
     \\n\
-    \\ACKPython\DLE\a\DC2\b\n\
-    \\EOTRuby\DLE\b\DC2\v\n\
-    \\aC_Sharp\DLE\t\DC2\SO\n\
+    \CommonLisp\DLE\t\DC2\n\
     \\n\
-    \C_PlusPlus\DLE\n\
-    \\DC2\SI\n\
-    \\vObjective_C\DLE\v\DC2\t\n\
-    \\ENQSwift\DLE\f\DC2\a\n\
-    \\ETXPHP\DLE\r\DC2\a\n\
-    \\ETXCSS\DLE\SO\DC2\ENQ\n\
-    \\SOHC\DLE\SI\DC2\ENQ\n\
-    \\SOHR\DLE\DLE\DC2\t\n\
-    \\ENQShell\DLE\DC1\DC2\SO\n\
+    \\ACKScheme\DLE\n\
+    \\DC2\n\
     \\n\
-    \PowerShell\DLE\DC2\DC2\b\n\
-    \\EOTRust\DLE\DC3\DC2\b\n\
-    \\EOTDart\DLE\DC4\DC2\n\
+    \\ACKRacket\DLE\v\DC2\a\n\
+    \\ETXLua\DLE\f\DC2\b\n\
+    \\EOTPerl\DLE\r\DC2\b\n\
+    \\EOTRaku\DLE\SO\DC2\n\
     \\n\
-    \\ACKMatlab\DLE\NAK\DC2\a\n\
-    \\ETXVBA\DLE\SYN\DC2\a\n\
-    \\ETXAda\DLE\ETB\DC2\t\n\
-    \\ENQIdris\DLE\CAN\DC2\DLE\n\
-    \\fVisual_Basic\DLE\EM\DC2\b\n\
-    \\EOTAbap\DLE\SUB\DC2\a\n\
-    \\ETXLua\DLE\ESC\DC2\n\
+    \\ACKPython\DLE\SI\DC2\b\n\
+    \\EOTRuby\DLE\DLE\DC2\n\
     \\n\
-    \\ACKGroovy\DLE\FS\DC2\b\n\
-    \\EOTPerl\DLE\GS\DC2\t\n\
-    \\ENQJulia\DLE\RS\DC2\t\n\
-    \\ENQCobol\DLE\US\DC2\v\n\
-    \\aHaskell\DLE \DC2\n\
+    \\ACKElixir\DLE\DC1\DC2\n\
     \\n\
-    \\ACKDelphi\DLE!\DC2\f\n\
-    \\bAssembly\DLE\"\DC2\a\n\
-    \\ETXSQL\DLE#\DC2\n\
+    \\ACKErlang\DLE\DC2\DC2\a\n\
+    \\ETXPHP\DLE\DC3\DC2\b\n\
+    \\EOTHack\DLE\DC4\DC2\DLE\n\
+    \\fCoffeescript\DLE\NAK\DC2\SO\n\
     \\n\
-    \\ACKProlog\DLE$\DC2\a\n\
-    \\ETXSAS\DLE%\DC2\v\n\
-    \\aScratch\DLE&\DC2\v\n\
-    \\aFortran\DLE'\DC2\b\n\
-    \\EOTLisp\DLE(\DC2\n\
+    \JavaScript\DLE\SYN\DC2\SO\n\
     \\n\
-    \\ACKPL_SQL\DLE)\DC2\b\n\
-    \\EOTYAML\DLE*\DC2\b\n\
-    \\EOTJSON\DLE+\DC2\b\n\
-    \\EOTTOML\DLE,\DC2\v\n\
-    \\aJsonnet\DLE-\DC2\a\n\
-    \\ETXAwk\DLE.\DC2\b\n\
-    \\EOTHack\DLE/\DC2\n\
+    \TypeScript\DLE\ETB\DC2\b\n\
+    \\EOTFlow\DLE\CAN\DC2\a\n\
+    \\ETXVue\DLE\EM\DC2\a\n\
+    \\ETXCSS\DLE\SUB\DC2\b\n\
+    \\EOTLess\DLE\ESC\DC2\b\n\
+    \\EOTSass\DLE\FS\DC2\b\n\
+    \\EOTSCSS\DLE\GS\DC2\b\n\
+    \\EOTHTML\DLE\RS\DC2\a\n\
+    \\ETXXML\DLE\US\DC2\a\n\
+    \\ETXXSL\DLE \DC2\ACK\n\
+    \\STXGo\DLE!\DC2\ENQ\n\
+    \\SOHC\DLE\"\DC2\r\n\
+    \\tCPlusPlus\DLE#\DC2\SO\n\
     \\n\
-    \\ACKRacket\DLE0\DC2\b\n\
-    \\EOTFlow\DLE1\DC2\a\n\
-    \\ETXVue\DLE2\DC2\n\
+    \ObjectiveC\DLE$\DC2\SYN\n\
+    \\DC2ObjectiveCPlusPlus\DLE%\DC2\a\n\
+    \\ETXZig\DLE&\DC2\a\n\
+    \\ETXAda\DLE'\DC2\b\n\
+    \\EOTRust\DLE(\DC2\t\n\
+    \\ENQOCaml\DLE)\DC2\n\
     \\n\
-    \\ACKElixir\DLE3B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\243\151\SOH\n\
+    \\ACKFSharp\DLE*\DC2\a\n\
+    \\ETXSML\DLE+\DC2\v\n\
+    \\aHaskell\DLE,\DC2\b\n\
+    \\EOTAgda\DLE-\DC2\t\n\
+    \\ENQIdris\DLE.\DC2\a\n\
+    \\ETXCoq\DLE/\DC2\b\n\
+    \\EOTLean\DLE0\DC2\a\n\
+    \\ETXAPL\DLE1\DC2\n\
+    \\n\
+    \\ACKDyalog\DLE2\DC2\ENQ\n\
+    \\SOHJ\DLE3\DC2\n\
+    \\n\
+    \\ACKMatlab\DLE4\DC2\v\n\
+    \\aWolfram\DLE5\DC2\ENQ\n\
+    \\SOHR\DLE6\DC2\t\n\
+    \\ENQJulia\DLE7\DC2\v\n\
+    \\aFortran\DLE8\DC2\n\
+    \\n\
+    \\ACKDelphi\DLE9\DC2\f\n\
+    \\bAssembly\DLE:\DC2\t\n\
+    \\ENQCOBOL\DLE;\DC2\b\n\
+    \\EOTABAP\DLE<\DC2\a\n\
+    \\ETXSAS\DLE=\DC2\t\n\
+    \\ENQRazor\DLE>\DC2\SI\n\
+    \\vVisualBasic\DLE?\DC2\t\n\
+    \\ENQShell\DLE@\DC2\b\n\
+    \\EOTFish\DLEA\DC2\a\n\
+    \\ETXAwk\DLEB\DC2\SO\n\
+    \\n\
+    \PowerShell\DLEC\DC2\SO\n\
+    \\n\
+    \WindowsBat\DLED\DC2\a\n\
+    \\ETXSQL\DLEE\DC2\t\n\
+    \\ENQPLSQL\DLEF\DC2\n\
+    \\n\
+    \\ACKProlog\DLEG\DC2\a\n\
+    \\ETXIni\DLEH\DC2\b\n\
+    \\EOTTOML\DLEI\DC2\b\n\
+    \\EOTYAML\DLEJ\DC2\b\n\
+    \\EOTJSON\DLEK\DC2\v\n\
+    \\aJsonnet\DLEL\DC2\a\n\
+    \\ETXNix\DLEM\DC2\t\n\
+    \\ENQBazel\DLEN\DC2\f\n\
+    \\bMakefile\DLEO\DC2\SO\n\
+    \\n\
+    \Dockerfile\DLEP\DC2\n\
+    \\n\
+    \\ACKBibTeX\DLEQ\DC2\a\n\
+    \\ETXTeX\DLER\DC2\t\n\
+    \\ENQLaTeX\DLES\DC2\f\n\
+    \\bMarkdown\DLET\DC2\b\n\
+    \\EOTReST\DLEU\DC2\f\n\
+    \\bAsciiDoc\DLEV\DC2\b\n\
+    \\EOTDiff\DLEX\DC2\r\n\
+    \\tGitConfig\DLEY\DC2\SO\n\
+    \\n\
+    \Handlebars\DLEZB/Z-github.com/sourcegraph/scip/bindings/go/scip/J\251\164\SOH\n\
     \\a\DC2\ENQ\n\
-    \\NUL\181\ETX\SOH\n\
+    \\NUL\219\ETX\SOH\n\
     \\130\EOT\n\
     \\SOH\f\DC2\ETX\n\
     \\NUL\DC22\247\ETX An index contains one or more pieces of information about a given piece of\n\
@@ -5612,7 +5926,7 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\ENQ\ENQ\STX\STX\STX\DC2\EOT\247\STX\SI\DLE\n\
     \\215\ETX\n\
-    \\STX\ENQ\ACK\DC2\ACK\128\ETX\NUL\181\ETX\SOH\SUB\200\ETX Language standardises names of common programming languages that can be used\n\
+    \\STX\ENQ\ACK\DC2\ACK\128\ETX\NUL\219\ETX\SOH\SUB\200\ETX Language standardises names of common programming languages that can be used\n\
     \ for the `Document.language` field. The primary purpose of this enum is to\n\
     \ prevent a situation where we have a single programming language ends up with\n\
     \ multiple string representations. For example, the C++ language uses the name\n\
@@ -5628,12 +5942,11 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\ENQ\ACK\STX\NUL\STX\DC2\EOT\129\ETX\CAN\EM\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SOH\DC2\EOT\130\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\SOH\DC2\EOT\130\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SOH\SOH\DC2\EOT\130\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\SOH\SOH\DC2\EOT\130\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SOH\STX\DC2\EOT\130\ETX\t\n\
-    \\n\
+    \\ENQ\ENQ\ACK\STX\SOH\STX\DC2\EOT\130\ETX\v\f\n\
     \\f\n\
     \\EOT\ENQ\ACK\STX\STX\DC2\EOT\131\ETX\STX\f\n\
     \\r\n\
@@ -5642,29 +5955,32 @@ packedFileDescriptor
     \\ENQ\ENQ\ACK\STX\STX\STX\DC2\EOT\131\ETX\n\
     \\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ETX\DC2\EOT\132\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX\ETX\DC2\EOT\132\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ETX\SOH\DC2\EOT\132\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\ETX\SOH\DC2\EOT\132\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ETX\STX\DC2\EOT\132\ETX\v\f\n\
+    \\ENQ\ENQ\ACK\STX\ETX\STX\DC2\EOT\132\ETX\t\n\
+    \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\EOT\DC2\EOT\133\ETX\STX\t\n\
+    \\EOT\ENQ\ACK\STX\EOT\DC2\EOT\133\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\EOT\SOH\DC2\EOT\133\ETX\STX\EOT\n\
+    \\ENQ\ENQ\ACK\STX\EOT\SOH\DC2\EOT\133\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\EOT\STX\DC2\EOT\133\ETX\a\b\n\
+    \\ENQ\ENQ\ACK\STX\EOT\STX\DC2\EOT\133\ETX\v\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ENQ\DC2\EOT\134\ETX\STX\DC1\n\
+    \\EOT\ENQ\ACK\STX\ENQ\DC2\EOT\134\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ENQ\SOH\DC2\EOT\134\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX\ENQ\SOH\DC2\EOT\134\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ENQ\STX\DC2\EOT\134\ETX\SI\DLE\n\
+    \\ENQ\ENQ\ACK\STX\ENQ\STX\DC2\EOT\134\ETX\n\
+    \\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ACK\DC2\EOT\135\ETX\STX\DC1\n\
+    \\EOT\ENQ\ACK\STX\ACK\DC2\EOT\135\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ACK\SOH\DC2\EOT\135\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX\ACK\SOH\DC2\EOT\135\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ACK\STX\DC2\EOT\135\ETX\SI\DLE\n\
+    \\ENQ\ENQ\ACK\STX\ACK\STX\DC2\EOT\135\ETX\t\n\
+    \\n\
     \\f\n\
     \\EOT\ENQ\ACK\STX\a\DC2\EOT\136\ETX\STX\r\n\
     \\r\n\
@@ -5672,85 +5988,82 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\ENQ\ACK\STX\a\STX\DC2\EOT\136\ETX\v\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\b\DC2\EOT\137\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\b\DC2\EOT\137\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\b\SOH\DC2\EOT\137\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\b\SOH\DC2\EOT\137\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\b\STX\DC2\EOT\137\ETX\t\n\
-    \\n\
+    \\ENQ\ENQ\ACK\STX\b\STX\DC2\EOT\137\ETX\f\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\t\DC2\EOT\138\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\t\DC2\EOT\138\ETX\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\t\SOH\DC2\EOT\138\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STX\t\SOH\DC2\EOT\138\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\t\STX\DC2\EOT\138\ETX\f\r\n\
+    \\ENQ\ENQ\ACK\STX\t\STX\DC2\EOT\138\ETX\SI\DLE\n\
     \\f\n\
     \\EOT\ENQ\ACK\STX\n\
-    \\DC2\EOT\139\ETX\STX\DC2\n\
+    \\DC2\EOT\139\ETX\STX\SO\n\
     \\r\n\
     \\ENQ\ENQ\ACK\STX\n\
-    \\SOH\DC2\EOT\139\ETX\STX\f\n\
+    \\SOH\DC2\EOT\139\ETX\STX\b\n\
     \\r\n\
     \\ENQ\ENQ\ACK\STX\n\
-    \\STX\DC2\EOT\139\ETX\SI\DC1\n\
+    \\STX\DC2\EOT\139\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\v\DC2\EOT\140\ETX\STX\DC3\n\
+    \\EOT\ENQ\ACK\STX\v\DC2\EOT\140\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\v\SOH\DC2\EOT\140\ETX\STX\r\n\
+    \\ENQ\ENQ\ACK\STX\v\SOH\DC2\EOT\140\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\v\STX\DC2\EOT\140\ETX\DLE\DC2\n\
+    \\ENQ\ENQ\ACK\STX\v\STX\DC2\EOT\140\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\f\DC2\EOT\141\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX\f\DC2\EOT\141\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\f\SOH\DC2\EOT\141\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX\f\SOH\DC2\EOT\141\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\f\STX\DC2\EOT\141\ETX\n\
-    \\f\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\r\DC2\EOT\142\ETX\STX\v\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\r\SOH\DC2\EOT\142\ETX\STX\ENQ\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\r\STX\DC2\EOT\142\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\f\STX\DC2\EOT\141\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SO\DC2\EOT\143\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\r\DC2\EOT\142\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SO\SOH\DC2\EOT\143\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\r\SOH\DC2\EOT\142\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SO\STX\DC2\EOT\143\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\r\STX\DC2\EOT\142\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\SO\DC2\EOT\143\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\SO\SOH\DC2\EOT\143\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\SO\STX\DC2\EOT\143\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\SI\DC2\EOT\144\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\SI\SOH\DC2\EOT\144\ETX\STX\b\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\SI\STX\DC2\EOT\144\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\DLE\DC2\EOT\145\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\DLE\SOH\DC2\EOT\145\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\DLE\STX\DC2\EOT\145\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\DC1\DC2\EOT\146\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\DC1\SOH\DC2\EOT\146\ETX\STX\b\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\DC1\STX\DC2\EOT\146\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\DC2\DC2\EOT\147\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\DC2\SOH\DC2\EOT\147\ETX\STX\b\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\DC2\STX\DC2\EOT\147\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\DC3\DC2\EOT\148\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\DC3\SOH\DC2\EOT\148\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\DC3\STX\DC2\EOT\148\ETX\b\n\
     \\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\SI\DC2\EOT\144\ETX\STX\t\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\SI\SOH\DC2\EOT\144\ETX\STX\ETX\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\SI\STX\DC2\EOT\144\ETX\ACK\b\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\DLE\DC2\EOT\145\ETX\STX\t\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\DLE\SOH\DC2\EOT\145\ETX\STX\ETX\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\DLE\STX\DC2\EOT\145\ETX\ACK\b\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\DC1\DC2\EOT\146\ETX\STX\r\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC1\SOH\DC2\EOT\146\ETX\STX\a\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC1\STX\DC2\EOT\146\ETX\n\
-    \\f\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\DC2\DC2\EOT\147\ETX\STX\DC2\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC2\SOH\DC2\EOT\147\ETX\STX\f\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC2\STX\DC2\EOT\147\ETX\SI\DC1\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\DC3\DC2\EOT\148\ETX\STX\f\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC3\SOH\DC2\EOT\148\ETX\STX\ACK\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC3\STX\DC2\EOT\148\ETX\t\v\n\
     \\f\n\
     \\EOT\ENQ\ACK\STX\DC4\DC2\EOT\149\ETX\STX\f\n\
     \\r\n\
@@ -5758,57 +6071,55 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\ENQ\ACK\STX\DC4\STX\DC2\EOT\149\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\NAK\DC2\EOT\150\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\NAK\DC2\EOT\150\ETX\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\NAK\SOH\DC2\EOT\150\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\NAK\SOH\DC2\EOT\150\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\NAK\STX\DC2\EOT\150\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX\NAK\STX\DC2\EOT\150\ETX\DC1\DC3\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SYN\DC2\EOT\151\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\SYN\DC2\EOT\151\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SYN\SOH\DC2\EOT\151\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\SYN\SOH\DC2\EOT\151\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SYN\STX\DC2\EOT\151\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\SYN\STX\DC2\EOT\151\ETX\SI\DC1\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\ETB\DC2\EOT\152\ETX\STX\DC2\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\ETB\SOH\DC2\EOT\152\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\ETB\STX\DC2\EOT\152\ETX\SI\DC1\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\CAN\DC2\EOT\153\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\CAN\SOH\DC2\EOT\153\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\CAN\STX\DC2\EOT\153\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX\EM\DC2\EOT\154\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\EM\SOH\DC2\EOT\154\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX\EM\STX\DC2\EOT\154\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ETB\DC2\EOT\152\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\SUB\DC2\EOT\155\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ETB\SOH\DC2\EOT\152\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\SUB\SOH\DC2\EOT\155\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ETB\STX\DC2\EOT\152\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\SUB\STX\DC2\EOT\155\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\CAN\DC2\EOT\153\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX\ESC\DC2\EOT\156\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\CAN\SOH\DC2\EOT\153\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX\ESC\SOH\DC2\EOT\156\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\CAN\STX\DC2\EOT\153\ETX\n\
+    \\ENQ\ENQ\ACK\STX\ESC\STX\DC2\EOT\156\ETX\t\v\n\
     \\f\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\EM\DC2\EOT\154\ETX\STX\DC4\n\
+    \\EOT\ENQ\ACK\STX\FS\DC2\EOT\157\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\EM\SOH\DC2\EOT\154\ETX\STX\SO\n\
+    \\ENQ\ENQ\ACK\STX\FS\SOH\DC2\EOT\157\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\EM\STX\DC2\EOT\154\ETX\DC1\DC3\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\SUB\DC2\EOT\155\ETX\STX\f\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\SUB\SOH\DC2\EOT\155\ETX\STX\ACK\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\SUB\STX\DC2\EOT\155\ETX\t\v\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\ESC\DC2\EOT\156\ETX\STX\v\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\ESC\SOH\DC2\EOT\156\ETX\STX\ENQ\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\ESC\STX\DC2\EOT\156\ETX\b\n\
-    \\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\FS\DC2\EOT\157\ETX\STX\SO\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\FS\SOH\DC2\EOT\157\ETX\STX\b\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\FS\STX\DC2\EOT\157\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX\FS\STX\DC2\EOT\157\ETX\t\v\n\
     \\f\n\
     \\EOT\ENQ\ACK\STX\GS\DC2\EOT\158\ETX\STX\f\n\
     \\r\n\
@@ -5816,70 +6127,70 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\ENQ\ACK\STX\GS\STX\DC2\EOT\158\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\RS\DC2\EOT\159\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX\RS\DC2\EOT\159\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\RS\SOH\DC2\EOT\159\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX\RS\SOH\DC2\EOT\159\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\RS\STX\DC2\EOT\159\ETX\n\
+    \\ENQ\ENQ\ACK\STX\RS\STX\DC2\EOT\159\ETX\t\v\n\
     \\f\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\US\DC2\EOT\160\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX\US\DC2\EOT\160\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\US\SOH\DC2\EOT\160\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX\US\SOH\DC2\EOT\160\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\US\STX\DC2\EOT\160\ETX\n\
-    \\f\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX \DC2\EOT\161\ETX\STX\SI\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX \SOH\DC2\EOT\161\ETX\STX\t\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX \STX\DC2\EOT\161\ETX\f\SO\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX!\DC2\EOT\162\ETX\STX\SO\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX!\SOH\DC2\EOT\162\ETX\STX\b\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX!\STX\DC2\EOT\162\ETX\v\r\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX\"\DC2\EOT\163\ETX\STX\DLE\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\"\SOH\DC2\EOT\163\ETX\STX\n\
-    \\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX\"\STX\DC2\EOT\163\ETX\r\SI\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX#\DC2\EOT\164\ETX\STX\v\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX#\SOH\DC2\EOT\164\ETX\STX\ENQ\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX#\STX\DC2\EOT\164\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\US\STX\DC2\EOT\160\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX$\DC2\EOT\165\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX \DC2\EOT\161\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX$\SOH\DC2\EOT\165\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX \SOH\DC2\EOT\161\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX$\STX\DC2\EOT\165\ETX\v\r\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX%\DC2\EOT\166\ETX\STX\v\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX%\SOH\DC2\EOT\166\ETX\STX\ENQ\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX%\STX\DC2\EOT\166\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX \STX\DC2\EOT\161\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX&\DC2\EOT\167\ETX\STX\SI\n\
+    \\EOT\ENQ\ACK\STX!\DC2\EOT\162\ETX\STX\n\
+    \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX&\SOH\DC2\EOT\167\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STX!\SOH\DC2\EOT\162\ETX\STX\EOT\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX&\STX\DC2\EOT\167\ETX\f\SO\n\
+    \\ENQ\ENQ\ACK\STX!\STX\DC2\EOT\162\ETX\a\t\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX'\DC2\EOT\168\ETX\STX\SI\n\
+    \\EOT\ENQ\ACK\STX\"\DC2\EOT\163\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX'\SOH\DC2\EOT\168\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STX\"\SOH\DC2\EOT\163\ETX\STX\ETX\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX'\STX\DC2\EOT\168\ETX\f\SO\n\
+    \\ENQ\ENQ\ACK\STX\"\STX\DC2\EOT\163\ETX\ACK\b\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX#\DC2\EOT\164\ETX\STX\DC1\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX#\SOH\DC2\EOT\164\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX#\STX\DC2\EOT\164\ETX\SO\DLE\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX$\DC2\EOT\165\ETX\STX\DC2\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX$\SOH\DC2\EOT\165\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX$\STX\DC2\EOT\165\ETX\SI\DC1\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX%\DC2\EOT\166\ETX\STX\SUB\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX%\SOH\DC2\EOT\166\ETX\STX\DC4\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX%\STX\DC2\EOT\166\ETX\ETB\EM\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX&\DC2\EOT\167\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX&\SOH\DC2\EOT\167\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX&\STX\DC2\EOT\167\ETX\b\n\
+    \\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX'\DC2\EOT\168\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX'\SOH\DC2\EOT\168\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX'\STX\DC2\EOT\168\ETX\b\n\
+    \\n\
     \\f\n\
     \\EOT\ENQ\ACK\STX(\DC2\EOT\169\ETX\STX\f\n\
     \\r\n\
@@ -5887,70 +6198,317 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\ENQ\ACK\STX(\STX\DC2\EOT\169\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX)\DC2\EOT\170\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX)\DC2\EOT\170\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX)\SOH\DC2\EOT\170\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX)\SOH\DC2\EOT\170\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX)\STX\DC2\EOT\170\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX)\STX\DC2\EOT\170\ETX\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX*\DC2\EOT\171\ETX\STX\f\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX*\SOH\DC2\EOT\171\ETX\STX\ACK\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX*\STX\DC2\EOT\171\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX+\DC2\EOT\172\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX*\DC2\EOT\171\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX+\SOH\DC2\EOT\172\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX*\SOH\DC2\EOT\171\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX+\STX\DC2\EOT\172\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX*\STX\DC2\EOT\171\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX,\DC2\EOT\173\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX+\DC2\EOT\172\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX,\SOH\DC2\EOT\173\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX+\SOH\DC2\EOT\172\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX,\STX\DC2\EOT\173\ETX\t\v\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX-\DC2\EOT\174\ETX\STX\SI\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX-\SOH\DC2\EOT\174\ETX\STX\t\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX-\STX\DC2\EOT\174\ETX\f\SO\n\
-    \\f\n\
-    \\EOT\ENQ\ACK\STX.\DC2\EOT\175\ETX\STX\v\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX.\SOH\DC2\EOT\175\ETX\STX\ENQ\n\
-    \\r\n\
-    \\ENQ\ENQ\ACK\STX.\STX\DC2\EOT\175\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX+\STX\DC2\EOT\172\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX/\DC2\EOT\176\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX,\DC2\EOT\173\ETX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX/\SOH\DC2\EOT\176\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX,\SOH\DC2\EOT\173\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX/\STX\DC2\EOT\176\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX,\STX\DC2\EOT\173\ETX\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX0\DC2\EOT\177\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX-\DC2\EOT\174\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX0\SOH\DC2\EOT\177\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX-\SOH\DC2\EOT\174\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX0\STX\DC2\EOT\177\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX-\STX\DC2\EOT\174\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX1\DC2\EOT\178\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX.\DC2\EOT\175\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX1\SOH\DC2\EOT\178\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX.\SOH\DC2\EOT\175\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX1\STX\DC2\EOT\178\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX.\STX\DC2\EOT\175\ETX\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX2\DC2\EOT\179\ETX\STX\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX/\DC2\EOT\176\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX2\SOH\DC2\EOT\179\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX/\SOH\DC2\EOT\176\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX2\STX\DC2\EOT\179\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX/\STX\DC2\EOT\176\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX3\DC2\EOT\180\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX0\DC2\EOT\177\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX3\SOH\DC2\EOT\180\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX0\SOH\DC2\EOT\177\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX3\STX\DC2\EOT\180\ETX\v\rb\ACKproto3"
+    \\ENQ\ENQ\ACK\STX0\STX\DC2\EOT\177\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX1\DC2\EOT\178\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX1\SOH\DC2\EOT\178\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX1\STX\DC2\EOT\178\ETX\b\n\
+    \\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX2\DC2\EOT\179\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX2\SOH\DC2\EOT\179\ETX\STX\b\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX2\STX\DC2\EOT\179\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX3\DC2\EOT\180\ETX\STX\t\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX3\SOH\DC2\EOT\180\ETX\STX\ETX\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX3\STX\DC2\EOT\180\ETX\ACK\b\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX4\DC2\EOT\181\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX4\SOH\DC2\EOT\181\ETX\STX\b\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX4\STX\DC2\EOT\181\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX5\DC2\EOT\182\ETX\STX\SI\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX5\SOH\DC2\EOT\182\ETX\STX\t\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX5\STX\DC2\EOT\182\ETX\f\SO\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX6\DC2\EOT\183\ETX\STX\t\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX6\SOH\DC2\EOT\183\ETX\STX\ETX\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX6\STX\DC2\EOT\183\ETX\ACK\b\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX7\DC2\EOT\184\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX7\SOH\DC2\EOT\184\ETX\STX\a\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX7\STX\DC2\EOT\184\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX8\DC2\EOT\185\ETX\STX\SI\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX8\SOH\DC2\EOT\185\ETX\STX\t\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX8\STX\DC2\EOT\185\ETX\f\SO\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX9\DC2\EOT\186\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX9\SOH\DC2\EOT\186\ETX\STX\b\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX9\STX\DC2\EOT\186\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX:\DC2\EOT\187\ETX\STX\DLE\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX:\SOH\DC2\EOT\187\ETX\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX:\STX\DC2\EOT\187\ETX\r\SI\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX;\DC2\EOT\188\ETX\STX\r\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX;\SOH\DC2\EOT\188\ETX\STX\a\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX;\STX\DC2\EOT\188\ETX\n\
+    \\f\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX<\DC2\EOT\189\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX<\SOH\DC2\EOT\189\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX<\STX\DC2\EOT\189\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX=\DC2\EOT\190\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX=\SOH\DC2\EOT\190\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX=\STX\DC2\EOT\190\ETX\b\n\
+    \\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX>\DC2\EOT\191\ETX\STX\r\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX>\SOH\DC2\EOT\191\ETX\STX\a\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX>\STX\DC2\EOT\191\ETX\n\
+    \\f\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX?\DC2\EOT\192\ETX\STX\DC3\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX?\SOH\DC2\EOT\192\ETX\STX\r\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX?\STX\DC2\EOT\192\ETX\DLE\DC2\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STX@\DC2\EOT\193\ETX\STX\r\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX@\SOH\DC2\EOT\193\ETX\STX\a\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STX@\STX\DC2\EOT\193\ETX\n\
+    \\f\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXA\DC2\EOT\194\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXA\SOH\DC2\EOT\194\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXA\STX\DC2\EOT\194\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXB\DC2\EOT\195\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXB\SOH\DC2\EOT\195\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXB\STX\DC2\EOT\195\ETX\b\n\
+    \\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXC\DC2\EOT\196\ETX\STX\DC2\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXC\SOH\DC2\EOT\196\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXC\STX\DC2\EOT\196\ETX\SI\DC1\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXD\DC2\EOT\197\ETX\STX\DC2\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXD\SOH\DC2\EOT\197\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXD\STX\DC2\EOT\197\ETX\SI\DC1\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXE\DC2\EOT\198\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXE\SOH\DC2\EOT\198\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXE\STX\DC2\EOT\198\ETX\b\n\
+    \\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXF\DC2\EOT\199\ETX\STX\r\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXF\SOH\DC2\EOT\199\ETX\STX\a\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXF\STX\DC2\EOT\199\ETX\n\
+    \\f\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXG\DC2\EOT\200\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXG\SOH\DC2\EOT\200\ETX\STX\b\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXG\STX\DC2\EOT\200\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXH\DC2\EOT\201\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXH\SOH\DC2\EOT\201\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXH\STX\DC2\EOT\201\ETX\b\n\
+    \\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXI\DC2\EOT\202\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXI\SOH\DC2\EOT\202\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXI\STX\DC2\EOT\202\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXJ\DC2\EOT\203\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXJ\SOH\DC2\EOT\203\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXJ\STX\DC2\EOT\203\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXK\DC2\EOT\204\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXK\SOH\DC2\EOT\204\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXK\STX\DC2\EOT\204\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXL\DC2\EOT\205\ETX\STX\SI\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXL\SOH\DC2\EOT\205\ETX\STX\t\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXL\STX\DC2\EOT\205\ETX\f\SO\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXM\DC2\EOT\206\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXM\SOH\DC2\EOT\206\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXM\STX\DC2\EOT\206\ETX\b\n\
+    \\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXN\DC2\EOT\207\ETX\STX\r\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXN\SOH\DC2\EOT\207\ETX\STX\a\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXN\STX\DC2\EOT\207\ETX\n\
+    \\f\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXO\DC2\EOT\208\ETX\STX\DLE\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXO\SOH\DC2\EOT\208\ETX\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXO\STX\DC2\EOT\208\ETX\r\SI\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXP\DC2\EOT\209\ETX\STX\DC2\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXP\SOH\DC2\EOT\209\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXP\STX\DC2\EOT\209\ETX\SI\DC1\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXQ\DC2\EOT\210\ETX\STX\SO\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXQ\SOH\DC2\EOT\210\ETX\STX\b\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXQ\STX\DC2\EOT\210\ETX\v\r\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXR\DC2\EOT\211\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXR\SOH\DC2\EOT\211\ETX\STX\ENQ\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXR\STX\DC2\EOT\211\ETX\b\n\
+    \\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXS\DC2\EOT\212\ETX\STX\r\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXS\SOH\DC2\EOT\212\ETX\STX\a\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXS\STX\DC2\EOT\212\ETX\n\
+    \\f\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXT\DC2\EOT\213\ETX\STX\DLE\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXT\SOH\DC2\EOT\213\ETX\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXT\STX\DC2\EOT\213\ETX\r\SI\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXU\DC2\EOT\214\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXU\SOH\DC2\EOT\214\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXU\STX\DC2\EOT\214\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXV\DC2\EOT\215\ETX\STX\DLE\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXV\SOH\DC2\EOT\215\ETX\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXV\STX\DC2\EOT\215\ETX\r\SI\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXW\DC2\EOT\216\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXW\SOH\DC2\EOT\216\ETX\STX\ACK\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXW\STX\DC2\EOT\216\ETX\t\v\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXX\DC2\EOT\217\ETX\STX\DC1\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXX\SOH\DC2\EOT\217\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXX\STX\DC2\EOT\217\ETX\SO\DLE\n\
+    \\f\n\
+    \\EOT\ENQ\ACK\STXY\DC2\EOT\218\ETX\STX\DC2\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXY\SOH\DC2\EOT\218\ETX\STX\f\n\
+    \\r\n\
+    \\ENQ\ENQ\ACK\STXY\STX\DC2\EOT\218\ETX\SI\DC1b\ACKproto3"
