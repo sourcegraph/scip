@@ -74,6 +74,60 @@ export namespace scip {
         Unnecessary = 1,
         Deprecated = 2
     }
+    export enum Language {
+        UnspecifiedLanguage = 0,
+        Java = 1,
+        Scala = 2,
+        Kotlin = 3,
+        Go = 4,
+        TypeScript = 5,
+        JavaScript = 6,
+        Python = 7,
+        Ruby = 8,
+        C_Sharp = 9,
+        C_PlusPlus = 10,
+        Objective_C = 11,
+        Swift = 12,
+        PHP = 13,
+        CSS = 14,
+        C = 15,
+        R = 16,
+        Shell = 17,
+        PowerShell = 18,
+        Rust = 19,
+        Dart = 20,
+        Matlab = 21,
+        VBA = 22,
+        Ada = 23,
+        Idris = 24,
+        Visual_Basic = 25,
+        Abap = 26,
+        Lua = 27,
+        Groovy = 28,
+        Perl = 29,
+        Julia = 30,
+        Cobol = 31,
+        Haskell = 32,
+        Delphi = 33,
+        Assembly = 34,
+        SQL = 35,
+        Prolog = 36,
+        SAS = 37,
+        Scratch = 38,
+        Fortran = 39,
+        Lisp = 40,
+        PL_SQL = 41,
+        YAML = 42,
+        JSON = 43,
+        TOML = 44,
+        Jsonnet = 45,
+        Awk = 46,
+        Hack = 47,
+        Racket = 48,
+        Flow = 49,
+        Vue = 50,
+        Elixir = 51
+    }
     export class Index extends pb_1.Message {
         constructor(data?: any[] | {
             metadata?: Metadata;
@@ -435,6 +489,7 @@ export namespace scip {
     }
     export class Document extends pb_1.Message {
         constructor(data?: any[] | {
+            language?: string;
             relative_path?: string;
             occurrences?: Occurrence[];
             symbols?: SymbolInformation[];
@@ -442,6 +497,9 @@ export namespace scip {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3], []);
             if (!Array.isArray(data) && typeof data == "object") {
+                if ("language" in data && data.language != undefined) {
+                    this.language = data.language;
+                }
                 if ("relative_path" in data && data.relative_path != undefined) {
                     this.relative_path = data.relative_path;
                 }
@@ -452,6 +510,12 @@ export namespace scip {
                     this.symbols = data.symbols;
                 }
             }
+        }
+        get language() {
+            return pb_1.Message.getField(this, 4) as string;
+        }
+        set language(value: string) {
+            pb_1.Message.setField(this, 4, value);
         }
         get relative_path() {
             return pb_1.Message.getField(this, 1) as string;
@@ -472,11 +536,15 @@ export namespace scip {
             pb_1.Message.setRepeatedWrapperField(this, 3, value);
         }
         static fromObject(data: {
+            language?: string;
             relative_path?: string;
             occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
             symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
         }) {
             const message = new Document({});
+            if (data.language != null) {
+                message.language = data.language;
+            }
             if (data.relative_path != null) {
                 message.relative_path = data.relative_path;
             }
@@ -490,10 +558,14 @@ export namespace scip {
         }
         toObject() {
             const data: {
+                language?: string;
                 relative_path?: string;
                 occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
                 symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
             } = {};
+            if (this.language != null) {
+                data.language = this.language;
+            }
             if (this.relative_path != null) {
                 data.relative_path = this.relative_path;
             }
@@ -509,6 +581,8 @@ export namespace scip {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
+            if (typeof this.language === "string" && this.language.length)
+                writer.writeString(4, this.language);
             if (typeof this.relative_path === "string" && this.relative_path.length)
                 writer.writeString(1, this.relative_path);
             if (this.occurrences !== undefined)
@@ -524,6 +598,9 @@ export namespace scip {
                 if (reader.isEndGroup())
                     break;
                 switch (reader.getFieldNumber()) {
+                    case 4:
+                        message.language = reader.readString();
+                        break;
                     case 1:
                         message.relative_path = reader.readString();
                         break;

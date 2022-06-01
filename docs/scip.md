@@ -42,11 +42,12 @@ reported for a document.
 
 Document defines the metadata about a source file on disk.
 
-| Name                     | Type              | Description                                                                                                                                                                                 |
-| ------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **relative_path**        | string            | (Required) Path to the text document relative to the directory supplied in the associated `Metadata.project_root`. Not URI-encoded. This value should not begin with a directory separator. |
-| repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                       |
-| repeated **symbols**     | SymbolInformation | Symbols that are defined within this document.                                                                                                                                              |
+| Name                     | Type              | Description                                                                                                                                                                                                                                                                        |
+| ------------------------ | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **language**             | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming langauge, including ones that are not specified by the `Language` enum. |
+| **relative_path**        | string            | (Required) Path to the text document relative to the directory supplied in the associated `Metadata.project_root`. Not URI-encoded. This value should not begin with a directory separator.                                                                                        |
+| repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                              |
+| repeated **symbols**     | SymbolInformation | Symbols that are defined within this document.                                                                                                                                                                                                                                     |
 
 ### Index
 
@@ -189,6 +190,70 @@ docstring or what package it's defined it.
 | 0      | UnspecifiedDiagnosticTag |
 | 1      | Unnecessary              |
 | 2      | Deprecated               |
+
+### Language
+
+Language standardises names of common programming languages that can be used
+for the `Document.language` field. The primary purpose of this enum is to
+prevent a situation where we have a single programming language ends up with
+multiple string representations. For example, the C++ language uses the name
+"C_PlusPlus" in this enum and other names such as "cpp" are incompatible.
+Feel free to send a pull-request to add missing programming languages.
+
+| Number | Name                | Description |
+| ------ | ------------------- | ----------- |
+| 0      | UnspecifiedLanguage |
+| 1      | Java                |
+| 2      | Scala               |
+| 3      | Kotlin              |
+| 4      | Go                  |
+| 5      | TypeScript          |
+| 6      | JavaScript          |
+| 7      | Python              |
+| 8      | Ruby                |
+| 9      | C_Sharp             |
+| 10     | C_PlusPlus          |
+| 11     | Objective_C         |
+| 12     | Swift               |
+| 13     | PHP                 |
+| 14     | CSS                 |
+| 15     | C                   |
+| 16     | R                   |
+| 17     | Shell               |
+| 18     | PowerShell          |
+| 19     | Rust                |
+| 20     | Dart                |
+| 21     | Matlab              |
+| 22     | VBA                 |
+| 23     | Ada                 |
+| 24     | Idris               |
+| 25     | Visual_Basic        |
+| 26     | Abap                |
+| 27     | Lua                 |
+| 28     | Groovy              |
+| 29     | Perl                |
+| 30     | Julia               |
+| 31     | Cobol               |
+| 32     | Haskell             |
+| 33     | Delphi              |
+| 34     | Assembly            |
+| 35     | SQL                 |
+| 36     | Prolog              |
+| 37     | SAS                 |
+| 38     | Scratch             |
+| 39     | Fortran             |
+| 40     | Lisp                |
+| 41     | PL_SQL              |
+| 42     | YAML                |
+| 43     | JSON                |
+| 44     | TOML                |
+| 45     | Jsonnet             |
+| 46     | Awk                 |
+| 47     | Hack                |
+| 48     | Racket              |
+| 49     | Flow                |
+| 50     | Vue                 |
+| 51     | Elixir              |
 
 ### ProtocolVersion
 

@@ -92,6 +92,12 @@ isTypeDefinition ::
    Data.ProtoLens.Field.HasField s "isTypeDefinition" a) =>
   Lens.Family2.LensLike' f s a
 isTypeDefinition = Data.ProtoLens.Field.field @"isTypeDefinition"
+language ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "language" a) =>
+  Lens.Family2.LensLike' f s a
+language = Data.ProtoLens.Field.field @"language"
 manager ::
   forall f s a.
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "manager" a) =>
