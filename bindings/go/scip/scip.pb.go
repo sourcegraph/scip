@@ -490,7 +490,7 @@ func (DiagnosticTag) EnumDescriptor() ([]byte, []int) {
 // for the `Document.language` field. The primary purpose of this enum is to
 // prevent a situation where we have a single programming language ends up with
 // multiple string representations. For example, the C++ language uses the name
-// "C_PlusPlus" in this enum and other names such as "cpp" are incompatible.
+// "CPlusPlus" in this enum and other names such as "cpp" are incompatible.
 // Feel free to send a pull-request to add missing programming languages.
 type Language int32
 

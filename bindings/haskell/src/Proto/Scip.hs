@@ -4836,7 +4836,7 @@ packedFileDescriptor
     \\EOTDiff\DLEX\DC2\r\n\
     \\tGitConfig\DLEY\DC2\SO\n\
     \\n\
-    \Handlebars\DLEZB/Z-github.com/sourcegraph/scip/bindings/go/scip/J\251\164\SOH\n\
+    \Handlebars\DLEZB/Z-github.com/sourcegraph/scip/bindings/go/scip/J\250\164\SOH\n\
     \\a\DC2\ENQ\n\
     \\NUL\219\ETX\SOH\n\
     \\130\EOT\n\
@@ -5925,12 +5925,12 @@ packedFileDescriptor
     \\ENQ\ENQ\ENQ\STX\STX\SOH\DC2\EOT\247\STX\STX\f\n\
     \\r\n\
     \\ENQ\ENQ\ENQ\STX\STX\STX\DC2\EOT\247\STX\SI\DLE\n\
-    \\215\ETX\n\
-    \\STX\ENQ\ACK\DC2\ACK\128\ETX\NUL\219\ETX\SOH\SUB\200\ETX Language standardises names of common programming languages that can be used\n\
+    \\214\ETX\n\
+    \\STX\ENQ\ACK\DC2\ACK\128\ETX\NUL\219\ETX\SOH\SUB\199\ETX Language standardises names of common programming languages that can be used\n\
     \ for the `Document.language` field. The primary purpose of this enum is to\n\
     \ prevent a situation where we have a single programming language ends up with\n\
     \ multiple string representations. For example, the C++ language uses the name\n\
-    \ \"C_PlusPlus\" in this enum and other names such as \"cpp\" are incompatible.\n\
+    \ \"CPlusPlus\" in this enum and other names such as \"cpp\" are incompatible.\n\
     \ Feel free to send a pull-request to add missing programming languages.\n\
     \\n\
     \\v\n\
