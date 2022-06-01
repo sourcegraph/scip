@@ -495,58 +495,82 @@ func (DiagnosticTag) EnumDescriptor() ([]byte, []int) {
 type Language int32
 
 const (
-	Language_UnspecifiedLanguage Language = 0
-	Language_Java                Language = 1
-	Language_Scala               Language = 2
-	Language_Kotlin              Language = 3
-	Language_Go                  Language = 4
-	Language_TypeScript          Language = 5
-	Language_JavaScript          Language = 6
-	Language_Python              Language = 7
-	Language_Ruby                Language = 8
-	Language_C_Sharp             Language = 9
-	Language_C_PlusPlus          Language = 10
-	Language_Objective_C         Language = 11
-	Language_Swift               Language = 12
-	Language_PHP                 Language = 13
-	Language_CSS                 Language = 14
-	Language_C                   Language = 15
-	Language_R                   Language = 16
-	Language_Shell               Language = 17
-	Language_PowerShell          Language = 18
-	Language_Rust                Language = 19
-	Language_Dart                Language = 20
-	Language_Matlab              Language = 21
-	Language_VBA                 Language = 22
-	Language_Ada                 Language = 23
-	Language_Idris               Language = 24
-	Language_Visual_Basic        Language = 25
-	Language_Abap                Language = 26
-	Language_Lua                 Language = 27
-	Language_Groovy              Language = 28
-	Language_Perl                Language = 29
-	Language_Julia               Language = 30
-	Language_Cobol               Language = 31
-	Language_Haskell             Language = 32
-	Language_Delphi              Language = 33
-	Language_Assembly            Language = 34
-	Language_SQL                 Language = 35
-	Language_Prolog              Language = 36
-	Language_SAS                 Language = 37
-	Language_Scratch             Language = 38
-	Language_Fortran             Language = 39
-	Language_Lisp                Language = 40
-	Language_PL_SQL              Language = 41
-	Language_YAML                Language = 42
-	Language_JSON                Language = 43
-	Language_TOML                Language = 44
-	Language_Jsonnet             Language = 45
-	Language_Awk                 Language = 46
-	Language_Hack                Language = 47
-	Language_Racket              Language = 48
-	Language_Flow                Language = 49
-	Language_Vue                 Language = 50
-	Language_Elixir              Language = 51
+	Language_UnspecifiedLanguage  Language = 0
+	Language_Java                 Language = 1
+	Language_Scala                Language = 2
+	Language_Kotlin               Language = 3
+	Language_Go                   Language = 4
+	Language_TypeScript           Language = 5
+	Language_JavaScript           Language = 6
+	Language_Python               Language = 7
+	Language_Ruby                 Language = 8
+	Language_C_Sharp              Language = 9
+	Language_C_PlusPlus           Language = 10
+	Language_Objective_C          Language = 11
+	Language_Swift                Language = 12
+	Language_PHP                  Language = 13
+	Language_CSS                  Language = 14
+	Language_C                    Language = 15
+	Language_R                    Language = 16
+	Language_Shell                Language = 17
+	Language_PowerShell           Language = 18
+	Language_Rust                 Language = 19
+	Language_Dart                 Language = 20
+	Language_Matlab               Language = 21
+	Language_VBA                  Language = 22
+	Language_Ada                  Language = 23
+	Language_Idris                Language = 24
+	Language_Visual_Basic         Language = 25
+	Language_Abap                 Language = 26
+	Language_Lua                  Language = 27
+	Language_Groovy               Language = 28
+	Language_Perl                 Language = 29
+	Language_Julia                Language = 30
+	Language_Cobol                Language = 31
+	Language_Haskell              Language = 32
+	Language_Delphi               Language = 33
+	Language_Assembly             Language = 34
+	Language_SQL                  Language = 35
+	Language_Prolog               Language = 36
+	Language_SAS                  Language = 37
+	Language_Scratch              Language = 38
+	Language_Fortran              Language = 39
+	Language_Lisp                 Language = 40
+	Language_PL_SQL               Language = 41
+	Language_YAML                 Language = 42
+	Language_JSON                 Language = 43
+	Language_TOML                 Language = 44
+	Language_Jsonnet              Language = 45
+	Language_Awk                  Language = 46
+	Language_Hack                 Language = 47
+	Language_Racket               Language = 48
+	Language_Flow                 Language = 49
+	Language_Vue                  Language = 50
+	Language_Elixir               Language = 51
+	Language_WindowsBat           Language = 52
+	Language_BibTeX               Language = 53
+	Language_Clojure              Language = 54
+	Language_Coffeescript         Language = 55
+	Language_Diff                 Language = 56
+	Language_Dockerfile           Language = 57
+	Language_Erlang               Language = 58
+	Language_F_Sharp              Language = 59
+	Language_Git                  Language = 60
+	Language_Handlebars           Language = 62
+	Language_HTML                 Language = 63
+	Language_Ini                  Language = 64
+	Language_LaTeX                Language = 65
+	Language_Less                 Language = 66
+	Language_Makefile             Language = 67
+	Language_Markdown             Language = 68
+	Language_Objective_C_PlusPlus Language = 69
+	Language_Perl6                Language = 70
+	Language_Razor                Language = 71
+	Language_SCSS                 Language = 72
+	Language_Sass                 Language = 73
+	Language_ShaderLab            Language = 74
+	Language_TeX                  Language = 75
+	Language_XSL                  Language = 76
 )
 
 // Enum value maps for Language.
@@ -604,60 +628,108 @@ var (
 		49: "Flow",
 		50: "Vue",
 		51: "Elixir",
+		52: "WindowsBat",
+		53: "BibTeX",
+		54: "Clojure",
+		55: "Coffeescript",
+		56: "Diff",
+		57: "Dockerfile",
+		58: "Erlang",
+		59: "F_Sharp",
+		60: "Git",
+		62: "Handlebars",
+		63: "HTML",
+		64: "Ini",
+		65: "LaTeX",
+		66: "Less",
+		67: "Makefile",
+		68: "Markdown",
+		69: "Objective_C_PlusPlus",
+		70: "Perl6",
+		71: "Razor",
+		72: "SCSS",
+		73: "Sass",
+		74: "ShaderLab",
+		75: "TeX",
+		76: "XSL",
 	}
 	Language_value = map[string]int32{
-		"UnspecifiedLanguage": 0,
-		"Java":                1,
-		"Scala":               2,
-		"Kotlin":              3,
-		"Go":                  4,
-		"TypeScript":          5,
-		"JavaScript":          6,
-		"Python":              7,
-		"Ruby":                8,
-		"C_Sharp":             9,
-		"C_PlusPlus":          10,
-		"Objective_C":         11,
-		"Swift":               12,
-		"PHP":                 13,
-		"CSS":                 14,
-		"C":                   15,
-		"R":                   16,
-		"Shell":               17,
-		"PowerShell":          18,
-		"Rust":                19,
-		"Dart":                20,
-		"Matlab":              21,
-		"VBA":                 22,
-		"Ada":                 23,
-		"Idris":               24,
-		"Visual_Basic":        25,
-		"Abap":                26,
-		"Lua":                 27,
-		"Groovy":              28,
-		"Perl":                29,
-		"Julia":               30,
-		"Cobol":               31,
-		"Haskell":             32,
-		"Delphi":              33,
-		"Assembly":            34,
-		"SQL":                 35,
-		"Prolog":              36,
-		"SAS":                 37,
-		"Scratch":             38,
-		"Fortran":             39,
-		"Lisp":                40,
-		"PL_SQL":              41,
-		"YAML":                42,
-		"JSON":                43,
-		"TOML":                44,
-		"Jsonnet":             45,
-		"Awk":                 46,
-		"Hack":                47,
-		"Racket":              48,
-		"Flow":                49,
-		"Vue":                 50,
-		"Elixir":              51,
+		"UnspecifiedLanguage":  0,
+		"Java":                 1,
+		"Scala":                2,
+		"Kotlin":               3,
+		"Go":                   4,
+		"TypeScript":           5,
+		"JavaScript":           6,
+		"Python":               7,
+		"Ruby":                 8,
+		"C_Sharp":              9,
+		"C_PlusPlus":           10,
+		"Objective_C":          11,
+		"Swift":                12,
+		"PHP":                  13,
+		"CSS":                  14,
+		"C":                    15,
+		"R":                    16,
+		"Shell":                17,
+		"PowerShell":           18,
+		"Rust":                 19,
+		"Dart":                 20,
+		"Matlab":               21,
+		"VBA":                  22,
+		"Ada":                  23,
+		"Idris":                24,
+		"Visual_Basic":         25,
+		"Abap":                 26,
+		"Lua":                  27,
+		"Groovy":               28,
+		"Perl":                 29,
+		"Julia":                30,
+		"Cobol":                31,
+		"Haskell":              32,
+		"Delphi":               33,
+		"Assembly":             34,
+		"SQL":                  35,
+		"Prolog":               36,
+		"SAS":                  37,
+		"Scratch":              38,
+		"Fortran":              39,
+		"Lisp":                 40,
+		"PL_SQL":               41,
+		"YAML":                 42,
+		"JSON":                 43,
+		"TOML":                 44,
+		"Jsonnet":              45,
+		"Awk":                  46,
+		"Hack":                 47,
+		"Racket":               48,
+		"Flow":                 49,
+		"Vue":                  50,
+		"Elixir":               51,
+		"WindowsBat":           52,
+		"BibTeX":               53,
+		"Clojure":              54,
+		"Coffeescript":         55,
+		"Diff":                 56,
+		"Dockerfile":           57,
+		"Erlang":               58,
+		"F_Sharp":              59,
+		"Git":                  60,
+		"Handlebars":           62,
+		"HTML":                 63,
+		"Ini":                  64,
+		"LaTeX":                65,
+		"Less":                 66,
+		"Makefile":             67,
+		"Markdown":             68,
+		"Objective_C_PlusPlus": 69,
+		"Perl6":                70,
+		"Razor":                71,
+		"SCSS":                 72,
+		"Sass":                 73,
+		"ShaderLab":            74,
+		"TeX":                  75,
+		"XSL":                  76,
 	}
 )
 
@@ -1852,7 +1924,7 @@ var file_scip_proto_rawDesc = []byte{
 	0x69, 0x66, 0x69, 0x65, 0x64, 0x44, 0x69, 0x61, 0x67, 0x6e, 0x6f, 0x73, 0x74, 0x69, 0x63, 0x54,
 	0x61, 0x67, 0x10, 0x00, 0x12, 0x0f, 0x0a, 0x0b, 0x55, 0x6e, 0x6e, 0x65, 0x63, 0x65, 0x73, 0x73,
 	0x61, 0x72, 0x79, 0x10, 0x01, 0x12, 0x0e, 0x0a, 0x0a, 0x44, 0x65, 0x70, 0x72, 0x65, 0x63, 0x61,
-	0x74, 0x65, 0x64, 0x10, 0x02, 0x2a, 0xe2, 0x04, 0x0a, 0x08, 0x4c, 0x61, 0x6e, 0x67, 0x75, 0x61,
+	0x74, 0x65, 0x64, 0x10, 0x02, 0x2a, 0x92, 0x07, 0x0a, 0x08, 0x4c, 0x61, 0x6e, 0x67, 0x75, 0x61,
 	0x67, 0x65, 0x12, 0x17, 0x0a, 0x13, 0x55, 0x6e, 0x73, 0x70, 0x65, 0x63, 0x69, 0x66, 0x69, 0x65,
 	0x64, 0x4c, 0x61, 0x6e, 0x67, 0x75, 0x61, 0x67, 0x65, 0x10, 0x00, 0x12, 0x08, 0x0a, 0x04, 0x4a,
 	0x61, 0x76, 0x61, 0x10, 0x01, 0x12, 0x09, 0x0a, 0x05, 0x53, 0x63, 0x61, 0x6c, 0x61, 0x10, 0x02,
@@ -1890,7 +1962,26 @@ var file_scip_proto_rawDesc = []byte{
 	0x41, 0x77, 0x6b, 0x10, 0x2e, 0x12, 0x08, 0x0a, 0x04, 0x48, 0x61, 0x63, 0x6b, 0x10, 0x2f, 0x12,
 	0x0a, 0x0a, 0x06, 0x52, 0x61, 0x63, 0x6b, 0x65, 0x74, 0x10, 0x30, 0x12, 0x08, 0x0a, 0x04, 0x46,
 	0x6c, 0x6f, 0x77, 0x10, 0x31, 0x12, 0x07, 0x0a, 0x03, 0x56, 0x75, 0x65, 0x10, 0x32, 0x12, 0x0a,
-	0x0a, 0x06, 0x45, 0x6c, 0x69, 0x78, 0x69, 0x72, 0x10, 0x33, 0x42, 0x2f, 0x5a, 0x2d, 0x67, 0x69,
+	0x0a, 0x06, 0x45, 0x6c, 0x69, 0x78, 0x69, 0x72, 0x10, 0x33, 0x12, 0x0e, 0x0a, 0x0a, 0x57, 0x69,
+	0x6e, 0x64, 0x6f, 0x77, 0x73, 0x42, 0x61, 0x74, 0x10, 0x34, 0x12, 0x0a, 0x0a, 0x06, 0x42, 0x69,
+	0x62, 0x54, 0x65, 0x58, 0x10, 0x35, 0x12, 0x0b, 0x0a, 0x07, 0x43, 0x6c, 0x6f, 0x6a, 0x75, 0x72,
+	0x65, 0x10, 0x36, 0x12, 0x10, 0x0a, 0x0c, 0x43, 0x6f, 0x66, 0x66, 0x65, 0x65, 0x73, 0x63, 0x72,
+	0x69, 0x70, 0x74, 0x10, 0x37, 0x12, 0x08, 0x0a, 0x04, 0x44, 0x69, 0x66, 0x66, 0x10, 0x38, 0x12,
+	0x0e, 0x0a, 0x0a, 0x44, 0x6f, 0x63, 0x6b, 0x65, 0x72, 0x66, 0x69, 0x6c, 0x65, 0x10, 0x39, 0x12,
+	0x0a, 0x0a, 0x06, 0x45, 0x72, 0x6c, 0x61, 0x6e, 0x67, 0x10, 0x3a, 0x12, 0x0b, 0x0a, 0x07, 0x46,
+	0x5f, 0x53, 0x68, 0x61, 0x72, 0x70, 0x10, 0x3b, 0x12, 0x07, 0x0a, 0x03, 0x47, 0x69, 0x74, 0x10,
+	0x3c, 0x12, 0x0e, 0x0a, 0x0a, 0x48, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x62, 0x61, 0x72, 0x73, 0x10,
+	0x3e, 0x12, 0x08, 0x0a, 0x04, 0x48, 0x54, 0x4d, 0x4c, 0x10, 0x3f, 0x12, 0x07, 0x0a, 0x03, 0x49,
+	0x6e, 0x69, 0x10, 0x40, 0x12, 0x09, 0x0a, 0x05, 0x4c, 0x61, 0x54, 0x65, 0x58, 0x10, 0x41, 0x12,
+	0x08, 0x0a, 0x04, 0x4c, 0x65, 0x73, 0x73, 0x10, 0x42, 0x12, 0x0c, 0x0a, 0x08, 0x4d, 0x61, 0x6b,
+	0x65, 0x66, 0x69, 0x6c, 0x65, 0x10, 0x43, 0x12, 0x0c, 0x0a, 0x08, 0x4d, 0x61, 0x72, 0x6b, 0x64,
+	0x6f, 0x77, 0x6e, 0x10, 0x44, 0x12, 0x18, 0x0a, 0x14, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x69,
+	0x76, 0x65, 0x5f, 0x43, 0x5f, 0x50, 0x6c, 0x75, 0x73, 0x50, 0x6c, 0x75, 0x73, 0x10, 0x45, 0x12,
+	0x09, 0x0a, 0x05, 0x50, 0x65, 0x72, 0x6c, 0x36, 0x10, 0x46, 0x12, 0x09, 0x0a, 0x05, 0x52, 0x61,
+	0x7a, 0x6f, 0x72, 0x10, 0x47, 0x12, 0x08, 0x0a, 0x04, 0x53, 0x43, 0x53, 0x53, 0x10, 0x48, 0x12,
+	0x08, 0x0a, 0x04, 0x53, 0x61, 0x73, 0x73, 0x10, 0x49, 0x12, 0x0d, 0x0a, 0x09, 0x53, 0x68, 0x61,
+	0x64, 0x65, 0x72, 0x4c, 0x61, 0x62, 0x10, 0x4a, 0x12, 0x07, 0x0a, 0x03, 0x54, 0x65, 0x58, 0x10,
+	0x4b, 0x12, 0x07, 0x0a, 0x03, 0x58, 0x53, 0x4c, 0x10, 0x4c, 0x42, 0x2f, 0x5a, 0x2d, 0x67, 0x69,
 	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x67,
 	0x72, 0x61, 0x70, 0x68, 0x2f, 0x73, 0x63, 0x69, 0x70, 0x2f, 0x62, 0x69, 0x6e, 0x64, 0x69, 0x6e,
 	0x67, 0x73, 0x2f, 0x67, 0x6f, 0x2f, 0x73, 0x63, 0x69, 0x70, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f,
