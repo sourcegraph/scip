@@ -1,7 +1,9 @@
 package repro
 
 import (
+	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
@@ -17,6 +19,11 @@ func (i *identifier) occurrence(roles scip.SymbolRole) *scip.Occurrence {
 func (s *reproSourceFile) symbols() []*scip.SymbolInformation {
 	var result []*scip.SymbolInformation
 	for _, def := range s.definitions {
+		fmt.Println("def.name.value", def.name.value)
+		if strings.Index(def.name.value, "NoSymbolInformation") >= 0 {
+			fmt.Println("BOOM")
+			continue
+		}
 		documentation := []string{"signature of " + def.name.value}
 		if def.docstring != "" {
 			documentation = append(documentation, def.docstring)
