@@ -42,11 +42,12 @@ reported for a document.
 
 Document defines the metadata about a source file on disk.
 
-| Name                     | Type              | Description                                                                                                                                                                                 |
-| ------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **relative_path**        | string            | (Required) Path to the text document relative to the directory supplied in the associated `Metadata.project_root`. Not URI-encoded. This value should not begin with a directory separator. |
-| repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                       |
-| repeated **symbols**     | SymbolInformation | Symbols that are defined within this document.                                                                                                                                              |
+| Name                     | Type              | Description                                                                                                                                                                                                                                                                        |
+| ------------------------ | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **language**             | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming langauge, including ones that are not specified by the `Language` enum. |
+| **relative_path**        | string            | (Required) Path to the text document relative to the directory supplied in the associated `Metadata.project_root`. Not URI-encoded. This value should not begin with a directory separator.                                                                                        |
+| repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                              |
+| repeated **symbols**     | SymbolInformation | Symbols that are defined within this document.                                                                                                                                                                                                                                     |
 
 ### Index
 
@@ -189,6 +190,112 @@ docstring or what package it's defined it.
 | 0      | UnspecifiedDiagnosticTag |
 | 1      | Unnecessary              |
 | 2      | Deprecated               |
+
+### Language
+
+Language standardises names of common programming languages that can be used
+for the `Document.language` field. The primary purpose of this enum is to
+prevent a situation where we have a single programming language ends up with
+multiple string representations. For example, the C++ language uses the name
+"CPlusPlus" in this enum and other names such as "cpp" are incompatible.
+Feel free to send a pull-request to add missing programming languages.
+
+| Number | Name                | Description                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | UnspecifiedLanguage |
+| 60     | ABAP                |
+| 49     | APL                 |
+| 39     | Ada                 |
+| 45     | Agda                |
+| 86     | AsciiDoc            |
+| 58     | Assembly            |
+| 66     | Awk                 |
+| 68     | Bat                 |
+| 81     | BibTeX              |
+| 34     | C                   |
+| 59     | COBOL               |
+| 35     | CPP                 | C++ (the name "CPP" was chosen for consistency with LSP)                                                                                                                                                                                                                                                                                                                                    |
+| 26     | CSS                 |
+| 1      | CSharp              |
+| 8      | Clojure             |
+| 21     | Coffeescript        |
+| 9      | CommonLisp          |
+| 47     | Coq                 |
+| 3      | Dart                |
+| 57     | Delphi              |
+| 88     | Diff                |
+| 80     | Dockerfile          |
+| 50     | Dyalog              |
+| 17     | Elixir              |
+| 18     | Erlang              |
+| 42     | FSharp              |
+| 65     | Fish                |
+| 24     | Flow                |
+| 56     | Fortran             |
+| 91     | Git_Commit          |
+| 89     | Git_Config          |
+| 92     | Git_Rebase          |
+| 33     | Go                  |
+| 7      | Groovy              |
+| 30     | HTML                |
+| 20     | Hack                |
+| 90     | Handlebars          |
+| 44     | Haskell             |
+| 46     | Idris               |
+| 72     | Ini                 |
+| 51     | J                   |
+| 75     | JSON                |
+| 6      | Java                |
+| 22     | JavaScript          |
+| 93     | JavaScriptReact     |
+| 76     | Jsonnet             |
+| 55     | Julia               |
+| 4      | Kotlin              |
+| 83     | LaTeX               |
+| 48     | Lean                |
+| 27     | Less                |
+| 12     | Lua                 |
+| 79     | Makefile            |
+| 84     | Markdown            |
+| 52     | Matlab              |
+| 77     | Nix                 |
+| 41     | OCaml               |
+| 36     | Objective_C         |
+| 37     | Objective_CPP       |
+| 19     | PHP                 |
+| 70     | PLSQL               |
+| 13     | Perl                |
+| 67     | PowerShell          |
+| 71     | Prolog              |
+| 15     | Python              |
+| 54     | R                   |
+| 11     | Racket              |
+| 14     | Raku                |
+| 62     | Razor               |
+| 85     | ReST                |
+| 16     | Ruby                |
+| 40     | Rust                |
+| 61     | SAS                 |
+| 29     | SCSS                |
+| 43     | SML                 |
+| 69     | SQL                 |
+| 28     | Sass                |
+| 5      | Scala               |
+| 10     | Scheme              |
+| 64     | ShellScript         | Bash                                                                                                                                                                                                                                                                                                                                                                                        |
+| 78     | Skylark             |
+| 2      | Swift               |
+| 73     | TOML                |
+| 82     | TeX                 |
+| 23     | TypeScript          |
+| 94     | TypeScriptReact     |
+| 63     | VisualBasic         |
+| 25     | Vue                 |
+| 53     | Wolfram             |
+| 31     | XML                 |
+| 32     | XSL                 |
+| 74     | YAML                |
+| 38     | Zig                 | NextLanguage = 95; Steps add a new language: 1. Copy-paste the "NextLanguage = N" line above 2. Increment "NextLanguage = N" to "NextLanguage = N+1" 3. Replace "NextLanguage = N" with the name of the new language. 4. Move the new language to the correct line above using alphabetical order 5. (optional) Add a brief comment behind the language if the name is not self-explanatory |
 
 ### ProtocolVersion
 

@@ -74,6 +74,102 @@ export namespace scip {
         Unnecessary = 1,
         Deprecated = 2
     }
+    export enum Language {
+        UnspecifiedLanguage = 0,
+        ABAP = 60,
+        APL = 49,
+        Ada = 39,
+        Agda = 45,
+        AsciiDoc = 86,
+        Assembly = 58,
+        Awk = 66,
+        Bat = 68,
+        BibTeX = 81,
+        C = 34,
+        COBOL = 59,
+        CPP = 35,
+        CSS = 26,
+        CSharp = 1,
+        Clojure = 8,
+        Coffeescript = 21,
+        CommonLisp = 9,
+        Coq = 47,
+        Dart = 3,
+        Delphi = 57,
+        Diff = 88,
+        Dockerfile = 80,
+        Dyalog = 50,
+        Elixir = 17,
+        Erlang = 18,
+        FSharp = 42,
+        Fish = 65,
+        Flow = 24,
+        Fortran = 56,
+        Git_Commit = 91,
+        Git_Config = 89,
+        Git_Rebase = 92,
+        Go = 33,
+        Groovy = 7,
+        HTML = 30,
+        Hack = 20,
+        Handlebars = 90,
+        Haskell = 44,
+        Idris = 46,
+        Ini = 72,
+        J = 51,
+        JSON = 75,
+        Java = 6,
+        JavaScript = 22,
+        JavaScriptReact = 93,
+        Jsonnet = 76,
+        Julia = 55,
+        Kotlin = 4,
+        LaTeX = 83,
+        Lean = 48,
+        Less = 27,
+        Lua = 12,
+        Makefile = 79,
+        Markdown = 84,
+        Matlab = 52,
+        Nix = 77,
+        OCaml = 41,
+        Objective_C = 36,
+        Objective_CPP = 37,
+        PHP = 19,
+        PLSQL = 70,
+        Perl = 13,
+        PowerShell = 67,
+        Prolog = 71,
+        Python = 15,
+        R = 54,
+        Racket = 11,
+        Raku = 14,
+        Razor = 62,
+        ReST = 85,
+        Ruby = 16,
+        Rust = 40,
+        SAS = 61,
+        SCSS = 29,
+        SML = 43,
+        SQL = 69,
+        Sass = 28,
+        Scala = 5,
+        Scheme = 10,
+        ShellScript = 64,
+        Skylark = 78,
+        Swift = 2,
+        TOML = 73,
+        TeX = 82,
+        TypeScript = 23,
+        TypeScriptReact = 94,
+        VisualBasic = 63,
+        Vue = 25,
+        Wolfram = 53,
+        XML = 31,
+        XSL = 32,
+        YAML = 74,
+        Zig = 38
+    }
     export class Index extends pb_1.Message {
         constructor(data?: any[] | {
             metadata?: Metadata;
@@ -435,6 +531,7 @@ export namespace scip {
     }
     export class Document extends pb_1.Message {
         constructor(data?: any[] | {
+            language?: string;
             relative_path?: string;
             occurrences?: Occurrence[];
             symbols?: SymbolInformation[];
@@ -442,6 +539,9 @@ export namespace scip {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3], []);
             if (!Array.isArray(data) && typeof data == "object") {
+                if ("language" in data && data.language != undefined) {
+                    this.language = data.language;
+                }
                 if ("relative_path" in data && data.relative_path != undefined) {
                     this.relative_path = data.relative_path;
                 }
@@ -452,6 +552,12 @@ export namespace scip {
                     this.symbols = data.symbols;
                 }
             }
+        }
+        get language() {
+            return pb_1.Message.getField(this, 4) as string;
+        }
+        set language(value: string) {
+            pb_1.Message.setField(this, 4, value);
         }
         get relative_path() {
             return pb_1.Message.getField(this, 1) as string;
@@ -472,11 +578,15 @@ export namespace scip {
             pb_1.Message.setRepeatedWrapperField(this, 3, value);
         }
         static fromObject(data: {
+            language?: string;
             relative_path?: string;
             occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
             symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
         }) {
             const message = new Document({});
+            if (data.language != null) {
+                message.language = data.language;
+            }
             if (data.relative_path != null) {
                 message.relative_path = data.relative_path;
             }
@@ -490,10 +600,14 @@ export namespace scip {
         }
         toObject() {
             const data: {
+                language?: string;
                 relative_path?: string;
                 occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
                 symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
             } = {};
+            if (this.language != null) {
+                data.language = this.language;
+            }
             if (this.relative_path != null) {
                 data.relative_path = this.relative_path;
             }
@@ -509,6 +623,8 @@ export namespace scip {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
+            if (typeof this.language === "string" && this.language.length)
+                writer.writeString(4, this.language);
             if (typeof this.relative_path === "string" && this.relative_path.length)
                 writer.writeString(1, this.relative_path);
             if (this.occurrences !== undefined)
@@ -524,6 +640,9 @@ export namespace scip {
                 if (reader.isEndGroup())
                     break;
                 switch (reader.getFieldNumber()) {
+                    case 4:
+                        message.language = reader.readString();
+                        break;
                     case 1:
                         message.relative_path = reader.readString();
                         break;
