@@ -78,6 +78,18 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 				g.symbolToResultSet[exportedSymbol.Symbol] = g.emitResultSet(exportedSymbol, "export")
 			}
 		}
+		for _, occ := range document.Occurrences {
+			if !SymbolRole_Definition.Matches(occ) {
+				continue
+			}
+			if IsLocalSymbol(occ.Symbol) {
+				continue
+			}
+			if _, ok := g.symbolToResultSet[occ.Symbol]; ok {
+				continue
+			}
+			g.symbolToResultSet[occ.Symbol] = g.emitResultSet(&SymbolInformation{Symbol: occ.Symbol}, "export")
+		}
 	}
 
 	// Pass 2: emit ranges for all documents.
@@ -192,6 +204,19 @@ func (g *graph) emitDocument(index *Index, doc *Document) {
 				g.emitMonikerVertex(relationship.Symbol, "implementation", infoIDs.ResultSet)
 			}
 		}
+	}
+
+	for _, occ := range doc.Occurrences {
+		if !SymbolRole_Definition.Matches(occ) {
+			continue
+		}
+		if !IsLocalSymbol(occ.Symbol) {
+			continue
+		}
+		if _, ok := localSymbolInformationTable[occ.Symbol]; ok {
+			continue
+		}
+		localSymbolInformationTable[occ.Symbol] = g.emitResultSet(&SymbolInformation{Symbol: occ.Symbol}, "local")
 	}
 
 	var rangeIDs []int

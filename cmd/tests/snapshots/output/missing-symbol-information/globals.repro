@@ -1,0 +1,4 @@
+ definition NoSymbolInformation#
+#           ^^^^^^^^^^^^^^^^^^^^ definition globals.repro/NoSymbolInformation#
+ reference NoSymbolInformation#
+#          ^^^^^^^^^^^^^^^^^^^^ reference globals.repro/NoSymbolInformation#
