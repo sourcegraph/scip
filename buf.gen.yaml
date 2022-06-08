@@ -15,4 +15,4 @@ plugins:
     out: ./bindings/typescript/
   - name: rust
     path: ./.bin/bin/protoc-gen-rust
-    out: ./bindings/rust/src/
+    out: ./bindings/rust/src/generated/
