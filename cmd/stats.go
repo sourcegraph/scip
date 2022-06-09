@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/urfave/cli/v2"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -12,8 +13,25 @@ import (
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
-func statsMain(parsedArgs map[string]interface{}) error {
-	from := parsedArgs["--from"].(string)
+type statsFlags struct {
+	from string
+}
+
+func statsCommand() cli.Command {
+	var statsFlags statsFlags
+	stats := cli.Command{
+		Name:  "stats",
+		Usage: "Output useful statistics about a SCIP index",
+		Flags: []cli.Flag{fromFlag(&statsFlags.from)},
+		Action: func(c *cli.Context) error {
+			return statsMain(statsFlags)
+		},
+	}
+	return stats
+}
+
+func statsMain(flags statsFlags) error {
+	from := flags.from
 	index, err := readFromOption(from)
 	if err != nil {
 		return err

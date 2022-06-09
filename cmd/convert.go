@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/urfave/cli/v2"
 	"io"
 	"os"
 	"strings"
@@ -11,14 +12,40 @@ import (
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
-func convertMain(parsedArgs map[string]interface{}) error {
-	scipIndex, err := readFromOption(parsedArgs["--from"].(string))
+type convertFlags struct {
+	from string
+	to   string
+}
+
+func convertCommand() cli.Command {
+	var convertFlags convertFlags
+	convert := cli.Command{
+		Name:  "convert",
+		Usage: "Convert a SCIP index to an LSIF index",
+		Flags: []cli.Flag{
+			fromFlag(&convertFlags.from),
+			&cli.StringFlag{
+				Name:        "to",
+				Usage:       "Output path for LSIF index",
+				Destination: &convertFlags.to,
+				DefaultText: "dump.lsif",
+			},
+		},
+		Action: func(c *cli.Context) error {
+			return convertMain(convertFlags)
+		},
+	}
+	return convert
+}
+
+func convertMain(flags convertFlags) error {
+	scipIndex, err := readFromOption(flags.from)
 	if err != nil {
 		return err
 	}
 
 	var lsifWriter io.Writer
-	toPath := parsedArgs["--to"].(string)
+	toPath := flags.to
 	if toPath == "-" {
 		lsifWriter = os.Stdout
 	} else if !strings.HasSuffix(toPath, ".lsif") {
