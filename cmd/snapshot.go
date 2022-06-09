@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/urfave/cli/v2"
 	"os"
 	"path/filepath"
+
+	"github.com/urfave/cli/v2"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"

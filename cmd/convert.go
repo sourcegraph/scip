@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/urfave/cli/v2"
 	"io"
 	"os"
 	"strings"
+
+	"github.com/urfave/cli/v2"
 
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
 	"github.com/sourcegraph/sourcegraph/lib/errors"

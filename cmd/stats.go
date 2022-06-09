@@ -3,14 +3,16 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/urfave/cli/v2"
 	"net/url"
 	"os"
 	"path/filepath"
 
 	"github.com/hhatto/gocloc"
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/urfave/cli/v2"
+
 	"github.com/sourcegraph/sourcegraph/lib/errors"
+
+	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
 type statsFlags struct {
