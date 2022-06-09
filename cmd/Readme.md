@@ -14,6 +14,13 @@ This repository includes:
 - The [`scip` CLI](#scip-cli-reference) makes SCIP indexes
   a breeze to work with.
 
+If you're interested in better understanding the motivation behind SCIP,
+check out the [announcement blog post](https://about.sourcegraph.com/blog/announcing-scip).
+
+If you're interested in writing a new indexer that emits SCIP,
+check out our documentation on
+[how to write an indexer](https://docs.sourcegraph.com/code_intelligence/explanations/writing_an_indexer).
+
 <!-- TODO: Link to announcement blog post for "Why SCIP?"
      or copy content from it here once the post is ready. -->
 
