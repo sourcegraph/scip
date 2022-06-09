@@ -21,9 +21,6 @@ If you're interested in writing a new indexer that emits SCIP,
 check out our documentation on
 [how to write an indexer](https://docs.sourcegraph.com/code_intelligence/explanations/writing_an_indexer).
 
-<!-- TODO: Link to announcement blog post for "Why SCIP?"
-     or copy content from it here once the post is ready. -->
-
 <!--
 Workaround: This file is under cmd/ and symlinked from the root
 instead of being present at the root because:
