@@ -23,6 +23,7 @@
 | 4      | Method            |
 | 5      | TypeParameter     |
 | 6      | Parameter         |
+| 9      | Macro             |
 | 7      | Meta              | Can be used for any purpose.                 |
 | 8      | Local             |
 

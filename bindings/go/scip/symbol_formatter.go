@@ -81,6 +81,9 @@ func (f *SymbolFormatter) FormatSymbol(symbol *Symbol) string {
 		case Descriptor_Meta:
 			descriptor.WriteString(desc.Name)
 			descriptor.WriteRune(':')
+		case Descriptor_Macro:
+			descriptor.WriteString(desc.Name)
+			descriptor.WriteRune('!')
 		case Descriptor_Local:
 			descriptor.WriteString(desc.Name)
 		}

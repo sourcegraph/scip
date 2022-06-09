@@ -83,6 +83,7 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
                             }
                             descriptor::Suffix::TypeParameter => format!("[{}]", desc.name),
                             descriptor::Suffix::Parameter => format!("({})", desc.name),
+                            descriptor::Suffix::Macro => format!("{}!", desc.name),
                             descriptor::Suffix::Meta => format!("{}:", desc.name),
                             descriptor::Suffix::Local => format!("{}", desc.name),
                             descriptor::Suffix::UnspecifiedSuffix => return None,
