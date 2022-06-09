@@ -3,7 +3,7 @@
 SCIP (pronounciation: "skip") is a language-agnostic protocol
 for indexing source code,
 which can be used to power code navigation functionality
-such as Go to Definition, Find References, and Find Implementations.
+such as Go to definition, Find references, and Find implementations.
 
 This repository includes:
 
