@@ -3,7 +3,7 @@
 SCIP (pronounciation: "skip") is a language-agnostic protocol
 for indexing source code,
 which can be used to power code navigation functionality
-such as Go to Definition, Find References, and Find Implementations.
+such as Go to definition, Find references, and Find implementations.
 
 This repository includes:
 
@@ -13,6 +13,13 @@ This repository includes:
 - Auto-generated bindings for TypeScript, Rust and Haskell.
 - The [`scip` CLI](#scip-cli-reference) makes SCIP indexes
   a breeze to work with.
+
+If you're interested in better understanding the motivation behind SCIP,
+check out the [announcement blog post](https://about.sourcegraph.com/blog/announcing-scip).
+
+If you're interested in writing a new indexer that emits SCIP,
+check out our documentation on
+[how to write an indexer](https://docs.sourcegraph.com/code_intelligence/explanations/writing_an_indexer).
 
 <!-- TODO: Link to announcement blog post for "Why SCIP?"
      or copy content from it here once the post is ready. -->
