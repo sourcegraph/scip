@@ -55,6 +55,8 @@ GLOBAL OPTIONS:
    --version, -v  Print the current version and exit. (default: false)
 ```
 
+### `scip convert`
+
 ```
 NAME:
    scip convert - Convert a SCIP index to an LSIF index
@@ -66,6 +68,8 @@ OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
    --to value    Output path for LSIF index (default: dump.lsif)
 ```
+
+### `scip snapshot`
 
 ```
 NAME:
@@ -84,6 +88,8 @@ OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
    --to value    Path to output directory for snapshot files (default: scip-snapshot)
 ```
+
+### `scip stats`
 
 ```
 NAME:
