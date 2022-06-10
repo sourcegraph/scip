@@ -54,6 +54,6 @@ func fromFlag(storage *string) *cli.StringFlag {
 		Name:        "from",
 		Usage:       "Path to SCIP index file",
 		Destination: storage,
-		DefaultText: "index.scip",
+		Value: "index.scip",
 	}
 }

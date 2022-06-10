@@ -29,7 +29,7 @@ func convertCommand() cli.Command {
 				Name:        "to",
 				Usage:       "Output path for LSIF index",
 				Destination: &convertFlags.to,
-				DefaultText: "dump.lsif",
+				Value: "dump.lsif",
 			},
 		},
 		Action: func(c *cli.Context) error {
