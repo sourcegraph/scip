@@ -2,11 +2,12 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
-	docopt "github.com/docopt/docopt-go"
 	"github.com/stretchr/testify/require"
 
 	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
@@ -16,31 +17,36 @@ import (
 	"github.com/sourcegraph/scip/cmd/tests/reprolang/bindings/go/repro"
 )
 
-func TestArgumentParsing(t *testing.T) {
-	type argMap = map[string]any
-	testCases := []struct {
-		argv []string
-		keys argMap
-	}{
-		{[]string{"-h"}, argMap{"--help": true}},
-		{[]string{"--help"}, argMap{"--help": true}},
-		{[]string{"convert"}, argMap{"--from": "index.scip", "--to": "dump.lsif"}},
-		{[]string{"convert", "--from", "tmp.scip"}, argMap{"--from": "tmp.scip"}},
-		{[]string{"convert", "--from=tmp.scip"}, argMap{"--from": "tmp.scip"}},
-		{[]string{"convert", "--to=tmp.lsif"}, argMap{"--to": "tmp.lsif"}},
-		{[]string{"convert", "--from=tmp.scip", "--to=tmp.lsif"}, argMap{"--from": "tmp.scip", "--to": "tmp.lsif"}},
-		{[]string{"convert", "--to=tmp.lsif", "--from=tmp.scip"}, argMap{"--from": "tmp.scip", "--to": "tmp.lsif"}},
+func TestReadmeInSync(t *testing.T) {
+	app := scipApp()
+	readmeBytes, err := os.ReadFile(filepath.Join("..", "Readme.md"))
+	require.Nil(t, err)
+	readme := string(readmeBytes)
+
+	check := func(args []string, commandName string) {
+		r, w, err := os.Pipe()
+		require.Nil(t, err)
+		origStdout := os.Stdout
+		os.Stdout = w
+		defer func() { os.Stdout = origStdout }()
+
+		require.Nil(t, app.Run(args))
+		_, err = w.Write([]byte{0}) // needed for Read below to terminate
+		require.Nil(t, err)
+		helpBytes := make([]byte, 1024*1024)
+		n, err := r.Read(helpBytes)
+		helpBytes = helpBytes[:n-1] // ignore NULL at end
+		require.Nil(t, err)
+		help := strings.TrimSpace(string(helpBytes))
+		require.Truef(t, strings.Contains(readme, help),
+			"Readme.md missing help text %s for %s.\nRun `%s` and paste the output in the Readme.",
+			help, commandName, strings.Join(append([]string{"scip"}, args...), " "))
 	}
-	parser := docopt.Parser{SkipHelpFlags: true}
-	for _, testCase := range testCases {
-		parsedArgs, err := parser.ParseArgs(helpText(), testCase.argv, "")
-		if testCase.keys == nil {
-			require.Error(t, err)
-			continue
-		}
-		for k, v := range testCase.keys {
-			require.Equal(t, v, parsedArgs[k])
-		}
+
+	check([]string{"--help"}, "scip")
+
+	for _, command := range commands() {
+		check([]string{command.Name, "--help"}, fmt.Sprintf("subcommand %s", command.Name))
 	}
 }
 

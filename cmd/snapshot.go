@@ -5,17 +5,49 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/urfave/cli/v2"
+
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
 )
 
-func snapshotMain(parsedArgs map[string]interface{}) error {
-	from := parsedArgs["--from"].(string)
+type snapshotFlags struct {
+	from   string
+	output string
+}
+
+func snapshotCommand() cli.Command {
+	var snapshotFlags snapshotFlags
+	snapshot := cli.Command{
+		Name:  "snapshot",
+		Usage: "Generate snapshot files for golden testing",
+		Description: `The snapshot subcommand generates snapshot files which
+can be use for inspecting the output of an index in a
+visual way. Occurrences are marked with caret signs (^)
+and symbol information.`,
+		Flags: []cli.Flag{
+			fromFlag(&snapshotFlags.from),
+			&cli.StringFlag{
+				Name:        "to",
+				Usage:       "Path to output directory for snapshot files",
+				Destination: &snapshotFlags.output,
+				DefaultText: "scip-snapshot",
+			},
+		},
+		Action: func(c *cli.Context) error {
+			return snapshotMain(snapshotFlags)
+		},
+	}
+	return snapshot
+}
+
+func snapshotMain(flags snapshotFlags) error {
+	from := flags.from
 	index, err := readFromOption(from)
 	if err != nil {
 		return err
 	}
-	output := parsedArgs["--output"].(string)
+	output := flags.output
 	err = os.RemoveAll(output)
 	if err != nil {
 		return err
