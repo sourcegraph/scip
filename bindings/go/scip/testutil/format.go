@@ -106,6 +106,9 @@ func FormatSnapshot(
 			if info, ok := symtab[occ.Symbol]; ok && isDefinition {
 				prefix := "\n" + commentSyntax + strings.Repeat(" ", int(pos.Start.Character))
 				for _, documentation := range info.Documentation {
+					// At least get the first line of documentation if there is leading whitespace
+					documentation = strings.TrimSpace(documentation)
+
 					b.WriteString(prefix)
 					b.WriteString("documentation ")
 					truncatedDocumentation := documentation
