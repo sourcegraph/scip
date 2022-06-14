@@ -31,7 +31,7 @@ and symbol information.`,
 				Name:        "to",
 				Usage:       "Path to output directory for snapshot files",
 				Destination: &snapshotFlags.output,
-				DefaultText: "scip-snapshot",
+				Value: "scip-snapshot",
 			},
 		},
 		Action: func(c *cli.Context) error {
