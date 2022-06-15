@@ -4868,7 +4868,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\245\169\SOH\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\128\170\SOH\n\
     \\a\DC2\ENQ\n\
     \\NUL\230\ETX\SOH\n\
     \\130\EOT\n\
@@ -5111,8 +5111,8 @@ packedFileDescriptor
     \\ENQ\EOT\ETX\STX\ETX\SOH\DC2\ETXR\GS$\n\
     \\f\n\
     \\ENQ\EOT\ETX\STX\ETX\ETX\DC2\ETXR'(\n\
-    \\231\f\n\
-    \\STX\EOT\EOT\DC2\EOTs\NULw\SOH\SUB\218\f Symbol is similar to a URI, it identifies a class, method, or a local\n\
+    \\242\f\n\
+    \\STX\EOT\EOT\DC2\EOTs\NULw\SOH\SUB\229\f Symbol is similar to a URI, it identifies a class, method, or a local\n\
     \ variable. `SymbolInformation` contains rich metadata about symbols such as\n\
     \ the docstring.\n\
     \\n\
@@ -5125,8 +5125,8 @@ packedFileDescriptor
     \   <manager>              ::= same as above, use the placeholder '.' to indicate an empty value\n\
     \   <package-name>         ::= same as above\n\
     \   <version>              ::= same as above\n\
-    \   <descriptor>           ::= <package> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>\n\
-    \   <package>              ::= <name> '/'\n\
+    \   <descriptor>           ::= <package-descriptor> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>\n\
+    \   <package-descriptor>   ::= <name> '/'\n\
     \   <type>                 ::= <name> '#'\n\
     \   <term>                 ::= <name> '.'\n\
     \   <meta>                 ::= <name> ':'\n\
