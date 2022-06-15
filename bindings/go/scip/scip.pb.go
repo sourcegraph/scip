@@ -1196,8 +1196,8 @@ func (x *Document) GetSymbols() []*SymbolInformation {
 //   <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
 //   <package-name>         ::= same as above
 //   <version>              ::= same as above
-//   <descriptor>           ::= <package> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
-//   <package>              ::= <name> '/'
+//   <descriptor>           ::= <package-descriptor> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
+//   <package-descriptor>   ::= <name> '/'
 //   <type>                 ::= <name> '#'
 //   <term>                 ::= <name> '.'
 //   <meta>                 ::= <name> ':'
