@@ -97,8 +97,8 @@ message Document {
 //   <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
 //   <package-name>         ::= same as above
 //   <version>              ::= same as above
-//   <descriptor>           ::= <package-descriptor> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
-//   <package-descriptor>   ::= <name> '/'
+//   <descriptor>           ::= <module> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
+//   <module>               ::= <name> '/'
 //   <type>                 ::= <name> '#'
 //   <term>                 ::= <name> '.'
 //   <meta>                 ::= <name> ':'
@@ -119,6 +119,9 @@ message Symbol {
   repeated Descriptor descriptors = 3;
 }
 
+// Unit of packaging and distribution.
+//
+// NOTE: This corresponds to a module in Go and JVM languages.
 message Package {
   string manager = 1;
   string name = 2;
@@ -127,8 +130,14 @@ message Package {
 
 message Descriptor {
   enum Suffix {
+    option allow_alias = true;
     UnspecifiedSuffix = 0;
-    Package = 1;
+    // Unit of code abstraction and/or namespacing.
+    //
+    // NOTE: This corresponds to a package in Go and JVM languages.
+    Module = 1;
+    // Use Module instead.
+    Package = 1 [deprecated=true];
     Type = 2;
     Term = 3;
     Method = 4;

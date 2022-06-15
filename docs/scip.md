@@ -13,17 +13,24 @@
 
 #### Suffix
 
-| Number | Name              | Description                  |
-| ------ | ----------------- | ---------------------------- |
+| Number | Name              | Description                                  |
+| ------ | ----------------- | -------------------------------------------- |
 | 0      | UnspecifiedSuffix |
-| 1      | Package           |
+| 1      | Module            | Unit of code abstraction and/or namespacing. |
+| 1      | Package           | Use Module instead.                          |
 | 2      | Type              |
 | 3      | Term              |
 | 4      | Method            |
 | 5      | TypeParameter     |
 | 6      | Parameter         |
-| 7      | Meta              | Can be used for any purpose. |
+| 7      | Meta              | Can be used for any purpose.                 |
 | 8      | Local             |
+
+Additional notes on **Module**:
+
+Unit of code abstraction and/or namespacing.
+
+NOTE: This corresponds to a package in Go and JVM languages.
 
 ### Diagnostic
 
@@ -110,6 +117,10 @@ improvements make up for it.
 
 ### Package
 
+Unit of packaging and distribution.
+
+NOTE: This corresponds to a module in Go and JVM languages.
+
 | Name        | Type   | Description |
 | ----------- | ------ | ----------- |
 | **manager** | string |
@@ -141,8 +152,8 @@ interchangeably with `Symbol`. The syntax for Symbol is the following:
   <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
   <package-name>         ::= same as above
   <version>              ::= same as above
-  <descriptor>           ::= <package-descriptor> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
-  <package-descriptor>   ::= <name> '/'
+  <descriptor>           ::= <module> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
+  <module>               ::= <name> '/'
   <type>                 ::= <name> '#'
   <term>                 ::= <name> '.'
   <meta>                 ::= <name> ':'

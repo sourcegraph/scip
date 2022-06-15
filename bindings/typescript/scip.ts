@@ -1003,6 +1003,7 @@ export namespace scip {
     export namespace Descriptor {
         export enum Suffix {
             UnspecifiedSuffix = 0,
+            Module = 1,
             Package = 1,
             Type = 2,
             Term = 3,
