@@ -124,9 +124,9 @@ func (TextEncoding) EnumDescriptor() ([]byte, []int) {
 }
 
 // SymbolRole declares what "role" a symbol has in an occurrence.  A role is
-// encoded as a bitmask where each bit represents a different role. For example,
-// to determine if the `Import` role is set test whether the second bit of the
-// enum value is defined. In psuedo-code, this can be implemented with the
+// encoded as a bitset where each bit represents a different role. For example,
+// to determine if the `Import` role is set, test whether the second bit of the
+// enum value is defined. In pseudocode, this can be implemented with the
 // logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 type SymbolRole int32
 
@@ -219,11 +219,11 @@ const (
 	SyntaxKind_IdentifierConstant SyntaxKind = 9
 	// `var X = "hello"` in Go
 	SyntaxKind_IdentifierMutableGlobal SyntaxKind = 10
-	// both parameter definition and references
+	// Parameter definition and references
 	SyntaxKind_IdentifierParameter SyntaxKind = 11
-	// identifiers for variable definitions and references within a local scope
+	// Identifiers for variable definitions and references within a local scope
 	SyntaxKind_IdentifierLocal SyntaxKind = 12
-	// Used when identifier shadowes some other identifier within the scope
+	// Identifiers that shadow other identifiers in an outer scope
 	SyntaxKind_IdentifierShadowed SyntaxKind = 13
 	// Identifier representing a unit of code abstraction and/or namespacing.
 	//
@@ -232,15 +232,15 @@ const (
 	SyntaxKind_IdentifierNamespace SyntaxKind = 14
 	// Deprecated: Do not use.
 	SyntaxKind_IdentifierModule SyntaxKind = 14
-	// Function call/reference
+	// Function references, including calls
 	SyntaxKind_IdentifierFunction SyntaxKind = 15
 	// Function definition only
 	SyntaxKind_IdentifierFunctionDefinition SyntaxKind = 16
-	// Macro call/reference
+	// Macro references, including invocations
 	SyntaxKind_IdentifierMacro SyntaxKind = 17
 	// Macro definition only
 	SyntaxKind_IdentifierMacroDefinition SyntaxKind = 18
-	// non-builtin types, including namespaces
+	// non-builtin types
 	SyntaxKind_IdentifierType SyntaxKind = 19
 	// builtin types only, such as `str` for Python or `int` in Go
 	SyntaxKind_IdentifierBuiltinType SyntaxKind = 20
@@ -901,7 +901,7 @@ func (Descriptor_Suffix) EnumDescriptor() ([]byte, []int) {
 // Index represents a complete SCIP index for a workspace this is rooted at a
 // single directory. An Index message payload can have a large memory footprint
 // and it's therefore recommended to emit and consume an Index payload one field
-// value at a time.  To permit streaming consumption of an Index payload, the
+// value at a time. To permit streaming consumption of an Index payload, the
 // `metadata` field must appear at the start of the stream and must only appear
 // once in the stream. Other field values may appear in any order.
 type Index struct {
@@ -914,7 +914,7 @@ type Index struct {
 	// Documents that belong to this index.
 	Documents []*Document `protobuf:"bytes,2,rep,name=documents,proto3" json:"documents,omitempty"`
 	// (optional) Symbols that are referenced from this index but are defined in
-	// an external package (a separate `Index` message).  Leave this field empty
+	// an external package (a separate `Index` message). Leave this field empty
 	// if you assume the external package will get indexed separately. If the
 	// external package won't get indexed for some reason then you can use this
 	// field to provide hover documentation for those external symbols.
@@ -1129,9 +1129,15 @@ type Document struct {
 	// This field is typed as a string to permit any programming langauge, including
 	// ones that are not specified by the `Language` enum.
 	Language string `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`
-	// (Required) Path to the text document relative to the directory supplied in
-	// the associated `Metadata.project_root`. Not URI-encoded. This value should
-	// not begin with a directory separator.
+	// (Required) Unique path to the text document.
+	//
+	// 1. The path must be relative to the directory supplied in the associated
+	//    `Metadata.project_root`.
+	// 2. The path must not begin with a leading '/'.
+	// 3. The path must point to a regular file, not a symbolic link.
+	// 4. The path must use '/' as the separator, including on Windows.
+	// 5. The path must be canonical; it cannot include empty components ('//'),
+	//    or '.' or '..'.
 	RelativePath string `protobuf:"bytes,1,opt,name=relative_path,json=relativePath,proto3" json:"relative_path,omitempty"`
 	// Occurrences that appear in this file.
 	Occurrences []*Occurrence `protobuf:"bytes,2,rep,name=occurrences,proto3" json:"occurrences,omitempty"`
@@ -1598,6 +1604,9 @@ func (x *Relationship) GetIsTypeDefinition() bool {
 
 // Occurrence associates a source position with a symbol and/or highlighting
 // information.
+//
+// If possible, indexers should try to bundle logically related information
+// across occurrences into a single occurrence to reduce payload sizes.
 type Occurrence struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1625,10 +1634,10 @@ type Occurrence struct {
 	// (optional) The symbol that appears at this position. See
 	// `SymbolInformation.symbol` for how to format symbols as strings.
 	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
-	// (optional) Bitmask for what `SymbolRole` apply to this occurrence. See
-	// `SymbolRole` for how to read and write this field.
+	// (optional) Bitset containing `SymbolRole`s in this occurrence.
+	// See `SymbolRole`'s documentation for how to read and write this field.
 	SymbolRoles int32 `protobuf:"varint,3,opt,name=symbol_roles,json=symbolRoles,proto3" json:"symbol_roles,omitempty"`
-	// (optional) Markdown-formatted documentation for this specific range.  If
+	// (optional) CommonMark-formatted documentation for this specific range. If
 	// empty, the `Symbol.documentation` field is used instead. One example
 	// where this field might be useful is when the symbol represents a generic
 	// function (with abstract type parameters such as `List<T>`) and at this
@@ -1636,7 +1645,7 @@ type Occurrence struct {
 	OverrideDocumentation []string `protobuf:"bytes,4,rep,name=override_documentation,json=overrideDocumentation,proto3" json:"override_documentation,omitempty"`
 	// (optional) What syntax highlighting class should be used for this range?
 	SyntaxKind SyntaxKind `protobuf:"varint,5,opt,name=syntax_kind,json=syntaxKind,proto3,enum=scip.SyntaxKind" json:"syntax_kind,omitempty"`
-	// Diagnostics that have been reported for this specific range.
+	// (optional) Diagnostics that have been reported for this specific range.
 	Diagnostics []*Diagnostic `protobuf:"bytes,6,rep,name=diagnostics,proto3" json:"diagnostics,omitempty"`
 }
 
@@ -1723,11 +1732,11 @@ type Diagnostic struct {
 
 	// Should this diagnostic be reported as an error, warning, info, or hint?
 	Severity Severity `protobuf:"varint,1,opt,name=severity,proto3,enum=scip.Severity" json:"severity,omitempty"`
-	// Code of this diagnostic, which might appear in the user interface.
+	// (optional) Code of this diagnostic, which might appear in the user interface.
 	Code string `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
 	// Message of this diagnostic.
 	Message string `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	// Human-readable string describing the source of this diagnostic, e.g.
+	// (optional) Human-readable string describing the source of this diagnostic, e.g.
 	// 'typescript' or 'super lint'.
 	Source string          `protobuf:"bytes,4,opt,name=source,proto3" json:"source,omitempty"`
 	Tags   []DiagnosticTag `protobuf:"varint,5,rep,packed,name=tags,proto3,enum=scip.DiagnosticTag" json:"tags,omitempty"`
