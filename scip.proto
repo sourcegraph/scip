@@ -97,8 +97,8 @@ message Document {
 //   <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
 //   <package-name>         ::= same as above
 //   <version>              ::= same as above
-//   <descriptor>           ::= <module> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
-//   <module>               ::= <name> '/'
+//   <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
+//   <namespace>            ::= <name> '/'
 //   <type>                 ::= <name> '#'
 //   <term>                 ::= <name> '.'
 //   <meta>                 ::= <name> ':'
@@ -135,8 +135,8 @@ message Descriptor {
     // Unit of code abstraction and/or namespacing.
     //
     // NOTE: This corresponds to a package in Go and JVM languages.
-    Module = 1;
-    // Use Module instead.
+    Namespace = 1;
+    // Use Namespace instead.
     Package = 1 [deprecated=true];
     Type = 2;
     Term = 3;
@@ -229,6 +229,8 @@ enum SymbolRole {
 }
 
 enum SyntaxKind {
+  option allow_alias = true;
+
   UnspecifiedSyntaxKind = 0;
 
   // Comment, including comment markers and text
@@ -261,8 +263,12 @@ enum SyntaxKind {
   IdentifierLocal = 12;
   // Used when identifier shadowes some other identifier within the scope
   IdentifierShadowed = 13;
-  // `package main`
-  IdentifierModule = 14;
+  // Identifier representing a unit of code abstraction and/or namespacing.
+  //
+  // NOTE: This corresponds to a package in Go and JVM languages,
+  // and a module in languages like Python and JavaScript.
+  IdentifierNamespace = 14;
+  IdentifierModule = 14 [deprecated=true];
 
   // Function call/reference
   IdentifierFunction = 15;
