@@ -82,6 +82,7 @@ func FormatSnapshot(
 			occ := document.Occurrences[i]
 			pos := scip.NewRange(occ.Range)
 			if !pos.IsSingleLine() {
+				i++
 				continue
 			}
 			b.WriteString(commentSyntax)
