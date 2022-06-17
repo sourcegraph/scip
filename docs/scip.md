@@ -37,12 +37,12 @@ NOTE: This corresponds to a package in Go and JVM languages.
 Represents a diagnostic, such as a compiler error or warning, which should be
 reported for a document.
 
-| Name              | Type          | Description                                                                                        |
-| ----------------- | ------------- | -------------------------------------------------------------------------------------------------- |
-| **severity**      | Severity      | Should this diagnostic be reported as an error, warning, info, or hint?                            |
-| **code**          | string        | Code of this diagnostic, which might appear in the user interface.                                 |
-| **message**       | string        | Message of this diagnostic.                                                                        |
-| **source**        | string        | Human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'. |
+| Name              | Type          | Description                                                                                                   |
+| ----------------- | ------------- | ------------------------------------------------------------------------------------------------------------- |
+| **severity**      | Severity      | Should this diagnostic be reported as an error, warning, info, or hint?                                       |
+| **code**          | string        | (optional) Code of this diagnostic, which might appear in the user interface.                                 |
+| **message**       | string        | Message of this diagnostic.                                                                                   |
+| **source**        | string        | (optional) Human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'. |
 | repeated **tags** | DiagnosticTag |
 
 ### Document
@@ -52,9 +52,21 @@ Document defines the metadata about a source file on disk.
 | Name                     | Type              | Description                                                                                                                                                                                                                                                                        |
 | ------------------------ | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **language**             | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming langauge, including ones that are not specified by the `Language` enum. |
-| **relative_path**        | string            | (Required) Path to the text document relative to the directory supplied in the associated `Metadata.project_root`. Not URI-encoded. This value should not begin with a directory separator.                                                                                        |
+| **relative_path**        | string            | (Required) Unique path to the text document.                                                                                                                                                                                                                                       |
 | repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                              |
 | repeated **symbols**     | SymbolInformation | Symbols that are defined within this document.                                                                                                                                                                                                                                     |
+
+Additional notes on **relative_path**:
+
+(Required) Unique path to the text document.
+
+1. The path must be relative to the directory supplied in the associated
+   `Metadata.project_root`.
+2. The path must not begin with a leading '/'.
+3. The path must point to a regular file, not a symbolic link.
+4. The path must use '/' as the separator, including on Windows.
+5. The path must be canonical; it cannot include empty components ('//'),
+   or '.' or '..'.
 
 ### Index
 
@@ -85,14 +97,17 @@ once in the stream. Other field values may appear in any order.
 Occurrence associates a source position with a symbol and/or highlighting
 information.
 
-| Name                                | Type       | Description                                                                                                                                                                                                                                                                                                                                                |
-| ----------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| repeated **range**                  | int32      | Source position of this occurrence. Must be exactly three or four elements:                                                                                                                                                                                                                                                                                |
-| **symbol**                          | string     | (optional) The symbol that appears at this position. See `SymbolInformation.symbol` for how to format symbols as strings.                                                                                                                                                                                                                                  |
-| **symbol_roles**                    | int32      | (optional) Bitmask for what `SymbolRole` apply to this occurrence. See `SymbolRole` for how to read and write this field.                                                                                                                                                                                                                                  |
-| repeated **override_documentation** | string     | (optional) Markdown-formatted documentation for this specific range. If empty, the `Symbol.documentation` field is used instead. One example where this field might be useful is when the symbol represents a generic function (with abstract type parameters such as `List<T>`) and at this occurrence we know the exact values (such as `List<String>`). |
-| **syntax_kind**                     | SyntaxKind | (optional) What syntax highlighting class should be used for this range?                                                                                                                                                                                                                                                                                   |
-| repeated **diagnostics**            | Diagnostic | Diagnostics that have been reported for this specific range.                                                                                                                                                                                                                                                                                               |
+If possible, indexers should try to bundle logically related information
+across occurrences into a single occurrence to reduce payload sizes.
+
+| Name                                | Type       | Description                                                                                                                                                                                                                                                                                                                                                  |
+| ----------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| repeated **range**                  | int32      | Source position of this occurrence. Must be exactly three or four elements:                                                                                                                                                                                                                                                                                  |
+| **symbol**                          | string     | (optional) The symbol that appears at this position. See `SymbolInformation.symbol` for how to format symbols as strings.                                                                                                                                                                                                                                    |
+| **symbol_roles**                    | int32      | (optional) Bitset containing `SymbolRole`s in this occurrence. See `SymbolRole`'s documentation for how to read and write this field.                                                                                                                                                                                                                        |
+| repeated **override_documentation** | string     | (optional) CommonMark-formatted documentation for this specific range. If empty, the `Symbol.documentation` field is used instead. One example where this field might be useful is when the symbol represents a generic function (with abstract type parameters such as `List<T>`) and at this occurrence we know the exact values (such as `List<String>`). |
+| **syntax_kind**                     | SyntaxKind | (optional) What syntax highlighting class should be used for this range?                                                                                                                                                                                                                                                                                     |
+| repeated **diagnostics**            | Diagnostic | (optional) Diagnostics that have been reported for this specific range.                                                                                                                                                                                                                                                                                      |
 
 Additional notes on **range**:
 
@@ -327,9 +342,9 @@ Feel free to send a pull-request to add missing programming languages.
 ### SymbolRole
 
 SymbolRole declares what "role" a symbol has in an occurrence. A role is
-encoded as a bitmask where each bit represents a different role. For example,
-to determine if the `Import` role is set test whether the second bit of the
-enum value is defined. In psuedo-code, this can be implemented with the
+encoded as a bitset where each bit represents a different role. For example,
+to determine if the `Import` role is set, test whether the second bit of the
+enum value is defined. In pseudocode, this can be implemented with the
 logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 
 | Number | Name                  | Description                                                          |
@@ -357,16 +372,16 @@ logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 | 8      | IdentifierNull               | Identifiers representing `null`-like values: `None` in Python, `nil` in Go.     |
 | 9      | IdentifierConstant           | `xyz` in `const xyz = "hello"`                                                  |
 | 10     | IdentifierMutableGlobal      | `var X = "hello"` in Go                                                         |
-| 11     | IdentifierParameter          | both parameter definition and references                                        |
-| 12     | IdentifierLocal              | identifiers for variable definitions and references within a local scope        |
-| 13     | IdentifierShadowed           | Used when identifier shadowes some other identifier within the scope            |
+| 11     | IdentifierParameter          | Parameter definition and references                                             |
+| 12     | IdentifierLocal              | Identifiers for variable definitions and references within a local scope        |
+| 13     | IdentifierShadowed           | Identifiers that shadow other identifiers in an outer scope                     |
 | 14     | IdentifierNamespace          | Identifier representing a unit of code abstraction and/or namespacing.          |
 | 14     | IdentifierModule             |
-| 15     | IdentifierFunction           | Function call/reference                                                         |
+| 15     | IdentifierFunction           | Function references, including calls                                            |
 | 16     | IdentifierFunctionDefinition | Function definition only                                                        |
-| 17     | IdentifierMacro              | Macro call/reference                                                            |
+| 17     | IdentifierMacro              | Macro references, including invocations                                         |
 | 18     | IdentifierMacroDefinition    | Macro definition only                                                           |
-| 19     | IdentifierType               | non-builtin types, including namespaces                                         |
+| 19     | IdentifierType               | non-builtin types                                                               |
 | 20     | IdentifierBuiltinType        | builtin types only, such as `str` for Python or `int` in Go                     |
 | 21     | IdentifierAttribute          | Python decorators, c-like **attribute**                                         |
 | 22     | RegexEscape                  | `\b`                                                                            |
