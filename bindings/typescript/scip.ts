@@ -38,6 +38,7 @@ export namespace scip {
         IdentifierParameter = 11,
         IdentifierLocal = 12,
         IdentifierShadowed = 13,
+        IdentifierNamespace = 14,
         IdentifierModule = 14,
         IdentifierFunction = 15,
         IdentifierFunctionDefinition = 16,
@@ -1003,6 +1004,7 @@ export namespace scip {
     export namespace Descriptor {
         export enum Suffix {
             UnspecifiedSuffix = 0,
+            Namespace = 1,
             Package = 1,
             Type = 2,
             Term = 3,

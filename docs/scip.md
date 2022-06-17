@@ -13,17 +13,24 @@
 
 #### Suffix
 
-| Number | Name              | Description                  |
-| ------ | ----------------- | ---------------------------- |
+| Number | Name              | Description                                  |
+| ------ | ----------------- | -------------------------------------------- |
 | 0      | UnspecifiedSuffix |
-| 1      | Package           |
+| 1      | Namespace         | Unit of code abstraction and/or namespacing. |
+| 1      | Package           | Use Namespace instead.                       |
 | 2      | Type              |
 | 3      | Term              |
 | 4      | Method            |
 | 5      | TypeParameter     |
 | 6      | Parameter         |
-| 7      | Meta              | Can be used for any purpose. |
+| 7      | Meta              | Can be used for any purpose.                 |
 | 8      | Local             |
+
+Additional notes on **Namespace**:
+
+Unit of code abstraction and/or namespacing.
+
+NOTE: This corresponds to a package in Go and JVM languages.
 
 ### Diagnostic
 
@@ -110,6 +117,10 @@ improvements make up for it.
 
 ### Package
 
+Unit of packaging and distribution.
+
+NOTE: This corresponds to a module in Go and JVM languages.
+
 | Name        | Type   | Description |
 | ----------- | ------ | ----------- |
 | **manager** | string |
@@ -141,8 +152,8 @@ interchangeably with `Symbol`. The syntax for Symbol is the following:
   <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
   <package-name>         ::= same as above
   <version>              ::= same as above
-  <descriptor>           ::= <package-descriptor> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
-  <package-descriptor>   ::= <name> '/'
+  <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
+  <namespace>            ::= <name> '/'
   <type>                 ::= <name> '#'
   <term>                 ::= <name> '.'
   <meta>                 ::= <name> ':'
@@ -349,7 +360,8 @@ logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 | 11     | IdentifierParameter          | both parameter definition and references                                        |
 | 12     | IdentifierLocal              | identifiers for variable definitions and references within a local scope        |
 | 13     | IdentifierShadowed           | Used when identifier shadowes some other identifier within the scope            |
-| 14     | IdentifierModule             | `package main`                                                                  |
+| 14     | IdentifierNamespace          | Identifier representing a unit of code abstraction and/or namespacing.          |
+| 14     | IdentifierModule             |
 | 15     | IdentifierFunction           | Function call/reference                                                         |
 | 16     | IdentifierFunctionDefinition | Function definition only                                                        |
 | 17     | IdentifierMacro              | Macro call/reference                                                            |
@@ -372,6 +384,13 @@ logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 | 34     | Tag                          | Used for XML-like tags                                                          |
 | 35     | TagAttribute                 | Attribute name in XML-like tags                                                 |
 | 36     | TagDelimiter                 | Delimiters for XML-like tags                                                    |
+
+Additional notes on **IdentifierNamespace**:
+
+Identifier representing a unit of code abstraction and/or namespacing.
+
+NOTE: This corresponds to a package in Go and JVM languages,
+and a module in languages like Python and JavaScript.
 
 ### TextEncoding
 
