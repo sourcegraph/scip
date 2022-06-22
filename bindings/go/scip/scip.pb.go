@@ -131,6 +131,8 @@ func (TextEncoding) EnumDescriptor() ([]byte, []int) {
 type SymbolRole int32
 
 const (
+	// This case is not meant to be used; it only exists to avoid an error
+	// from the Protobuf code generator.
 	SymbolRole_UnspecifiedSymbolRole SymbolRole = 0
 	// Is the symbol defined here? If not, then this is a symbol reference.
 	SymbolRole_Definition SymbolRole = 1

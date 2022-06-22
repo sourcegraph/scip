@@ -219,6 +219,8 @@ message Relationship {
 // enum value is defined. In pseudocode, this can be implemented with the
 // logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 enum SymbolRole {
+  // This case is not meant to be used; it only exists to avoid an error
+  // from the Protobuf code generator.
   UnspecifiedSymbolRole = 0;
   // Is the symbol defined here? If not, then this is a symbol reference.
   Definition = 0x1;

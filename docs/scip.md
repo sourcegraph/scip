@@ -347,15 +347,15 @@ to determine if the `Import` role is set, test whether the second bit of the
 enum value is defined. In pseudocode, this can be implemented with the
 logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 
-| Number | Name                  | Description                                                          |
-| ------ | --------------------- | -------------------------------------------------------------------- |
-| 0      | UnspecifiedSymbolRole |
-| 1      | Definition            | Is the symbol defined here? If not, then this is a symbol reference. |
-| 2      | Import                | Is the symbol imported here?                                         |
-| 4      | WriteAccess           | Is the symbol written here?                                          |
-| 8      | ReadAccess            | Is the symbol read here?                                             |
-| 16     | Generated             | Is the symbol in generated code?                                     |
-| 32     | Test                  | Is the symbol in test code?                                          |
+| Number | Name                  | Description                                                                                           |
+| ------ | --------------------- | ----------------------------------------------------------------------------------------------------- |
+| 0      | UnspecifiedSymbolRole | This case is not meant to be used; it only exists to avoid an error from the Protobuf code generator. |
+| 1      | Definition            | Is the symbol defined here? If not, then this is a symbol reference.                                  |
+| 2      | Import                | Is the symbol imported here?                                                                          |
+| 4      | WriteAccess           | Is the symbol written here?                                                                           |
+| 8      | ReadAccess            | Is the symbol read here?                                                                              |
+| 16     | Generated             | Is the symbol in generated code?                                                                      |
+| 32     | Test                  | Is the symbol in test code?                                                                           |
 
 ### SyntaxKind
 
