@@ -1,6 +1,6 @@
 # SCIP Code Intelligence Protocol
 
-SCIP (pronounciation: "skip") is a language-agnostic protocol
+SCIP (pronunciation: "skip") is a language-agnostic protocol
 for indexing source code,
 which can be used to power code navigation functionality
 such as Go to definition, Find references, and Find implementations.
