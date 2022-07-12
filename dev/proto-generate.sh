@@ -8,8 +8,13 @@ echo "--- yarn in root ---"
 yarn --cwd ./bindings/typescript install --frozen-lockfile
 
 echo "--- cargo install rust-protobuf ---"
-# Keep protobuf-codegen version in sync with rust/Cargo.toml
-which ./.bin/bin/protoc-gen-rust || cargo install --root .bin protobuf-codegen --version 3.0.2
+PROTOC_GEN_RUST_VERSION="$(cat bindings/rust/Cargo.toml | grep 'protobuf =' | sed -E 's/.*\"=(.+)\"/\1/g')"
+if ! grep -q "$PROTOC_GEN_RUST_VERSION" "./.bin/PROTOC_GEN_RUST_VERSION" \
+   || ! test -f "./.bin/bin/protoc-gen-rust"; then
+  rm -rf .bin
+  cargo install --root .bin protobuf-codegen --version 3.1.0
+  echo "$PROTOC_GEN_RUST_VERSION" > "./.bin/PROTOC_GEN_RUST_VERSION"
+fi
 
 echo "--- buf ---"
 
