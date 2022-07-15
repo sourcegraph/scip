@@ -1214,7 +1214,8 @@ func (x *Document) GetSymbols() []*SymbolInformation {
 // Symbol has a standardized string representation, which can be used
 // interchangeably with `Symbol`. The syntax for Symbol is the following:
 // ```
-//   <symbol>               ::= <scheme> ' ' <package> ' ' { <descriptor> } | 'local ' <local-id>
+//   # (<x>)+ stands for one or more repetitions of <x>
+//   <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>
 //   <package>              ::= <manager> ' ' <package-name> ' ' <version>
 //   <scheme>               ::= any UTF-8, escape spaces with double space.
 //   <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
@@ -1231,11 +1232,17 @@ func (x *Document) GetSymbols() []*SymbolInformation {
 //   <name>                 ::= <identifier>
 //   <method-disambiguator> ::= <simple-identifier>
 //   <identifier>           ::= <simple-identifier> | <escaped-identifier>
-//   <simple-identifier>    ::= { <identifier-character> }
+//   <simple-identifier>    ::= (<identifier-character>)+
 //   <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit
-//   <escaped-identifier>   ::= '`' { <escaped-character> } '`'
+//   <escaped-identifier>   ::= '`' (<escaped-character>)+ '`'
 //   <escaped-characters>   ::= any UTF-8 character, escape backticks with double backtick.
 // ```
+//
+// The list of descriptors for a symbol should together form a fully
+// qualified name for the symbol. That is, it should serve as a unique
+// identifier across the package. Typically, it will include one descriptor
+// for every node in the AST (along the ancestry path) between the root of
+// the file and the node corresponding to the symbol.
 type Symbol struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
