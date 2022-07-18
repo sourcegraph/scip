@@ -241,7 +241,9 @@ func (g *graph) emitDocument(index *Index, doc *Document) {
 		// reference
 		g.emitEdge("item", reader.Edge{OutV: resultIDs.ReferenceResult, InVs: []int{rangeID}, Document: documentID})
 	}
-	g.emitEdge("contains", reader.Edge{OutV: documentID, InVs: rangeIDs})
+	if len(rangeIDs) != 0 { // a document may be empty
+		g.emitEdge("contains", reader.Edge{OutV: documentID, InVs: rangeIDs})
+	}
 }
 
 // emitRelationships emits "referenceResults" and "implementationResult" based on the value of scip.SymbolInformation.Relationships
