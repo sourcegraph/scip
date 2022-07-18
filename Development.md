@@ -34,3 +34,11 @@
    cd cmd/tests/reprolang
    ./generate-tree-sitter-parser.sh
    ```
+
+## Debugging
+
+Protobuf output can be inspected using `protoc`:
+
+```
+protoc --decode=scip.Index -I /path/to/scip scip.proto < index.scip
+```

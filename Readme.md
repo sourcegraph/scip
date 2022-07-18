@@ -20,6 +20,15 @@ check out the [announcement blog post](https://about.sourcegraph.com/blog/announ
 If you're interested in writing a new indexer that emits SCIP,
 check out our documentation on
 [how to write an indexer](https://docs.sourcegraph.com/code_intelligence/explanations/writing_an_indexer).
+Also, check out the [Debugging section][] in the Development docs.
+
+If you're interested in consuming SCIP data,
+you can either use one of the [provided language bindings](https://github.com/sourcegraph/scip/tree/main/bindings),
+or generate code for the [SCIP protobuf schema](./scip.proto)
+using the protobuf toolchain for your language ecosystem.
+Also, check out the [Debugging section][] in the Development docs.
+
+[debugging section]: ./Development.md#debugging
 
 ## Contributing
 
