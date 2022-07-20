@@ -85,7 +85,7 @@ message Document {
   string relative_path = 1;
   // Occurrences that appear in this file.
   repeated Occurrence occurrences = 2;
-  // Symbols that are defined within this document.
+  // Non-local symbols that are defined within this document.
   repeated SymbolInformation symbols = 3;
 }
 
@@ -363,7 +363,7 @@ message Occurrence {
   // improvements make up for it.
   repeated int32 range = 1;
   // (optional) The symbol that appears at this position. See
-  // `SymbolInformation.symbol` for how to format symbols as strings.
+  // `Symbol`'s doc comment for how to format symbols as strings.
   string symbol = 2;
   // (optional) Bitset containing `SymbolRole`s in this occurrence.
   // See `SymbolRole`'s documentation for how to read and write this field.
