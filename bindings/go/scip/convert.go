@@ -65,12 +65,24 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 		},
 	)
 
+	// Emit a warning with the symbols for a document that were exported
+	// but had no definition. Only display one message so that there are fewer warnings
+	// displayed to users.
+	exportedSymbolsWithNoDefinition := []string{}
+
 	// Pass 1: create result sets for global symbols.
 	for _, importedSymbol := range index.ExternalSymbols {
 		g.symbolToResultSet[importedSymbol.Symbol] = g.emitResultSet(importedSymbol, "import")
 	}
 	for _, document := range index.Documents {
 		for _, exportedSymbol := range document.Symbols {
+			// If an exported symbol is not defined in a document,
+			// do not emit a definition for this symbol.
+			if !document.HasDefinition(exportedSymbol) {
+				exportedSymbolsWithNoDefinition = append(exportedSymbolsWithNoDefinition, exportedSymbol.Symbol)
+				continue
+			}
+
 			g.registerInverseRelationships(exportedSymbol)
 			if IsGlobalSymbol(exportedSymbol.Symbol) {
 				// Local symbols are skipped here because we handle them in the
@@ -95,6 +107,14 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 	// Pass 2: emit ranges for all documents.
 	for _, document := range index.Documents {
 		g.emitDocument(index, document)
+	}
+
+	// TODO: We could instead pass back a list of warnings to be displayed by callers?
+	// I don't really like just printing to stdout here (additionally, these could be coallesced between documents)
+	if len(exportedSymbolsWithNoDefinition) > 0 {
+		fmt.Println("[scip-go] Warning: The following exported symbols were ignored because they were missing a definition")
+		fmt.Println("          (did you intend to put this symbol into Index.external_symbols?)")
+		fmt.Println(exportedSymbolsWithNoDefinition)
 	}
 
 	return g.Elements, nil
