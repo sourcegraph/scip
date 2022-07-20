@@ -1143,7 +1143,7 @@ type Document struct {
 	RelativePath string `protobuf:"bytes,1,opt,name=relative_path,json=relativePath,proto3" json:"relative_path,omitempty"`
 	// Occurrences that appear in this file.
 	Occurrences []*Occurrence `protobuf:"bytes,2,rep,name=occurrences,proto3" json:"occurrences,omitempty"`
-	// Symbols that are defined within this document.
+	// Non-local symbols that are defined within this document.
 	Symbols []*SymbolInformation `protobuf:"bytes,3,rep,name=symbols,proto3" json:"symbols,omitempty"`
 }
 
@@ -1641,7 +1641,7 @@ type Occurrence struct {
 	// improvements make up for it.
 	Range []int32 `protobuf:"varint,1,rep,packed,name=range,proto3" json:"range,omitempty"`
 	// (optional) The symbol that appears at this position. See
-	// `SymbolInformation.symbol` for how to format symbols as strings.
+	// `Symbol`'s doc comment for how to format symbols as strings.
 	Symbol string `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
 	// (optional) Bitset containing `SymbolRole`s in this occurrence.
 	// See `SymbolRole`'s documentation for how to read and write this field.

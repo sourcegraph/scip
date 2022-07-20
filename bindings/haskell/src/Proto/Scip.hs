@@ -4880,7 +4880,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\160\182\SOH\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\166\182\SOH\n\
     \\a\DC2\ENQ\n\
     \\NUL\135\EOT\SOH\n\
     \\130\EOT\n\
@@ -5117,8 +5117,8 @@ packedFileDescriptor
     \\ENQ\EOT\ETX\STX\STX\SOH\DC2\ETXV\SYN!\n\
     \\f\n\
     \\ENQ\EOT\ETX\STX\STX\ETX\DC2\ETXV$%\n\
-    \=\n\
-    \\EOT\EOT\ETX\STX\ETX\DC2\ETXX\STX)\SUB0 Symbols that are defined within this document.\n\
+    \G\n\
+    \\EOT\EOT\ETX\STX\ETX\DC2\ETXX\STX)\SUB: Non-local symbols that are defined within this document.\n\
     \\n\
     \\f\n\
     \\ENQ\EOT\ETX\STX\ETX\EOT\DC2\ETXX\STX\n\
@@ -5828,9 +5828,9 @@ packedFileDescriptor
     \\ENQ\EOT\t\STX\NUL\SOH\DC2\EOT\235\STX\DC1\SYN\n\
     \\r\n\
     \\ENQ\EOT\t\STX\NUL\ETX\DC2\EOT\235\STX\EM\SUB\n\
-    \\138\SOH\n\
-    \\EOT\EOT\t\STX\SOH\DC2\EOT\238\STX\STX\DC4\SUB| (optional) The symbol that appears at this position. See\n\
-    \ `SymbolInformation.symbol` for how to format symbols as strings.\n\
+    \\134\SOH\n\
+    \\EOT\EOT\t\STX\SOH\DC2\EOT\238\STX\STX\DC4\SUBx (optional) The symbol that appears at this position. See\n\
+    \ `Symbol`'s doc comment for how to format symbols as strings.\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\t\STX\SOH\ENQ\DC2\EOT\238\STX\STX\b\n\
