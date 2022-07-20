@@ -32,14 +32,14 @@ import (
 // such as asymmetric references/definitions.
 //
 // This conversion functionality is used by src-cli.
-func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
+func ConvertSCIPToLSIF(index *Index) ([]reader.Element, map[string]IndexDiagnostic, error) {
 	g := newGraph()
 
 	if index.Metadata == nil {
-		return nil, errors.New(".Metadata is nil")
+		return nil, nil, errors.New(".Metadata is nil")
 	}
 	if index.Metadata.ToolInfo == nil {
-		return nil, errors.New(".Metadata.ToolInfo is nil")
+		return nil, nil, errors.New(".Metadata.ToolInfo is nil")
 	}
 
 	positionEncoding := ""
@@ -49,7 +49,7 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 	case TextEncoding_UTF16:
 		positionEncoding = "utf-16"
 	default:
-		return nil, errors.New(".Metadata.TextDocumentEncoding does not have value utf-8 or utf-16")
+		return nil, nil, errors.New(".Metadata.TextDocumentEncoding does not have value utf-8 or utf-16")
 	}
 
 	g.emitVertex(
@@ -68,7 +68,7 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 	// Emit a warning with the symbols for a document that were exported
 	// but had no definition. Only display one message so that there are fewer warnings
 	// displayed to users.
-	exportedSymbolsWithNoDefinition := []string{}
+	indexDiagnostics := map[string]IndexDiagnostic{}
 
 	// Pass 1: create result sets for global symbols.
 	for _, importedSymbol := range index.ExternalSymbols {
@@ -79,7 +79,11 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 			// If an exported symbol is not defined in a document,
 			// do not emit a definition for this symbol.
 			if !document.HasDefinition(exportedSymbol) {
-				exportedSymbolsWithNoDefinition = append(exportedSymbolsWithNoDefinition, exportedSymbol.Symbol)
+				diag := NoSymbolDefinitionDiagnostic{
+					symbol: exportedSymbol,
+				}
+				indexDiagnostics[diag.Key()] = diag
+
 				continue
 			}
 
@@ -109,15 +113,7 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 		g.emitDocument(index, document)
 	}
 
-	// TODO: We could instead pass back a list of warnings to be displayed by callers?
-	// I don't really like just printing to stdout here (additionally, these could be coallesced between documents)
-	if len(exportedSymbolsWithNoDefinition) > 0 {
-		fmt.Println("[scip-go] Warning: The following exported symbols were ignored because they were missing a definition")
-		fmt.Println("          (did you intend to put this symbol into Index.external_symbols?)")
-		fmt.Println(exportedSymbolsWithNoDefinition)
-	}
-
-	return g.Elements, nil
+	return g.Elements, indexDiagnostics, nil
 }
 
 // graph is a helper struct to emit LSIF.
