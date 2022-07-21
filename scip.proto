@@ -156,6 +156,7 @@ message Descriptor {
     Method = 4;
     TypeParameter = 5;
     Parameter = 6;
+    Macro = 9;
     // Can be used for any purpose.
     Meta = 7;
     Local = 8;

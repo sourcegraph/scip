@@ -1,6 +1,8 @@
 package scip
 
-import "strings"
+import (
+	"strings"
+)
 
 // SymbolFormatter configures how to format an SCIP symbol.
 // Excluding parts of the symbol can be helpful for testing purposes. For example, snapshot tests may hardcode
@@ -81,6 +83,9 @@ func (f *SymbolFormatter) FormatSymbol(symbol *Symbol) string {
 		case Descriptor_Meta:
 			descriptor.WriteString(desc.Name)
 			descriptor.WriteRune(':')
+		case Descriptor_Macro:
+			descriptor.WriteString(desc.Name)
+			descriptor.WriteRune('!')
 		case Descriptor_Local:
 			descriptor.WriteString(desc.Name)
 		}

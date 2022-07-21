@@ -59,6 +59,17 @@ func TestParseSymbol(t *testing.T) {
 				},
 			},
 		},
+		{
+			Symbol: "rust-analyzer cargo std 1.0.0 macros/println!",
+			Expected: &Symbol{
+				Scheme:  "rust-analyzer",
+				Package: &Package{Manager: "cargo", Name: "std", Version: "1.0.0"},
+				Descriptors: []*Descriptor{
+					{Name: "macros", Suffix: Descriptor_Package},
+					{Name: "println", Suffix: Descriptor_Macro},
+				},
+			},
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.Symbol, func(t *testing.T) {

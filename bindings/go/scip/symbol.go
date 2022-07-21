@@ -160,6 +160,8 @@ func (s *symbolParser) parseDescriptor() (*Descriptor, error) {
 			return &Descriptor{Name: name, Suffix: Descriptor_Type}, nil
 		case ':':
 			return &Descriptor{Name: name, Suffix: Descriptor_Meta}, nil
+		case '!':
+			return &Descriptor{Name: name, Suffix: Descriptor_Macro}, nil
 		default:
 		}
 	}
