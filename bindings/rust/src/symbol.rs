@@ -75,7 +75,9 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
                 .filter_map(|desc| {
                     Some(match desc.suffix.enum_value() {
                         Ok(val) => match val {
-                            descriptor::Suffix::Package => format!("{}/", desc.name),
+                            descriptor::Suffix::Package | descriptor::Suffix::Namespace => {
+                                format!("{}/", desc.name)
+                            }
                             descriptor::Suffix::Type => format!("{}#", desc.name),
                             descriptor::Suffix::Term => format!("{}.", desc.name),
                             descriptor::Suffix::Method => {
