@@ -27,6 +27,8 @@ export namespace scip {
         Comment = 1,
         PunctuationDelimiter = 2,
         PunctuationBracket = 3,
+        Keyword = 4,
+        /** @deprecated*/
         IdentifierKeyword = 4,
         IdentifierOperator = 5,
         Identifier = 6,

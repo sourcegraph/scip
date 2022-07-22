@@ -373,7 +373,8 @@ logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 | 1      | Comment                      | Comment, including comment markers and text                                     |
 | 2      | PunctuationDelimiter         | `;` `.` `,`                                                                     |
 | 3      | PunctuationBracket           | (), {}, [] when used syntactically                                              |
-| 4      | IdentifierKeyword            | `if`, `else`, `return`, `class`, etc.                                           |
+| 4      | Keyword                      | `if`, `else`, `return`, `class`, etc.                                           |
+| 4      | IdentifierKeyword            |
 | 5      | IdentifierOperator           | `+`, `*`, etc.                                                                  |
 | 6      | Identifier                   | non-specific catch-all for any identifier not better described elsewhere        |
 | 7      | IdentifierBuiltin            | Identifiers builtin to the language: `min`, `print` in Python.                  |
