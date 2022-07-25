@@ -32,14 +32,14 @@ import (
 // such as asymmetric references/definitions.
 //
 // This conversion functionality is used by src-cli.
-func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
+func ConvertSCIPToLSIF(index *Index) ([]reader.Element, map[string]IndexDiagnostic, error) {
 	g := newGraph()
 
 	if index.Metadata == nil {
-		return nil, errors.New(".Metadata is nil")
+		return nil, nil, errors.New(".Metadata is nil")
 	}
 	if index.Metadata.ToolInfo == nil {
-		return nil, errors.New(".Metadata.ToolInfo is nil")
+		return nil, nil, errors.New(".Metadata.ToolInfo is nil")
 	}
 
 	positionEncoding := ""
@@ -49,7 +49,7 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 	case TextEncoding_UTF16:
 		positionEncoding = "utf-16"
 	default:
-		return nil, errors.New(".Metadata.TextDocumentEncoding does not have value utf-8 or utf-16")
+		return nil, nil, errors.New(".Metadata.TextDocumentEncoding does not have value utf-8 or utf-16")
 	}
 
 	g.emitVertex(
@@ -65,12 +65,28 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 		},
 	)
 
+	// Emit a warning with the symbols for a document that were exported
+	// but had no definition. Only display one message so that there are fewer warnings
+	// displayed to users.
+	indexDiagnostics := map[string]IndexDiagnostic{}
+
 	// Pass 1: create result sets for global symbols.
 	for _, importedSymbol := range index.ExternalSymbols {
 		g.symbolToResultSet[importedSymbol.Symbol] = g.emitResultSet(importedSymbol, "import")
 	}
 	for _, document := range index.Documents {
 		for _, exportedSymbol := range document.Symbols {
+			// If an exported symbol is not defined in a document,
+			// do not emit a definition for this symbol.
+			if !document.HasDefinition(exportedSymbol) {
+				diag := NoSymbolDefinitionDiagnostic{
+					symbol: exportedSymbol,
+				}
+				indexDiagnostics[diag.Key()] = diag
+
+				continue
+			}
+
 			g.registerInverseRelationships(exportedSymbol)
 			if IsGlobalSymbol(exportedSymbol.Symbol) {
 				// Local symbols are skipped here because we handle them in the
@@ -97,7 +113,7 @@ func ConvertSCIPToLSIF(index *Index) ([]reader.Element, error) {
 		g.emitDocument(index, document)
 	}
 
-	return g.Elements, nil
+	return g.Elements, indexDiagnostics, nil
 }
 
 // graph is a helper struct to emit LSIF.
