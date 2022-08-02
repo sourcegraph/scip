@@ -131,6 +131,17 @@ instead. The `repeated int32` encoding is admittedly more embarrassing to
 work with in some programming languages but we hope the performance
 improvements make up for it.
 
+Additional notes on **override_documentation**:
+
+(optional) CommonMark-formatted documentation for this specific range. If
+empty, the `Symbol.documentation` field is used instead. One example
+where this field might be useful is when the symbol represents a generic
+function (with abstract type parameters such as `List<T>`) and at this
+occurrence we know the exact values (such as `List<String>`).
+
+This field can also be used for dynamically or gradually typed languages,
+which commonly allow for type-changing assignment.
+
 ### Package
 
 Unit of packaging and distribution.

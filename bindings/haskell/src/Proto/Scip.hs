@@ -4893,9 +4893,9 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\157\183\SOH\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\157\184\SOH\n\
     \\a\DC2\ENQ\n\
-    \\NUL\137\EOT\SOH\n\
+    \\NUL\140\EOT\SOH\n\
     \\130\EOT\n\
     \\SOH\f\DC2\ETX\n\
     \\NUL\DC22\247\ETX An index contains one or more pieces of information about a given piece of\n\
@@ -5823,7 +5823,7 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\ENQ\ETX\STX&\STX\DC2\EOT\210\STX\DC1\DC3\n\
     \\249\SOH\n\
-    \\STX\EOT\t\DC2\ACK\218\STX\NUL\254\STX\SOH\SUB\234\SOH Occurrence associates a source position with a symbol and/or highlighting\n\
+    \\STX\EOT\t\DC2\ACK\218\STX\NUL\129\ETX\SOH\SUB\234\SOH Occurrence associates a source position with a symbol and/or highlighting\n\
     \ information.\n\
     \\n\
     \ If possible, indexers should try to bundle logically related information\n\
@@ -5880,181 +5880,184 @@ packedFileDescriptor
     \\ENQ\EOT\t\STX\STX\SOH\DC2\EOT\243\STX\b\DC4\n\
     \\r\n\
     \\ENQ\EOT\t\STX\STX\ETX\DC2\EOT\243\STX\ETB\CAN\n\
-    \\241\STX\n\
-    \\EOT\EOT\t\STX\ETX\DC2\EOT\249\STX\STX-\SUB\226\STX (optional) CommonMark-formatted documentation for this specific range. If\n\
+    \\241\ETX\n\
+    \\EOT\EOT\t\STX\ETX\DC2\EOT\252\STX\STX-\SUB\226\ETX (optional) CommonMark-formatted documentation for this specific range. If\n\
     \ empty, the `Symbol.documentation` field is used instead. One example\n\
     \ where this field might be useful is when the symbol represents a generic\n\
     \ function (with abstract type parameters such as `List<T>`) and at this\n\
     \ occurrence we know the exact values (such as `List<String>`).\n\
     \\n\
-    \\r\n\
-    \\ENQ\EOT\t\STX\ETX\EOT\DC2\EOT\249\STX\STX\n\
+    \ This field can also be used for dynamically or gradually typed languages,\n\
+    \ which commonly allow for type-changing assignment.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ETX\ENQ\DC2\EOT\249\STX\v\DC1\n\
+    \\ENQ\EOT\t\STX\ETX\EOT\DC2\EOT\252\STX\STX\n\
+    \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ETX\SOH\DC2\EOT\249\STX\DC2(\n\
+    \\ENQ\EOT\t\STX\ETX\ENQ\DC2\EOT\252\STX\v\DC1\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ETX\ETX\DC2\EOT\249\STX+,\n\
+    \\ENQ\EOT\t\STX\ETX\SOH\DC2\EOT\252\STX\DC2(\n\
+    \\r\n\
+    \\ENQ\EOT\t\STX\ETX\ETX\DC2\EOT\252\STX+,\n\
     \X\n\
-    \\EOT\EOT\t\STX\EOT\DC2\EOT\251\STX\STX\GS\SUBJ (optional) What syntax highlighting class should be used for this range?\n\
+    \\EOT\EOT\t\STX\EOT\DC2\EOT\254\STX\STX\GS\SUBJ (optional) What syntax highlighting class should be used for this range?\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\EOT\ACK\DC2\EOT\251\STX\STX\f\n\
+    \\ENQ\EOT\t\STX\EOT\ACK\DC2\EOT\254\STX\STX\f\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\EOT\SOH\DC2\EOT\251\STX\r\CAN\n\
+    \\ENQ\EOT\t\STX\EOT\SOH\DC2\EOT\254\STX\r\CAN\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\EOT\ETX\DC2\EOT\251\STX\ESC\FS\n\
+    \\ENQ\EOT\t\STX\EOT\ETX\DC2\EOT\254\STX\ESC\FS\n\
     \W\n\
-    \\EOT\EOT\t\STX\ENQ\DC2\EOT\253\STX\STX&\SUBI (optional) Diagnostics that have been reported for this specific range.\n\
+    \\EOT\EOT\t\STX\ENQ\DC2\EOT\128\ETX\STX&\SUBI (optional) Diagnostics that have been reported for this specific range.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ENQ\EOT\DC2\EOT\253\STX\STX\n\
+    \\ENQ\EOT\t\STX\ENQ\EOT\DC2\EOT\128\ETX\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ENQ\ACK\DC2\EOT\253\STX\v\NAK\n\
+    \\ENQ\EOT\t\STX\ENQ\ACK\DC2\EOT\128\ETX\v\NAK\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ENQ\SOH\DC2\EOT\253\STX\SYN!\n\
+    \\ENQ\EOT\t\STX\ENQ\SOH\DC2\EOT\128\ETX\SYN!\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ENQ\ETX\DC2\EOT\253\STX$%\n\
+    \\ENQ\EOT\t\STX\ENQ\ETX\DC2\EOT\128\ETX$%\n\
     \w\n\
     \\STX\EOT\n\
-    \\DC2\ACK\130\ETX\NUL\141\ETX\SOH\SUBi Represents a diagnostic, such as a compiler error or warning, which should be\n\
+    \\DC2\ACK\133\ETX\NUL\144\ETX\SOH\SUBi Represents a diagnostic, such as a compiler error or warning, which should be\n\
     \ reported for a document.\n\
     \\n\
     \\v\n\
     \\ETX\EOT\n\
-    \\SOH\DC2\EOT\130\ETX\b\DC2\n\
+    \\SOH\DC2\EOT\133\ETX\b\DC2\n\
     \W\n\
     \\EOT\EOT\n\
-    \\STX\NUL\DC2\EOT\132\ETX\STX\CAN\SUBI Should this diagnostic be reported as an error, warning, info, or hint?\n\
+    \\STX\NUL\DC2\EOT\135\ETX\STX\CAN\SUBI Should this diagnostic be reported as an error, warning, info, or hint?\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\NUL\ACK\DC2\EOT\132\ETX\STX\n\
+    \\STX\NUL\ACK\DC2\EOT\135\ETX\STX\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\NUL\SOH\DC2\EOT\132\ETX\v\DC3\n\
+    \\STX\NUL\SOH\DC2\EOT\135\ETX\v\DC3\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\NUL\ETX\DC2\EOT\132\ETX\SYN\ETB\n\
+    \\STX\NUL\ETX\DC2\EOT\135\ETX\SYN\ETB\n\
     \]\n\
     \\EOT\EOT\n\
-    \\STX\SOH\DC2\EOT\134\ETX\STX\DC2\SUBO (optional) Code of this diagnostic, which might appear in the user interface.\n\
+    \\STX\SOH\DC2\EOT\137\ETX\STX\DC2\SUBO (optional) Code of this diagnostic, which might appear in the user interface.\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\SOH\ENQ\DC2\EOT\134\ETX\STX\b\n\
+    \\STX\SOH\ENQ\DC2\EOT\137\ETX\STX\b\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\SOH\SOH\DC2\EOT\134\ETX\t\r\n\
+    \\STX\SOH\SOH\DC2\EOT\137\ETX\t\r\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\SOH\ETX\DC2\EOT\134\ETX\DLE\DC1\n\
+    \\STX\SOH\ETX\DC2\EOT\137\ETX\DLE\DC1\n\
     \+\n\
     \\EOT\EOT\n\
-    \\STX\STX\DC2\EOT\136\ETX\STX\NAK\SUB\GS Message of this diagnostic.\n\
+    \\STX\STX\DC2\EOT\139\ETX\STX\NAK\SUB\GS Message of this diagnostic.\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\STX\ENQ\DC2\EOT\136\ETX\STX\b\n\
+    \\STX\STX\ENQ\DC2\EOT\139\ETX\STX\b\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\STX\SOH\DC2\EOT\136\ETX\t\DLE\n\
+    \\STX\STX\SOH\DC2\EOT\139\ETX\t\DLE\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\STX\ETX\DC2\EOT\136\ETX\DC3\DC4\n\
+    \\STX\STX\ETX\DC2\EOT\139\ETX\DC3\DC4\n\
     \~\n\
     \\EOT\EOT\n\
-    \\STX\ETX\DC2\EOT\139\ETX\STX\DC4\SUBp (optional) Human-readable string describing the source of this diagnostic, e.g.\n\
+    \\STX\ETX\DC2\EOT\142\ETX\STX\DC4\SUBp (optional) Human-readable string describing the source of this diagnostic, e.g.\n\
     \ 'typescript' or 'super lint'.\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\ETX\ENQ\DC2\EOT\139\ETX\STX\b\n\
+    \\STX\ETX\ENQ\DC2\EOT\142\ETX\STX\b\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\ETX\SOH\DC2\EOT\139\ETX\t\SI\n\
+    \\STX\ETX\SOH\DC2\EOT\142\ETX\t\SI\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\ETX\ETX\DC2\EOT\139\ETX\DC2\DC3\n\
+    \\STX\ETX\ETX\DC2\EOT\142\ETX\DC2\DC3\n\
     \\f\n\
     \\EOT\EOT\n\
-    \\STX\EOT\DC2\EOT\140\ETX\STX\"\n\
+    \\STX\EOT\DC2\EOT\143\ETX\STX\"\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\EOT\EOT\DC2\EOT\140\ETX\STX\n\
+    \\STX\EOT\EOT\DC2\EOT\143\ETX\STX\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\EOT\ACK\DC2\EOT\140\ETX\v\CAN\n\
+    \\STX\EOT\ACK\DC2\EOT\143\ETX\v\CAN\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\EOT\SOH\DC2\EOT\140\ETX\EM\GS\n\
+    \\STX\EOT\SOH\DC2\EOT\143\ETX\EM\GS\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\EOT\ETX\DC2\EOT\140\ETX !\n\
+    \\STX\EOT\ETX\DC2\EOT\143\ETX !\n\
     \\f\n\
-    \\STX\ENQ\EOT\DC2\ACK\143\ETX\NUL\149\ETX\SOH\n\
+    \\STX\ENQ\EOT\DC2\ACK\146\ETX\NUL\152\ETX\SOH\n\
     \\v\n\
-    \\ETX\ENQ\EOT\SOH\DC2\EOT\143\ETX\ENQ\r\n\
+    \\ETX\ENQ\EOT\SOH\DC2\EOT\146\ETX\ENQ\r\n\
     \\f\n\
-    \\EOT\ENQ\EOT\STX\NUL\DC2\EOT\144\ETX\STX\SUB\n\
+    \\EOT\ENQ\EOT\STX\NUL\DC2\EOT\147\ETX\STX\SUB\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\NUL\SOH\DC2\EOT\144\ETX\STX\NAK\n\
+    \\ENQ\ENQ\EOT\STX\NUL\SOH\DC2\EOT\147\ETX\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\NUL\STX\DC2\EOT\144\ETX\CAN\EM\n\
+    \\ENQ\ENQ\EOT\STX\NUL\STX\DC2\EOT\147\ETX\CAN\EM\n\
     \\f\n\
-    \\EOT\ENQ\EOT\STX\SOH\DC2\EOT\145\ETX\STX\f\n\
+    \\EOT\ENQ\EOT\STX\SOH\DC2\EOT\148\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SOH\SOH\DC2\EOT\145\ETX\STX\a\n\
+    \\ENQ\ENQ\EOT\STX\SOH\SOH\DC2\EOT\148\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SOH\STX\DC2\EOT\145\ETX\n\
+    \\ENQ\ENQ\EOT\STX\SOH\STX\DC2\EOT\148\ETX\n\
     \\v\n\
     \\f\n\
-    \\EOT\ENQ\EOT\STX\STX\DC2\EOT\146\ETX\STX\SO\n\
+    \\EOT\ENQ\EOT\STX\STX\DC2\EOT\149\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\STX\SOH\DC2\EOT\146\ETX\STX\t\n\
+    \\ENQ\ENQ\EOT\STX\STX\SOH\DC2\EOT\149\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\STX\STX\DC2\EOT\146\ETX\f\r\n\
+    \\ENQ\ENQ\EOT\STX\STX\STX\DC2\EOT\149\ETX\f\r\n\
     \\f\n\
-    \\EOT\ENQ\EOT\STX\ETX\DC2\EOT\147\ETX\STX\DC2\n\
+    \\EOT\ENQ\EOT\STX\ETX\DC2\EOT\150\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ETX\SOH\DC2\EOT\147\ETX\STX\r\n\
+    \\ENQ\ENQ\EOT\STX\ETX\SOH\DC2\EOT\150\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ETX\STX\DC2\EOT\147\ETX\DLE\DC1\n\
+    \\ENQ\ENQ\EOT\STX\ETX\STX\DC2\EOT\150\ETX\DLE\DC1\n\
     \\f\n\
-    \\EOT\ENQ\EOT\STX\EOT\DC2\EOT\148\ETX\STX\v\n\
+    \\EOT\ENQ\EOT\STX\EOT\DC2\EOT\151\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\EOT\SOH\DC2\EOT\148\ETX\STX\ACK\n\
+    \\ENQ\ENQ\EOT\STX\EOT\SOH\DC2\EOT\151\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\EOT\STX\DC2\EOT\148\ETX\t\n\
+    \\ENQ\ENQ\EOT\STX\EOT\STX\DC2\EOT\151\ETX\t\n\
     \\n\
     \\f\n\
-    \\STX\ENQ\ENQ\DC2\ACK\151\ETX\NUL\155\ETX\SOH\n\
+    \\STX\ENQ\ENQ\DC2\ACK\154\ETX\NUL\158\ETX\SOH\n\
     \\v\n\
-    \\ETX\ENQ\ENQ\SOH\DC2\EOT\151\ETX\ENQ\DC2\n\
+    \\ETX\ENQ\ENQ\SOH\DC2\EOT\154\ETX\ENQ\DC2\n\
     \\f\n\
-    \\EOT\ENQ\ENQ\STX\NUL\DC2\EOT\152\ETX\STX\US\n\
+    \\EOT\ENQ\ENQ\STX\NUL\DC2\EOT\155\ETX\STX\US\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\NUL\SOH\DC2\EOT\152\ETX\STX\SUB\n\
+    \\ENQ\ENQ\ENQ\STX\NUL\SOH\DC2\EOT\155\ETX\STX\SUB\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\NUL\STX\DC2\EOT\152\ETX\GS\RS\n\
+    \\ENQ\ENQ\ENQ\STX\NUL\STX\DC2\EOT\155\ETX\GS\RS\n\
     \\f\n\
-    \\EOT\ENQ\ENQ\STX\SOH\DC2\EOT\153\ETX\STX\DC2\n\
+    \\EOT\ENQ\ENQ\STX\SOH\DC2\EOT\156\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\SOH\SOH\DC2\EOT\153\ETX\STX\r\n\
+    \\ENQ\ENQ\ENQ\STX\SOH\SOH\DC2\EOT\156\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\SOH\STX\DC2\EOT\153\ETX\DLE\DC1\n\
+    \\ENQ\ENQ\ENQ\STX\SOH\STX\DC2\EOT\156\ETX\DLE\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ENQ\STX\STX\DC2\EOT\154\ETX\STX\DC1\n\
+    \\EOT\ENQ\ENQ\STX\STX\DC2\EOT\157\ETX\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\STX\SOH\DC2\EOT\154\ETX\STX\f\n\
+    \\ENQ\ENQ\ENQ\STX\STX\SOH\DC2\EOT\157\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\STX\STX\DC2\EOT\154\ETX\SI\DLE\n\
+    \\ENQ\ENQ\ENQ\STX\STX\STX\DC2\EOT\157\ETX\SI\DLE\n\
     \\214\ETX\n\
-    \\STX\ENQ\ACK\DC2\ACK\163\ETX\NUL\137\EOT\SOH\SUB\199\ETX Language standardises names of common programming languages that can be used\n\
+    \\STX\ENQ\ACK\DC2\ACK\166\ETX\NUL\140\EOT\SOH\SUB\199\ETX Language standardises names of common programming languages that can be used\n\
     \ for the `Document.language` field. The primary purpose of this enum is to\n\
     \ prevent a situation where we have a single programming language ends up with\n\
     \ multiple string representations. For example, the C++ language uses the name\n\
@@ -6062,605 +6065,605 @@ packedFileDescriptor
     \ Feel free to send a pull-request to add missing programming languages.\n\
     \\n\
     \\v\n\
-    \\ETX\ENQ\ACK\SOH\DC2\EOT\163\ETX\ENQ\r\n\
+    \\ETX\ENQ\ACK\SOH\DC2\EOT\166\ETX\ENQ\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\NUL\DC2\EOT\164\ETX\STX\SUB\n\
+    \\EOT\ENQ\ACK\STX\NUL\DC2\EOT\167\ETX\STX\SUB\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\NUL\SOH\DC2\EOT\164\ETX\STX\NAK\n\
+    \\ENQ\ENQ\ACK\STX\NUL\SOH\DC2\EOT\167\ETX\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\NUL\STX\DC2\EOT\164\ETX\CAN\EM\n\
+    \\ENQ\ENQ\ACK\STX\NUL\STX\DC2\EOT\167\ETX\CAN\EM\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SOH\DC2\EOT\165\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX\SOH\DC2\EOT\168\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SOH\SOH\DC2\EOT\165\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\SOH\SOH\DC2\EOT\168\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SOH\STX\DC2\EOT\165\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX\SOH\STX\DC2\EOT\168\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\STX\DC2\EOT\166\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\STX\DC2\EOT\169\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\STX\SOH\DC2\EOT\166\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\STX\SOH\DC2\EOT\169\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\STX\STX\DC2\EOT\166\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\STX\STX\DC2\EOT\169\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ETX\DC2\EOT\167\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\ETX\DC2\EOT\170\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ETX\SOH\DC2\EOT\167\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\ETX\SOH\DC2\EOT\170\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ETX\STX\DC2\EOT\167\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\ETX\STX\DC2\EOT\170\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\EOT\DC2\EOT\168\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX\EOT\DC2\EOT\171\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\EOT\SOH\DC2\EOT\168\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\EOT\SOH\DC2\EOT\171\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\EOT\STX\DC2\EOT\168\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX\EOT\STX\DC2\EOT\171\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ENQ\DC2\EOT\169\ETX\STX\DLE\n\
+    \\EOT\ENQ\ACK\STX\ENQ\DC2\EOT\172\ETX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ENQ\SOH\DC2\EOT\169\ETX\STX\n\
+    \\ENQ\ENQ\ACK\STX\ENQ\SOH\DC2\EOT\172\ETX\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ENQ\STX\DC2\EOT\169\ETX\r\SI\n\
+    \\ENQ\ENQ\ACK\STX\ENQ\STX\DC2\EOT\172\ETX\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ACK\DC2\EOT\170\ETX\STX\DLE\n\
+    \\EOT\ENQ\ACK\STX\ACK\DC2\EOT\173\ETX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ACK\SOH\DC2\EOT\170\ETX\STX\n\
+    \\ENQ\ENQ\ACK\STX\ACK\SOH\DC2\EOT\173\ETX\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ACK\STX\DC2\EOT\170\ETX\r\SI\n\
+    \\ENQ\ENQ\ACK\STX\ACK\STX\DC2\EOT\173\ETX\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\a\DC2\EOT\171\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\a\DC2\EOT\174\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\a\SOH\DC2\EOT\171\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\a\SOH\DC2\EOT\174\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\a\STX\DC2\EOT\171\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\a\STX\DC2\EOT\174\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\b\DC2\EOT\172\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\b\DC2\EOT\175\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\b\SOH\DC2\EOT\172\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\b\SOH\DC2\EOT\175\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\b\STX\DC2\EOT\172\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\b\STX\DC2\EOT\175\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\t\DC2\EOT\173\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\t\DC2\EOT\176\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\t\SOH\DC2\EOT\173\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\t\SOH\DC2\EOT\176\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\t\STX\DC2\EOT\173\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX\t\STX\DC2\EOT\176\ETX\v\r\n\
     \\f\n\
     \\EOT\ENQ\ACK\STX\n\
-    \\DC2\EOT\174\ETX\STX\t\n\
+    \\DC2\EOT\177\ETX\STX\t\n\
     \\r\n\
     \\ENQ\ENQ\ACK\STX\n\
-    \\SOH\DC2\EOT\174\ETX\STX\ETX\n\
+    \\SOH\DC2\EOT\177\ETX\STX\ETX\n\
     \\r\n\
     \\ENQ\ENQ\ACK\STX\n\
-    \\STX\DC2\EOT\174\ETX\ACK\b\n\
+    \\STX\DC2\EOT\177\ETX\ACK\b\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\v\DC2\EOT\175\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX\v\DC2\EOT\178\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\v\SOH\DC2\EOT\175\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX\v\SOH\DC2\EOT\178\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\v\STX\DC2\EOT\175\ETX\n\
+    \\ENQ\ENQ\ACK\STX\v\STX\DC2\EOT\178\ETX\n\
     \\f\n\
     \H\n\
-    \\EOT\ENQ\ACK\STX\f\DC2\EOT\176\ETX\STX\v\": C++ (the name \"CPP\" was chosen for consistency with LSP)\n\
+    \\EOT\ENQ\ACK\STX\f\DC2\EOT\179\ETX\STX\v\": C++ (the name \"CPP\" was chosen for consistency with LSP)\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\f\SOH\DC2\EOT\176\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\f\SOH\DC2\EOT\179\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\f\STX\DC2\EOT\176\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\f\STX\DC2\EOT\179\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\r\DC2\EOT\177\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\r\DC2\EOT\180\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\r\SOH\DC2\EOT\177\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\r\SOH\DC2\EOT\180\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\r\STX\DC2\EOT\177\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\r\STX\DC2\EOT\180\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SO\DC2\EOT\178\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX\SO\DC2\EOT\181\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SO\SOH\DC2\EOT\178\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\SO\SOH\DC2\EOT\181\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SO\STX\DC2\EOT\178\ETX\v\f\n\
+    \\ENQ\ENQ\ACK\STX\SO\STX\DC2\EOT\181\ETX\v\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SI\DC2\EOT\179\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\SI\DC2\EOT\182\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SI\SOH\DC2\EOT\179\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STX\SI\SOH\DC2\EOT\182\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SI\STX\DC2\EOT\179\ETX\f\r\n\
+    \\ENQ\ENQ\ACK\STX\SI\STX\DC2\EOT\182\ETX\f\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\DLE\DC2\EOT\180\ETX\STX\DC4\n\
+    \\EOT\ENQ\ACK\STX\DLE\DC2\EOT\183\ETX\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DLE\SOH\DC2\EOT\180\ETX\STX\SO\n\
+    \\ENQ\ENQ\ACK\STX\DLE\SOH\DC2\EOT\183\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DLE\STX\DC2\EOT\180\ETX\DC1\DC3\n\
+    \\ENQ\ENQ\ACK\STX\DLE\STX\DC2\EOT\183\ETX\DC1\DC3\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\DC1\DC2\EOT\181\ETX\STX\DC1\n\
+    \\EOT\ENQ\ACK\STX\DC1\DC2\EOT\184\ETX\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC1\SOH\DC2\EOT\181\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX\DC1\SOH\DC2\EOT\184\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC1\STX\DC2\EOT\181\ETX\SI\DLE\n\
+    \\ENQ\ENQ\ACK\STX\DC1\STX\DC2\EOT\184\ETX\SI\DLE\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\DC2\DC2\EOT\182\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\DC2\DC2\EOT\185\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC2\SOH\DC2\EOT\182\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX\DC2\SOH\DC2\EOT\185\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC2\STX\DC2\EOT\182\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX\DC2\STX\DC2\EOT\185\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\DC3\DC2\EOT\183\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX\DC3\DC2\EOT\186\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC3\SOH\DC2\EOT\183\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\DC3\SOH\DC2\EOT\186\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC3\STX\DC2\EOT\183\ETX\t\n\
+    \\ENQ\ENQ\ACK\STX\DC3\STX\DC2\EOT\186\ETX\t\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\DC4\DC2\EOT\184\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\DC4\DC2\EOT\187\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC4\SOH\DC2\EOT\184\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\DC4\SOH\DC2\EOT\187\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\DC4\STX\DC2\EOT\184\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX\DC4\STX\DC2\EOT\187\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\NAK\DC2\EOT\185\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX\NAK\DC2\EOT\188\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\NAK\SOH\DC2\EOT\185\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\NAK\SOH\DC2\EOT\188\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\NAK\STX\DC2\EOT\185\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX\NAK\STX\DC2\EOT\188\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SYN\DC2\EOT\186\ETX\STX\DC2\n\
+    \\EOT\ENQ\ACK\STX\SYN\DC2\EOT\189\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SYN\SOH\DC2\EOT\186\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX\SYN\SOH\DC2\EOT\189\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SYN\STX\DC2\EOT\186\ETX\SI\DC1\n\
+    \\ENQ\ENQ\ACK\STX\SYN\STX\DC2\EOT\189\ETX\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ETB\DC2\EOT\187\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\ETB\DC2\EOT\190\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ETB\SOH\DC2\EOT\187\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\ETB\SOH\DC2\EOT\190\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ETB\STX\DC2\EOT\187\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX\ETB\STX\DC2\EOT\190\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\CAN\DC2\EOT\188\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\CAN\DC2\EOT\191\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\CAN\SOH\DC2\EOT\188\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\CAN\SOH\DC2\EOT\191\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\CAN\STX\DC2\EOT\188\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX\CAN\STX\DC2\EOT\191\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\EM\DC2\EOT\189\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\EM\DC2\EOT\192\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\EM\SOH\DC2\EOT\189\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\EM\SOH\DC2\EOT\192\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\EM\STX\DC2\EOT\189\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX\EM\STX\DC2\EOT\192\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SUB\DC2\EOT\190\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX\SUB\DC2\EOT\193\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SUB\SOH\DC2\EOT\190\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\SUB\SOH\DC2\EOT\193\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SUB\STX\DC2\EOT\190\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX\SUB\STX\DC2\EOT\193\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\ESC\DC2\EOT\191\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX\ESC\DC2\EOT\194\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ESC\SOH\DC2\EOT\191\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\ESC\SOH\DC2\EOT\194\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\ESC\STX\DC2\EOT\191\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX\ESC\STX\DC2\EOT\194\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\FS\DC2\EOT\192\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX\FS\DC2\EOT\195\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\FS\SOH\DC2\EOT\192\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\FS\SOH\DC2\EOT\195\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\FS\STX\DC2\EOT\192\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX\FS\STX\DC2\EOT\195\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\GS\DC2\EOT\193\ETX\STX\SI\n\
+    \\EOT\ENQ\ACK\STX\GS\DC2\EOT\196\ETX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\GS\SOH\DC2\EOT\193\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STX\GS\SOH\DC2\EOT\196\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\GS\STX\DC2\EOT\193\ETX\f\SO\n\
+    \\ENQ\ENQ\ACK\STX\GS\STX\DC2\EOT\196\ETX\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\RS\DC2\EOT\194\ETX\STX\DC2\n\
+    \\EOT\ENQ\ACK\STX\RS\DC2\EOT\197\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\RS\SOH\DC2\EOT\194\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX\RS\SOH\DC2\EOT\197\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\RS\STX\DC2\EOT\194\ETX\SI\DC1\n\
+    \\ENQ\ENQ\ACK\STX\RS\STX\DC2\EOT\197\ETX\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\US\DC2\EOT\195\ETX\STX\DC2\n\
+    \\EOT\ENQ\ACK\STX\US\DC2\EOT\198\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\US\SOH\DC2\EOT\195\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX\US\SOH\DC2\EOT\198\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\US\STX\DC2\EOT\195\ETX\SI\DC1\n\
+    \\ENQ\ENQ\ACK\STX\US\STX\DC2\EOT\198\ETX\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX \DC2\EOT\196\ETX\STX\DC2\n\
+    \\EOT\ENQ\ACK\STX \DC2\EOT\199\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX \SOH\DC2\EOT\196\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX \SOH\DC2\EOT\199\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX \STX\DC2\EOT\196\ETX\SI\DC1\n\
+    \\ENQ\ENQ\ACK\STX \STX\DC2\EOT\199\ETX\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX!\DC2\EOT\197\ETX\STX\n\
+    \\EOT\ENQ\ACK\STX!\DC2\EOT\200\ETX\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX!\SOH\DC2\EOT\197\ETX\STX\EOT\n\
+    \\ENQ\ENQ\ACK\STX!\SOH\DC2\EOT\200\ETX\STX\EOT\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX!\STX\DC2\EOT\197\ETX\a\t\n\
+    \\ENQ\ENQ\ACK\STX!\STX\DC2\EOT\200\ETX\a\t\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\"\DC2\EOT\198\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX\"\DC2\EOT\201\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\"\SOH\DC2\EOT\198\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX\"\SOH\DC2\EOT\201\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\"\STX\DC2\EOT\198\ETX\v\f\n\
+    \\ENQ\ENQ\ACK\STX\"\STX\DC2\EOT\201\ETX\v\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX#\DC2\EOT\199\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX#\DC2\EOT\202\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX#\SOH\DC2\EOT\199\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX#\SOH\DC2\EOT\202\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX#\STX\DC2\EOT\199\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX#\STX\DC2\EOT\202\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX$\DC2\EOT\200\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX$\DC2\EOT\203\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX$\SOH\DC2\EOT\200\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX$\SOH\DC2\EOT\203\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX$\STX\DC2\EOT\200\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX$\STX\DC2\EOT\203\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX%\DC2\EOT\201\ETX\STX\DC2\n\
+    \\EOT\ENQ\ACK\STX%\DC2\EOT\204\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX%\SOH\DC2\EOT\201\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX%\SOH\DC2\EOT\204\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX%\STX\DC2\EOT\201\ETX\SI\DC1\n\
+    \\ENQ\ENQ\ACK\STX%\STX\DC2\EOT\204\ETX\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX&\DC2\EOT\202\ETX\STX\SI\n\
+    \\EOT\ENQ\ACK\STX&\DC2\EOT\205\ETX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX&\SOH\DC2\EOT\202\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STX&\SOH\DC2\EOT\205\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX&\STX\DC2\EOT\202\ETX\f\SO\n\
+    \\ENQ\ENQ\ACK\STX&\STX\DC2\EOT\205\ETX\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX'\DC2\EOT\203\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX'\DC2\EOT\206\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX'\SOH\DC2\EOT\203\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX'\SOH\DC2\EOT\206\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX'\STX\DC2\EOT\203\ETX\n\
+    \\ENQ\ENQ\ACK\STX'\STX\DC2\EOT\206\ETX\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX(\DC2\EOT\204\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX(\DC2\EOT\207\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX(\SOH\DC2\EOT\204\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX(\SOH\DC2\EOT\207\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX(\STX\DC2\EOT\204\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX(\STX\DC2\EOT\207\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX)\DC2\EOT\205\ETX\STX\t\n\
+    \\EOT\ENQ\ACK\STX)\DC2\EOT\208\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX)\SOH\DC2\EOT\205\ETX\STX\ETX\n\
+    \\ENQ\ENQ\ACK\STX)\SOH\DC2\EOT\208\ETX\STX\ETX\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX)\STX\DC2\EOT\205\ETX\ACK\b\n\
+    \\ENQ\ENQ\ACK\STX)\STX\DC2\EOT\208\ETX\ACK\b\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX*\DC2\EOT\206\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX*\DC2\EOT\209\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX*\SOH\DC2\EOT\206\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX*\SOH\DC2\EOT\209\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX*\STX\DC2\EOT\206\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX*\STX\DC2\EOT\209\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX+\DC2\EOT\207\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX+\DC2\EOT\210\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX+\SOH\DC2\EOT\207\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX+\SOH\DC2\EOT\210\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX+\STX\DC2\EOT\207\ETX\t\n\
+    \\ENQ\ENQ\ACK\STX+\STX\DC2\EOT\210\ETX\t\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX,\DC2\EOT\208\ETX\STX\DC2\n\
+    \\EOT\ENQ\ACK\STX,\DC2\EOT\211\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX,\SOH\DC2\EOT\208\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX,\SOH\DC2\EOT\211\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX,\STX\DC2\EOT\208\ETX\SI\DC1\n\
+    \\ENQ\ENQ\ACK\STX,\STX\DC2\EOT\211\ETX\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX-\DC2\EOT\209\ETX\STX\ETB\n\
+    \\EOT\ENQ\ACK\STX-\DC2\EOT\212\ETX\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX-\SOH\DC2\EOT\209\ETX\STX\DC1\n\
+    \\ENQ\ENQ\ACK\STX-\SOH\DC2\EOT\212\ETX\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX-\STX\DC2\EOT\209\ETX\DC4\SYN\n\
+    \\ENQ\ENQ\ACK\STX-\STX\DC2\EOT\212\ETX\DC4\SYN\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX.\DC2\EOT\210\ETX\STX\SI\n\
+    \\EOT\ENQ\ACK\STX.\DC2\EOT\213\ETX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX.\SOH\DC2\EOT\210\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STX.\SOH\DC2\EOT\213\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX.\STX\DC2\EOT\210\ETX\f\SO\n\
+    \\ENQ\ENQ\ACK\STX.\STX\DC2\EOT\213\ETX\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX/\DC2\EOT\211\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX/\DC2\EOT\214\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX/\SOH\DC2\EOT\211\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX/\SOH\DC2\EOT\214\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX/\STX\DC2\EOT\211\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX/\STX\DC2\EOT\214\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX0\DC2\EOT\212\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX0\DC2\EOT\215\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX0\SOH\DC2\EOT\212\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX0\SOH\DC2\EOT\215\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX0\STX\DC2\EOT\212\ETX\v\f\n\
+    \\ENQ\ENQ\ACK\STX0\STX\DC2\EOT\215\ETX\v\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX1\DC2\EOT\213\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX1\DC2\EOT\216\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX1\SOH\DC2\EOT\213\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX1\SOH\DC2\EOT\216\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX1\STX\DC2\EOT\213\ETX\n\
+    \\ENQ\ENQ\ACK\STX1\STX\DC2\EOT\216\ETX\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX2\DC2\EOT\214\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX2\DC2\EOT\217\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX2\SOH\DC2\EOT\214\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX2\SOH\DC2\EOT\217\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX2\STX\DC2\EOT\214\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX2\STX\DC2\EOT\217\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX3\DC2\EOT\215\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX3\DC2\EOT\218\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX3\SOH\DC2\EOT\215\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX3\SOH\DC2\EOT\218\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX3\STX\DC2\EOT\215\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX3\STX\DC2\EOT\218\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX4\DC2\EOT\216\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX4\DC2\EOT\219\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX4\SOH\DC2\EOT\216\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX4\SOH\DC2\EOT\219\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX4\STX\DC2\EOT\216\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX4\STX\DC2\EOT\219\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX5\DC2\EOT\217\ETX\STX\DLE\n\
+    \\EOT\ENQ\ACK\STX5\DC2\EOT\220\ETX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX5\SOH\DC2\EOT\217\ETX\STX\n\
+    \\ENQ\ENQ\ACK\STX5\SOH\DC2\EOT\220\ETX\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX5\STX\DC2\EOT\217\ETX\r\SI\n\
+    \\ENQ\ENQ\ACK\STX5\STX\DC2\EOT\220\ETX\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX6\DC2\EOT\218\ETX\STX\DLE\n\
+    \\EOT\ENQ\ACK\STX6\DC2\EOT\221\ETX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX6\SOH\DC2\EOT\218\ETX\STX\n\
+    \\ENQ\ENQ\ACK\STX6\SOH\DC2\EOT\221\ETX\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX6\STX\DC2\EOT\218\ETX\r\SI\n\
+    \\ENQ\ENQ\ACK\STX6\STX\DC2\EOT\221\ETX\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX7\DC2\EOT\219\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX7\DC2\EOT\222\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX7\SOH\DC2\EOT\219\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX7\SOH\DC2\EOT\222\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX7\STX\DC2\EOT\219\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX7\STX\DC2\EOT\222\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX8\DC2\EOT\220\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX8\DC2\EOT\223\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX8\SOH\DC2\EOT\220\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX8\SOH\DC2\EOT\223\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX8\STX\DC2\EOT\220\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX8\STX\DC2\EOT\223\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX9\DC2\EOT\221\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX9\DC2\EOT\224\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX9\SOH\DC2\EOT\221\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX9\SOH\DC2\EOT\224\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX9\STX\DC2\EOT\221\ETX\n\
+    \\ENQ\ENQ\ACK\STX9\STX\DC2\EOT\224\ETX\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX:\DC2\EOT\222\ETX\STX\DC3\n\
+    \\EOT\ENQ\ACK\STX:\DC2\EOT\225\ETX\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX:\SOH\DC2\EOT\222\ETX\STX\r\n\
+    \\ENQ\ENQ\ACK\STX:\SOH\DC2\EOT\225\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX:\STX\DC2\EOT\222\ETX\DLE\DC2\n\
+    \\ENQ\ENQ\ACK\STX:\STX\DC2\EOT\225\ETX\DLE\DC2\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX;\DC2\EOT\223\ETX\STX\NAK\n\
+    \\EOT\ENQ\ACK\STX;\DC2\EOT\226\ETX\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX;\SOH\DC2\EOT\223\ETX\STX\SI\n\
+    \\ENQ\ENQ\ACK\STX;\SOH\DC2\EOT\226\ETX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX;\STX\DC2\EOT\223\ETX\DC2\DC4\n\
+    \\ENQ\ENQ\ACK\STX;\STX\DC2\EOT\226\ETX\DC2\DC4\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX<\DC2\EOT\224\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX<\DC2\EOT\227\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX<\SOH\DC2\EOT\224\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX<\SOH\DC2\EOT\227\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX<\STX\DC2\EOT\224\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX<\STX\DC2\EOT\227\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX=\DC2\EOT\225\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STX=\DC2\EOT\228\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX=\SOH\DC2\EOT\225\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STX=\SOH\DC2\EOT\228\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX=\STX\DC2\EOT\225\ETX\n\
+    \\ENQ\ENQ\ACK\STX=\STX\DC2\EOT\228\ETX\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX>\DC2\EOT\226\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STX>\DC2\EOT\229\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX>\SOH\DC2\EOT\226\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX>\SOH\DC2\EOT\229\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX>\STX\DC2\EOT\226\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STX>\STX\DC2\EOT\229\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX?\DC2\EOT\227\ETX\STX\DC2\n\
+    \\EOT\ENQ\ACK\STX?\DC2\EOT\230\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX?\SOH\DC2\EOT\227\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STX?\SOH\DC2\EOT\230\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX?\STX\DC2\EOT\227\ETX\SI\DC1\n\
+    \\ENQ\ENQ\ACK\STX?\STX\DC2\EOT\230\ETX\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX@\DC2\EOT\228\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STX@\DC2\EOT\231\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX@\SOH\DC2\EOT\228\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STX@\SOH\DC2\EOT\231\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX@\STX\DC2\EOT\228\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STX@\STX\DC2\EOT\231\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXA\DC2\EOT\229\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STXA\DC2\EOT\232\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXA\SOH\DC2\EOT\229\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STXA\SOH\DC2\EOT\232\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXA\STX\DC2\EOT\229\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STXA\STX\DC2\EOT\232\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXB\DC2\EOT\230\ETX\STX\t\n\
+    \\EOT\ENQ\ACK\STXB\DC2\EOT\233\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXB\SOH\DC2\EOT\230\ETX\STX\ETX\n\
+    \\ENQ\ENQ\ACK\STXB\SOH\DC2\EOT\233\ETX\STX\ETX\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXB\STX\DC2\EOT\230\ETX\ACK\b\n\
+    \\ENQ\ENQ\ACK\STXB\STX\DC2\EOT\233\ETX\ACK\b\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXC\DC2\EOT\231\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STXC\DC2\EOT\234\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXC\SOH\DC2\EOT\231\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STXC\SOH\DC2\EOT\234\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXC\STX\DC2\EOT\231\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STXC\STX\DC2\EOT\234\ETX\v\r\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXD\DC2\EOT\232\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXD\DC2\EOT\235\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXD\SOH\DC2\EOT\232\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STXD\SOH\DC2\EOT\235\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXD\STX\DC2\EOT\232\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STXD\STX\DC2\EOT\235\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXE\DC2\EOT\233\ETX\STX\r\n\
+    \\EOT\ENQ\ACK\STXE\DC2\EOT\236\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXE\SOH\DC2\EOT\233\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STXE\SOH\DC2\EOT\236\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXE\STX\DC2\EOT\233\ETX\n\
+    \\ENQ\ENQ\ACK\STXE\STX\DC2\EOT\236\ETX\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXF\DC2\EOT\234\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXF\DC2\EOT\237\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXF\SOH\DC2\EOT\234\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STXF\SOH\DC2\EOT\237\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXF\STX\DC2\EOT\234\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STXF\STX\DC2\EOT\237\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXG\DC2\EOT\235\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXG\DC2\EOT\238\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXG\SOH\DC2\EOT\235\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STXG\SOH\DC2\EOT\238\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXG\STX\DC2\EOT\235\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STXG\STX\DC2\EOT\238\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXH\DC2\EOT\236\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXH\DC2\EOT\239\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXH\SOH\DC2\EOT\236\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STXH\SOH\DC2\EOT\239\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXH\STX\DC2\EOT\236\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STXH\STX\DC2\EOT\239\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXI\DC2\EOT\237\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STXI\DC2\EOT\240\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXI\SOH\DC2\EOT\237\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STXI\SOH\DC2\EOT\240\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXI\STX\DC2\EOT\237\ETX\b\n\
+    \\ENQ\ENQ\ACK\STXI\STX\DC2\EOT\240\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXJ\DC2\EOT\238\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXJ\DC2\EOT\241\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXJ\SOH\DC2\EOT\238\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STXJ\SOH\DC2\EOT\241\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXJ\STX\DC2\EOT\238\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STXJ\STX\DC2\EOT\241\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXK\DC2\EOT\239\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STXK\DC2\EOT\242\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXK\SOH\DC2\EOT\239\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STXK\SOH\DC2\EOT\242\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXK\STX\DC2\EOT\239\ETX\b\n\
+    \\ENQ\ENQ\ACK\STXK\STX\DC2\EOT\242\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXL\DC2\EOT\240\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STXL\DC2\EOT\243\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXL\SOH\DC2\EOT\240\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STXL\SOH\DC2\EOT\243\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXL\STX\DC2\EOT\240\ETX\b\n\
+    \\ENQ\ENQ\ACK\STXL\STX\DC2\EOT\243\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXM\DC2\EOT\241\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXM\DC2\EOT\244\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXM\SOH\DC2\EOT\241\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STXM\SOH\DC2\EOT\244\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXM\STX\DC2\EOT\241\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STXM\STX\DC2\EOT\244\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXN\DC2\EOT\242\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXN\DC2\EOT\245\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXN\SOH\DC2\EOT\242\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STXN\SOH\DC2\EOT\245\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXN\STX\DC2\EOT\242\ETX\n\
+    \\ENQ\ENQ\ACK\STXN\STX\DC2\EOT\245\ETX\n\
     \\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXO\DC2\EOT\243\ETX\STX\SO\n\
+    \\EOT\ENQ\ACK\STXO\DC2\EOT\246\ETX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXO\SOH\DC2\EOT\243\ETX\STX\b\n\
+    \\ENQ\ENQ\ACK\STXO\SOH\DC2\EOT\246\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXO\STX\DC2\EOT\243\ETX\v\r\n\
+    \\ENQ\ENQ\ACK\STXO\STX\DC2\EOT\246\ETX\v\r\n\
     \\DC4\n\
-    \\EOT\ENQ\ACK\STXP\DC2\EOT\244\ETX\STX\DC3\"\ACK Bash\n\
+    \\EOT\ENQ\ACK\STXP\DC2\EOT\247\ETX\STX\DC3\"\ACK Bash\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXP\SOH\DC2\EOT\244\ETX\STX\r\n\
+    \\ENQ\ENQ\ACK\STXP\SOH\DC2\EOT\247\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXP\STX\DC2\EOT\244\ETX\DLE\DC2\n\
+    \\ENQ\ENQ\ACK\STXP\STX\DC2\EOT\247\ETX\DLE\DC2\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXQ\DC2\EOT\245\ETX\STX\SI\n\
+    \\EOT\ENQ\ACK\STXQ\DC2\EOT\248\ETX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXQ\SOH\DC2\EOT\245\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STXQ\SOH\DC2\EOT\248\ETX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXQ\STX\DC2\EOT\245\ETX\f\SO\n\
+    \\ENQ\ENQ\ACK\STXQ\STX\DC2\EOT\248\ETX\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXR\DC2\EOT\246\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXR\DC2\EOT\249\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXR\SOH\DC2\EOT\246\ETX\STX\a\n\
+    \\ENQ\ENQ\ACK\STXR\SOH\DC2\EOT\249\ETX\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXR\STX\DC2\EOT\246\ETX\n\
+    \\ENQ\ENQ\ACK\STXR\STX\DC2\EOT\249\ETX\n\
     \\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXS\DC2\EOT\247\ETX\STX\f\n\
+    \\EOT\ENQ\ACK\STXS\DC2\EOT\250\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXS\SOH\DC2\EOT\247\ETX\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STXS\SOH\DC2\EOT\250\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXS\STX\DC2\EOT\247\ETX\t\v\n\
+    \\ENQ\ENQ\ACK\STXS\STX\DC2\EOT\250\ETX\t\v\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXT\DC2\EOT\248\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STXT\DC2\EOT\251\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXT\SOH\DC2\EOT\248\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STXT\SOH\DC2\EOT\251\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXT\STX\DC2\EOT\248\ETX\b\n\
+    \\ENQ\ENQ\ACK\STXT\STX\DC2\EOT\251\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXU\DC2\EOT\249\ETX\STX\DC2\n\
+    \\EOT\ENQ\ACK\STXU\DC2\EOT\252\ETX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXU\SOH\DC2\EOT\249\ETX\STX\f\n\
+    \\ENQ\ENQ\ACK\STXU\SOH\DC2\EOT\252\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXU\STX\DC2\EOT\249\ETX\SI\DC1\n\
+    \\ENQ\ENQ\ACK\STXU\STX\DC2\EOT\252\ETX\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXV\DC2\EOT\250\ETX\STX\ETB\n\
+    \\EOT\ENQ\ACK\STXV\DC2\EOT\253\ETX\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXV\SOH\DC2\EOT\250\ETX\STX\DC1\n\
+    \\ENQ\ENQ\ACK\STXV\SOH\DC2\EOT\253\ETX\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXV\STX\DC2\EOT\250\ETX\DC4\SYN\n\
+    \\ENQ\ENQ\ACK\STXV\STX\DC2\EOT\253\ETX\DC4\SYN\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXW\DC2\EOT\251\ETX\STX\DC3\n\
+    \\EOT\ENQ\ACK\STXW\DC2\EOT\254\ETX\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXW\SOH\DC2\EOT\251\ETX\STX\r\n\
+    \\ENQ\ENQ\ACK\STXW\SOH\DC2\EOT\254\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXW\STX\DC2\EOT\251\ETX\DLE\DC2\n\
+    \\ENQ\ENQ\ACK\STXW\STX\DC2\EOT\254\ETX\DLE\DC2\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXX\DC2\EOT\252\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STXX\DC2\EOT\255\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXX\SOH\DC2\EOT\252\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STXX\SOH\DC2\EOT\255\ETX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXX\STX\DC2\EOT\252\ETX\b\n\
+    \\ENQ\ENQ\ACK\STXX\STX\DC2\EOT\255\ETX\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXY\DC2\EOT\253\ETX\STX\SI\n\
+    \\EOT\ENQ\ACK\STXY\DC2\EOT\128\EOT\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXY\SOH\DC2\EOT\253\ETX\STX\t\n\
+    \\ENQ\ENQ\ACK\STXY\SOH\DC2\EOT\128\EOT\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXY\STX\DC2\EOT\253\ETX\f\SO\n\
+    \\ENQ\ENQ\ACK\STXY\STX\DC2\EOT\128\EOT\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STXZ\DC2\EOT\254\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STXZ\DC2\EOT\129\EOT\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXZ\SOH\DC2\EOT\254\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STXZ\SOH\DC2\EOT\129\EOT\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STXZ\STX\DC2\EOT\254\ETX\b\n\
+    \\ENQ\ENQ\ACK\STXZ\STX\DC2\EOT\129\EOT\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX[\DC2\EOT\255\ETX\STX\v\n\
+    \\EOT\ENQ\ACK\STX[\DC2\EOT\130\EOT\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX[\SOH\DC2\EOT\255\ETX\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX[\SOH\DC2\EOT\130\EOT\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX[\STX\DC2\EOT\255\ETX\b\n\
+    \\ENQ\ENQ\ACK\STX[\STX\DC2\EOT\130\EOT\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\\\DC2\EOT\128\EOT\STX\f\n\
+    \\EOT\ENQ\ACK\STX\\\DC2\EOT\131\EOT\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\\\SOH\DC2\EOT\128\EOT\STX\ACK\n\
+    \\ENQ\ENQ\ACK\STX\\\SOH\DC2\EOT\131\EOT\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\\\STX\DC2\EOT\128\EOT\t\v\n\
+    \\ENQ\ENQ\ACK\STX\\\STX\DC2\EOT\131\EOT\t\v\n\
     \\146\ETX\n\
-    \\EOT\ENQ\ACK\STX]\DC2\EOT\129\EOT\STX\v\"\131\ETX NextLanguage = 95;\n\
+    \\EOT\ENQ\ACK\STX]\DC2\EOT\132\EOT\STX\v\"\131\ETX NextLanguage = 95;\n\
     \ Steps add a new language:\n\
     \ 1. Copy-paste the \"NextLanguage = N\" line above\n\
     \ 2. Increment \"NextLanguage = N\" to \"NextLanguage = N+1\"\n\
@@ -6669,7 +6672,7 @@ packedFileDescriptor
     \ 5. (optional) Add a brief comment behind the language if the name is not self-explanatory\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX]\SOH\DC2\EOT\129\EOT\STX\ENQ\n\
+    \\ENQ\ENQ\ACK\STX]\SOH\DC2\EOT\132\EOT\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX]\STX\DC2\EOT\129\EOT\b\n\
+    \\ENQ\ENQ\ACK\STX]\STX\DC2\EOT\132\EOT\b\n\
     \b\ACKproto3"
