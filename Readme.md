@@ -39,6 +39,18 @@ to better understand project structure and common workflows.
 
 Contributors should abide by the [Sourcegraph Code of Conduct](https://handbook.sourcegraph.com/company-info-and-process/communication/code_of_conduct/).
 
+## Installing CLI
+
+You can find binaries for `scip`
+[here](https://github.com/sourcegraph/scip/releases). If you'd like to create a
+binary locally you can do so with:
+
+```sh
+git clone https://github.com/sourcegraph/scip.git --depth=1
+cd scip
+go build -o scip ./cmd 
+```
+
 ## SCIP CLI reference
 
 ```
