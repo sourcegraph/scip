@@ -1,0 +1,28 @@
+name: release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release-image:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64, arm64]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: wangyoucao577/go-release-action@v1.30
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          sha256sum: true
+          project_path: cmd
+          binary_name: scip
+          asset_name: scip-${{ matrix.goos }}-${{ matrix.goarch }}
+          extra_files: LICENSE
