@@ -1658,6 +1658,9 @@ type Occurrence struct {
 	// where this field might be useful is when the symbol represents a generic
 	// function (with abstract type parameters such as `List<T>`) and at this
 	// occurrence we know the exact values (such as `List<String>`).
+	//
+	// This field can also be used for dynamically or gradually typed languages,
+	// which commonly allow for type-changing assignment.
 	OverrideDocumentation []string `protobuf:"bytes,4,rep,name=override_documentation,json=overrideDocumentation,proto3" json:"override_documentation,omitempty"`
 	// (optional) What syntax highlighting class should be used for this range?
 	SyntaxKind SyntaxKind `protobuf:"varint,5,opt,name=syntax_kind,json=syntaxKind,proto3,enum=scip.SyntaxKind" json:"syntax_kind,omitempty"`
