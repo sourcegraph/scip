@@ -48,7 +48,7 @@ binary locally you can do so with:
 ```sh
 git clone https://github.com/sourcegraph/scip.git --depth=1
 cd scip
-go build -o scip ./cmd 
+go build -o scip ./cmd
 ```
 
 ## SCIP CLI reference
