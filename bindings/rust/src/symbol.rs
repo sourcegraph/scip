@@ -105,6 +105,12 @@ pub fn format_symbol(symbol: Symbol) -> String {
     format_symbol_with(symbol, SymbolFormatOptions::default())
 }
 
+impl Symbol {
+    pub fn new_local(id: usize) -> Self {
+        internal_local_symbol(id.to_string().as_str())
+    }
+}
+
 pub fn parse_symbol(symbol: &str) -> Result<Symbol, SymbolError> {
     fn dot(s: String) -> String {
         if s.as_str() == "." {
@@ -118,7 +124,7 @@ pub fn parse_symbol(symbol: &str) -> Result<Symbol, SymbolError> {
 
     let scheme = parser.accept_space_escaped_identifier("scheme")?;
     if scheme == "local" {
-        return Ok(new_local_symbol(
+        return Ok(internal_local_symbol(
             symbol
                 .chars()
                 .skip(parser.index)
@@ -338,7 +344,7 @@ impl SymbolParser {
     }
 }
 
-fn new_local_symbol(id: &str) -> Symbol {
+fn internal_local_symbol(id: &str) -> Symbol {
     let descriptor = Descriptor {
         name: id.to_string(),
         disambiguator: "".to_string(),
@@ -376,7 +382,7 @@ mod test {
     fn parses_local() {
         assert_eq!(
             parse_symbol("local a").expect("to parse local"),
-            new_local_symbol("a")
+            internal_local_symbol("a")
         );
     }
 
