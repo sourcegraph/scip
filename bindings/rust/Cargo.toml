@@ -2,6 +2,10 @@
 name = "scip"
 version = "0.1.0"
 edition = "2021"
+license = "Apache-2.0"
+description = """
+SCIP is a protocol for communicating code intelligence information about projects.
+"""
 
 # We need >= 1.60.0 because the generated code uses
 # https://doc.rust-lang.org/std/vec/struct.Vec.html#method.spare_capacity_mut
