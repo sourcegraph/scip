@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 description = """
-SCIP is a protocol for communicating code intelligence information about projects.
+SCIP (pronunciation: "skip") is a language-agnostic protocol for indexing source code, which can be used to power code navigation functionality such as Go to definition, Find references, and Find implementations.
 """
 
 # We need >= 1.60.0 because the generated code uses
