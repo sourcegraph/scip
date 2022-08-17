@@ -173,6 +173,11 @@ export namespace scip {
         YAML = 74,
         Zig = 38
     }
+    export enum FoldingRangeKind {
+        FoldingRegion = 0,
+        FoldingComment = 1,
+        FoldingImports = 2
+    }
     export class Index extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -548,9 +553,10 @@ export namespace scip {
             relative_path?: string;
             occurrences?: Occurrence[];
             symbols?: SymbolInformation[];
+            folds?: FoldingRange[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3, 5], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("language" in data && data.language != undefined) {
                     this.language = data.language;
@@ -563,6 +569,9 @@ export namespace scip {
                 }
                 if ("symbols" in data && data.symbols != undefined) {
                     this.symbols = data.symbols;
+                }
+                if ("folds" in data && data.folds != undefined) {
+                    this.folds = data.folds;
                 }
             }
         }
@@ -590,11 +599,18 @@ export namespace scip {
         set symbols(value: SymbolInformation[]) {
             pb_1.Message.setRepeatedWrapperField(this, 3, value);
         }
+        get folds() {
+            return pb_1.Message.getRepeatedWrapperField(this, FoldingRange, 5) as FoldingRange[];
+        }
+        set folds(value: FoldingRange[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 5, value);
+        }
         static fromObject(data: {
             language?: string;
             relative_path?: string;
             occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
             symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
+            folds?: ReturnType<typeof FoldingRange.prototype.toObject>[];
         }): Document {
             const message = new Document({});
             if (data.language != null) {
@@ -609,6 +625,9 @@ export namespace scip {
             if (data.symbols != null) {
                 message.symbols = data.symbols.map(item => SymbolInformation.fromObject(item));
             }
+            if (data.folds != null) {
+                message.folds = data.folds.map(item => FoldingRange.fromObject(item));
+            }
             return message;
         }
         toObject() {
@@ -617,6 +636,7 @@ export namespace scip {
                 relative_path?: string;
                 occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
                 symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
+                folds?: ReturnType<typeof FoldingRange.prototype.toObject>[];
             } = {};
             if (this.language != null) {
                 data.language = this.language;
@@ -629,6 +649,9 @@ export namespace scip {
             }
             if (this.symbols != null) {
                 data.symbols = this.symbols.map((item: SymbolInformation) => item.toObject());
+            }
+            if (this.folds != null) {
+                data.folds = this.folds.map((item: FoldingRange) => item.toObject());
             }
             return data;
         }
@@ -644,6 +667,8 @@ export namespace scip {
                 writer.writeRepeatedMessage(2, this.occurrences, (item: Occurrence) => item.serialize(writer));
             if (this.symbols.length)
                 writer.writeRepeatedMessage(3, this.symbols, (item: SymbolInformation) => item.serialize(writer));
+            if (this.folds.length)
+                writer.writeRepeatedMessage(5, this.folds, (item: FoldingRange) => item.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -664,6 +689,9 @@ export namespace scip {
                         break;
                     case 3:
                         reader.readMessage(message.symbols, () => pb_1.Message.addToRepeatedWrapperField(message, 3, SymbolInformation.deserialize(reader), SymbolInformation));
+                        break;
+                    case 5:
+                        reader.readMessage(message.folds, () => pb_1.Message.addToRepeatedWrapperField(message, 5, FoldingRange.deserialize(reader), FoldingRange));
                         break;
                     default: reader.skipField();
                 }
@@ -1623,6 +1651,119 @@ export namespace scip {
         }
         static deserializeBinary(bytes: Uint8Array): Diagnostic {
             return Diagnostic.deserialize(bytes);
+        }
+    }
+    export class FoldingRange extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            kind?: FoldingRangeKind;
+            text?: string;
+            range?: number[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("kind" in data && data.kind != undefined) {
+                    this.kind = data.kind;
+                }
+                if ("text" in data && data.text != undefined) {
+                    this.text = data.text;
+                }
+                if ("range" in data && data.range != undefined) {
+                    this.range = data.range;
+                }
+            }
+        }
+        get kind() {
+            return pb_1.Message.getFieldWithDefault(this, 1, FoldingRangeKind.FoldingRegion) as FoldingRangeKind;
+        }
+        set kind(value: FoldingRangeKind) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get text() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set text(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get range() {
+            return pb_1.Message.getFieldWithDefault(this, 3, []) as number[];
+        }
+        set range(value: number[]) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        static fromObject(data: {
+            kind?: FoldingRangeKind;
+            text?: string;
+            range?: number[];
+        }): FoldingRange {
+            const message = new FoldingRange({});
+            if (data.kind != null) {
+                message.kind = data.kind;
+            }
+            if (data.text != null) {
+                message.text = data.text;
+            }
+            if (data.range != null) {
+                message.range = data.range;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                kind?: FoldingRangeKind;
+                text?: string;
+                range?: number[];
+            } = {};
+            if (this.kind != null) {
+                data.kind = this.kind;
+            }
+            if (this.text != null) {
+                data.text = this.text;
+            }
+            if (this.range != null) {
+                data.range = this.range;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.kind != FoldingRangeKind.FoldingRegion)
+                writer.writeEnum(1, this.kind);
+            if (this.text.length)
+                writer.writeString(2, this.text);
+            if (this.range.length)
+                writer.writePackedInt32(3, this.range);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): FoldingRange {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new FoldingRange();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.kind = reader.readEnum();
+                        break;
+                    case 2:
+                        message.text = reader.readString();
+                        break;
+                    case 3:
+                        message.range = reader.readPackedInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): FoldingRange {
+            return FoldingRange.deserialize(bytes);
         }
     }
 }

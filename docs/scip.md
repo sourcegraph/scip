@@ -56,6 +56,7 @@ Document defines the metadata about a source file on disk.
 | **relative_path**        | string            | (Required) Unique path to the text document.                                                                                                                                                                                                                                       |
 | repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                              |
 | repeated **symbols**     | SymbolInformation | Symbols that are defined within this document.                                                                                                                                                                                                                                     |
+| repeated **folds**       | FoldingRange      | Folding ranges within a Document                                                                                                                                                                                                                                                   |
 
 Additional notes on **relative_path**:
 
@@ -68,6 +69,14 @@ Additional notes on **relative_path**:
 4. The path must use '/' as the separator, including on Windows.
 5. The path must be canonical; it cannot include empty components ('//'),
    or '.' or '..'.
+
+### FoldingRange
+
+| Name               | Type             | Description                                                                                                        |
+| ------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **kind**           | FoldingRangeKind |
+| **text**           | string           | The text to display on the line (or within the range on a single line) in place of the actual contents in the file |
+| repeated **range** | int32            | See Occurrence.range                                                                                               |
 
 ### Index
 
@@ -235,6 +244,14 @@ docstring or what package it's defined it.
 | 0      | UnspecifiedDiagnosticTag |
 | 1      | Unnecessary              |
 | 2      | Deprecated               |
+
+### FoldingRangeKind
+
+| Number | Name           | Description |
+| ------ | -------------- | ----------- |
+| 0      | FoldingRegion  |
+| 1      | FoldingComment |
+| 2      | FoldingImports |
 
 ### Language
 

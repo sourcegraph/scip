@@ -87,6 +87,8 @@ message Document {
   repeated Occurrence occurrences = 2;
   // Symbols that are defined within this document.
   repeated SymbolInformation symbols = 3;
+  // Folding ranges within a Document
+  repeated FoldingRange folds = 5;
 }
 
 
@@ -522,4 +524,21 @@ enum Language {
   // 3. Replace "NextLanguage = N" with the name of the new language.
   // 4. Move the new language to the correct line above using alphabetical order
   // 5. (optional) Add a brief comment behind the language if the name is not self-explanatory
+}
+
+enum FoldingRangeKind {
+    FoldingRegion = 0;
+    FoldingComment = 1;
+    FoldingImports = 2;
+}
+
+message FoldingRange {
+    FoldingRangeKind kind = 1;
+
+    // The text to display on the line (or within the range on a single line)
+    // in place of the actual contents in the file
+    string text = 2;
+
+    // See Occurrence.range
+    repeated int32 range = 3;
 }
