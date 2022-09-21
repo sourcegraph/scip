@@ -3071,12 +3071,14 @@ instance Control.DeepSeq.NFData ProtocolVersion where
          * 'Proto.Scip_Fields.symbol' @:: Lens' Relationship Data.Text.Text@
          * 'Proto.Scip_Fields.isReference' @:: Lens' Relationship Prelude.Bool@
          * 'Proto.Scip_Fields.isImplementation' @:: Lens' Relationship Prelude.Bool@
-         * 'Proto.Scip_Fields.isTypeDefinition' @:: Lens' Relationship Prelude.Bool@ -}
+         * 'Proto.Scip_Fields.isTypeDefinition' @:: Lens' Relationship Prelude.Bool@
+         * 'Proto.Scip_Fields.isDefinition' @:: Lens' Relationship Prelude.Bool@ -}
 data Relationship
   = Relationship'_constructor {_Relationship'symbol :: !Data.Text.Text,
                                _Relationship'isReference :: !Prelude.Bool,
                                _Relationship'isImplementation :: !Prelude.Bool,
                                _Relationship'isTypeDefinition :: !Prelude.Bool,
+                               _Relationship'isDefinition :: !Prelude.Bool,
                                _Relationship'_unknownFields :: !Data.ProtoLens.FieldSet}
   deriving stock (Prelude.Eq, Prelude.Ord)
 instance Prelude.Show Relationship where
@@ -3113,6 +3115,13 @@ instance Data.ProtoLens.Field.HasField Relationship "isTypeDefinition" Prelude.B
            _Relationship'isTypeDefinition
            (\ x__ y__ -> x__ {_Relationship'isTypeDefinition = y__}))
         Prelude.id
+instance Data.ProtoLens.Field.HasField Relationship "isDefinition" Prelude.Bool where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Relationship'isDefinition
+           (\ x__ y__ -> x__ {_Relationship'isDefinition = y__}))
+        Prelude.id
 instance Data.ProtoLens.Message Relationship where
   messageName _ = Data.Text.pack "scip.Relationship"
   packedMessageDescriptor _
@@ -3121,7 +3130,8 @@ instance Data.ProtoLens.Message Relationship where
       \\ACKsymbol\CAN\SOH \SOH(\tR\ACKsymbol\DC2!\n\
       \\fis_reference\CAN\STX \SOH(\bR\visReference\DC2+\n\
       \\DC1is_implementation\CAN\ETX \SOH(\bR\DLEisImplementation\DC2,\n\
-      \\DC2is_type_definition\CAN\EOT \SOH(\bR\DLEisTypeDefinition"
+      \\DC2is_type_definition\CAN\EOT \SOH(\bR\DLEisTypeDefinition\DC2#\n\
+      \\ris_definition\CAN\ENQ \SOH(\bR\fisDefinition"
   packedFileDescriptor _ = packedFileDescriptor
   fieldsByTag
     = let
@@ -3160,12 +3170,22 @@ instance Data.ProtoLens.Message Relationship where
                  Data.ProtoLens.Optional
                  (Data.ProtoLens.Field.field @"isTypeDefinition")) ::
               Data.ProtoLens.FieldDescriptor Relationship
+        isDefinition__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "is_definition"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.BoolField ::
+                 Data.ProtoLens.FieldTypeDescriptor Prelude.Bool)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional
+                 (Data.ProtoLens.Field.field @"isDefinition")) ::
+              Data.ProtoLens.FieldDescriptor Relationship
       in
         Data.Map.fromList
           [(Data.ProtoLens.Tag 1, symbol__field_descriptor),
            (Data.ProtoLens.Tag 2, isReference__field_descriptor),
            (Data.ProtoLens.Tag 3, isImplementation__field_descriptor),
-           (Data.ProtoLens.Tag 4, isTypeDefinition__field_descriptor)]
+           (Data.ProtoLens.Tag 4, isTypeDefinition__field_descriptor),
+           (Data.ProtoLens.Tag 5, isDefinition__field_descriptor)]
   unknownFields
     = Lens.Family2.Unchecked.lens
         _Relationship'_unknownFields
@@ -3176,6 +3196,7 @@ instance Data.ProtoLens.Message Relationship where
          _Relationship'isReference = Data.ProtoLens.fieldDefault,
          _Relationship'isImplementation = Data.ProtoLens.fieldDefault,
          _Relationship'isTypeDefinition = Data.ProtoLens.fieldDefault,
+         _Relationship'isDefinition = Data.ProtoLens.fieldDefault,
          _Relationship'_unknownFields = []}
   parseMessage
     = let
@@ -3234,6 +3255,14 @@ instance Data.ProtoLens.Message Relationship where
                                 loop
                                   (Lens.Family2.set
                                      (Data.ProtoLens.Field.field @"isTypeDefinition") y x)
+                        40
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          ((Prelude./=) 0) Data.ProtoLens.Encoding.Bytes.getVarInt)
+                                       "is_definition"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"isDefinition") y x)
                         wire
                           -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
                                         wire
@@ -3302,8 +3331,21 @@ instance Data.ProtoLens.Message Relationship where
                                ((Prelude..)
                                   Data.ProtoLens.Encoding.Bytes.putVarInt
                                   (\ b -> if b then 1 else 0) _v))
-                      (Data.ProtoLens.Encoding.Wire.buildFieldSet
-                         (Lens.Family2.view Data.ProtoLens.unknownFields _x)))))
+                      ((Data.Monoid.<>)
+                         (let
+                            _v
+                              = Lens.Family2.view (Data.ProtoLens.Field.field @"isDefinition") _x
+                          in
+                            if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                                Data.Monoid.mempty
+                            else
+                                (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt 40)
+                                  ((Prelude..)
+                                     Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (\ b -> if b then 1 else 0) _v))
+                         (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                            (Lens.Family2.view Data.ProtoLens.unknownFields _x))))))
 instance Control.DeepSeq.NFData Relationship where
   rnf
     = \ x__
@@ -3316,7 +3358,8 @@ instance Control.DeepSeq.NFData Relationship where
                    (Control.DeepSeq.deepseq
                       (_Relationship'isImplementation x__)
                       (Control.DeepSeq.deepseq
-                         (_Relationship'isTypeDefinition x__) ()))))
+                         (_Relationship'isTypeDefinition x__)
+                         (Control.DeepSeq.deepseq (_Relationship'isDefinition x__) ())))))
 newtype Severity'UnrecognizedValue
   = Severity'UnrecognizedValue Data.Int.Int32
   deriving stock (Prelude.Eq, Prelude.Ord, Prelude.Show)
@@ -4681,12 +4724,13 @@ packedFileDescriptor
     \\DC1SymbolInformation\DC2\SYN\n\
     \\ACKsymbol\CAN\SOH \SOH(\tR\ACKsymbol\DC2$\n\
     \\rdocumentation\CAN\ETX \ETX(\tR\rdocumentation\DC28\n\
-    \\rrelationships\CAN\EOT \ETX(\v2\DC2.scip.RelationshipR\rrelationships\"\164\SOH\n\
+    \\rrelationships\CAN\EOT \ETX(\v2\DC2.scip.RelationshipR\rrelationships\"\201\SOH\n\
     \\fRelationship\DC2\SYN\n\
     \\ACKsymbol\CAN\SOH \SOH(\tR\ACKsymbol\DC2!\n\
     \\fis_reference\CAN\STX \SOH(\bR\visReference\DC2+\n\
     \\DC1is_implementation\CAN\ETX \SOH(\bR\DLEisImplementation\DC2,\n\
-    \\DC2is_type_definition\CAN\EOT \SOH(\bR\DLEisTypeDefinition\"\251\SOH\n\
+    \\DC2is_type_definition\CAN\EOT \SOH(\bR\DLEisTypeDefinition\DC2#\n\
+    \\ris_definition\CAN\ENQ \SOH(\bR\fisDefinition\"\251\SOH\n\
     \\n\
     \Occurrence\DC2\DC4\n\
     \\ENQrange\CAN\SOH \ETX(\ENQR\ENQrange\DC2\SYN\n\
@@ -5400,7 +5444,7 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\EOT\a\STX\STX\ETX\DC2\EOT\180\SOH()\n\
     \\f\n\
-    \\STX\EOT\b\DC2\ACK\183\SOH\NUL\221\SOH\SOH\n\
+    \\STX\EOT\b\DC2\ACK\183\SOH\NUL\223\SOH\SOH\n\
     \\v\n\
     \\ETX\EOT\b\SOH\DC2\EOT\183\SOH\b\DC4\n\
     \\f\n\
@@ -5468,360 +5512,368 @@ packedFileDescriptor
     \\ENQ\EOT\b\STX\ETX\SOH\DC2\EOT\220\SOH\a\EM\n\
     \\r\n\
     \\ENQ\EOT\b\STX\ETX\ETX\DC2\EOT\220\SOH\FS\GS\n\
+    \\f\n\
+    \\EOT\EOT\b\STX\EOT\DC2\EOT\222\SOH\STX\EM\n\
+    \\r\n\
+    \\ENQ\EOT\b\STX\EOT\ENQ\DC2\EOT\222\SOH\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\b\STX\EOT\SOH\DC2\EOT\222\SOH\a\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\b\STX\EOT\ETX\DC2\EOT\222\SOH\ETB\CAN\n\
     \\137\ETX\n\
-    \\STX\ENQ\STX\DC2\ACK\228\SOH\NUL\244\SOH\SOH\SUB\250\STX SymbolRole declares what \"role\" a symbol has in an occurrence.  A role is\n\
+    \\STX\ENQ\STX\DC2\ACK\230\SOH\NUL\246\SOH\SOH\SUB\250\STX SymbolRole declares what \"role\" a symbol has in an occurrence.  A role is\n\
     \ encoded as a bitset where each bit represents a different role. For example,\n\
     \ to determine if the `Import` role is set, test whether the second bit of the\n\
     \ enum value is defined. In pseudocode, this can be implemented with the\n\
     \ logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.\n\
     \\n\
     \\v\n\
-    \\ETX\ENQ\STX\SOH\DC2\EOT\228\SOH\ENQ\SI\n\
+    \\ETX\ENQ\STX\SOH\DC2\EOT\230\SOH\ENQ\SI\n\
     \v\n\
-    \\EOT\ENQ\STX\STX\NUL\DC2\EOT\231\SOH\STX\FS\SUBh This case is not meant to be used; it only exists to avoid an error\n\
+    \\EOT\ENQ\STX\STX\NUL\DC2\EOT\233\SOH\STX\FS\SUBh This case is not meant to be used; it only exists to avoid an error\n\
     \ from the Protobuf code generator.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\NUL\SOH\DC2\EOT\231\SOH\STX\ETB\n\
+    \\ENQ\ENQ\STX\STX\NUL\SOH\DC2\EOT\233\SOH\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\NUL\STX\DC2\EOT\231\SOH\SUB\ESC\n\
+    \\ENQ\ENQ\STX\STX\NUL\STX\DC2\EOT\233\SOH\SUB\ESC\n\
     \T\n\
-    \\EOT\ENQ\STX\STX\SOH\DC2\EOT\233\SOH\STX\DC3\SUBF Is the symbol defined here? If not, then this is a symbol reference.\n\
+    \\EOT\ENQ\STX\STX\SOH\DC2\EOT\235\SOH\STX\DC3\SUBF Is the symbol defined here? If not, then this is a symbol reference.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\SOH\SOH\DC2\EOT\233\SOH\STX\f\n\
+    \\ENQ\ENQ\STX\STX\SOH\SOH\DC2\EOT\235\SOH\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\SOH\STX\DC2\EOT\233\SOH\SI\DC2\n\
+    \\ENQ\ENQ\STX\STX\SOH\STX\DC2\EOT\235\SOH\SI\DC2\n\
     \,\n\
-    \\EOT\ENQ\STX\STX\STX\DC2\EOT\235\SOH\STX\SI\SUB\RS Is the symbol imported here?\n\
+    \\EOT\ENQ\STX\STX\STX\DC2\EOT\237\SOH\STX\SI\SUB\RS Is the symbol imported here?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\STX\SOH\DC2\EOT\235\SOH\STX\b\n\
+    \\ENQ\ENQ\STX\STX\STX\SOH\DC2\EOT\237\SOH\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\STX\STX\DC2\EOT\235\SOH\v\SO\n\
+    \\ENQ\ENQ\STX\STX\STX\STX\DC2\EOT\237\SOH\v\SO\n\
     \+\n\
-    \\EOT\ENQ\STX\STX\ETX\DC2\EOT\237\SOH\STX\DC4\SUB\GS Is the symbol written here?\n\
+    \\EOT\ENQ\STX\STX\ETX\DC2\EOT\239\SOH\STX\DC4\SUB\GS Is the symbol written here?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\ETX\SOH\DC2\EOT\237\SOH\STX\r\n\
+    \\ENQ\ENQ\STX\STX\ETX\SOH\DC2\EOT\239\SOH\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\ETX\STX\DC2\EOT\237\SOH\DLE\DC3\n\
+    \\ENQ\ENQ\STX\STX\ETX\STX\DC2\EOT\239\SOH\DLE\DC3\n\
     \(\n\
-    \\EOT\ENQ\STX\STX\EOT\DC2\EOT\239\SOH\STX\DC3\SUB\SUB Is the symbol read here?\n\
+    \\EOT\ENQ\STX\STX\EOT\DC2\EOT\241\SOH\STX\DC3\SUB\SUB Is the symbol read here?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\EOT\SOH\DC2\EOT\239\SOH\STX\f\n\
+    \\ENQ\ENQ\STX\STX\EOT\SOH\DC2\EOT\241\SOH\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\EOT\STX\DC2\EOT\239\SOH\SI\DC2\n\
+    \\ENQ\ENQ\STX\STX\EOT\STX\DC2\EOT\241\SOH\SI\DC2\n\
     \0\n\
-    \\EOT\ENQ\STX\STX\ENQ\DC2\EOT\241\SOH\STX\DC3\SUB\" Is the symbol in generated code?\n\
+    \\EOT\ENQ\STX\STX\ENQ\DC2\EOT\243\SOH\STX\DC3\SUB\" Is the symbol in generated code?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\ENQ\SOH\DC2\EOT\241\SOH\STX\v\n\
+    \\ENQ\ENQ\STX\STX\ENQ\SOH\DC2\EOT\243\SOH\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\ENQ\STX\DC2\EOT\241\SOH\SO\DC2\n\
+    \\ENQ\ENQ\STX\STX\ENQ\STX\DC2\EOT\243\SOH\SO\DC2\n\
     \+\n\
-    \\EOT\ENQ\STX\STX\ACK\DC2\EOT\243\SOH\STX\SO\SUB\GS Is the symbol in test code?\n\
+    \\EOT\ENQ\STX\STX\ACK\DC2\EOT\245\SOH\STX\SO\SUB\GS Is the symbol in test code?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\ACK\SOH\DC2\EOT\243\SOH\STX\ACK\n\
+    \\ENQ\ENQ\STX\STX\ACK\SOH\DC2\EOT\245\SOH\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\ACK\STX\DC2\EOT\243\SOH\t\r\n\
+    \\ENQ\ENQ\STX\STX\ACK\STX\DC2\EOT\245\SOH\t\r\n\
     \\f\n\
-    \\STX\ENQ\ETX\DC2\ACK\246\SOH\NUL\211\STX\SOH\n\
+    \\STX\ENQ\ETX\DC2\ACK\248\SOH\NUL\213\STX\SOH\n\
     \\v\n\
-    \\ETX\ENQ\ETX\SOH\DC2\EOT\246\SOH\ENQ\SI\n\
+    \\ETX\ENQ\ETX\SOH\DC2\EOT\248\SOH\ENQ\SI\n\
     \\v\n\
-    \\ETX\ENQ\ETX\ETX\DC2\EOT\247\SOH\STX\FS\n\
+    \\ETX\ENQ\ETX\ETX\DC2\EOT\249\SOH\STX\FS\n\
     \\f\n\
-    \\EOT\ENQ\ETX\ETX\STX\DC2\EOT\247\SOH\STX\FS\n\
+    \\EOT\ENQ\ETX\ETX\STX\DC2\EOT\249\SOH\STX\FS\n\
     \\f\n\
-    \\EOT\ENQ\ETX\STX\NUL\DC2\EOT\249\SOH\STX\FS\n\
+    \\EOT\ENQ\ETX\STX\NUL\DC2\EOT\251\SOH\STX\FS\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\NUL\SOH\DC2\EOT\249\SOH\STX\ETB\n\
+    \\ENQ\ENQ\ETX\STX\NUL\SOH\DC2\EOT\251\SOH\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\NUL\STX\DC2\EOT\249\SOH\SUB\ESC\n\
+    \\ENQ\ENQ\ETX\STX\NUL\STX\DC2\EOT\251\SOH\SUB\ESC\n\
     \;\n\
-    \\EOT\ENQ\ETX\STX\SOH\DC2\EOT\252\SOH\STX\SO\SUB- Comment, including comment markers and text\n\
+    \\EOT\ENQ\ETX\STX\SOH\DC2\EOT\254\SOH\STX\SO\SUB- Comment, including comment markers and text\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SOH\SOH\DC2\EOT\252\SOH\STX\t\n\
+    \\ENQ\ENQ\ETX\STX\SOH\SOH\DC2\EOT\254\SOH\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SOH\STX\DC2\EOT\252\SOH\f\r\n\
+    \\ENQ\ENQ\ETX\STX\SOH\STX\DC2\EOT\254\SOH\f\r\n\
     \\ESC\n\
-    \\EOT\ENQ\ETX\STX\STX\DC2\EOT\255\SOH\STX\ESC\SUB\r `;` `.` `,`\n\
+    \\EOT\ENQ\ETX\STX\STX\DC2\EOT\129\STX\STX\ESC\SUB\r `;` `.` `,`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\STX\SOH\DC2\EOT\255\SOH\STX\SYN\n\
+    \\ENQ\ENQ\ETX\STX\STX\SOH\DC2\EOT\129\STX\STX\SYN\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\STX\STX\DC2\EOT\255\SOH\EM\SUB\n\
+    \\ENQ\ENQ\ETX\STX\STX\STX\DC2\EOT\129\STX\EM\SUB\n\
     \2\n\
-    \\EOT\ENQ\ETX\STX\ETX\DC2\EOT\129\STX\STX\EM\SUB$ (), {}, [] when used syntactically\n\
+    \\EOT\ENQ\ETX\STX\ETX\DC2\EOT\131\STX\STX\EM\SUB$ (), {}, [] when used syntactically\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ETX\SOH\DC2\EOT\129\STX\STX\DC4\n\
+    \\ENQ\ENQ\ETX\STX\ETX\SOH\DC2\EOT\131\STX\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ETX\STX\DC2\EOT\129\STX\ETB\CAN\n\
+    \\ENQ\ENQ\ETX\STX\ETX\STX\DC2\EOT\131\STX\ETB\CAN\n\
     \5\n\
-    \\EOT\ENQ\ETX\STX\EOT\DC2\EOT\132\STX\STX\SO\SUB' `if`, `else`, `return`, `class`, etc.\n\
+    \\EOT\ENQ\ETX\STX\EOT\DC2\EOT\134\STX\STX\SO\SUB' `if`, `else`, `return`, `class`, etc.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\EOT\SOH\DC2\EOT\132\STX\STX\t\n\
+    \\ENQ\ENQ\ETX\STX\EOT\SOH\DC2\EOT\134\STX\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\EOT\STX\DC2\EOT\132\STX\f\r\n\
+    \\ENQ\ENQ\ETX\STX\EOT\STX\DC2\EOT\134\STX\f\r\n\
     \\f\n\
-    \\EOT\ENQ\ETX\STX\ENQ\DC2\EOT\133\STX\STX*\n\
+    \\EOT\ENQ\ETX\STX\ENQ\DC2\EOT\135\STX\STX*\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ENQ\SOH\DC2\EOT\133\STX\STX\DC3\n\
+    \\ENQ\ENQ\ETX\STX\ENQ\SOH\DC2\EOT\135\STX\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ENQ\STX\DC2\EOT\133\STX\SYN\ETB\n\
+    \\ENQ\ENQ\ETX\STX\ENQ\STX\DC2\EOT\135\STX\SYN\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ENQ\ETX\DC2\EOT\133\STX\CAN)\n\
+    \\ENQ\ENQ\ETX\STX\ENQ\ETX\DC2\EOT\135\STX\CAN)\n\
     \\SO\n\
-    \\ACK\ENQ\ETX\STX\ENQ\ETX\SOH\DC2\EOT\133\STX\EM(\n\
+    \\ACK\ENQ\ETX\STX\ENQ\ETX\SOH\DC2\EOT\135\STX\EM(\n\
     \\RS\n\
-    \\EOT\ENQ\ETX\STX\ACK\DC2\EOT\136\STX\STX\EM\SUB\DLE `+`, `*`, etc.\n\
+    \\EOT\ENQ\ETX\STX\ACK\DC2\EOT\138\STX\STX\EM\SUB\DLE `+`, `*`, etc.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ACK\SOH\DC2\EOT\136\STX\STX\DC4\n\
+    \\ENQ\ENQ\ETX\STX\ACK\SOH\DC2\EOT\138\STX\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ACK\STX\DC2\EOT\136\STX\ETB\CAN\n\
+    \\ENQ\ENQ\ETX\STX\ACK\STX\DC2\EOT\138\STX\ETB\CAN\n\
     \X\n\
-    \\EOT\ENQ\ETX\STX\a\DC2\EOT\139\STX\STX\DC1\SUBJ non-specific catch-all for any identifier not better described elsewhere\n\
+    \\EOT\ENQ\ETX\STX\a\DC2\EOT\141\STX\STX\DC1\SUBJ non-specific catch-all for any identifier not better described elsewhere\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\a\SOH\DC2\EOT\139\STX\STX\f\n\
+    \\ENQ\ENQ\ETX\STX\a\SOH\DC2\EOT\141\STX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\a\STX\DC2\EOT\139\STX\SI\DLE\n\
+    \\ENQ\ENQ\ETX\STX\a\STX\DC2\EOT\141\STX\SI\DLE\n\
     \N\n\
-    \\EOT\ENQ\ETX\STX\b\DC2\EOT\141\STX\STX\CAN\SUB@ Identifiers builtin to the language: `min`, `print` in Python.\n\
+    \\EOT\ENQ\ETX\STX\b\DC2\EOT\143\STX\STX\CAN\SUB@ Identifiers builtin to the language: `min`, `print` in Python.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\b\SOH\DC2\EOT\141\STX\STX\DC3\n\
+    \\ENQ\ENQ\ETX\STX\b\SOH\DC2\EOT\143\STX\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\b\STX\DC2\EOT\141\STX\SYN\ETB\n\
+    \\ENQ\ENQ\ETX\STX\b\STX\DC2\EOT\143\STX\SYN\ETB\n\
     \[\n\
-    \\EOT\ENQ\ETX\STX\t\DC2\EOT\143\STX\STX\NAK\SUBM Identifiers representing `null`-like values: `None` in Python, `nil` in Go.\n\
+    \\EOT\ENQ\ETX\STX\t\DC2\EOT\145\STX\STX\NAK\SUBM Identifiers representing `null`-like values: `None` in Python, `nil` in Go.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\t\SOH\DC2\EOT\143\STX\STX\DLE\n\
+    \\ENQ\ENQ\ETX\STX\t\SOH\DC2\EOT\145\STX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\t\STX\DC2\EOT\143\STX\DC3\DC4\n\
+    \\ENQ\ENQ\ETX\STX\t\STX\DC2\EOT\145\STX\DC3\DC4\n\
     \.\n\
     \\EOT\ENQ\ETX\STX\n\
-    \\DC2\EOT\145\STX\STX\EM\SUB  `xyz` in `const xyz = \"hello\"`\n\
+    \\DC2\EOT\147\STX\STX\EM\SUB  `xyz` in `const xyz = \"hello\"`\n\
     \\n\
     \\r\n\
     \\ENQ\ENQ\ETX\STX\n\
-    \\SOH\DC2\EOT\145\STX\STX\DC4\n\
+    \\SOH\DC2\EOT\147\STX\STX\DC4\n\
     \\r\n\
     \\ENQ\ENQ\ETX\STX\n\
-    \\STX\DC2\EOT\145\STX\ETB\CAN\n\
+    \\STX\DC2\EOT\147\STX\ETB\CAN\n\
     \'\n\
-    \\EOT\ENQ\ETX\STX\v\DC2\EOT\147\STX\STX\US\SUB\EM `var X = \"hello\"` in Go\n\
+    \\EOT\ENQ\ETX\STX\v\DC2\EOT\149\STX\STX\US\SUB\EM `var X = \"hello\"` in Go\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\v\SOH\DC2\EOT\147\STX\STX\EM\n\
+    \\ENQ\ENQ\ETX\STX\v\SOH\DC2\EOT\149\STX\STX\EM\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\v\STX\DC2\EOT\147\STX\FS\RS\n\
+    \\ENQ\ENQ\ETX\STX\v\STX\DC2\EOT\149\STX\FS\RS\n\
     \3\n\
-    \\EOT\ENQ\ETX\STX\f\DC2\EOT\149\STX\STX\ESC\SUB% Parameter definition and references\n\
+    \\EOT\ENQ\ETX\STX\f\DC2\EOT\151\STX\STX\ESC\SUB% Parameter definition and references\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\f\SOH\DC2\EOT\149\STX\STX\NAK\n\
+    \\ENQ\ENQ\ETX\STX\f\SOH\DC2\EOT\151\STX\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\f\STX\DC2\EOT\149\STX\CAN\SUB\n\
+    \\ENQ\ENQ\ETX\STX\f\STX\DC2\EOT\151\STX\CAN\SUB\n\
     \X\n\
-    \\EOT\ENQ\ETX\STX\r\DC2\EOT\151\STX\STX\ETB\SUBJ Identifiers for variable definitions and references within a local scope\n\
+    \\EOT\ENQ\ETX\STX\r\DC2\EOT\153\STX\STX\ETB\SUBJ Identifiers for variable definitions and references within a local scope\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\r\SOH\DC2\EOT\151\STX\STX\DC1\n\
+    \\ENQ\ENQ\ETX\STX\r\SOH\DC2\EOT\153\STX\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\r\STX\DC2\EOT\151\STX\DC4\SYN\n\
+    \\ENQ\ENQ\ETX\STX\r\STX\DC2\EOT\153\STX\DC4\SYN\n\
     \K\n\
-    \\EOT\ENQ\ETX\STX\SO\DC2\EOT\153\STX\STX\SUB\SUB= Identifiers that shadow other identifiers in an outer scope\n\
+    \\EOT\ENQ\ETX\STX\SO\DC2\EOT\155\STX\STX\SUB\SUB= Identifiers that shadow other identifiers in an outer scope\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SO\SOH\DC2\EOT\153\STX\STX\DC4\n\
+    \\ENQ\ENQ\ETX\STX\SO\SOH\DC2\EOT\155\STX\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SO\STX\DC2\EOT\153\STX\ETB\EM\n\
+    \\ENQ\ENQ\ETX\STX\SO\STX\DC2\EOT\155\STX\ETB\EM\n\
     \\205\SOH\n\
-    \\EOT\ENQ\ETX\STX\SI\DC2\EOT\158\STX\STX\ESC\SUB\190\SOH Identifier representing a unit of code abstraction and/or namespacing.\n\
+    \\EOT\ENQ\ETX\STX\SI\DC2\EOT\160\STX\STX\ESC\SUB\190\SOH Identifier representing a unit of code abstraction and/or namespacing.\n\
     \\n\
     \ NOTE: This corresponds to a package in Go and JVM languages,\n\
     \ and a module in languages like Python and JavaScript.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SI\SOH\DC2\EOT\158\STX\STX\NAK\n\
+    \\ENQ\ENQ\ETX\STX\SI\SOH\DC2\EOT\160\STX\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SI\STX\DC2\EOT\158\STX\CAN\SUB\n\
+    \\ENQ\ENQ\ETX\STX\SI\STX\DC2\EOT\160\STX\CAN\SUB\n\
     \\f\n\
-    \\EOT\ENQ\ETX\STX\DLE\DC2\EOT\159\STX\STX*\n\
+    \\EOT\ENQ\ETX\STX\DLE\DC2\EOT\161\STX\STX*\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DLE\SOH\DC2\EOT\159\STX\STX\DC2\n\
+    \\ENQ\ENQ\ETX\STX\DLE\SOH\DC2\EOT\161\STX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DLE\STX\DC2\EOT\159\STX\NAK\ETB\n\
+    \\ENQ\ENQ\ETX\STX\DLE\STX\DC2\EOT\161\STX\NAK\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DLE\ETX\DC2\EOT\159\STX\CAN)\n\
+    \\ENQ\ENQ\ETX\STX\DLE\ETX\DC2\EOT\161\STX\CAN)\n\
     \\SO\n\
-    \\ACK\ENQ\ETX\STX\DLE\ETX\SOH\DC2\EOT\159\STX\EM(\n\
+    \\ACK\ENQ\ETX\STX\DLE\ETX\SOH\DC2\EOT\161\STX\EM(\n\
     \4\n\
-    \\EOT\ENQ\ETX\STX\DC1\DC2\EOT\162\STX\STX\SUB\SUB& Function references, including calls\n\
+    \\EOT\ENQ\ETX\STX\DC1\DC2\EOT\164\STX\STX\SUB\SUB& Function references, including calls\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DC1\SOH\DC2\EOT\162\STX\STX\DC4\n\
+    \\ENQ\ENQ\ETX\STX\DC1\SOH\DC2\EOT\164\STX\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DC1\STX\DC2\EOT\162\STX\ETB\EM\n\
+    \\ENQ\ENQ\ETX\STX\DC1\STX\DC2\EOT\164\STX\ETB\EM\n\
     \(\n\
-    \\EOT\ENQ\ETX\STX\DC2\DC2\EOT\164\STX\STX$\SUB\SUB Function definition only\n\
+    \\EOT\ENQ\ETX\STX\DC2\DC2\EOT\166\STX\STX$\SUB\SUB Function definition only\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DC2\SOH\DC2\EOT\164\STX\STX\RS\n\
+    \\ENQ\ENQ\ETX\STX\DC2\SOH\DC2\EOT\166\STX\STX\RS\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DC2\STX\DC2\EOT\164\STX!#\n\
+    \\ENQ\ENQ\ETX\STX\DC2\STX\DC2\EOT\166\STX!#\n\
     \7\n\
-    \\EOT\ENQ\ETX\STX\DC3\DC2\EOT\167\STX\STX\ETB\SUB) Macro references, including invocations\n\
+    \\EOT\ENQ\ETX\STX\DC3\DC2\EOT\169\STX\STX\ETB\SUB) Macro references, including invocations\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DC3\SOH\DC2\EOT\167\STX\STX\DC1\n\
+    \\ENQ\ENQ\ETX\STX\DC3\SOH\DC2\EOT\169\STX\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DC3\STX\DC2\EOT\167\STX\DC4\SYN\n\
+    \\ENQ\ENQ\ETX\STX\DC3\STX\DC2\EOT\169\STX\DC4\SYN\n\
     \%\n\
-    \\EOT\ENQ\ETX\STX\DC4\DC2\EOT\169\STX\STX!\SUB\ETB Macro definition only\n\
+    \\EOT\ENQ\ETX\STX\DC4\DC2\EOT\171\STX\STX!\SUB\ETB Macro definition only\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DC4\SOH\DC2\EOT\169\STX\STX\ESC\n\
+    \\ENQ\ENQ\ETX\STX\DC4\SOH\DC2\EOT\171\STX\STX\ESC\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\DC4\STX\DC2\EOT\169\STX\RS \n\
+    \\ENQ\ENQ\ETX\STX\DC4\STX\DC2\EOT\171\STX\RS \n\
     \!\n\
-    \\EOT\ENQ\ETX\STX\NAK\DC2\EOT\172\STX\STX\SYN\SUB\DC3 non-builtin types\n\
+    \\EOT\ENQ\ETX\STX\NAK\DC2\EOT\174\STX\STX\SYN\SUB\DC3 non-builtin types\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\NAK\SOH\DC2\EOT\172\STX\STX\DLE\n\
+    \\ENQ\ENQ\ETX\STX\NAK\SOH\DC2\EOT\174\STX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\NAK\STX\DC2\EOT\172\STX\DC3\NAK\n\
+    \\ENQ\ENQ\ETX\STX\NAK\STX\DC2\EOT\174\STX\DC3\NAK\n\
     \K\n\
-    \\EOT\ENQ\ETX\STX\SYN\DC2\EOT\174\STX\STX\GS\SUB= builtin types only, such as `str` for Python or `int` in Go\n\
+    \\EOT\ENQ\ETX\STX\SYN\DC2\EOT\176\STX\STX\GS\SUB= builtin types only, such as `str` for Python or `int` in Go\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SYN\SOH\DC2\EOT\174\STX\STX\ETB\n\
+    \\ENQ\ENQ\ETX\STX\SYN\SOH\DC2\EOT\176\STX\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SYN\STX\DC2\EOT\174\STX\SUB\FS\n\
+    \\ENQ\ENQ\ETX\STX\SYN\STX\DC2\EOT\176\STX\SUB\FS\n\
     \7\n\
-    \\EOT\ENQ\ETX\STX\ETB\DC2\EOT\177\STX\STX\ESC\SUB) Python decorators, c-like __attribute__\n\
+    \\EOT\ENQ\ETX\STX\ETB\DC2\EOT\179\STX\STX\ESC\SUB) Python decorators, c-like __attribute__\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ETB\SOH\DC2\EOT\177\STX\STX\NAK\n\
+    \\ENQ\ENQ\ETX\STX\ETB\SOH\DC2\EOT\179\STX\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ETB\STX\DC2\EOT\177\STX\CAN\SUB\n\
+    \\ENQ\ENQ\ETX\STX\ETB\STX\DC2\EOT\179\STX\CAN\SUB\n\
     \\DC4\n\
-    \\EOT\ENQ\ETX\STX\CAN\DC2\EOT\180\STX\STX\DC3\SUB\ACK `\\b`\n\
+    \\EOT\ENQ\ETX\STX\CAN\DC2\EOT\182\STX\STX\DC3\SUB\ACK `\\b`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\CAN\SOH\DC2\EOT\180\STX\STX\r\n\
+    \\ENQ\ENQ\ETX\STX\CAN\SOH\DC2\EOT\182\STX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\CAN\STX\DC2\EOT\180\STX\DLE\DC2\n\
+    \\ENQ\ENQ\ETX\STX\CAN\STX\DC2\EOT\182\STX\DLE\DC2\n\
     \\CAN\n\
-    \\EOT\ENQ\ETX\STX\EM\DC2\EOT\182\STX\STX\NAK\SUB\n\
+    \\EOT\ENQ\ETX\STX\EM\DC2\EOT\184\STX\STX\NAK\SUB\n\
     \ `*`, `+`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\EM\SOH\DC2\EOT\182\STX\STX\SI\n\
+    \\ENQ\ENQ\ETX\STX\EM\SOH\DC2\EOT\184\STX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\EM\STX\DC2\EOT\182\STX\DC2\DC4\n\
+    \\ENQ\ENQ\ETX\STX\EM\STX\DC2\EOT\184\STX\DC2\DC4\n\
     \\DC3\n\
-    \\EOT\ENQ\ETX\STX\SUB\DC2\EOT\184\STX\STX\NAK\SUB\ENQ `.`\n\
+    \\EOT\ENQ\ETX\STX\SUB\DC2\EOT\186\STX\STX\NAK\SUB\ENQ `.`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SUB\SOH\DC2\EOT\184\STX\STX\SI\n\
+    \\ENQ\ENQ\ETX\STX\SUB\SOH\DC2\EOT\186\STX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SUB\STX\DC2\EOT\184\STX\DC2\DC4\n\
+    \\ENQ\ENQ\ETX\STX\SUB\STX\DC2\EOT\186\STX\DC2\DC4\n\
     \\"\n\
-    \\EOT\ENQ\ETX\STX\ESC\DC2\EOT\186\STX\STX\SYN\SUB\DC4 `(`, `)`, `[`, `]`\n\
+    \\EOT\ENQ\ETX\STX\ESC\DC2\EOT\188\STX\STX\SYN\SUB\DC4 `(`, `)`, `[`, `]`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ESC\SOH\DC2\EOT\186\STX\STX\DLE\n\
+    \\ENQ\ENQ\ETX\STX\ESC\SOH\DC2\EOT\188\STX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ESC\STX\DC2\EOT\186\STX\DC3\NAK\n\
+    \\ENQ\ENQ\ETX\STX\ESC\STX\DC2\EOT\188\STX\DC3\NAK\n\
     \\CAN\n\
-    \\EOT\ENQ\ETX\STX\FS\DC2\EOT\188\STX\STX\DC1\SUB\n\
+    \\EOT\ENQ\ETX\STX\FS\DC2\EOT\190\STX\STX\DC1\SUB\n\
     \ `|`, `-`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\FS\SOH\DC2\EOT\188\STX\STX\v\n\
+    \\ENQ\ENQ\ETX\STX\FS\SOH\DC2\EOT\190\STX\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\FS\STX\DC2\EOT\188\STX\SO\DLE\n\
+    \\ENQ\ENQ\ETX\STX\FS\STX\DC2\EOT\190\STX\SO\DLE\n\
     \0\n\
-    \\EOT\ENQ\ETX\STX\GS\DC2\EOT\191\STX\STX\NAK\SUB\" Literal strings: \"Hello, world!\"\n\
+    \\EOT\ENQ\ETX\STX\GS\DC2\EOT\193\STX\STX\NAK\SUB\" Literal strings: \"Hello, world!\"\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\GS\SOH\DC2\EOT\191\STX\STX\SI\n\
+    \\ENQ\ENQ\ETX\STX\GS\SOH\DC2\EOT\193\STX\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\GS\STX\DC2\EOT\191\STX\DC2\DC4\n\
+    \\ENQ\ENQ\ETX\STX\GS\STX\DC2\EOT\193\STX\DC2\DC4\n\
     \-\n\
-    \\EOT\ENQ\ETX\STX\RS\DC2\EOT\193\STX\STX\ESC\SUB\US non-regex escapes: \"\\t\", \"\\n\"\n\
+    \\EOT\ENQ\ETX\STX\RS\DC2\EOT\195\STX\STX\ESC\SUB\US non-regex escapes: \"\\t\", \"\\n\"\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\RS\SOH\DC2\EOT\193\STX\STX\NAK\n\
+    \\ENQ\ENQ\ETX\STX\RS\SOH\DC2\EOT\195\STX\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\RS\STX\DC2\EOT\193\STX\CAN\SUB\n\
+    \\ENQ\ENQ\ETX\STX\RS\STX\DC2\EOT\195\STX\CAN\SUB\n\
     \_\n\
-    \\EOT\ENQ\ETX\STX\US\DC2\EOT\195\STX\STX\FS\SUBQ datetimes within strings, special words within a string, `{}` in format strings\n\
+    \\EOT\ENQ\ETX\STX\US\DC2\EOT\197\STX\STX\FS\SUBQ datetimes within strings, special words within a string, `{}` in format strings\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\US\SOH\DC2\EOT\195\STX\STX\SYN\n\
+    \\ENQ\ENQ\ETX\STX\US\SOH\DC2\EOT\197\STX\STX\SYN\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\US\STX\DC2\EOT\195\STX\EM\ESC\n\
+    \\ENQ\ENQ\ETX\STX\US\STX\DC2\EOT\197\STX\EM\ESC\n\
     \G\n\
-    \\EOT\ENQ\ETX\STX \DC2\EOT\197\STX\STX\CAN\SUB9 \"key\" in { \"key\": \"value\" }, useful for example in JSON\n\
+    \\EOT\ENQ\ETX\STX \DC2\EOT\199\STX\STX\CAN\SUB9 \"key\" in { \"key\": \"value\" }, useful for example in JSON\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX \SOH\DC2\EOT\197\STX\STX\DC2\n\
+    \\ENQ\ENQ\ETX\STX \SOH\DC2\EOT\199\STX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX \STX\DC2\EOT\197\STX\NAK\ETB\n\
+    \\ENQ\ENQ\ETX\STX \STX\DC2\EOT\199\STX\NAK\ETB\n\
     \V\n\
-    \\EOT\ENQ\ETX\STX!\DC2\EOT\199\STX\STX\CAN\SUBH 'c' or similar, in languages that differentiate strings and characters\n\
+    \\EOT\ENQ\ETX\STX!\DC2\EOT\201\STX\STX\CAN\SUBH 'c' or similar, in languages that differentiate strings and characters\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX!\SOH\DC2\EOT\199\STX\STX\DC2\n\
+    \\ENQ\ENQ\ETX\STX!\SOH\DC2\EOT\201\STX\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX!\STX\DC2\EOT\199\STX\NAK\ETB\n\
+    \\ENQ\ENQ\ETX\STX!\STX\DC2\EOT\201\STX\NAK\ETB\n\
     \9\n\
-    \\EOT\ENQ\ETX\STX\"\DC2\EOT\201\STX\STX\SYN\SUB+ Literal numbers, both floats and integers\n\
+    \\EOT\ENQ\ETX\STX\"\DC2\EOT\203\STX\STX\SYN\SUB+ Literal numbers, both floats and integers\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\"\SOH\DC2\EOT\201\STX\STX\DLE\n\
+    \\ENQ\ENQ\ETX\STX\"\SOH\DC2\EOT\203\STX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\"\STX\DC2\EOT\201\STX\DC3\NAK\n\
+    \\ENQ\ENQ\ETX\STX\"\STX\DC2\EOT\203\STX\DC3\NAK\n\
     \\US\n\
-    \\EOT\ENQ\ETX\STX#\DC2\EOT\203\STX\STX\SYN\SUB\DC1 `true`, `false`\n\
+    \\EOT\ENQ\ETX\STX#\DC2\EOT\205\STX\STX\SYN\SUB\DC1 `true`, `false`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX#\SOH\DC2\EOT\203\STX\STX\DLE\n\
+    \\ENQ\ENQ\ETX\STX#\SOH\DC2\EOT\205\STX\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX#\STX\DC2\EOT\203\STX\DC3\NAK\n\
+    \\ENQ\ENQ\ETX\STX#\STX\DC2\EOT\205\STX\DC3\NAK\n\
     \&\n\
-    \\EOT\ENQ\ETX\STX$\DC2\EOT\206\STX\STX\v\SUB\CAN Used for XML-like tags\n\
+    \\EOT\ENQ\ETX\STX$\DC2\EOT\208\STX\STX\v\SUB\CAN Used for XML-like tags\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX$\SOH\DC2\EOT\206\STX\STX\ENQ\n\
+    \\ENQ\ENQ\ETX\STX$\SOH\DC2\EOT\208\STX\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX$\STX\DC2\EOT\206\STX\b\n\
+    \\ENQ\ENQ\ETX\STX$\STX\DC2\EOT\208\STX\b\n\
     \\n\
     \/\n\
-    \\EOT\ENQ\ETX\STX%\DC2\EOT\208\STX\STX\DC4\SUB! Attribute name in XML-like tags\n\
+    \\EOT\ENQ\ETX\STX%\DC2\EOT\210\STX\STX\DC4\SUB! Attribute name in XML-like tags\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX%\SOH\DC2\EOT\208\STX\STX\SO\n\
+    \\ENQ\ENQ\ETX\STX%\SOH\DC2\EOT\210\STX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX%\STX\DC2\EOT\208\STX\DC1\DC3\n\
+    \\ENQ\ENQ\ETX\STX%\STX\DC2\EOT\210\STX\DC1\DC3\n\
     \,\n\
-    \\EOT\ENQ\ETX\STX&\DC2\EOT\210\STX\STX\DC4\SUB\RS Delimiters for XML-like tags\n\
+    \\EOT\ENQ\ETX\STX&\DC2\EOT\212\STX\STX\DC4\SUB\RS Delimiters for XML-like tags\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX&\SOH\DC2\EOT\210\STX\STX\SO\n\
+    \\ENQ\ENQ\ETX\STX&\SOH\DC2\EOT\212\STX\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX&\STX\DC2\EOT\210\STX\DC1\DC3\n\
+    \\ENQ\ENQ\ETX\STX&\STX\DC2\EOT\212\STX\DC1\DC3\n\
     \\249\SOH\n\
     \\STX\EOT\t\DC2\ACK\218\STX\NUL\129\ETX\SOH\SUB\234\SOH Occurrence associates a source position with a symbol and/or highlighting\n\
     \ information.\n\
@@ -5830,9 +5882,9 @@ packedFileDescriptor
     \ across occurrences into a single occurrence to reduce payload sizes.\n\
     \\n\
     \\v\n\
-    \\ETX\EOT\t\SOH\DC2\EOT\218\STX\b\DC2\n\
+    \\ETX\EOT\t\SOH\DC2\EOT\220\STX\b\DC2\n\
     \\199\a\n\
-    \\EOT\EOT\t\STX\NUL\DC2\EOT\237\STX\STX\ESC\SUB\184\a Source position of this occurrence. Must be exactly three or four\n\
+    \\EOT\EOT\t\STX\NUL\DC2\EOT\239\STX\STX\ESC\SUB\184\a Source position of this occurrence. Must be exactly three or four\n\
     \ elements:\n\
     \\n\
     \ - Four elements: `[startLine, startCharacter, endLine, endCharacter]`\n\
@@ -5852,32 +5904,32 @@ packedFileDescriptor
     \ improvements make up for it.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\NUL\EOT\DC2\EOT\237\STX\STX\n\
+    \\ENQ\EOT\t\STX\NUL\EOT\DC2\EOT\239\STX\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\NUL\ENQ\DC2\EOT\237\STX\v\DLE\n\
+    \\ENQ\EOT\t\STX\NUL\ENQ\DC2\EOT\239\STX\v\DLE\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\NUL\SOH\DC2\EOT\237\STX\DC1\SYN\n\
+    \\ENQ\EOT\t\STX\NUL\SOH\DC2\EOT\239\STX\DC1\SYN\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\NUL\ETX\DC2\EOT\237\STX\EM\SUB\n\
+    \\ENQ\EOT\t\STX\NUL\ETX\DC2\EOT\239\STX\EM\SUB\n\
     \\138\SOH\n\
-    \\EOT\EOT\t\STX\SOH\DC2\EOT\240\STX\STX\DC4\SUB| (optional) The symbol that appears at this position. See\n\
+    \\EOT\EOT\t\STX\SOH\DC2\EOT\242\STX\STX\DC4\SUB| (optional) The symbol that appears at this position. See\n\
     \ `SymbolInformation.symbol` for how to format symbols as strings.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\SOH\ENQ\DC2\EOT\240\STX\STX\b\n\
+    \\ENQ\EOT\t\STX\SOH\ENQ\DC2\EOT\242\STX\STX\b\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\SOH\SOH\DC2\EOT\240\STX\t\SI\n\
+    \\ENQ\EOT\t\STX\SOH\SOH\DC2\EOT\242\STX\t\SI\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\SOH\ETX\DC2\EOT\240\STX\DC2\DC3\n\
+    \\ENQ\EOT\t\STX\SOH\ETX\DC2\EOT\242\STX\DC2\DC3\n\
     \\151\SOH\n\
-    \\EOT\EOT\t\STX\STX\DC2\EOT\243\STX\STX\EM\SUB\136\SOH (optional) Bitset containing `SymbolRole`s in this occurrence.\n\
+    \\EOT\EOT\t\STX\STX\DC2\EOT\245\STX\STX\EM\SUB\136\SOH (optional) Bitset containing `SymbolRole`s in this occurrence.\n\
     \ See `SymbolRole`'s documentation for how to read and write this field.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\STX\ENQ\DC2\EOT\243\STX\STX\a\n\
+    \\ENQ\EOT\t\STX\STX\ENQ\DC2\EOT\245\STX\STX\a\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\STX\SOH\DC2\EOT\243\STX\b\DC4\n\
+    \\ENQ\EOT\t\STX\STX\SOH\DC2\EOT\245\STX\b\DC4\n\
     \\r\n\
     \\ENQ\EOT\t\STX\STX\ETX\DC2\EOT\243\STX\ETB\CAN\n\
     \\241\ETX\n\

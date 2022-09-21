@@ -219,6 +219,8 @@ message Relationship {
   bool is_implementation = 3;
   // Similar to `references_symbols` but for "Go to type definition".
   bool is_type_definition = 4;
+
+  bool is_definition = 5;
 }
 
 // SymbolRole declares what "role" a symbol has in an occurrence.  A role is

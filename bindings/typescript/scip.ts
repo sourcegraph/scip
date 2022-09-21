@@ -1155,6 +1155,7 @@ export namespace scip {
             is_reference?: boolean;
             is_implementation?: boolean;
             is_type_definition?: boolean;
+            is_definition?: boolean;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -1170,6 +1171,9 @@ export namespace scip {
                 }
                 if ("is_type_definition" in data && data.is_type_definition != undefined) {
                     this.is_type_definition = data.is_type_definition;
+                }
+                if ("is_definition" in data && data.is_definition != undefined) {
+                    this.is_definition = data.is_definition;
                 }
             }
         }
@@ -1197,11 +1201,18 @@ export namespace scip {
         set is_type_definition(value: boolean) {
             pb_1.Message.setField(this, 4, value);
         }
+        get is_definition() {
+            return pb_1.Message.getFieldWithDefault(this, 5, false) as boolean;
+        }
+        set is_definition(value: boolean) {
+            pb_1.Message.setField(this, 5, value);
+        }
         static fromObject(data: {
             symbol?: string;
             is_reference?: boolean;
             is_implementation?: boolean;
             is_type_definition?: boolean;
+            is_definition?: boolean;
         }): Relationship {
             const message = new Relationship({});
             if (data.symbol != null) {
@@ -1216,6 +1227,9 @@ export namespace scip {
             if (data.is_type_definition != null) {
                 message.is_type_definition = data.is_type_definition;
             }
+            if (data.is_definition != null) {
+                message.is_definition = data.is_definition;
+            }
             return message;
         }
         toObject() {
@@ -1224,6 +1238,7 @@ export namespace scip {
                 is_reference?: boolean;
                 is_implementation?: boolean;
                 is_type_definition?: boolean;
+                is_definition?: boolean;
             } = {};
             if (this.symbol != null) {
                 data.symbol = this.symbol;
@@ -1236,6 +1251,9 @@ export namespace scip {
             }
             if (this.is_type_definition != null) {
                 data.is_type_definition = this.is_type_definition;
+            }
+            if (this.is_definition != null) {
+                data.is_definition = this.is_definition;
             }
             return data;
         }
@@ -1251,6 +1269,8 @@ export namespace scip {
                 writer.writeBool(3, this.is_implementation);
             if (this.is_type_definition != false)
                 writer.writeBool(4, this.is_type_definition);
+            if (this.is_definition != false)
+                writer.writeBool(5, this.is_definition);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1271,6 +1291,9 @@ export namespace scip {
                         break;
                     case 4:
                         message.is_type_definition = reader.readBool();
+                        break;
+                    case 5:
+                        message.is_definition = reader.readBool();
                         break;
                     default: reader.skipField();
                 }
