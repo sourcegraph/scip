@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -29,7 +30,7 @@ func convertCommand() cli.Command {
 				Name:        "to",
 				Usage:       "Output path for LSIF index",
 				Destination: &convertFlags.to,
-				Value: "dump.lsif",
+				Value:       "dump.lsif",
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -60,9 +61,17 @@ func convertMain(flags convertFlags) error {
 		lsifWriter = lsifFile
 	}
 
-	lsifIndex, err := scip.ConvertSCIPToLSIF(scipIndex)
+	lsifIndex, diagnostics, err := scip.ConvertSCIPToLSIF(scipIndex)
 	if err != nil {
 		return errors.Wrap(err, "failed to convert SCIP index to LSIF index")
+	}
+
+	if len(diagnostics) > 0 {
+		fmt.Println("The following warnings occurred while processing SCIP index:")
+		fmt.Println("====================")
+		for _, diag := range diagnostics {
+			fmt.Println(diag.Message())
+		}
 	}
 
 	err = reader.WriteNDJSON(reader.ElementsToJsonElements(lsifIndex), lsifWriter)
