@@ -201,6 +201,9 @@ func (s *symbolParser) acceptEscapedIdentifier(what string, escapeCharacter rune
 		ch := s.current()
 		if ch == escapeCharacter {
 			s.index++
+			if s.index >= len(s.Symbol) {
+				break
+			}
 			if s.current() == escapeCharacter {
 				// Escaped space character.
 				builder.WriteRune(ch)
