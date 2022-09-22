@@ -7,11 +7,12 @@ import (
 )
 
 type reproSourceFile struct {
-	Source      *scip.SourceFile
-	node        *sitter.Node
-	definitions []*definitionStatement
-	references  []*referenceStatement
-	localScope  *reproScope
+	Source        *scip.SourceFile
+	node          *sitter.Node
+	definitions   []*definitionStatement
+	references    []*referenceStatement
+	relationships []*relationshipsStatement
+	localScope    *reproScope
 }
 
 func newSourceFile(sourceFile *scip.SourceFile, node *sitter.Node) *reproSourceFile {
