@@ -289,6 +289,15 @@ func (g *graph) emitRelationship(relationship *Relationship, rangeID, documentID
 		return []int{relationshipIDs.ReferenceResult}
 	}
 
+	if relationship.IsDefinition {
+		g.emitEdge("item", reader.Edge{
+			OutV:     relationshipIDs.DefinitionResult,
+			InVs:     []int{rangeID},
+			Document: documentID,
+		})
+		return []int{relationshipIDs.DefinitionResult}
+	}
+
 	return nil
 }
 

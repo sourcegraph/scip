@@ -85,7 +85,11 @@ message Document {
   string relative_path = 1;
   // Occurrences that appear in this file.
   repeated Occurrence occurrences = 2;
-  // Symbols that are defined within this document.
+  // Symbols that are "defined" within this document.
+  //
+  // This should include symbols which technically do not have any definition,
+  // but have a reference and are defined by some other symbol (see
+  // Relationship.is_definition).
   repeated SymbolInformation symbols = 3;
 }
 
@@ -219,6 +223,19 @@ message Relationship {
   bool is_implementation = 3;
   // Similar to `references_symbols` but for "Go to type definition".
   bool is_type_definition = 4;
+  // Allows overriding the behavior of "Go to definition" and "Find references"
+  // for symbols which do not have a definition of their own or could
+  // potentially have multiple definitions.
+  //
+  // For example, in a language with single inheritance and no field overriding,
+  // inherited fields can reuse the same symbol as the ancestor which declares
+  // the field. In such a situation, is_definition is not needed.
+  //
+  // On the other hand, in languages with single inheritance and some form
+  // of mixins, you can use is_definition to relate the symbol to the
+  // matching symbol in ancestor classes, and is_reference to relate the
+  // symbol to the matching symbol in mixins.
+  bool is_definition = 5;
 }
 
 // SymbolRole declares what "role" a symbol has in an occurrence.  A role is

@@ -4,3 +4,6 @@ bindings/rust/src/scip.rs linguist-generated=true
 bindings/haskell/src/Proto/**.hs linguist-generated=true
 docs/scip.md linguist-generated=true
 yarn.lock linguist-generated=true
+cmd/tests/reprolang/src/grammar.json linguist-generated=true
+cmd/tests/reprolang/src/node-types.json linguist-generated=true
+cmd/tests/reprolang/src/parser.c linguist-generated=true

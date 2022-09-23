@@ -74,6 +74,12 @@ externalSymbols ::
    Data.ProtoLens.Field.HasField s "externalSymbols" a) =>
   Lens.Family2.LensLike' f s a
 externalSymbols = Data.ProtoLens.Field.field @"externalSymbols"
+isDefinition ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "isDefinition" a) =>
+  Lens.Family2.LensLike' f s a
+isDefinition = Data.ProtoLens.Field.field @"isDefinition"
 isImplementation ::
   forall f s a.
   (Prelude.Functor f,

@@ -17,6 +17,13 @@ func (i *identifier) occurrence(roles scip.SymbolRole) *scip.Occurrence {
 
 func (s *reproSourceFile) symbols() []*scip.SymbolInformation {
 	var result []*scip.SymbolInformation
+	for _, rel := range s.relationships {
+		result = append(result, &scip.SymbolInformation{
+			Symbol:        rel.name.symbol,
+			Documentation: nil,
+			Relationships: rel.relations.toSCIP(),
+		})
+	}
 	for _, def := range s.definitions {
 		if strings.Index(def.name.value, "NoSymbolInformation") >= 0 {
 			continue
@@ -28,7 +35,7 @@ func (s *reproSourceFile) symbols() []*scip.SymbolInformation {
 		result = append(result, &scip.SymbolInformation{
 			Symbol:        def.name.symbol,
 			Documentation: documentation,
-			Relationships: def.relationships(),
+			Relationships: def.relations.toSCIP(),
 		})
 	}
 	// Ensure a stable order of relationships
@@ -40,14 +47,20 @@ func (s *reproSourceFile) symbols() []*scip.SymbolInformation {
 
 func (s *reproSourceFile) occurrences() []*scip.Occurrence {
 	var result []*scip.Occurrence
-	for _, def := range s.definitions {
-		result = append(result, def.name.occurrence(scip.SymbolRole_Definition))
-		for _, ident := range def.relationIdentifiers() {
+	emit := func(rel relationships) {
+		for _, ident := range rel.identifiers() {
 			if ident == nil {
 				continue
 			}
 			result = append(result, ident.occurrence(scip.SymbolRole_UnspecifiedSymbolRole))
 		}
+	}
+	for _, def := range s.definitions {
+		result = append(result, def.name.occurrence(scip.SymbolRole_Definition))
+		emit(def.relations)
+	}
+	for _, rel := range s.relationships {
+		emit(rel.relations)
 	}
 	for _, ref := range s.references {
 		result = append(result, ref.name.occurrence(scip.SymbolRole_UnspecifiedSymbolRole))
@@ -55,22 +68,25 @@ func (s *reproSourceFile) occurrences() []*scip.Occurrence {
 	return result
 }
 
-func (s *definitionStatement) relationships() []*scip.Relationship {
+func (r *relationships) toSCIP() []*scip.Relationship {
 	bySymbol := map[string]*scip.Relationship{}
-	for _, ident := range s.relationIdentifiers() {
+	for _, ident := range r.identifiers() {
 		if ident == nil {
 			continue
 		}
 		bySymbol[ident.symbol] = &scip.Relationship{Symbol: ident.symbol}
 	}
-	if s.implementsRelation != nil {
-		bySymbol[s.implementsRelation.symbol].IsImplementation = true
+	if r.implementsRelation != nil {
+		bySymbol[r.implementsRelation.symbol].IsImplementation = true
 	}
-	if s.referencesRelation != nil {
-		bySymbol[s.referencesRelation.symbol].IsReference = true
+	if r.referencesRelation != nil {
+		bySymbol[r.referencesRelation.symbol].IsReference = true
 	}
-	if s.typeDefinesRelation != nil {
-		bySymbol[s.typeDefinesRelation.symbol].IsTypeDefinition = true
+	if r.typeDefinesRelation != nil {
+		bySymbol[r.typeDefinesRelation.symbol].IsTypeDefinition = true
+	}
+	if r.definedByRelation != nil {
+		bySymbol[r.definedByRelation.symbol].IsDefinition = true
 	}
 	var result []*scip.Relationship
 	for _, value := range bySymbol {

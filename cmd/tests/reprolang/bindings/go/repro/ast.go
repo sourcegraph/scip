@@ -9,16 +9,21 @@ import (
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
-type definitionStatement struct {
-	docstring           string
-	name                *identifier
+type relationships struct {
 	implementsRelation  *identifier
 	referencesRelation  *identifier
 	typeDefinesRelation *identifier
+	definedByRelation   *identifier
 }
 
-func (s *definitionStatement) relationIdentifiers() []*identifier {
-	return []*identifier{s.implementsRelation, s.referencesRelation, s.typeDefinesRelation}
+type definitionStatement struct {
+	docstring string
+	name      *identifier
+	relations relationships
+}
+
+func (r *relationships) identifiers() []*identifier {
+	return []*identifier{r.implementsRelation, r.referencesRelation, r.typeDefinesRelation, r.definedByRelation}
 }
 
 type referenceStatement struct {
@@ -53,6 +58,11 @@ func newIdentifier(s *reproSourceFile, n *sitter.Node) *identifier {
 	}
 }
 
+type relationshipsStatement struct {
+	name      *identifier
+	relations relationships
+}
+
 func NewRangePositionFromNode(node *sitter.Node) *scip.Range {
 	return &scip.Range{
 		Start: scip.Position{
@@ -73,6 +83,7 @@ func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext
 	}
 	symbol, ok := scope.names[i.value]
 	if !ok {
+		fmt.Printf("scope.names = %v\n", scope.names)
 		symbol = "local ERROR_UNRESOLVED_SYMBOL"
 	}
 	i.symbol = symbol
