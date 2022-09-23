@@ -1150,7 +1150,11 @@ type Document struct {
 	RelativePath string `protobuf:"bytes,1,opt,name=relative_path,json=relativePath,proto3" json:"relative_path,omitempty"`
 	// Occurrences that appear in this file.
 	Occurrences []*Occurrence `protobuf:"bytes,2,rep,name=occurrences,proto3" json:"occurrences,omitempty"`
-	// Symbols that are defined within this document.
+	// Symbols that are "defined" within this document.
+	//
+	// This should include symbols which technically do not have any definition,
+	// but have a reference and are defined by some other symbol (see
+	// Relationship.is_definition).
 	Symbols []*SymbolInformation `protobuf:"bytes,3,rep,name=symbols,proto3" json:"symbols,omitempty"`
 }
 
@@ -1558,7 +1562,19 @@ type Relationship struct {
 	IsImplementation bool `protobuf:"varint,3,opt,name=is_implementation,json=isImplementation,proto3" json:"is_implementation,omitempty"`
 	// Similar to `references_symbols` but for "Go to type definition".
 	IsTypeDefinition bool `protobuf:"varint,4,opt,name=is_type_definition,json=isTypeDefinition,proto3" json:"is_type_definition,omitempty"`
-	IsDefinition     bool `protobuf:"varint,5,opt,name=is_definition,json=isDefinition,proto3" json:"is_definition,omitempty"`
+	// Allows overriding the behavior of "Go to definition" and "Find references"
+	// for symbols which do not have a definition of their own or could
+	// potentially have multiple definitions.
+	//
+	// For example, in a language with single inheritance and no field overriding,
+	// inherited fields can reuse the same symbol as the ancestor which declares
+	// the field. In such a situation, is_definition is not needed.
+	//
+	// On the other hand, in languages with single inheritance and some form
+	// of mixins, you can use is_definition to relate the symbol to the
+	// matching symbol in ancestor classes, and is_reference to relate the
+	// symbol to the matching symbol in mixins.
+	IsDefinition bool `protobuf:"varint,5,opt,name=is_definition,json=isDefinition,proto3" json:"is_definition,omitempty"`
 }
 
 func (x *Relationship) Reset() {

@@ -55,7 +55,7 @@ Document defines the metadata about a source file on disk.
 | **language**             | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming langauge, including ones that are not specified by the `Language` enum. |
 | **relative_path**        | string            | (Required) Unique path to the text document.                                                                                                                                                                                                                                       |
 | repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                              |
-| repeated **symbols**     | SymbolInformation | Symbols that are defined within this document.                                                                                                                                                                                                                                     |
+| repeated **symbols**     | SymbolInformation | Symbols that are "defined" within this document.                                                                                                                                                                                                                                   |
 
 Additional notes on **relative_path**:
 
@@ -68,6 +68,14 @@ Additional notes on **relative_path**:
 4. The path must use '/' as the separator, including on Windows.
 5. The path must be canonical; it cannot include empty components ('//'),
    or '.' or '..'.
+
+Additional notes on **symbols**:
+
+Symbols that are "defined" within this document.
+
+This should include symbols which technically do not have any definition,
+but have a reference and are defined by some other symbol (see
+Relationship.is_definition).
 
 ### Index
 
@@ -162,7 +170,22 @@ NOTE: This corresponds to a module in Go and JVM languages.
 | **is_reference**       | bool   | When resolving "Find references", this field documents what other symbols should be included together with this symbol. For example, consider the following TypeScript code that defines two symbols `Animal#sound()` and `Dog#sound()`: `ts interface Animal { ^^^^^^ definition Animal# sound(): string ^^^^^ definition Animal#sound() } class Dog implements Animal { ^^^ definition Dog#, implementation_symbols = Animal# public sound(): string { return "woof" } ^^^^^ definition Dog#sound(), references_symbols = Animal#sound(), implementation_symbols = Animal#sound() } const animal: Animal = new Dog() ^^^^^^ reference Animal# console.log(animal.sound()) ^^^^^ reference Animal#sound() ` Doing "Find references" on the symbol `Animal#sound()` should return references to the `Dog#sound()` method as well. Vice-versa, doing "Find references" on the `Dog#sound()` method should include references to the `Animal#sound()` method as well. |
 | **is_implementation**  | bool   | Similar to `references_symbols` but for "Go to implementation". It's common for the `implementation_symbols` and `references_symbols` fields have the same values but that's not always the case. In the TypeScript example above, observe that `implementation_symbols` has the value `"Animal#"` for the "Dog#" symbol while `references_symbols` is empty. When requesting "Find references" on the "Animal#" symbol we don't want to include references to "Dog#" even if "Go to implementation" on the "Animal#" symbol should navigate to the "Dog#" symbol.                                                                                                                                                                                                                                                                                                                                                                                                  |
 | **is_type_definition** | bool   | Similar to `references_symbols` but for "Go to type definition".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **is_definition**      | bool   |
+| **is_definition**      | bool   | Allows overriding the behavior of "Go to definition" and "Find references" for symbols which do not have a definition of their own or could potentially have multiple definitions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+
+Additional notes on **is_definition**:
+
+Allows overriding the behavior of "Go to definition" and "Find references"
+for symbols which do not have a definition of their own or could
+potentially have multiple definitions.
+
+For example, in a language with single inheritance and no field overriding,
+inherited fields can reuse the same symbol as the ancestor which declares
+the field. In such a situation, is_definition is not needed.
+
+On the other hand, in languages with single inheritance and some form
+of mixins, you can use is_definition to relate the symbol to the
+matching symbol in ancestor classes, and is_reference to relate the
+symbol to the matching symbol in mixins.
 
 ### Symbol
 
