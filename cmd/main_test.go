@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -50,6 +51,8 @@ func TestReadmeInSync(t *testing.T) {
 	}
 }
 
+var debugSnapshotAbspaths = flag.Bool("debug-snapshot-abspaths", false, "use absolute paths in snapshot outputs, useful for making uploads to test code navigation")
+
 // TestSCIPSnapshots runs all the snapshot tests.
 func TestSCIPSnapshots(t *testing.T) {
 	cwd, err := os.Getwd()
@@ -86,7 +89,13 @@ func TestSCIPSnapshots(t *testing.T) {
 		symbolFormatter.IncludePackageName = func(name string) bool { return name != testName }
 		snapshots, err := testutil.FormatSnapshots(index, "#", symbolFormatter)
 		require.Nil(t, err)
-		index.Metadata.ProjectRoot = "file:/root"
+		if debugSnapshotAbspaths != nil && *debugSnapshotAbspaths {
+			inputDirAbsPath, err := filepath.Abs(inputDirectory)
+			require.Nil(t, err)
+			index.Metadata.ProjectRoot = inputDirAbsPath
+		} else {
+			index.Metadata.ProjectRoot = "file:/root"
+		}
 		lsif, err := scip.ConvertSCIPToLSIF(index)
 		require.Nil(t, err)
 		var obtained bytes.Buffer

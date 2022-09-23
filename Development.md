@@ -42,3 +42,24 @@ Protobuf output can be inspected using `protoc`:
 ```
 protoc --decode=scip.Index -I /path/to/scip scip.proto < index.scip
 ```
+
+## Testing and adding new SCIP semantics
+
+It is helpful to use reprolang to check the existing code navigation behavior,
+to design new code navigation behavior,
+or to investigate the effect of the SCIP to LSIF desugaring.
+The LSIF index for reprolang code is much smaller,
+which aids debugging.
+
+To do this, add a test file (and implement any new functionality) first.
+Then, regenerate the LSIF index with absolute paths.
+
+```bash
+go test ./cmd -update-snapshots -debug-snapshot-abspaths
+```
+
+The LSIF index can be uploaded to a local Sourcegraph instance using:
+
+```bash
+PACKAGE=MY_PACKAGE_NAME SRC_ACCESS_TOKEN=MY_TOKEN SRC_ENDPOINT=https://sourcegraph.test:3443 src code-intel upload -file="cmd/tests/snapshots/output/$PACKAGE/dump.lsif" -root="cmd/tests/snapshots/input/$PACKAGE"
+```
