@@ -1,9 +1,8 @@
 name: release
 
 on:
-  push:
-    tags:
-      - v*
+  release:
+    types: [created]
 
 jobs:
   release-image:
@@ -16,7 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: wangyoucao577/go-release-action@v1.30
+      - uses: wangyoucao577/go-release-action@v1.32
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
