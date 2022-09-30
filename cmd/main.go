@@ -19,7 +19,8 @@ func commands() []*cli.Command {
 	convert := convertCommand()
 	snapshot := snapshotCommand()
 	stats := statsCommand()
-	return []*cli.Command{&convert, &snapshot, &stats}
+	print := printCommand()
+	return []*cli.Command{&convert, &snapshot, &stats, &print}
 }
 
 func scipApp() cli.App {
@@ -54,6 +55,6 @@ func fromFlag(storage *string) *cli.StringFlag {
 		Name:        "from",
 		Usage:       "Path to SCIP index file",
 		Destination: storage,
-		Value: "index.scip",
+		Value:       "index.scip",
 	}
 }

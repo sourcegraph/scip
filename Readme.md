@@ -90,6 +90,23 @@ OPTIONS:
    --to value    Output path for LSIF index (default: dump.lsif)
 ```
 
+### `scip print`
+
+```
+NAME:
+   scip print - Print a SCIP index in a human-readable format for debugging
+
+USAGE:
+   scip print [command options] [arguments...]
+
+DESCRIPTION:
+   WARNING: The output may change over time.
+   Do not rely on the output of this command in scripts
+
+OPTIONS:
+   --help, -h  show help (default: false)
+```
+
 ### `scip snapshot`
 
 ```
