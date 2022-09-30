@@ -94,6 +94,27 @@ OPTIONS:
    --to value    Output path for LSIF index (default: dump.lsif)
 ```
 
+### `scip lint`
+
+```
+NAME:
+   scip lint - Flag potential issues with a SCIP index
+
+USAGE:
+   scip lint [command options] [arguments...]
+
+DESCRIPTION:
+   Example usage:
+   
+     scip lint /path/to/index.scip
+   
+   You may want to filter the output using `grep -v <pattern>`
+   to narrow down on certain classes of errors.
+
+OPTIONS:
+   --help, -h  show help (default: false)
+```
+
 ### `scip print`
 
 ```

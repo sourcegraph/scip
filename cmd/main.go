@@ -16,10 +16,11 @@ func main() {
 
 func commands() []*cli.Command {
 	convert := convertCommand()
+	lint := lintCommand()
+	print := printCommand()
 	snapshot := snapshotCommand()
 	stats := statsCommand()
-	print := printCommand()
-	return []*cli.Command{&convert, &snapshot, &stats, &print}
+	return []*cli.Command{&convert, &lint, &print, &snapshot, &stats}
 }
 
 func scipApp() *cli.App {

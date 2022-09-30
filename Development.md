@@ -50,6 +50,14 @@ and can be inspected using `protoc`:
 protoc --decode=scip.Index -I /path/to/scip scip.proto < index.scip
 ```
 
+There is also a `lint` subcommand which performs various well-formedness
+checks on a SCIP index. It is meant primarily for people working on a SCIP indexer,
+and is not recommended for use in other settings.
+
+```
+scip lint /path/to/index.scip
+```
+
 ## Testing and adding new SCIP semantics
 
 It is helpful to use reprolang to check the existing code navigation behavior,
