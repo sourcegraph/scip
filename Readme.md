@@ -138,5 +138,5 @@ DESCRIPTION:
 
 OPTIONS:
    --help, -h  show help (default: false)
-   
+
 ```
