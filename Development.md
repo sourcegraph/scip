@@ -37,7 +37,14 @@
 
 ## Debugging
 
-Protobuf output can be inspected using `protoc`:
+Protobuf output can be inspected using `scip view`:
+
+```
+scip view /path/to/index.scip.
+```
+
+This may be a bit verbose. The default Protobuf output is more compact,
+and can be inspected using `protoc`:
 
 ```
 protoc --decode=scip.Index -I /path/to/scip scip.proto < index.scip
