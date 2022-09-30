@@ -19,8 +19,8 @@ func commands() []*cli.Command {
 	convert := convertCommand()
 	snapshot := snapshotCommand()
 	stats := statsCommand()
-	view := viewCommand()
-	return []*cli.Command{&convert, &snapshot, &stats, &view}
+	print := printCommand()
+	return []*cli.Command{&convert, &snapshot, &stats, &print}
 }
 
 func scipApp() cli.App {

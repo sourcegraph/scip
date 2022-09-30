@@ -8,25 +8,24 @@ import (
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
-func viewCommand() cli.Command {
+func printCommand() cli.Command {
 	snapshot := cli.Command{
-		Name:  "view",
+		Name:  "print",
 		Usage: "Print a SCIP index in a human-readable format for debugging",
 		Description: `WARNING: The output may change over time.
 Do not rely on the output of this command in scripts`,
-		ArgsUsage: "Path to SCIP index (or - for stdin)",
 		Action: func(c *cli.Context) error {
 			indexPath := c.Args().Get(0)
 			if indexPath == "" {
 				return errors.New("missing argument for path to SCIP index")
 			}
-			return viewMain(indexPath)
+			return printMain(indexPath)
 		},
 	}
 	return snapshot
 }
 
-func viewMain(indexPath string) error {
+func printMain(indexPath string) error {
 	index, err := readFromOption(indexPath)
 	if err != nil {
 		return err

@@ -40,7 +40,7 @@
 Protobuf output can be inspected using `scip view`:
 
 ```
-scip view /path/to/index.scip.
+scip print /path/to/index.scip
 ```
 
 This may be a bit verbose. The default Protobuf output is more compact,
