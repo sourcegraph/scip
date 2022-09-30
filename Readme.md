@@ -122,3 +122,21 @@ USAGE:
 OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
 ```
+
+### `scip view`
+
+```
+NAME:
+   scip view - Print a SCIP index in a human-readable format
+
+USAGE:
+   scip view [command options] Path to SCIP index (or - for stdin)
+
+DESCRIPTION:
+   Warning: The output may change over time.
+   Do not rely on the output of this command in scripts
+
+OPTIONS:
+   --help, -h  show help (default: false)
+   
+```
