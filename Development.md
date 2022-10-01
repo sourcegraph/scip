@@ -37,7 +37,7 @@
 
 ## Debugging
 
-Protobuf output can be inspected using `scip view`:
+Protobuf output can be inspected using `scip print`:
 
 ```
 scip print /path/to/index.scip
