@@ -60,6 +60,9 @@ NAME:
 USAGE:
    scip [global options] command [command options] [arguments...]
 
+VERSION:
+   v0.2.1-git
+
 DESCRIPTION:
    For more details, see the project README at:
 
@@ -69,11 +72,12 @@ COMMANDS:
    convert   Convert a SCIP index to an LSIF index
    snapshot  Generate snapshot files for golden testing
    stats     Output useful statistics about a SCIP index
+   print     Print a SCIP index in a human-readable format for debugging
    help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h     show help (default: false)
-   --version, -v  Print the current version and exit. (default: false)
+   --version, -v  print the version (default: false)
 ```
 
 ### `scip convert`
