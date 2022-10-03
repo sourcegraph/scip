@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -23,29 +22,13 @@ func commands() []*cli.Command {
 	return []*cli.Command{&convert, &snapshot, &stats, &print}
 }
 
-func scipApp() cli.App {
-	var versionFlag bool
-	app := cli.App{
+func scipApp() *cli.App {
+	app := &cli.App{
 		Name:        "scip",
+		Version:     "v0.2.1-git",
 		Usage:       "SCIP Code Intelligence Protocol CLI",
 		Description: "For more details, see the project README at:\n\n\thttps://github.com/sourcegraph/scip",
-		Flags: []cli.Flag{
-			&cli.BoolFlag{
-				Name:        "version",
-				Usage:       "Print the current version and exit.",
-				Destination: &versionFlag,
-				Aliases:     []string{"v"},
-			},
-		},
-		Action: func(c *cli.Context) error {
-			if versionFlag {
-				fmt.Println("0.1.0")
-				os.Exit(0)
-			}
-			// FIXME: What is the right way to print help text and error here?
-			return nil
-		},
-		Commands: commands(),
+		Commands:    commands(),
 	}
 	return app
 }

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -39,6 +40,8 @@ func TestReadmeInSync(t *testing.T) {
 		helpBytes = helpBytes[:n-1] // ignore NULL at end
 		require.Nil(t, err)
 		help := strings.TrimSpace(string(helpBytes))
+		re := regexp.MustCompile(`(?m)\s+$`) // strip trailing whitespace
+		help = re.ReplaceAllString(help, "\n")
 		require.Truef(t, strings.Contains(readme, help),
 			"Readme.md missing help text %s for %s.\nRun `%s` and paste the output in the Readme.",
 			help, commandName, strings.Join(append([]string{"scip"}, args...), " "))
