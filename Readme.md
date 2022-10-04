@@ -70,9 +70,10 @@ DESCRIPTION:
 
 COMMANDS:
    convert   Convert a SCIP index to an LSIF index
+   lint      Flag potential issues with a SCIP index
+   print     Print a SCIP index in a human-readable format for debugging
    snapshot  Generate snapshot files for golden testing
    stats     Output useful statistics about a SCIP index
-   print     Print a SCIP index in a human-readable format for debugging
    help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -92,6 +93,27 @@ USAGE:
 OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
    --to value    Output path for LSIF index (default: dump.lsif)
+```
+
+### `scip lint`
+
+```
+NAME:
+   scip lint - Flag potential issues with a SCIP index
+
+USAGE:
+   scip lint [command options] [arguments...]
+
+DESCRIPTION:
+   Example usage:
+
+     scip lint /path/to/index.scip
+
+   You may want to filter the output using `grep -v <pattern>`
+   to narrow down on certain classes of errors.
+
+OPTIONS:
+   --help, -h  show help (default: false)
 ```
 
 ### `scip print`
