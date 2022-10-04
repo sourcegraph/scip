@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/urfave/cli/v2"
 
@@ -33,7 +34,13 @@ func lintMain(indexPath string) error {
 	if err != nil {
 		return err
 	}
+	var errOut errors.MultiError
+	errSet := lintMainPure(scipIndex)
+	errOut = errors.Append(errOut, errSet.Unique()...)
+	return errOut
+}
 
+func lintMainPure(scipIndex *scip.Index) errorSet {
 	symTable := newSymbolTable()
 
 	var errs errorSet
@@ -41,8 +48,10 @@ func lintMain(indexPath string) error {
 	for _, extSym := range scipIndex.ExternalSymbols {
 		if extSym.Symbol == "" {
 			errs.Add(emptyStringError{what: "symbol", context: "external symbols"})
-		} else if !symTable.extSyms.Add(extSym.Symbol) {
+		} else if _, ok := symTable.extSyms[extSym.Symbol]; ok {
 			errs.Add(duplicateSymbolInfoWarning{symbol: extSym.Symbol})
+		} else {
+			symTable.extSyms[extSym.Symbol] = fileOccurrenceMap{}
 		}
 	}
 
@@ -93,9 +102,7 @@ func lintMain(indexPath string) error {
 		}
 	}
 
-	var errOut errors.MultiError
-	errOut = errors.Append(errOut, errs.Unique()...)
-	return errOut
+	return errs
 }
 
 // --- Main types ---
@@ -114,14 +121,14 @@ type occurrenceMap = map[occurrenceKey]*scip.Occurrence
 type fileOccurrenceMap = map[string]occurrenceMap
 
 type symbolTable struct {
-	extSyms      set[string]
+	extSyms      map[string]fileOccurrenceMap
 	localSymsMap map[string]fileOccurrenceMap
 	relsMap      set[pair[string]]
 }
 
 func newSymbolTable() symbolTable {
 	return symbolTable{
-		newSet[string](),
+		map[string]fileOccurrenceMap{},
 		map[string]fileOccurrenceMap{},
 		newSet[pair[string]](),
 	}
@@ -131,7 +138,7 @@ func (st *symbolTable) addFileForSymbol(sym string, path string) error {
 	if sym == "" {
 		return emptyStringError{what: "symbol", context: fmt.Sprintf("symbols for document %s", path)}
 	}
-	if st.extSyms.Contains(sym) {
+	if _, ok := st.extSyms[sym]; ok {
 		return bothLocalAndExternalSymbolError{sym, path}
 	}
 	if occsForSym, ok := st.localSymsMap[sym]; ok {
@@ -156,7 +163,7 @@ func (st *symbolTable) addRelationshipForExternalSymbol(sym string, rel *scip.Re
 	if !rel.IsDefinition && !rel.IsReference && !rel.IsImplementation && !rel.IsTypeDefinition {
 		return missingRelationshipFlagError{sym, "external symbols"}
 	}
-	if !st.extSyms.Contains(rel.Symbol) {
+	if _, ok := st.extSyms[rel.Symbol]; !ok {
 		return missingSymbolInRelationshipError{sym, "external symbols", rel.Symbol, "external symbols"}
 	}
 	relPair := pair[string]{sym, rel.Symbol}
@@ -177,9 +184,12 @@ func (st *symbolTable) addRelationship(sym string, path string, rel *scip.Relati
 	if !rel.IsDefinition && !rel.IsReference && !rel.IsImplementation && !rel.IsTypeDefinition {
 		return missingRelationshipFlagError{sym, fmt.Sprintf("symbols for file %s", path)}
 	}
-	if !st.extSyms.Contains(rel.Symbol) {
+	if _, ok := st.extSyms[rel.Symbol]; !ok {
 		if _, ok := st.localSymsMap[rel.Symbol]; !ok {
-			return missingSymbolInRelationshipError{sym, fmt.Sprintf("symbols for file %s", path), rel.Symbol, "external symbols or some other file"}
+			return missingSymbolInRelationshipError{
+				sym, fmt.Sprintf("symbols for file %s", path),
+				rel.Symbol, "external symbols or some other document",
+			}
 		}
 	}
 	relPair := pair[string]{sym, rel.Symbol}
@@ -194,21 +204,28 @@ func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
 	if occ.Symbol == "" {
 		return emptyStringError{what: "symbol", context: fmt.Sprintf("occurrence at %s @ %s", path, scipRangeToString(*scip.NewRange(occ.Range)))}
 	}
-	if st.extSyms.Contains(occ.Symbol) {
-		return nil
-	}
-	if occMap, ok := st.localSymsMap[occ.Symbol]; ok {
+	tryInsertOccurrence := func(occMap fileOccurrenceMap) error {
 		occKey := scipOccurrenceKey(occ)
-		if occs, ok := occMap[path]; ok {
-			if matchingOcc, ok := occs[occKey]; ok {
-				return duplicateOccurrenceWarning{matchingOcc, occ, path}
+		if fileOccs, ok := occMap[path]; ok {
+			if _, ok := fileOccs[occKey]; ok {
+				return duplicateOccurrenceWarning{occ.Symbol, path, *scip.NewRange(occ.Range), occ.SymbolRoles}
 			} else {
-				occs[occKey] = occ
+				fileOccs[occKey] = occ
 			}
 		} else {
 			// We're seeing an occurrence for a symbol in a file
 			// other than the one it was defined in.
 			occMap[path] = occurrenceMap{occKey: occ}
+		}
+		return nil
+	}
+	if occMap, ok := st.extSyms[occ.Symbol]; ok {
+		if err := tryInsertOccurrence(occMap); err != nil {
+			return err
+		}
+	} else if occMap, ok := st.localSymsMap[occ.Symbol]; ok {
+		if err := tryInsertOccurrence(occMap); err != nil {
+			return err
 		}
 	} else {
 		return missingSymbolForOccurrenceError{occ.Symbol, path, *scip.NewRange(occ.Range)}
@@ -311,14 +328,15 @@ func (e missingSymbolForOccurrenceError) Error() string {
 }
 
 type duplicateOccurrenceWarning struct {
-	occ1 *scip.Occurrence
-	occ2 *scip.Occurrence
-	path string
+	symbol      string
+	path        string
+	range_      scip.Range
+	symbolRoles int32
 }
 
 func (e duplicateOccurrenceWarning) Error() string {
 	return fmt.Sprintf("warning: found duplicate occurrence for %s at %s @ %s with role %d",
-		e.occ1.Symbol, e.path, scipRangeToString(*scip.NewRange(e.occ1.Range)), e.occ1.SymbolRoles)
+		e.symbol, e.path, scipRangeToString(e.range_), e.symbolRoles)
 }
 
 type note struct {
@@ -388,6 +406,24 @@ func (s *set[T]) Add(t T) bool {
 func (s *set[T]) Contains(t T) bool {
 	_, ok := s.impl[t]
 	return ok
+}
+
+func setToString[T comparable](s set[T], toString func(T) string) string {
+	var out strings.Builder
+	out.WriteRune('{')
+	slice := make([]string, 0, len(s.impl))
+	for x := range s.impl {
+		slice = append(slice, toString(x))
+	}
+	sort.Slice(slice, func(i, j int) bool { return slice[i] < slice[j] })
+	for i, x := range slice {
+		if i != 0 {
+			out.WriteString(", ")
+		}
+		out.WriteString(x)
+	}
+	out.WriteRune('}')
+	return out.String()
 }
 
 type pair[T any] struct {
