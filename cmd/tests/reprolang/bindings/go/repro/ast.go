@@ -83,7 +83,6 @@ func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext
 	}
 	symbol, ok := scope.names[i.value]
 	if !ok {
-		fmt.Printf("scope.names = %v\n", scope.names)
 		symbol = "local ERROR_UNRESOLVED_SYMBOL"
 	}
 	i.symbol = symbol
