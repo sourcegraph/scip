@@ -36,7 +36,7 @@ Several indexers currently emit SCIP data:
 [scip-java](https://github.com/sourcegraph/scip-java) (for Java, Kotlin and Scala),
 [scip-typescript](https://github.com/sourcegraph/scip-typescript),
 [scip-python](https://github.com/sourcegraph/scip-python),
-[scip-ruby](https://github.com/sourcegraph/scip-ruby),
+[scip-ruby](https://github.com/sourcegraph/scip-ruby) and
 [rust-analyzer](https://github.com/sourcegraph/rust-analyzer).
 
 For more details about indexers, including LSIF-based indexers,
