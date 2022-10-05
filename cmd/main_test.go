@@ -19,9 +19,9 @@ import (
 	"github.com/sourcegraph/scip/cmd/tests/reprolang/bindings/go/repro"
 )
 
-func TestReadmeInSync(t *testing.T) {
+func TestCLIReferenceInSync(t *testing.T) {
 	app := scipApp()
-	readmeBytes, err := os.ReadFile(filepath.Join("..", "Readme.md"))
+	readmeBytes, err := os.ReadFile(filepath.Join("..", "docs", "CLI.md"))
 	require.Nil(t, err)
 	readme := string(readmeBytes)
 
