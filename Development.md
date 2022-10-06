@@ -87,7 +87,15 @@ PACKAGE=MY_PACKAGE_NAME SRC_ACCESS_TOKEN=MY_TOKEN SRC_ENDPOINT=https://sourcegra
 
 ## Release a new version
 
-[Create a new release](https://github.com/sourcegraph/scip/releases/new)
-in the web UI (or using the `gh` CLI), along with any release notes.
+First, add release notes to the [CHANGELOG](CHANGELOG.md).
+Next, update the version in `cmd/version.txt`.
+
+After landing a commit with those two changes, run the release script:
+(requires the [GitHub CLI](https://cli.github.com/))
+
+```bash
+NEW_VERSION="M.N.P" ./dev/publish-release.sh
+```
+
 Once the release is created, the artifacts will be built and uploaded
 automatically by the [release action](/.github/workflows/release.yml).
