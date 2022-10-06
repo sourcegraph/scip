@@ -23,5 +23,6 @@ jobs:
           sha256sum: true
           project_path: cmd
           binary_name: scip
+          ldflags: "-X 'main.Reproducible=true'"
           asset_name: scip-${{ matrix.goos }}-${{ matrix.goarch }}
           extra_files: LICENSE
