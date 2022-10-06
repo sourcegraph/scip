@@ -19,6 +19,10 @@ import (
 	"github.com/sourcegraph/scip/cmd/tests/reprolang/bindings/go/repro"
 )
 
+func TestMain(m *testing.M) {
+	Reproducible = "true"
+}
+
 func TestCLIReferenceInSync(t *testing.T) {
 	app := scipApp()
 	readmeBytes, err := os.ReadFile(filepath.Join("..", "docs", "CLI.md"))
