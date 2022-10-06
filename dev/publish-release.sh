@@ -5,7 +5,7 @@ set -euo pipefail
 {
 if [ -z "${NEW_VERSION:-}" ]; then
   echo "error: Missing value for environment variable NEW_VERSION"
-  echo "hint: Invoke this script as NEW_VERSION=M.N.P ./tools/scripts/publish-scip-ruby.sh"
+  echo "hint: Invoke this script as NEW_VERSION=M.N.P ./tools/scripts/publish-release.sh"
   exit 1
 fi
 
@@ -27,11 +27,6 @@ fi
 
 if ! git diff --quiet --cached; then
   echo "error: Found staged-but-uncommitted changes; aborting."
-  exit 1
-fi
-
-if ! git remote -v | grep "origin" | grep -q "https://github.com/sourcegraph/scip.git"; then
-  echo "error: remote 'origin' doesn't point to sourcegraph/scip"
   exit 1
 fi
 
@@ -58,4 +53,4 @@ git push origin "$TAG"
   echo '  bash -c '\''curl -L "https://github.com/sourcegraph/scip/releases/download/$TAG/scip-$OS-$ARCH.tar.gz"'\'' \'
   echo '| tar xzf - scip'
   echo '```'
-} | gh release create --title "scip-ruby v$NEW_VERSION" --notes-file -
+} | gh release create "$TAG" --title "scip v$NEW_VERSION" --notes-file -
