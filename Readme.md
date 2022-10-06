@@ -56,6 +56,8 @@ cd scip
 go build -o scip ./cmd
 ```
 
+You can consult the [CLI reference](docs/CLI.md) or `--help` for usage information.
+
 ## Contributing
 
 We welcome questions, suggestions as well as code and docs contributions.
