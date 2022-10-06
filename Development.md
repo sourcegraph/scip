@@ -1,5 +1,11 @@
 # Developing SCIP
 
+- [Project structure](#project-structure)
+- [Code generation](#code-generation)
+- [Debugging](#debugging)
+- [Testing and adding new SCIP semantics](#testing-and-adding-new-scip-semantics)
+- [Release a new version](#release-a-new-version)
+
 ## Project structure
 
 - [bindings/](./bindings/): Contains a mix of generated and hand-written
@@ -78,3 +84,10 @@ The LSIF index can be uploaded to a local Sourcegraph instance using:
 ```bash
 PACKAGE=MY_PACKAGE_NAME SRC_ACCESS_TOKEN=MY_TOKEN SRC_ENDPOINT=https://sourcegraph.test:3443 src code-intel upload -file="cmd/tests/snapshots/output/$PACKAGE/dump.lsif" -root="cmd/tests/snapshots/input/$PACKAGE"
 ```
+
+## Release a new version
+
+[Create a new release](https://github.com/sourcegraph/scip/releases/new)
+in the web UI (or using the `gh` CLI), along with any release notes.
+Once the release is created, the artifacts will be built and uploaded
+automatically by the [release action](/.github/workflows/release.yml).
