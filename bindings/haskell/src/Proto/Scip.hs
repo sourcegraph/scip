@@ -4937,7 +4937,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\162\193\SOH\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\246\192\SOH\n\
     \\a\DC2\ENQ\n\
     \\NUL\162\EOT\SOH\n\
     \\130\EOT\n\
@@ -5190,36 +5190,36 @@ packedFileDescriptor
     \\ENQ\EOT\ETX\STX\ETX\SOH\DC2\ETX\\\GS$\n\
     \\f\n\
     \\ENQ\EOT\ETX\STX\ETX\ETX\DC2\ETX\\'(\n\
-    \\238\SI\n\
-    \\STX\EOT\EOT\DC2\ACK\132\SOH\NUL\136\SOH\SOH\SUB\223\SI Symbol is similar to a URI, it identifies a class, method, or a local\n\
+    \\194\SI\n\
+    \\STX\EOT\EOT\DC2\ACK\132\SOH\NUL\136\SOH\SOH\SUB\179\SI Symbol is similar to a URI, it identifies a class, method, or a local\n\
     \ variable. `SymbolInformation` contains rich metadata about symbols such as\n\
     \ the docstring.\n\
     \\n\
     \ Symbol has a standardized string representation, which can be used\n\
     \ interchangeably with `Symbol`. The syntax for Symbol is the following:\n\
     \ ```\n\
-    \   # (<x>)+ stands for one or more repetitions of <x>\n\
-    \   <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>\n\
-    \   <package>              ::= <manager> ' ' <package-name> ' ' <version>\n\
-    \   <scheme>               ::= any UTF-8, escape spaces with double space.\n\
-    \   <manager>              ::= same as above, use the placeholder '.' to indicate an empty value\n\
-    \   <package-name>         ::= same as above\n\
-    \   <version>              ::= same as above\n\
-    \   <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>\n\
-    \   <namespace>            ::= <name> '/'\n\
-    \   <type>                 ::= <name> '#'\n\
-    \   <term>                 ::= <name> '.'\n\
-    \   <meta>                 ::= <name> ':'\n\
-    \   <method>               ::= <name> '(' <method-disambiguator> ').'\n\
-    \   <type-parameter>       ::= '[' <name> ']'\n\
-    \   <parameter>            ::= '(' <name> ')'\n\
-    \   <name>                 ::= <identifier>\n\
-    \   <method-disambiguator> ::= <simple-identifier>\n\
-    \   <identifier>           ::= <simple-identifier> | <escaped-identifier>\n\
-    \   <simple-identifier>    ::= (<identifier-character>)+\n\
-    \   <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit\n\
-    \   <escaped-identifier>   ::= '`' (<escaped-character>)+ '`'\n\
-    \   <escaped-characters>   ::= any UTF-8 character, escape backticks with double backtick.\n\
+    \ # (<x>)+ stands for one or more repetitions of <x>\n\
+    \ <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>\n\
+    \ <package>              ::= <manager> ' ' <package-name> ' ' <version>\n\
+    \ <scheme>               ::= any UTF-8, escape spaces with double space.\n\
+    \ <manager>              ::= same as above, use the placeholder '.' to indicate an empty value\n\
+    \ <package-name>         ::= same as above\n\
+    \ <version>              ::= same as above\n\
+    \ <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>\n\
+    \ <namespace>            ::= <name> '/'\n\
+    \ <type>                 ::= <name> '#'\n\
+    \ <term>                 ::= <name> '.'\n\
+    \ <meta>                 ::= <name> ':'\n\
+    \ <method>               ::= <name> '(' <method-disambiguator> ').'\n\
+    \ <type-parameter>       ::= '[' <name> ']'\n\
+    \ <parameter>            ::= '(' <name> ')'\n\
+    \ <name>                 ::= <identifier>\n\
+    \ <method-disambiguator> ::= <simple-identifier>\n\
+    \ <identifier>           ::= <simple-identifier> | <escaped-identifier>\n\
+    \ <simple-identifier>    ::= (<identifier-character>)+\n\
+    \ <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit\n\
+    \ <escaped-identifier>   ::= '`' (<escaped-character>)+ '`'\n\
+    \ <escaped-characters>   ::= any UTF-8 character, escape backticks with double backtick.\n\
     \ ```\n\
     \\n\
     \ The list of descriptors for a symbol should together form a fully\n\
