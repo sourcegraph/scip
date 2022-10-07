@@ -237,6 +237,18 @@ func (g *graph) emitDocument(index *Index, doc *Document) {
 			if ok {
 				g.emitRelationships(rangeID, documentID, resultIDs, localSymbolInformationTable, symbolInfo)
 			}
+			// Emit definition relationship info here, because we have access to the rangeID
+			// for this definition, which we don't have if we were to try to emit it
+			// when emitting it from rel.Symbol. See [NOTE: isDefinition-handling].
+			if relationships, ok := g.inverseRelationships[occ.Symbol]; ok {
+				for _, rel := range relationships {
+					if rel.IsDefinition {
+						if ids, ok := g.symbolToResultSet[rel.Symbol]; ok && ids.DefinitionResult > 0 {
+							g.emitEdge("item", reader.Edge{OutV: ids.DefinitionResult, InVs: []int{rangeID}, Document: documentID})
+						}
+					}
+				}
+			}
 		}
 		// reference
 		g.emitEdge("item", reader.Edge{OutV: resultIDs.ReferenceResult, InVs: []int{rangeID}, Document: documentID})
@@ -270,6 +282,7 @@ func (g *graph) emitRelationships(rangeID, documentID int, resultIDs *symbolInfo
 func (g *graph) emitRelationship(relationship *Relationship, rangeID, documentID int, localResultIDs map[string]*symbolInformationIDs) []int {
 	relationshipIDs := g.getOrInsertSymbolInformationIDs(relationship.Symbol, localResultIDs)
 
+	var out []int
 	if relationship.IsImplementation {
 		if relationshipIDs.ImplementationResult < 0 {
 			relationshipIDs.ImplementationResult = g.emitVertex("implementationResult", nil)
@@ -286,19 +299,14 @@ func (g *graph) emitRelationship(relationship *Relationship, rangeID, documentID
 			// The 'property' field is included in the LSIF JSON but it's not present in reader.Element
 			// Property: "referenceResults",
 		})
-		return []int{relationshipIDs.ReferenceResult}
+		out = append(out, relationshipIDs.ReferenceResult)
 	}
 
-	if relationship.IsDefinition {
-		g.emitEdge("item", reader.Edge{
-			OutV:     relationshipIDs.DefinitionResult,
-			InVs:     []int{rangeID},
-			Document: documentID,
-		})
-		return []int{relationshipIDs.DefinitionResult}
-	}
+	// [NOTE: isDefinition-handling]
+	// We can't emit an edge for relationship.IsDefinition here,
+	// because we don't have the rangeID for the definition.
 
-	return nil
+	return out
 }
 
 // emitMonikerVertex emits the "moniker" vertex and optionally the accompanying "packageInformation" vertex.
@@ -387,12 +395,16 @@ func (g *graph) emit(ty, label string, payload any) int {
 func (g *graph) registerInverseRelationships(info *SymbolInformation) {
 	for _, relationship := range info.Relationships {
 		inverseRelationships := g.inverseRelationships[relationship.Symbol]
-		g.inverseRelationships[relationship.Symbol] = append(inverseRelationships, &Relationship{
+		rel := Relationship{
 			Symbol:           info.Symbol,
 			IsReference:      relationship.IsReference,
 			IsImplementation: relationship.IsImplementation,
 			IsTypeDefinition: relationship.IsTypeDefinition,
-		})
+			IsDefinition:     relationship.IsDefinition && IsGlobalSymbol(info.Symbol) && IsGlobalSymbol(relationship.Symbol),
+		}
+		if rel.IsReference || rel.IsImplementation || rel.IsTypeDefinition || rel.IsDefinition {
+			g.inverseRelationships[relationship.Symbol] = append(inverseRelationships, &rel)
+		}
 	}
 }
 
