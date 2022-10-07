@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v0.2.3
+
+### Fixes
+
+- Fixed a bug in SCIP to LSIF conversion of indexes using the new `Relationship.is_definition` field. Without this fix, the generated LSIF index would fail to process in Sourcegraph with a "unknown reference to $ID (expected a range)" error. (https://github.com/sourcegraph/scip/pull/108)
+
 ## v0.2.2
 
 ### Additions
