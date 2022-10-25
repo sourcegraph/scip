@@ -36,6 +36,7 @@ var scip;
         SyntaxKind[SyntaxKind["Comment"] = 1] = "Comment";
         SyntaxKind[SyntaxKind["PunctuationDelimiter"] = 2] = "PunctuationDelimiter";
         SyntaxKind[SyntaxKind["PunctuationBracket"] = 3] = "PunctuationBracket";
+        SyntaxKind[SyntaxKind["Keyword"] = 4] = "Keyword";
         SyntaxKind[SyntaxKind["IdentifierKeyword"] = 4] = "IdentifierKeyword";
         SyntaxKind[SyntaxKind["IdentifierOperator"] = 5] = "IdentifierOperator";
         SyntaxKind[SyntaxKind["Identifier"] = 6] = "Identifier";
@@ -46,6 +47,7 @@ var scip;
         SyntaxKind[SyntaxKind["IdentifierParameter"] = 11] = "IdentifierParameter";
         SyntaxKind[SyntaxKind["IdentifierLocal"] = 12] = "IdentifierLocal";
         SyntaxKind[SyntaxKind["IdentifierShadowed"] = 13] = "IdentifierShadowed";
+        SyntaxKind[SyntaxKind["IdentifierNamespace"] = 14] = "IdentifierNamespace";
         SyntaxKind[SyntaxKind["IdentifierModule"] = 14] = "IdentifierModule";
         SyntaxKind[SyntaxKind["IdentifierFunction"] = 15] = "IdentifierFunction";
         SyntaxKind[SyntaxKind["IdentifierFunctionDefinition"] = 16] = "IdentifierFunctionDefinition";
@@ -84,6 +86,103 @@ var scip;
         DiagnosticTag[DiagnosticTag["Unnecessary"] = 1] = "Unnecessary";
         DiagnosticTag[DiagnosticTag["Deprecated"] = 2] = "Deprecated";
     })(DiagnosticTag = scip.DiagnosticTag || (scip.DiagnosticTag = {}));
+    let Language;
+    (function (Language) {
+        Language[Language["UnspecifiedLanguage"] = 0] = "UnspecifiedLanguage";
+        Language[Language["ABAP"] = 60] = "ABAP";
+        Language[Language["APL"] = 49] = "APL";
+        Language[Language["Ada"] = 39] = "Ada";
+        Language[Language["Agda"] = 45] = "Agda";
+        Language[Language["AsciiDoc"] = 86] = "AsciiDoc";
+        Language[Language["Assembly"] = 58] = "Assembly";
+        Language[Language["Awk"] = 66] = "Awk";
+        Language[Language["Bat"] = 68] = "Bat";
+        Language[Language["BibTeX"] = 81] = "BibTeX";
+        Language[Language["C"] = 34] = "C";
+        Language[Language["COBOL"] = 59] = "COBOL";
+        Language[Language["CPP"] = 35] = "CPP";
+        Language[Language["CSS"] = 26] = "CSS";
+        Language[Language["CSharp"] = 1] = "CSharp";
+        Language[Language["Clojure"] = 8] = "Clojure";
+        Language[Language["Coffeescript"] = 21] = "Coffeescript";
+        Language[Language["CommonLisp"] = 9] = "CommonLisp";
+        Language[Language["Coq"] = 47] = "Coq";
+        Language[Language["Dart"] = 3] = "Dart";
+        Language[Language["Delphi"] = 57] = "Delphi";
+        Language[Language["Diff"] = 88] = "Diff";
+        Language[Language["Dockerfile"] = 80] = "Dockerfile";
+        Language[Language["Dyalog"] = 50] = "Dyalog";
+        Language[Language["Elixir"] = 17] = "Elixir";
+        Language[Language["Erlang"] = 18] = "Erlang";
+        Language[Language["FSharp"] = 42] = "FSharp";
+        Language[Language["Fish"] = 65] = "Fish";
+        Language[Language["Flow"] = 24] = "Flow";
+        Language[Language["Fortran"] = 56] = "Fortran";
+        Language[Language["Git_Commit"] = 91] = "Git_Commit";
+        Language[Language["Git_Config"] = 89] = "Git_Config";
+        Language[Language["Git_Rebase"] = 92] = "Git_Rebase";
+        Language[Language["Go"] = 33] = "Go";
+        Language[Language["Groovy"] = 7] = "Groovy";
+        Language[Language["HTML"] = 30] = "HTML";
+        Language[Language["Hack"] = 20] = "Hack";
+        Language[Language["Handlebars"] = 90] = "Handlebars";
+        Language[Language["Haskell"] = 44] = "Haskell";
+        Language[Language["Idris"] = 46] = "Idris";
+        Language[Language["Ini"] = 72] = "Ini";
+        Language[Language["J"] = 51] = "J";
+        Language[Language["JSON"] = 75] = "JSON";
+        Language[Language["Java"] = 6] = "Java";
+        Language[Language["JavaScript"] = 22] = "JavaScript";
+        Language[Language["JavaScriptReact"] = 93] = "JavaScriptReact";
+        Language[Language["Jsonnet"] = 76] = "Jsonnet";
+        Language[Language["Julia"] = 55] = "Julia";
+        Language[Language["Kotlin"] = 4] = "Kotlin";
+        Language[Language["LaTeX"] = 83] = "LaTeX";
+        Language[Language["Lean"] = 48] = "Lean";
+        Language[Language["Less"] = 27] = "Less";
+        Language[Language["Lua"] = 12] = "Lua";
+        Language[Language["Makefile"] = 79] = "Makefile";
+        Language[Language["Markdown"] = 84] = "Markdown";
+        Language[Language["Matlab"] = 52] = "Matlab";
+        Language[Language["Nix"] = 77] = "Nix";
+        Language[Language["OCaml"] = 41] = "OCaml";
+        Language[Language["Objective_C"] = 36] = "Objective_C";
+        Language[Language["Objective_CPP"] = 37] = "Objective_CPP";
+        Language[Language["PHP"] = 19] = "PHP";
+        Language[Language["PLSQL"] = 70] = "PLSQL";
+        Language[Language["Perl"] = 13] = "Perl";
+        Language[Language["PowerShell"] = 67] = "PowerShell";
+        Language[Language["Prolog"] = 71] = "Prolog";
+        Language[Language["Python"] = 15] = "Python";
+        Language[Language["R"] = 54] = "R";
+        Language[Language["Racket"] = 11] = "Racket";
+        Language[Language["Raku"] = 14] = "Raku";
+        Language[Language["Razor"] = 62] = "Razor";
+        Language[Language["ReST"] = 85] = "ReST";
+        Language[Language["Ruby"] = 16] = "Ruby";
+        Language[Language["Rust"] = 40] = "Rust";
+        Language[Language["SAS"] = 61] = "SAS";
+        Language[Language["SCSS"] = 29] = "SCSS";
+        Language[Language["SML"] = 43] = "SML";
+        Language[Language["SQL"] = 69] = "SQL";
+        Language[Language["Sass"] = 28] = "Sass";
+        Language[Language["Scala"] = 5] = "Scala";
+        Language[Language["Scheme"] = 10] = "Scheme";
+        Language[Language["ShellScript"] = 64] = "ShellScript";
+        Language[Language["Skylark"] = 78] = "Skylark";
+        Language[Language["Swift"] = 2] = "Swift";
+        Language[Language["TOML"] = 73] = "TOML";
+        Language[Language["TeX"] = 82] = "TeX";
+        Language[Language["TypeScript"] = 23] = "TypeScript";
+        Language[Language["TypeScriptReact"] = 94] = "TypeScriptReact";
+        Language[Language["VisualBasic"] = 63] = "VisualBasic";
+        Language[Language["Vue"] = 25] = "Vue";
+        Language[Language["Wolfram"] = 53] = "Wolfram";
+        Language[Language["XML"] = 31] = "XML";
+        Language[Language["XSL"] = 32] = "XSL";
+        Language[Language["YAML"] = 74] = "YAML";
+        Language[Language["Zig"] = 38] = "Zig";
+    })(Language = scip.Language || (scip.Language = {}));
     class Index extends pb_1.Message {
         constructor(data) {
             super();
@@ -406,6 +505,9 @@ var scip;
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3], []);
             if (!Array.isArray(data) && typeof data == "object") {
+                if ("language" in data && data.language != undefined) {
+                    this.language = data.language;
+                }
                 if ("relative_path" in data && data.relative_path != undefined) {
                     this.relative_path = data.relative_path;
                 }
@@ -416,6 +518,12 @@ var scip;
                     this.symbols = data.symbols;
                 }
             }
+        }
+        get language() {
+            return pb_1.Message.getField(this, 4);
+        }
+        set language(value) {
+            pb_1.Message.setField(this, 4, value);
         }
         get relative_path() {
             return pb_1.Message.getField(this, 1);
@@ -437,6 +545,9 @@ var scip;
         }
         static fromObject(data) {
             const message = new Document({});
+            if (data.language != null) {
+                message.language = data.language;
+            }
             if (data.relative_path != null) {
                 message.relative_path = data.relative_path;
             }
@@ -450,6 +561,9 @@ var scip;
         }
         toObject() {
             const data = {};
+            if (this.language != null) {
+                data.language = this.language;
+            }
             if (this.relative_path != null) {
                 data.relative_path = this.relative_path;
             }
@@ -463,6 +577,8 @@ var scip;
         }
         serialize(w) {
             const writer = w || new pb_1.BinaryWriter();
+            if (typeof this.language === "string" && this.language.length)
+                writer.writeString(4, this.language);
             if (typeof this.relative_path === "string" && this.relative_path.length)
                 writer.writeString(1, this.relative_path);
             if (this.occurrences !== undefined)
@@ -478,6 +594,9 @@ var scip;
                 if (reader.isEndGroup())
                     break;
                 switch (reader.getFieldNumber()) {
+                    case 4:
+                        message.language = reader.readString();
+                        break;
                     case 1:
                         message.relative_path = reader.readString();
                         break;
@@ -801,12 +920,14 @@ var scip;
         let Suffix;
         (function (Suffix) {
             Suffix[Suffix["UnspecifiedSuffix"] = 0] = "UnspecifiedSuffix";
+            Suffix[Suffix["Namespace"] = 1] = "Namespace";
             Suffix[Suffix["Package"] = 1] = "Package";
             Suffix[Suffix["Type"] = 2] = "Type";
             Suffix[Suffix["Term"] = 3] = "Term";
             Suffix[Suffix["Method"] = 4] = "Method";
             Suffix[Suffix["TypeParameter"] = 5] = "TypeParameter";
             Suffix[Suffix["Parameter"] = 6] = "Parameter";
+            Suffix[Suffix["Macro"] = 9] = "Macro";
             Suffix[Suffix["Meta"] = 7] = "Meta";
             Suffix[Suffix["Local"] = 8] = "Local";
         })(Suffix = Descriptor.Suffix || (Descriptor.Suffix = {}));
@@ -927,6 +1048,9 @@ var scip;
                 if ("is_type_definition" in data && data.is_type_definition != undefined) {
                     this.is_type_definition = data.is_type_definition;
                 }
+                if ("is_definition" in data && data.is_definition != undefined) {
+                    this.is_definition = data.is_definition;
+                }
             }
         }
         get symbol() {
@@ -953,6 +1077,12 @@ var scip;
         set is_type_definition(value) {
             pb_1.Message.setField(this, 4, value);
         }
+        get is_definition() {
+            return pb_1.Message.getField(this, 5);
+        }
+        set is_definition(value) {
+            pb_1.Message.setField(this, 5, value);
+        }
         static fromObject(data) {
             const message = new Relationship({});
             if (data.symbol != null) {
@@ -966,6 +1096,9 @@ var scip;
             }
             if (data.is_type_definition != null) {
                 message.is_type_definition = data.is_type_definition;
+            }
+            if (data.is_definition != null) {
+                message.is_definition = data.is_definition;
             }
             return message;
         }
@@ -983,6 +1116,9 @@ var scip;
             if (this.is_type_definition != null) {
                 data.is_type_definition = this.is_type_definition;
             }
+            if (this.is_definition != null) {
+                data.is_definition = this.is_definition;
+            }
             return data;
         }
         serialize(w) {
@@ -995,6 +1131,8 @@ var scip;
                 writer.writeBool(3, this.is_implementation);
             if (this.is_type_definition !== undefined)
                 writer.writeBool(4, this.is_type_definition);
+            if (this.is_definition !== undefined)
+                writer.writeBool(5, this.is_definition);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1015,6 +1153,9 @@ var scip;
                         break;
                     case 4:
                         message.is_type_definition = reader.readBool();
+                        break;
+                    case 5:
+                        message.is_definition = reader.readBool();
                         break;
                     default: reader.skipField();
                 }
