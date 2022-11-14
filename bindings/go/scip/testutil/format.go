@@ -115,7 +115,7 @@ func FormatSnapshot(
 				for _, documentation := range info.Documentation {
 					// At least get the first line of documentation if there is leading whitespace
 					documentation = strings.TrimSpace(documentation)
-					writeDocumentation(&b, documentation, prefix, true)
+					writeDocumentation(&b, documentation, prefix, false)
 				}
 
 				sort.SliceStable(info.Relationships, func(i, j int) bool {
