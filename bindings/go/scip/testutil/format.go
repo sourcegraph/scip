@@ -103,21 +103,21 @@ func FormatSnapshot(
 			b.WriteRune(' ')
 			b.WriteString(formatSymbol(occ.Symbol))
 
+			prefix := "\n" + commentSyntax + strings.Repeat(" ", int(pos.Start.Character))
+
+			hasOverrideDocumentation := len(occ.OverrideDocumentation) > 0
+			if hasOverrideDocumentation {
+				documentation := occ.OverrideDocumentation[0]
+				writeDocumentation(&b, documentation, prefix, true)
+			}
+
 			if info, ok := symtab[occ.Symbol]; ok && isDefinition {
-				prefix := "\n" + commentSyntax + strings.Repeat(" ", int(pos.Start.Character))
 				for _, documentation := range info.Documentation {
 					// At least get the first line of documentation if there is leading whitespace
 					documentation = strings.TrimSpace(documentation)
-
-					b.WriteString(prefix)
-					b.WriteString("documentation ")
-					truncatedDocumentation := documentation
-					newlineIndex := strings.Index(documentation, "\n")
-					if newlineIndex >= 0 {
-						truncatedDocumentation = documentation[0:newlineIndex]
-					}
-					b.WriteString(truncatedDocumentation)
+					writeDocumentation(&b, documentation, prefix, true)
 				}
+
 				sort.SliceStable(info.Relationships, func(i, j int) bool {
 					return info.Relationships[i].Symbol < info.Relationships[j].Symbol
 				})
@@ -142,6 +142,24 @@ func FormatSnapshot(
 		}
 	}
 	return b.String(), formattingError
+}
+
+func writeDocumentation(b *strings.Builder, documentation string, prefix string, override bool) {
+	// At least get the first line of documentation if there is leading whitespace
+	documentation = strings.TrimSpace(documentation)
+
+	b.WriteString(prefix)
+	if override {
+		b.WriteString("override ")
+	}
+	b.WriteString("documentation ")
+
+	truncatedDocumentation := documentation
+	newlineIndex := strings.Index(documentation, "\n")
+	if newlineIndex >= 0 {
+		truncatedDocumentation = documentation[0:newlineIndex]
+	}
+	b.WriteString(truncatedDocumentation)
 }
 
 // isRangeLess compares two SCIP ranges (which are encoded as []int32).
