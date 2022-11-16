@@ -150,7 +150,7 @@ func writeDocumentation(b *strings.Builder, documentation string, prefix string,
 
 	b.WriteString(prefix)
 	if override {
-		b.WriteString("override ")
+		b.WriteString("override_")
 	}
 	b.WriteString("documentation ")
 
