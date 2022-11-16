@@ -26,6 +26,7 @@ func FormatSnapshots(
 	}
 	for _, document := range index.Documents {
 		snapshot, err := FormatSnapshot(document, index, commentSyntax, symbolFormatter)
+		err = symbolFormatter.OnError(err)
 		if err != nil {
 			return nil, err
 		}
@@ -68,7 +69,7 @@ func FormatSnapshot(
 		formatted, err := formatter.Format(symbol)
 		if err != nil {
 			formattingError = errors.CombineErrors(formattingError, errors.Wrapf(err, symbol))
-			return err.Error()
+			return symbol
 		}
 		return formatted
 	}
