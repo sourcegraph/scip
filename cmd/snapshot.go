@@ -9,11 +9,13 @@ import (
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
+	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
 type snapshotFlags struct {
 	from   string
 	output string
+	strict bool
 }
 
 func snapshotCommand() cli.Command {
@@ -31,7 +33,13 @@ and symbol information.`,
 				Name:        "to",
 				Usage:       "Path to output directory for snapshot files",
 				Destination: &snapshotFlags.output,
-				Value: "scip-snapshot",
+				Value:       "scip-snapshot",
+			},
+			&cli.BoolFlag{
+				Name:        "strict",
+				Usage:       "If true, fail fast on errors",
+				Destination: &snapshotFlags.strict,
+				Value:       true,
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -52,7 +60,14 @@ func snapshotMain(flags snapshotFlags) error {
 	if err != nil {
 		return err
 	}
-	snapshots, err := testutil.FormatSnapshots(index, "//", scip.VerboseSymbolFormatter)
+	symbolFormatter := scip.LenientVerboseSymbolFormatter
+	if flags.strict {
+		symbolFormatter = scip.VerboseSymbolFormatter
+		symbolFormatter.OnError = func(err error) error {
+			return errors.Wrap(err, "use --strict=false to ignore this error")
+		}
+	}
+	snapshots, err := testutil.FormatSnapshots(index, "//", symbolFormatter)
 	if err != nil {
 		return err
 	}

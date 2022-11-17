@@ -8,6 +8,7 @@ import (
 // Excluding parts of the symbol can be helpful for testing purposes. For example, snapshot tests may hardcode
 // the package version number so it's easier to read the snapshot tests if the version is excluded.
 type SymbolFormatter struct {
+	OnError               func(err error) error
 	IncludeScheme         func(scheme string) bool
 	IncludePackageManager func(manager string) bool
 	IncludePackageName    func(name string) bool
@@ -17,6 +18,17 @@ type SymbolFormatter struct {
 
 // VerboseSymbolFormatter formats all parts of the symbol.
 var VerboseSymbolFormatter = SymbolFormatter{
+	OnError:               func(err error) error { return err },
+	IncludeScheme:         func(_ string) bool { return true },
+	IncludePackageManager: func(_ string) bool { return true },
+	IncludePackageName:    func(_ string) bool { return true },
+	IncludePackageVersion: func(_ string) bool { return true },
+	IncludeDescriptor:     func(_ string) bool { return true },
+}
+
+// Same as VerboseSymbolFormatter but silently ignores errors.
+var LenientVerboseSymbolFormatter = SymbolFormatter{
+	OnError:               func(_ error) error { return nil },
 	IncludeScheme:         func(_ string) bool { return true },
 	IncludePackageManager: func(_ string) bool { return true },
 	IncludePackageName:    func(_ string) bool { return true },
@@ -26,6 +38,7 @@ var VerboseSymbolFormatter = SymbolFormatter{
 
 // DescriptorOnlyFormatter formats only the descriptor part of the symbol.
 var DescriptorOnlyFormatter = SymbolFormatter{
+	OnError:               func(err error) error { return err },
 	IncludeScheme:         func(scheme string) bool { return scheme == "local" },
 	IncludePackageManager: func(_ string) bool { return false },
 	IncludePackageName:    func(_ string) bool { return false },

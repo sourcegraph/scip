@@ -24,10 +24,16 @@ func FormatSnapshots(
 	if err != nil {
 		return nil, err
 	}
+
+	var documentErrors error
 	for _, document := range index.Documents {
 		snapshot, err := FormatSnapshot(document, index, commentSyntax, symbolFormatter)
+		err = symbolFormatter.OnError(err)
 		if err != nil {
-			return nil, err
+			documentErrors = errors.CombineErrors(
+				documentErrors,
+				errors.Wrap(err, document.RelativePath),
+			)
 		}
 		sourceFile := scip.NewSourceFile(
 			filepath.Join(projectRoot.Path, document.RelativePath),
@@ -35,6 +41,9 @@ func FormatSnapshots(
 			snapshot,
 		)
 		result = append(result, sourceFile)
+	}
+	if documentErrors != nil {
+		return nil, documentErrors
 	}
 	return result, nil
 }
@@ -68,7 +77,7 @@ func FormatSnapshot(
 		formatted, err := formatter.Format(symbol)
 		if err != nil {
 			formattingError = errors.CombineErrors(formattingError, errors.Wrapf(err, symbol))
-			return err.Error()
+			return symbol
 		}
 		return formatted
 	}
