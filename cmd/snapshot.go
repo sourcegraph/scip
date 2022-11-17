@@ -9,6 +9,7 @@ import (
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
+	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
 type snapshotFlags struct {
@@ -38,7 +39,7 @@ and symbol information.`,
 				Name:        "strict",
 				Usage:       "If true, fail fast on errors",
 				Destination: &snapshotFlags.strict,
-				Value:       false,
+				Value:       true,
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -62,6 +63,9 @@ func snapshotMain(flags snapshotFlags) error {
 	symbolFormatter := scip.LenientVerboseSymbolFormatter
 	if flags.strict {
 		symbolFormatter = scip.VerboseSymbolFormatter
+		symbolFormatter.OnError = func(err error) error {
+			return errors.Wrap(err, "use --strict=false to ignore this error")
+		}
 	}
 	snapshots, err := testutil.FormatSnapshots(index, "//", symbolFormatter)
 	if err != nil {
