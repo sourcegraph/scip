@@ -36,6 +36,9 @@ func ParsePartialSymbol(symbol string, includeDescriptors bool) (*Symbol, error)
 	if err != nil {
 		return nil, err
 	}
+	if manager == "." {
+		manager = ""
+	}
 	packageName, err := s.acceptSpaceEscapedIdentifier("package name")
 	if err != nil {
 		return nil, err
