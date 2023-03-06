@@ -16,7 +16,7 @@ rust-version = "1.60.0"
 
 [dependencies]
 # Keep in sync with dev/proto-generate.sh
-protobuf = "=3.1.0"
+protobuf = "=3.2.0"
 
 [dev-dependencies]
 pretty_assertions = "1.2.1"
