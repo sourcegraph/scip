@@ -108,11 +108,12 @@ message Document {
 // <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
 // <package-name>         ::= same as above
 // <version>              ::= same as above
-// <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
+// <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta> | <macro>
 // <namespace>            ::= <name> '/'
 // <type>                 ::= <name> '#'
 // <term>                 ::= <name> '.'
 // <meta>                 ::= <name> ':'
+// <macro>                ::= <name> '!'
 // <method>               ::= <name> '(' <method-disambiguator> ').'
 // <type-parameter>       ::= '[' <name> ']'
 // <parameter>            ::= '(' <name> ')'
@@ -160,10 +161,10 @@ message Descriptor {
     Method = 4;
     TypeParameter = 5;
     Parameter = 6;
-    Macro = 9;
     // Can be used for any purpose.
     Meta = 7;
     Local = 8;
+    Macro = 9;
   }
   string name = 1;
   string disambiguator = 2;

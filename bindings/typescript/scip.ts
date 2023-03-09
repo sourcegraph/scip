@@ -1030,9 +1030,9 @@ export namespace scip {
             Method = 4,
             TypeParameter = 5,
             Parameter = 6,
-            Macro = 9,
             Meta = 7,
-            Local = 8
+            Local = 8,
+            Macro = 9
         }
     }
     export class SymbolInformation extends pb_1.Message {
