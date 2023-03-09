@@ -23,9 +23,9 @@
 | 4      | Method            |
 | 5      | TypeParameter     |
 | 6      | Parameter         |
-| 9      | Macro             |
 | 7      | Meta              | Can be used for any purpose.                 |
 | 8      | Local             |
+| 9      | Macro             |
 
 Additional notes on **Namespace**:
 
@@ -210,11 +210,12 @@ interchangeably with `Symbol`. The syntax for Symbol is the following:
 <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
 <package-name>         ::= same as above
 <version>              ::= same as above
-<descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta>
+<descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta> | <macro>
 <namespace>            ::= <name> '/'
 <type>                 ::= <name> '#'
 <term>                 ::= <name> '.'
 <meta>                 ::= <name> ':'
+<macro>                ::= <name> '!'
 <method>               ::= <name> '(' <method-disambiguator> ').'
 <type-parameter>       ::= '[' <name> ']'
 <parameter>            ::= '(' <name> ')'
