@@ -281,7 +281,7 @@ impl SymbolParser {
     fn accept_descriptors(&mut self) -> Result<Vec<Descriptor>, SymbolError> {
         let mut v = Vec::new();
         while self.index < self.sym.len() {
-            v.push(dbg!(self.accept_one_descriptor()?))
+            v.push(self.accept_one_descriptor()?)
         }
 
         Ok(v)
