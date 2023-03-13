@@ -263,7 +263,6 @@ impl SymbolParser {
     }
 
     fn accept_character(&mut self, c: char, what: &str) -> Result<char, SymbolError> {
-        println!("Checking: {} for {}", c, what);
         // if self.peek_next().ok_or(SymbolError::InvalidIndex)? == c {
         if self.current()? == c {
             self.index += 1;
