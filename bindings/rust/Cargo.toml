@@ -24,3 +24,5 @@ pretty_assertions = "1.2.1"
 [lib]
 name = "scip"
 path = "src/mod.rs"
+# disable doctests because generated/scip.rs has a perceived doctest.
+doctest = false

@@ -316,12 +316,11 @@ impl SymbolParser {
                 self.index += 1;
                 match suffix {
                     '(' => {
-                        let disambiguator = match self.peek_next() {
-                            Some(c) => match c {
-                                ')' => "".to_string(),
-                                _ => self.accept_identifier("method disambiguator")?,
-                            },
-                            None => "".to_string(),
+                        // We are not peeking here because we already advanced
+                        // past suffix.
+                        let disambiguator = match self.current()? {
+                            ')' => "".to_string(),
+                            _ => self.accept_identifier("method disambiguator")?,
                         };
 
                         self.accept_character(')', "closing method")?;
@@ -429,6 +428,34 @@ mod test {
         assert_eq!(
             input_symbol,
             format_symbol(parse_symbol(input_symbol).expect("java symbol"))
+        )
+    }
+
+    #[test]
+    fn parses_rust_symbol() {
+        let input_symbol =
+            "rust-analyzer cargo test_rust_dependency 0.1.0 MyType#new().";
+
+        assert_eq!(
+            parse_symbol(input_symbol).expect("rust symbol"),
+            Symbol {
+                scheme: "rust-analyzer".to_string(),
+                package: Package::new_with_values("cargo", "test_rust_dependency", "0.1.0"),
+                descriptors: vec![
+                    new_descriptor("MyType".to_string(), descriptor::Suffix::Type),
+                    new_descriptor_with_disambiguator(
+                        "new".to_string(),
+                        descriptor::Suffix::Method,
+                        "".to_string(),
+                    ),
+                ],
+                special_fields: SpecialFields::default(),
+            }
+        );
+
+        assert_eq!(
+            input_symbol,
+            format_symbol(parse_symbol(input_symbol).expect("rust symbol"))
         )
     }
 }
