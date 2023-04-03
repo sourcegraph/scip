@@ -263,7 +263,6 @@ impl SymbolParser {
     }
 
     fn accept_character(&mut self, c: char, what: &str) -> Result<char, SymbolError> {
-        println!("Checking: {} for {}", c, what);
         // if self.peek_next().ok_or(SymbolError::InvalidIndex)? == c {
         if self.current()? == c {
             self.index += 1;
@@ -281,7 +280,7 @@ impl SymbolParser {
     fn accept_descriptors(&mut self) -> Result<Vec<Descriptor>, SymbolError> {
         let mut v = Vec::new();
         while self.index < self.sym.len() {
-            v.push(dbg!(self.accept_one_descriptor()?))
+            v.push(self.accept_one_descriptor()?)
         }
 
         Ok(v)
