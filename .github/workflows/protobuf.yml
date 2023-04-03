@@ -19,5 +19,11 @@ jobs:
           js: true
           rust: true
           golang: true
+      - name: Cache `.bin` folder
+        id: cache-setup
+        uses: actions/cache@v2
+        with:
+          path: .bin
+          key: ${{ runner.os }}-bin
       - run: ./dev/proto-generate.sh
       - run: git diff --exit-code
