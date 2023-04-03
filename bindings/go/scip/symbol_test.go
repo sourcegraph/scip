@@ -49,8 +49,8 @@ func TestParseSymbol(t *testing.T) {
 				Scheme:  "lsif-java",
 				Package: &Package{Manager: "maven", Name: "package", Version: "1.0.0"},
 				Descriptors: []*Descriptor{
-					{Name: "java", Suffix: Descriptor_Package},
-					{Name: "io", Suffix: Descriptor_Package},
+					{Name: "java", Suffix: Descriptor_Namespace},
+					{Name: "io", Suffix: Descriptor_Namespace},
 					{Name: "File", Suffix: Descriptor_Type},
 					{Name: "Entry", Suffix: Descriptor_Term},
 					{Name: "method", Disambiguator: "+1", Suffix: Descriptor_Method},
@@ -65,7 +65,7 @@ func TestParseSymbol(t *testing.T) {
 				Scheme:  "rust-analyzer",
 				Package: &Package{Manager: "cargo", Name: "std", Version: "1.0.0"},
 				Descriptors: []*Descriptor{
-					{Name: "macros", Suffix: Descriptor_Package},
+					{Name: "macros", Suffix: Descriptor_Namespace},
 					{Name: "println", Suffix: Descriptor_Macro},
 				},
 			},
