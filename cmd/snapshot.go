@@ -13,9 +13,10 @@ import (
 )
 
 type snapshotFlags struct {
-	from   string
-	output string
-	strict bool
+	from          string
+	output        string
+	strict        bool
+	commentSyntax string
 }
 
 func snapshotCommand() cli.Command {
@@ -40,6 +41,12 @@ and symbol information.`,
 				Usage:       "If true, fail fast on errors",
 				Destination: &snapshotFlags.strict,
 				Value:       true,
+			},
+			&cli.StringFlag{
+				Name:        "comment-syntax",
+				Usage:       "Comment syntax to use for snapshot files",
+				Destination: &snapshotFlags.commentSyntax,
+				Value:       "//",
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -67,7 +74,7 @@ func snapshotMain(flags snapshotFlags) error {
 			return errors.Wrap(err, "use --strict=false to ignore this error")
 		}
 	}
-	snapshots, err := testutil.FormatSnapshots(index, "//", symbolFormatter)
+	snapshots, err := testutil.FormatSnapshots(index, flags.commentSyntax, symbolFormatter)
 	if err != nil {
 		return err
 	}
