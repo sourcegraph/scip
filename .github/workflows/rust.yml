@@ -17,6 +17,13 @@ jobs:
         with:
           rust: true
       - run: cargo check
-        working-directory: bindings/rust
-      - run: cargo check
         working-directory: cmd/tests/reprolang
+  rust-bindings-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/asdf
+        with:
+          rust: true
+      - run: cargo test
+        working-directory: bindings/rust
