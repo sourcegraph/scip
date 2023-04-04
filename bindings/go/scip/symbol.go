@@ -156,7 +156,7 @@ func (s *symbolParser) parseDescriptor() (*Descriptor, error) {
 			}
 			return &Descriptor{Name: name, Disambiguator: disambiguator, Suffix: Descriptor_Method}, s.acceptCharacter('.', "closing method")
 		case '/':
-			return &Descriptor{Name: name, Suffix: Descriptor_Package}, nil
+			return &Descriptor{Name: name, Suffix: Descriptor_Namespace}, nil
 		case '.':
 			return &Descriptor{Name: name, Suffix: Descriptor_Term}, nil
 		case '#':

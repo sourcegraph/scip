@@ -71,7 +71,7 @@ func (f *SymbolFormatter) FormatSymbol(symbol *Symbol) string {
 	descriptor := strings.Builder{}
 	for _, desc := range symbol.Descriptors {
 		switch desc.Suffix {
-		case Descriptor_Package:
+		case Descriptor_Namespace:
 			descriptor.WriteString(desc.Name)
 			descriptor.WriteRune('/')
 		case Descriptor_Type:
