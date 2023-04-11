@@ -15,6 +15,7 @@ import (
 type snapshotFlags struct {
 	from          string
 	output        string
+	projectRoot   string
 	strict        bool
 	commentSyntax string
 }
@@ -35,6 +36,11 @@ and symbol information.`,
 				Usage:       "Path to output directory for snapshot files",
 				Destination: &snapshotFlags.output,
 				Value:       "scip-snapshot",
+			},
+			&cli.StringFlag{
+				Name:        "project-root",
+				Usage:       "Override projet root in SCIP file",
+				Destination: &snapshotFlags.projectRoot,
 			},
 			&cli.BoolFlag{
 				Name:        "strict",
@@ -74,7 +80,7 @@ func snapshotMain(flags snapshotFlags) error {
 			return errors.Wrap(err, "use --strict=false to ignore this error")
 		}
 	}
-	snapshots, err := testutil.FormatSnapshots(index, flags.commentSyntax, symbolFormatter)
+	snapshots, err := testutil.FormatSnapshots(index, flags.commentSyntax, symbolFormatter, flags.projectRoot)
 	if err != nil {
 		return err
 	}
