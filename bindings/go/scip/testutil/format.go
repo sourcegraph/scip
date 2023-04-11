@@ -1,6 +1,7 @@
 package testutil
 
 import (
+	"log"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -18,16 +19,28 @@ func FormatSnapshots(
 	index *scip.Index,
 	commentSyntax string,
 	symbolFormatter scip.SymbolFormatter,
+	customProjectRoot string,
 ) ([]*scip.SourceFile, error) {
 	var result []*scip.SourceFile
-	projectRoot, err := url.Parse(index.Metadata.ProjectRoot)
+	projectRootUrl, err := url.Parse(index.Metadata.ProjectRoot)
 	if err != nil {
 		return nil, err
 	}
 
+	localSourcesRoot := projectRootUrl.Path
+	if customProjectRoot != "" {
+		localSourcesRoot = customProjectRoot
+	} else if _, err := os.Stat(localSourcesRoot); errors.Is(err, os.ErrNotExist) {
+		cwd, _ := os.Getwd()
+		log.Printf("Project root [%s] doesn't exist, using current working directory [%s] instead. "+
+			"To override this behaviour, use --root=<folder> option directly", projectRootUrl.Path, cwd)
+		localSourcesRoot = cwd
+	}
+
 	var documentErrors error
 	for _, document := range index.Documents {
-		snapshot, err := FormatSnapshot(document, index, commentSyntax, symbolFormatter)
+		sourceFilePath := filepath.Join(localSourcesRoot, document.RelativePath)
+		snapshot, err := FormatSnapshot(document, index, commentSyntax, symbolFormatter, sourceFilePath)
 		err = symbolFormatter.OnError(err)
 		if err != nil {
 			documentErrors = errors.CombineErrors(
@@ -35,8 +48,7 @@ func FormatSnapshots(
 				errors.Wrap(err, document.RelativePath),
 			)
 		}
-		sourceFile := scip.NewSourceFile(
-			filepath.Join(projectRoot.Path, document.RelativePath),
+		sourceFile := scip.NewSourceFile(sourceFilePath,
 			document.RelativePath,
 			snapshot,
 		)
@@ -55,16 +67,10 @@ func FormatSnapshot(
 	index *scip.Index,
 	commentSyntax string,
 	formatter scip.SymbolFormatter,
+	sourceFilePath string,
 ) (string, error) {
 	b := strings.Builder{}
-	uri, err := url.Parse(filepath.Join(index.Metadata.ProjectRoot, document.RelativePath))
-	if err != nil {
-		return "", err
-	}
-	if uri.Scheme != "file" {
-		return "", errors.New("expected url scheme 'file', obtained " + uri.Scheme)
-	}
-	data, err := os.ReadFile(uri.Path)
+	data, err := os.ReadFile(sourceFilePath)
 	if err != nil {
 		return "", err
 	}

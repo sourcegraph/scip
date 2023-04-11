@@ -13,10 +13,11 @@ import (
 )
 
 type snapshotFlags struct {
-	from          string
-	output        string
-	strict        bool
-	commentSyntax string
+	from              string
+	output            string
+	customProjectRoot string
+	strict            bool
+	commentSyntax     string
 }
 
 func snapshotCommand() cli.Command {
@@ -35,6 +36,12 @@ and symbol information.`,
 				Usage:       "Path to output directory for snapshot files",
 				Destination: &snapshotFlags.output,
 				Value:       "scip-snapshot",
+			},
+			&cli.StringFlag{
+				Name: "project-root",
+				Usage: "Override project root in the SCIP file. " +
+					"For example, this can be helpful when the SCIP index was created inside a Docker image or created on another computer",
+				Destination: &snapshotFlags.customProjectRoot,
 			},
 			&cli.BoolFlag{
 				Name:        "strict",
@@ -74,7 +81,7 @@ func snapshotMain(flags snapshotFlags) error {
 			return errors.Wrap(err, "use --strict=false to ignore this error")
 		}
 	}
-	snapshots, err := testutil.FormatSnapshots(index, flags.commentSyntax, symbolFormatter)
+	snapshots, err := testutil.FormatSnapshots(index, flags.commentSyntax, symbolFormatter, flags.customProjectRoot)
 	if err != nil {
 		return err
 	}
