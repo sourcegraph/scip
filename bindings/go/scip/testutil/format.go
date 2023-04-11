@@ -19,7 +19,7 @@ func FormatSnapshots(
 	index *scip.Index,
 	commentSyntax string,
 	symbolFormatter scip.SymbolFormatter,
-	root string,
+	customProjectRoot string,
 ) ([]*scip.SourceFile, error) {
 	var result []*scip.SourceFile
 	projectRootUrl, err := url.Parse(index.Metadata.ProjectRoot)
@@ -28,8 +28,8 @@ func FormatSnapshots(
 	}
 
 	localSourcesRoot := projectRootUrl.Path
-	if root != "" {
-		localSourcesRoot = root
+	if customProjectRoot != "" {
+		localSourcesRoot = customProjectRoot
 	} else if _, err := os.Stat(localSourcesRoot); errors.Is(err, os.ErrNotExist) {
 		cwd, _ := os.Getwd()
 		log.Printf("Project root [%s] doesn't exist, using current working directory [%s] instead. "+
