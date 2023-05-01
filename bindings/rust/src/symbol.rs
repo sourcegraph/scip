@@ -342,6 +342,7 @@ impl SymbolParser {
                     '.' => Ok(new_descriptor(name, descriptor::Suffix::Term)),
                     '#' => Ok(new_descriptor(name, descriptor::Suffix::Type)),
                     ':' => Ok(new_descriptor(name, descriptor::Suffix::Meta)),
+                    '!' => Ok(new_descriptor(name, descriptor::Suffix::Macro)),
                     _ => Err(SymbolError::MissingDescriptor),
                 }
             }
