@@ -25,7 +25,7 @@ COMMANDS:
 
 GLOBAL OPTIONS:
    --help, -h     show help (default: false)
-   --version, -v  print the version (default: false)`
+   --version, -v  print the version (default: false)
 ```
 
 ## `scip convert`
