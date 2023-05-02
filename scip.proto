@@ -179,7 +179,7 @@ message SymbolInformation {
   string symbol = 1;
   // (optional, but strongly recommended) The markdown-formatted documentation
   // for this symbol. This field is repeated to allow different kinds of
-  // documentation.  For example, it's nice to include both the signature of a
+  // documentation. For example, it's nice to include both the signature of a
   // method (parameters and return type) along with the accompanying docstring.
   repeated string documentation = 3;
   // (optional) Relationships to other symbols (e.g., implements, type definition).
@@ -219,7 +219,7 @@ message Relationship {
   // In the TypeScript example above, observe that `Dog#` has an
   // `is_implementation` relationship with `"Animal#"` but not `is_reference`.
   // This is because "Find references" on the "Animal#" symbol should not return
-  // "Dog#".  We only want "Dog#" to return as a result for "Find
+  // "Dog#". We only want "Dog#" to return as a result for "Find
   // implementations" on the "Animal#" symbol.
   bool is_implementation = 3;
   // Similar to `references_symbols` but for "Go to type definition".
@@ -244,7 +244,7 @@ message Relationship {
   // Update registerInverseRelationships on adding a new field here.
 }
 
-// SymbolRole declares what "role" a symbol has in an occurrence.  A role is
+// SymbolRole declares what "role" a symbol has in an occurrence. A role is
 // encoded as a bitset where each bit represents a different role. For example,
 // to determine if the `Import` role is set, test whether the second bit of the
 // enum value is defined. In pseudocode, this can be implemented with the
@@ -383,10 +383,31 @@ message Occurrence {
   // type with `start` and `end` fields of type `Position`, mirroring LSP.
   // Benchmarks revealed that this encoding was inefficient and that we could
   // reduce the total payload size of an index by 50% by using `repeated int32`
-  // instead.  The `repeated int32` encoding is admittedly more embarrassing to
+  // instead. The `repeated int32` encoding is admittedly more embarrassing to
   // work with in some programming languages but we hope the performance
   // improvements make up for it.
   repeated int32 range = 1;
+  // (optional) The source position of the nearest non-trivial enclosing AST node.
+  // If supplied, the value must mirror the constraints detailed in the `range` field.
+  // For occurrences referencing the identifier within a class or function declaration, 
+  // the  obvious interpretation of this field is to encode the bounds of the entire
+  // declaration, e.g. in the following the enclosing range captures the `func` keyword
+  // to the function declaration's closing brace.
+  // ```
+  // const n = 3
+  //
+  // func Parse(input string) string {
+  //     return input[n:]             
+  // }                                
+  // ```
+  // This field can also be used, for further example, to indicate the relevant parent 
+  // expression a variable referencing an invokable, e.g.:
+  // ```
+  // let x = a.b().f().g()
+  //               ^ range
+  //         ^^^^^^^ enclosing_range
+  // ```
+  repeated int32 enclosing_range = 7;
   // (optional) The symbol that appears at this position. See
   // `SymbolInformation.symbol` for how to format symbols as strings.
   string symbol = 2;
