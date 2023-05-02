@@ -1,6 +1,7 @@
 # SCIP CLI Reference
 
 <!--toc:start-->
+
 - [SCIP CLI Reference](#scip-cli-reference)
   - [`scip convert`](#scip-convert)
   - [`scip lint`](#scip-lint)
@@ -8,7 +9,7 @@
   - [`scip snapshot`](#scip-snapshot)
   - [`scip stats`](#scip-stats)
   - [`scip json`](#scip-json)
-<!--toc:end-->
+  <!--toc:end-->
 
 ```
 NAME:
@@ -142,5 +143,3 @@ OPTIONS:
    --help, -h    show help (default: false)
    --pretty, -p  Pretty print (multiline, with indentation) (default: false)
 ```
-
-
