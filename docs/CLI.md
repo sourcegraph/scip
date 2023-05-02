@@ -1,5 +1,15 @@
 # SCIP CLI Reference
 
+<!--toc:start-->
+- [SCIP CLI Reference](#scip-cli-reference)
+  - [`scip convert`](#scip-convert)
+  - [`scip lint`](#scip-lint)
+  - [`scip print`](#scip-print)
+  - [`scip snapshot`](#scip-snapshot)
+  - [`scip stats`](#scip-stats)
+  - [`scip json`](#scip-json)
+<!--toc:end-->
+
 ```
 NAME:
    scip - SCIP Code Intelligence Protocol CLI
@@ -21,6 +31,7 @@ COMMANDS:
    print     Print a SCIP index in a human-readable format for debugging
    snapshot  Generate snapshot files for golden testing
    stats     Output useful statistics about a SCIP index
+   json      Print SCIP index as JSON
    help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -96,8 +107,12 @@ DESCRIPTION:
    and symbol information.
 
 OPTIONS:
-   --from value  Path to SCIP index file (default: index.scip)
-   --to value    Path to output directory for snapshot files (default: scip-snapshot)
+   --comment-syntax value  Comment syntax to use for snapshot files (default: "//")
+   --from value            Path to SCIP index file (default: "index.scip")
+   --help, -h              show help (default: false)
+   --project-root value    Override project root in the SCIP file. For example, this can be helpful when the SCIP index was created inside a Docker image or created on another computer
+   --strict                If true, fail fast on errors (default: true)
+   --to value              Path to output directory for snapshot files (default: "scip-snapshot")
 ```
 
 ## `scip stats`
@@ -112,3 +127,20 @@ USAGE:
 OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
 ```
+
+## `scip json`
+
+```
+NAME:
+   scip json - Print SCIP index as JSON
+
+USAGE:
+   scip json [command options] [arguments...]
+
+OPTIONS:
+   --from value  Path to SCIP index file (default: "index.scip")
+   --help, -h    show help (default: false)
+   --pretty, -p  Pretty print (multiline, with indentation) (default: false)
+```
+
+

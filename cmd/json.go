@@ -18,12 +18,12 @@ func jsonCommand() cli.Command {
 
 	json := cli.Command{
 		Name:  "json",
-		Usage: "Print SCIP index as json",
+		Usage: "Print SCIP index as JSON",
 		Flags: []cli.Flag{
 			fromFlag(&jsonFlags.from),
 			&cli.BoolFlag{
 				Name:        "pretty",
-				Usage:       "Pretty print",
+				Usage:       "Pretty print (multiline, with indentation)",
 				Aliases:     []string{"p"},
 				Destination: &jsonFlags.pretty,
 			},
