@@ -4937,7 +4937,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\167\193\SOH\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\171\193\SOH\n\
     \\a\DC2\ENQ\n\
     \\NUL\163\EOT\SOH\n\
     \\130\EOT\n\
@@ -5460,8 +5460,8 @@ packedFileDescriptor
     \\ENQ\EOT\b\STX\NUL\SOH\DC2\EOT\189\SOH\t\SI\n\
     \\r\n\
     \\ENQ\EOT\b\STX\NUL\ETX\DC2\EOT\189\SOH\DC2\DC3\n\
-    \\143\b\n\
-    \\EOT\EOT\b\STX\SOH\DC2\EOT\214\SOH\STX\CAN\SUB\128\b When resolving \"Find references\", this field documents what other symbols\n\
+    \\222\b\n\
+    \\EOT\EOT\b\STX\SOH\DC2\EOT\214\SOH\STX\CAN\SUB\207\b When resolving \"Find references\", this field documents what other symbols\n\
     \ should be included together with this symbol. For example, consider the\n\
     \ following TypeScript code that defines two symbols `Animal#sound()` and\n\
     \ `Dog#sound()`:\n\
@@ -5472,9 +5472,9 @@ packedFileDescriptor
     \   ^^^^^ definition Animal#sound()\n\
     \ }\n\
     \ class Dog implements Animal {\n\
-    \       ^^^ definition Dog#, implementation_symbols = Animal#\n\
+    \       ^^^ definition Dog#, relationships = [{symbol: \"Animal#\", is_implementation: true}]\n\
     \   public sound(): string { return \"woof\" }\n\
-    \          ^^^^^ definition Dog#sound(), references_symbols = Animal#sound(), implementation_symbols = Animal#sound()\n\
+    \          ^^^^^ definition Dog#sound(), references_symbols = Animal#sound(), relationships = [{symbol: \"Animal#sound()\", is_implementation:true, is_reference: true}]\n\
     \ }\n\
     \ const animal: Animal = new Dog()\n\
     \               ^^^^^^ reference Animal#\n\
@@ -5492,15 +5492,15 @@ packedFileDescriptor
     \\ENQ\EOT\b\STX\SOH\SOH\DC2\EOT\214\SOH\a\DC3\n\
     \\r\n\
     \\ENQ\EOT\b\STX\SOH\ETX\DC2\EOT\214\SOH\SYN\ETB\n\
-    \\186\EOT\n\
-    \\EOT\EOT\b\STX\STX\DC2\EOT\223\SOH\STX\GS\SUB\171\EOT Similar to `references_symbols` but for \"Go to implementation\".\n\
-    \ It's common for the `implementation_symbols` and `references_symbols` fields\n\
-    \ have the same values but that's not always the case.\n\
-    \ In the TypeScript example above, observe that `implementation_symbols` has\n\
-    \ the value `\"Animal#\"` for the \"Dog#\" symbol while `references_symbols` is\n\
-    \ empty. When requesting \"Find references\" on the \"Animal#\" symbol we don't\n\
-    \ want to include references to \"Dog#\" even if \"Go to implementation\" on the\n\
-    \ \"Animal#\" symbol should navigate to the \"Dog#\" symbol.\n\
+    \\239\ETX\n\
+    \\EOT\EOT\b\STX\STX\DC2\EOT\223\SOH\STX\GS\SUB\224\ETX Similar to `is_reference` but for \"Find implementations\".\n\
+    \ It's common for `is_implementation` and `is_reference` to both be true but\n\
+    \ it's not always the case.\n\
+    \ In the TypeScript example above, observe that `Dog#` has an\n\
+    \ `is_implementation` relationship with `\"Animal#\"` but not `is_reference`.\n\
+    \ This is because \"Find references\" on the \"Animal#\" symbol should not return\n\
+    \ \"Dog#\".  We only want \"Dog#\" to return as a result for \"Find\n\
+    \ implementations\" on the \"Animal#\" symbol.\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\b\STX\STX\ENQ\DC2\EOT\223\SOH\STX\ACK\n\
