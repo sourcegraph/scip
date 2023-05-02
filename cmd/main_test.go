@@ -20,6 +20,7 @@ import (
 
 func TestMain(m *testing.M) {
 	Reproducible = "true"
+	os.Exit(m.Run())
 }
 
 func TestCLIReferenceInSync(t *testing.T) {
