@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 
 	"github.com/sourcegraph/sourcegraph/lib/errors"
