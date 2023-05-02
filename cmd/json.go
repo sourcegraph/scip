@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 	"github.com/urfave/cli/v2"
@@ -32,14 +33,14 @@ func jsonCommand() cli.Command {
 			if jsonFlags.from == "" {
 				return errors.New("missing argument for path to SCIP index")
 			}
-			return jsonMain(jsonFlags)
+			return jsonMain(jsonFlags, c.App.Writer)
 		},
 	}
 
 	return json
 }
 
-func jsonMain(flags jsonFlags) error {
+func jsonMain(flags jsonFlags, out io.Writer) error {
 
 	fmt.Println(flags)
 
@@ -53,7 +54,7 @@ func jsonMain(flags jsonFlags) error {
 	}
 
 	jsonBytes, _ := options.Marshal(scipIndex)
-	fmt.Println(string(jsonBytes))
+	out.Write(jsonBytes)
 
 	return nil
 }
