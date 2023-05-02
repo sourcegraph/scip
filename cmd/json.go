@@ -41,9 +41,6 @@ func jsonCommand() cli.Command {
 }
 
 func jsonMain(flags jsonFlags, out io.Writer) error {
-
-	fmt.Println(flags)
-
 	scipIndex, err := readFromOption(flags.from)
 	if err != nil {
 		return err
