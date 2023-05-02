@@ -16,4 +16,4 @@ jobs:
       - uses: ./.github/actions/asdf
         with:
           golang: true
-      - run: go test ./...
+      - run: go test ./... -v
