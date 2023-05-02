@@ -8,7 +8,7 @@ USAGE:
    scip [global options] command [command options] [arguments...]
 
 VERSION:
-   v0.2.1-git
+   v0.2.3
 
 DESCRIPTION:
    For more details, see the project README at:
@@ -25,7 +25,7 @@ COMMANDS:
 
 GLOBAL OPTIONS:
    --help, -h     show help (default: false)
-   --version, -v  print the version (default: false)
+   --version, -v  print the version (default: false)`
 ```
 
 ## `scip convert`
