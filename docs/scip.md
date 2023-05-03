@@ -117,6 +117,7 @@ across occurrences into a single occurrence to reduce payload sizes.
 | repeated **override_documentation** | string     | (optional) CommonMark-formatted documentation for this specific range. If empty, the `Symbol.documentation` field is used instead. One example where this field might be useful is when the symbol represents a generic function (with abstract type parameters such as `List<T>`) and at this occurrence we know the exact values (such as `List<String>`). |
 | **syntax_kind**                     | SyntaxKind | (optional) What syntax highlighting class should be used for this range?                                                                                                                                                                                                                                                                                     |
 | repeated **diagnostics**            | Diagnostic | (optional) Diagnostics that have been reported for this specific range.                                                                                                                                                                                                                                                                                      |
+| repeated **enclosing_range**        | int32      | (optional) Using the same encoding as the sibling `range` field, source position of the nearest non-trivial enclosing AST node. This range must enclose the `range` field. Example applications that make use of the enclosing_range field:                                                                                                                  |
 
 Additional notes on **range**:
 
@@ -149,6 +150,51 @@ occurrence we know the exact values (such as `List<String>`).
 
 This field can also be used for dynamically or gradually typed languages,
 which commonly allow for type-changing assignment.
+
+Additional notes on **enclosing_range**:
+
+(optional) Using the same encoding as the sibling `range` field, source
+position of the nearest non-trivial enclosing AST node. This range must
+enclose the `range` field. Example applications that make use of the
+enclosing_range field:
+
+- Call hierarchies: to determine what symbols are references from the body
+  of a function
+- Symbol outline: to display breadcrumbs from the cursor position to the
+  root of the file
+- Expand selection: to select the nearest enclosing AST node.
+- Highlight range: to indicate the AST expression that is associated with a
+  hover popover
+
+For definition occurrences, the enclosing range should indicate the
+start/end bounds of the entire definition AST node, including
+documentation.
+
+```
+const n = 3
+      ^ range
+^^^^^^^^^^^ enclosing_range
+
+/** Parses the string into something */
+^ enclosing_range start --------------------------------------|
+function parse(input string): string {                        |
+         ^^^^^ range                                          |
+    return input.slice(n)                                     |
+}                                                             |
+^ enclosing_range end <---------------------------------------|
+```
+
+For reference occurrences, the enclosing range should indicate the start/end
+bounds of the parent expression.
+
+```
+const a = a.b
+            ^ range
+          ^^^ enclosing_range
+const b = a.b(41).f(42).g(43)
+                  ^ range
+          ^^^^^^^^^^^^^ enclosing_range
+```
 
 ### Package
 
