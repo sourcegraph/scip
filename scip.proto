@@ -387,27 +387,6 @@ message Occurrence {
   // work with in some programming languages but we hope the performance
   // improvements make up for it.
   repeated int32 range = 1;
-  // (optional) The source position of the nearest non-trivial enclosing AST node.
-  // If supplied, the value must mirror the constraints detailed in the `range` field.
-  // For occurrences referencing the identifier within a class or function declaration, 
-  // the  obvious interpretation of this field is to encode the bounds of the entire
-  // declaration, e.g. in the following the enclosing range captures the `func` keyword
-  // to the function declaration's closing brace.
-  // ```
-  // const n = 3
-  //
-  // func Parse(input string) string {
-  //     return input[n:]             
-  // }                                
-  // ```
-  // This field can also be used, for further example, to indicate the relevant parent 
-  // expression a variable referencing an invokable, e.g.:
-  // ```
-  // let x = a.b().f().g()
-  //               ^ range
-  //         ^^^^^^^ enclosing_range
-  // ```
-  repeated int32 enclosing_range = 7;
   // (optional) The symbol that appears at this position. See
   // `SymbolInformation.symbol` for how to format symbols as strings.
   string symbol = 2;
@@ -427,6 +406,46 @@ message Occurrence {
   SyntaxKind syntax_kind = 5;
   // (optional) Diagnostics that have been reported for this specific range.
   repeated Diagnostic diagnostics = 6;
+  // (optional) Using the same encoding as the sibling `range` field, source
+  // position of the nearest non-trivial enclosing AST node. This range must
+  // enclose the `range` field. Example applications that make use of the
+  // enclosing_range field:
+  //
+  // - Call hierarchies: to determine what symbols are references from the body
+  //   of a function
+  // - Symbol outline: to display breadcrumbs from the cursor position to the
+  //   root of the file
+  // - Expand selection: to select the nearest enclosing AST node.
+  // - Highlight range: to indicate the AST expression that is associated with a
+  //   hover popover
+  //
+  // For definition occurrences, the enclosing range should indicate the
+  // start/end bounds of the entire definition AST node, including
+  // documentation.
+  // ```
+  // const n = 3
+  //       ^ range
+  // ^^^^^^^^^^^ enclosing_range
+  //
+  // /** Parses the string into something */
+  // ^ enclosing_range start --------------------------------------|
+  // function parse(input string): string {                        |
+  //          ^^^^^ range                                          |
+  //     return input.slice(n)                                     |
+  // }                                                             |
+  // ^ enclosing_range end <---------------------------------------|
+  // ```
+  // For reference occurrences, the enclosing range should indicate the start/end
+  // bounds of the parent expression.
+  // ```
+  // const a = a.b
+  //             ^ range
+  //           ^^^ enclosing_range
+  // const b = a.b(41).f(42).g(43)
+  //                   ^ range
+  //           ^^^^^^^^^^^^^ enclosing_range
+  // ```
+  repeated int32 enclosing_range = 7;
 }
 
 // Represents a diagnostic, such as a compiler error or warning, which should be
