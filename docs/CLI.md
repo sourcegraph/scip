@@ -31,12 +31,12 @@ COMMANDS:
    print     Print a SCIP index in a human-readable format for debugging
    snapshot  Generate snapshot files for golden testing
    stats     Output useful statistics about a SCIP index
-   json      Print SCIP index as JSON
    help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h     show help (default: false)
    --version, -v  print the version (default: false)
+
 ```
 
 ## `scip convert`
