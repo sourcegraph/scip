@@ -14,7 +14,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func TestJSONCommand(t *testing.T) {
+func TestJSONPrinting(t *testing.T) {
 	app := scipApp()
 	// Redirect CLI writer to a buffer
 	var buff bytes.Buffer
@@ -40,7 +40,7 @@ func TestJSONCommand(t *testing.T) {
 	}
 
 	// Run the JSON command with the temporary file
-	runErr := app.Run([]string{"scip", "json", "--from", file.Name()})
+	runErr := app.Run([]string{"scip", "print", "--json", file.Name()})
 	if runErr != nil {
 		log.Fatal(runErr)
 	}

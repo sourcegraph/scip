@@ -8,7 +8,6 @@
   - [`scip print`](#scip-print)
   - [`scip snapshot`](#scip-snapshot)
   - [`scip stats`](#scip-stats)
-  - [`scip json`](#scip-json)
   <!--toc:end-->
 
 ```
@@ -90,6 +89,7 @@ DESCRIPTION:
 
 OPTIONS:
    --help, -h  show help (default: false)
+   --json      Output in JSON format (default: false)
 ```
 
 ## `scip snapshot`
@@ -127,19 +127,4 @@ USAGE:
 
 OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
-```
-
-## `scip json`
-
-```
-NAME:
-   scip json - Print SCIP index as JSON
-
-USAGE:
-   scip json [command options] [arguments...]
-
-OPTIONS:
-   --from value  Path to SCIP index file (default: "index.scip")
-   --help, -h    show help (default: false)
-   --pretty, -p  Pretty print (multiline, with indentation) (default: false)
 ```
