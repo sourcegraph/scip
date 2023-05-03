@@ -179,7 +179,7 @@ message SymbolInformation {
   string symbol = 1;
   // (optional, but strongly recommended) The markdown-formatted documentation
   // for this symbol. This field is repeated to allow different kinds of
-  // documentation.  For example, it's nice to include both the signature of a
+  // documentation. For example, it's nice to include both the signature of a
   // method (parameters and return type) along with the accompanying docstring.
   repeated string documentation = 3;
   // (optional) Relationships to other symbols (e.g., implements, type definition).
@@ -219,7 +219,7 @@ message Relationship {
   // In the TypeScript example above, observe that `Dog#` has an
   // `is_implementation` relationship with `"Animal#"` but not `is_reference`.
   // This is because "Find references" on the "Animal#" symbol should not return
-  // "Dog#".  We only want "Dog#" to return as a result for "Find
+  // "Dog#". We only want "Dog#" to return as a result for "Find
   // implementations" on the "Animal#" symbol.
   bool is_implementation = 3;
   // Similar to `references_symbols` but for "Go to type definition".
@@ -244,7 +244,7 @@ message Relationship {
   // Update registerInverseRelationships on adding a new field here.
 }
 
-// SymbolRole declares what "role" a symbol has in an occurrence.  A role is
+// SymbolRole declares what "role" a symbol has in an occurrence. A role is
 // encoded as a bitset where each bit represents a different role. For example,
 // to determine if the `Import` role is set, test whether the second bit of the
 // enum value is defined. In pseudocode, this can be implemented with the
@@ -383,7 +383,7 @@ message Occurrence {
   // type with `start` and `end` fields of type `Position`, mirroring LSP.
   // Benchmarks revealed that this encoding was inefficient and that we could
   // reduce the total payload size of an index by 50% by using `repeated int32`
-  // instead.  The `repeated int32` encoding is admittedly more embarrassing to
+  // instead. The `repeated int32` encoding is admittedly more embarrassing to
   // work with in some programming languages but we hope the performance
   // improvements make up for it.
   repeated int32 range = 1;
@@ -406,6 +406,46 @@ message Occurrence {
   SyntaxKind syntax_kind = 5;
   // (optional) Diagnostics that have been reported for this specific range.
   repeated Diagnostic diagnostics = 6;
+  // (optional) Using the same encoding as the sibling `range` field, source
+  // position of the nearest non-trivial enclosing AST node. This range must
+  // enclose the `range` field. Example applications that make use of the
+  // enclosing_range field:
+  //
+  // - Call hierarchies: to determine what symbols are references from the body
+  //   of a function
+  // - Symbol outline: to display breadcrumbs from the cursor position to the
+  //   root of the file
+  // - Expand selection: to select the nearest enclosing AST node.
+  // - Highlight range: to indicate the AST expression that is associated with a
+  //   hover popover
+  //
+  // For definition occurrences, the enclosing range should indicate the
+  // start/end bounds of the entire definition AST node, including
+  // documentation.
+  // ```
+  // const n = 3
+  //       ^ range
+  // ^^^^^^^^^^^ enclosing_range
+  //
+  // /** Parses the string into something */
+  // ^ enclosing_range start --------------------------------------|
+  // function parse(input string): string {                        |
+  //          ^^^^^ range                                          |
+  //     return input.slice(n)                                     |
+  // }                                                             |
+  // ^ enclosing_range end <---------------------------------------|
+  // ```
+  // For reference occurrences, the enclosing range should indicate the start/end
+  // bounds of the parent expression.
+  // ```
+  // const a = a.b
+  //             ^ range
+  //           ^^^ enclosing_range
+  // const b = a.b(41).f(42).g(43)
+  //                   ^ range
+  //           ^^^^^^^^^^^^^ enclosing_range
+  // ```
+  repeated int32 enclosing_range = 7;
 }
 
 // Represents a diagnostic, such as a compiler error or warning, which should be
