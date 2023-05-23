@@ -296,6 +296,91 @@ docstring or what package it's defined it.
 | **symbol**                 | string       | Identifier of this symbol, which can be referenced from `Occurence.symbol`. The string must be formatted according to the grammar in `Symbol`.                                                                                                                                                    |
 | repeated **documentation** | string       | (optional, but strongly recommended) The markdown-formatted documentation for this symbol. This field is repeated to allow different kinds of documentation. For example, it's nice to include both the signature of a method (parameters and return type) along with the accompanying docstring. |
 | repeated **relationships** | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).                                                                                                                                                                                                                    |
+| **kind**                   | Kind         | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.                                                                                                                                                 |
+
+#### Kind
+
+Kind represents the fine-grained category of a symbol, suitable for presenting
+information about the symbol's meaning in the language.
+
+For example:
+
+- A Java method would have the kind `Method` while a Go function would
+  have the kind `Function`, even if the symbols for these use the same
+  syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
+- A Go struct has the symbol kind `Struct` while a Java class has
+  the symbol kind `Class` even if they both have the same descriptor:
+  `SymbolDescriptor.Suffix.Type`.
+
+Since Kind is more fine-grained than Suffix:
+
+- If two symbols have the same Kind, they should share the same Suffix.
+- If two symbols have different Suffixes, they should have different Kinds.
+
+| Number | Name            | Description                                                                                                                      |
+| ------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | UnspecifiedKind |
+| 1      | Array           |
+| 2      | Assertion       | For Alloy                                                                                                                        |
+| 3      | AssociatedType  |
+| 4      | Attribute       | For C++                                                                                                                          |
+| 5      | Axiom           | For Lean                                                                                                                         |
+| 6      | Boolean         |
+| 7      | Class           |
+| 8      | Constant        |
+| 9      | Constructor     |
+| 10     | DataFamily      | For Haskell                                                                                                                      |
+| 11     | Enum            |
+| 12     | EnumMember      |
+| 13     | Event           |
+| 14     | Fact            | For Alloy                                                                                                                        |
+| 15     | Field           |
+| 16     | File            |
+| 17     | Function        |
+| 18     | Getter          | For 'get' in Swift                                                                                                               |
+| 19     | Grammar         | For Raku                                                                                                                         |
+| 20     | Instance        | For Purescript and Lean                                                                                                          |
+| 21     | Interface       |
+| 22     | Key             |
+| 23     | Lang            | For Racket                                                                                                                       |
+| 24     | Lemma           | For Lean                                                                                                                         |
+| 25     | Macro           |
+| 26     | Method          |
+| 27     | MethodReceiver  | Analogous to 'ThisParameter' and 'SelfParameter', but for languages like Go where the receiver doesn't have a conventional name. |
+| 28     | Message         | For Protobuf                                                                                                                     |
+| 29     | Module          |
+| 30     | Namespace       |
+| 31     | Null            |
+| 32     | Number          |
+| 33     | Object          |
+| 34     | Operator        |
+| 35     | Package         |
+| 36     | PackageObject   |
+| 37     | Parameter       |
+| 38     | ParameterLabel  |
+| 39     | Pattern         | For Haskell's PatternSynonyms                                                                                                    |
+| 40     | Predicate       | For Alloy                                                                                                                        |
+| 41     | Property        |
+| 42     | Protocol        | Analogous to 'Trait' and 'TypeClass', for Swift and Objective-C                                                                  |
+| 43     | Quasiquoter     | For Haskell                                                                                                                      |
+| 44     | SelfParameter   | 'self' in Python, Rust, Swift etc.                                                                                               |
+| 45     | Setter          | For 'set' in Swift                                                                                                               |
+| 46     | Signature       | For Alloy, analogous to 'Struct'.                                                                                                |
+| 47     | Subscript       | For Swift                                                                                                                        |
+| 48     | String          |
+| 49     | Struct          |
+| 50     | Tactic          | For Lean                                                                                                                         |
+| 51     | Theorem         | For Lean                                                                                                                         |
+| 52     | ThisParameter   | Method receiver for languages 'this' in JavaScript, C++, Java etc.                                                               |
+| 53     | Trait           | Analogous to 'Protocol' and 'TypeClass', for Rust.                                                                               |
+| 54     | Type            | Data type definition for languages like OCaml which use `type` rather than separate keywords like `struct` and `enum`.           |
+| 55     | TypeAlias       |
+| 56     | TypeClass       | Analogous to 'Trait' and 'Protocol', for Haskell, Purescript etc.                                                                |
+| 57     | TypeFamily      | For Haskell                                                                                                                      |
+| 58     | TypeParameter   |
+| 59     | Union           | For C, C++, Capn Proto                                                                                                           |
+| 60     | Value           |
+| 61     | Variable        | Next = 62; Feel free to open a PR proposing new language-specific kinds.                                                         |
 
 ### ToolInfo
 

@@ -68,6 +68,12 @@ documents ::
    Data.ProtoLens.Field.HasField s "documents" a) =>
   Lens.Family2.LensLike' f s a
 documents = Data.ProtoLens.Field.field @"documents"
+enclosingRange ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "enclosingRange" a) =>
+  Lens.Family2.LensLike' f s a
+enclosingRange = Data.ProtoLens.Field.field @"enclosingRange"
 externalSymbols ::
   forall f s a.
   (Prelude.Functor f,
@@ -98,6 +104,11 @@ isTypeDefinition ::
    Data.ProtoLens.Field.HasField s "isTypeDefinition" a) =>
   Lens.Family2.LensLike' f s a
 isTypeDefinition = Data.ProtoLens.Field.field @"isTypeDefinition"
+kind ::
+  forall f s a.
+  (Prelude.Functor f, Data.ProtoLens.Field.HasField s "kind" a) =>
+  Lens.Family2.LensLike' f s a
+kind = Data.ProtoLens.Field.field @"kind"
 language ::
   forall f s a.
   (Prelude.Functor f,
@@ -275,6 +286,13 @@ vec'documents ::
    Data.ProtoLens.Field.HasField s "vec'documents" a) =>
   Lens.Family2.LensLike' f s a
 vec'documents = Data.ProtoLens.Field.field @"vec'documents"
+vec'enclosingRange ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "vec'enclosingRange" a) =>
+  Lens.Family2.LensLike' f s a
+vec'enclosingRange
+  = Data.ProtoLens.Field.field @"vec'enclosingRange"
 vec'externalSymbols ::
   forall f s a.
   (Prelude.Functor f,
