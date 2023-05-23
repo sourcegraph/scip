@@ -205,40 +205,98 @@ message SymbolInformation {
   enum Kind {
       UnspecifiedKind = 0;
       Array = 1;
-      Boolean = 2;
-      Class = 3;
-      Constant = 4;
-      Constructor = 5;
-      Enum = 6;
-      Enumerator = 7;
-      EnumMember = 8;
-      Event = 9;
-      Field = 10;
-      File = 11;
-      Function = 12;
-      Interface = 13;
-      Key = 14;
-      Macro = 15;
-      Method = 16;
-      Module = 17;
-      Namespace = 18;
-      Null = 19;
-      Number = 20;
-      Object = 21;
-      Operator = 22;
-      Package = 23;
-      PackageObject = 24;
-      Parameter = 25;
-      Property = 26;
-      SelfParameter = 27;
-      String = 28;
-      Struct = 29;
-      Trait = 30;
-      Type = 31;
-      TypeParameter = 32;
-      Union = 33;
-      Value = 34;
-      Variable = 35;
+      // For Alloy
+      Assertion = 2;
+      AssociatedType = 3;
+      // For C++
+      Attribute = 4;
+      // For Lean
+      Axiom = 5;
+      Boolean = 6;
+      Class = 7;
+      Constant = 8;
+      Constructor = 9;
+      // For Haskell
+      DataFamily = 10;
+      Enum = 11;
+      EnumMember = 12;
+      Event = 13;
+      // For Alloy
+      Fact = 14;
+      Field = 15;
+      File = 16;
+      Function = 17;
+      // For 'get' in Swift
+      Getter = 18;
+      // For Raku
+      Grammar = 19;
+      // For Purescript and Lean
+      Instance = 20;
+      Interface = 21;
+      Key = 22;
+      // For Racket
+      Lang = 23;
+      // For Lean
+      Lemma = 24;
+      Macro = 25;
+      Method = 26;
+      // Analogous to 'ThisParameter' and 'SelfParameter', but for languages
+      // like Go where the receiver doesn't have a conventional name.
+      MethodReceiver = 27;
+      // For Protobuf
+      Message = 28;
+      Module = 29;
+      Namespace = 30;
+      Null = 31;
+      Number = 32;
+      Object = 33;
+      Operator = 34;
+      Package = 35;
+      PackageObject = 36;
+      Parameter = 37;
+      ParameterLabel = 38;
+      // For Haskell's PatternSynonyms
+      Pattern = 39;
+      // For Alloy
+      Predicate = 40;
+      Property = 41;
+      // Analogous to 'Trait' and 'TypeClass', for Swift and Objective-C
+      Protocol = 42;
+      // For Haskell
+      Quasiquoter = 43;
+      // 'self' in Python, Rust, Swift etc.
+      SelfParameter = 44;
+      // For 'set' in Swift
+      Setter = 45;
+      // For Alloy, analogous to 'Struct'.
+      Signature = 46;
+      // For Swift
+      Subscript = 47;
+      String = 48;
+      Struct = 49;
+      // For Lean
+      Tactic = 50;
+      // For Lean
+      Theorem = 51;
+      // Method receiver for languages
+      // 'this' in JavaScript, C++, Java etc.
+      ThisParameter = 52;
+      // Analogous to 'Protocol' and 'TypeClass', for Rust.
+      Trait = 53;
+      // Data type definition for languages like OCaml which use `type`
+      // rather than separate keywords like `struct` and `enum`.
+      Type = 54;
+      TypeAlias = 55;
+      // Analogous to 'Trait' and 'Protocol', for Haskell, Purescript etc.
+      TypeClass = 56;
+      // For Haskell
+      TypeFamily = 57;
+      TypeParameter = 58;
+      // For C, C++, Capn Proto
+      Union = 59;
+      Value = 60;
+      Variable = 61;
+      // Next = 62;
       // Feel free to open a PR proposing new language-specific kinds.
   }
 }
