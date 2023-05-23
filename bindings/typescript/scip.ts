@@ -1041,6 +1041,7 @@ export namespace scip {
             symbol?: string;
             documentation?: string[];
             relationships?: Relationship[];
+            kind?: SymbolInformation.Kind;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4], this.#one_of_decls);
@@ -1053,6 +1054,9 @@ export namespace scip {
                 }
                 if ("relationships" in data && data.relationships != undefined) {
                     this.relationships = data.relationships;
+                }
+                if ("kind" in data && data.kind != undefined) {
+                    this.kind = data.kind;
                 }
             }
         }
@@ -1074,10 +1078,17 @@ export namespace scip {
         set relationships(value: Relationship[]) {
             pb_1.Message.setRepeatedWrapperField(this, 4, value);
         }
+        get kind() {
+            return pb_1.Message.getFieldWithDefault(this, 5, SymbolInformation.Kind.UnspecifiedKind) as SymbolInformation.Kind;
+        }
+        set kind(value: SymbolInformation.Kind) {
+            pb_1.Message.setField(this, 5, value);
+        }
         static fromObject(data: {
             symbol?: string;
             documentation?: string[];
             relationships?: ReturnType<typeof Relationship.prototype.toObject>[];
+            kind?: SymbolInformation.Kind;
         }): SymbolInformation {
             const message = new SymbolInformation({});
             if (data.symbol != null) {
@@ -1089,6 +1100,9 @@ export namespace scip {
             if (data.relationships != null) {
                 message.relationships = data.relationships.map(item => Relationship.fromObject(item));
             }
+            if (data.kind != null) {
+                message.kind = data.kind;
+            }
             return message;
         }
         toObject() {
@@ -1096,6 +1110,7 @@ export namespace scip {
                 symbol?: string;
                 documentation?: string[];
                 relationships?: ReturnType<typeof Relationship.prototype.toObject>[];
+                kind?: SymbolInformation.Kind;
             } = {};
             if (this.symbol != null) {
                 data.symbol = this.symbol;
@@ -1105,6 +1120,9 @@ export namespace scip {
             }
             if (this.relationships != null) {
                 data.relationships = this.relationships.map((item: Relationship) => item.toObject());
+            }
+            if (this.kind != null) {
+                data.kind = this.kind;
             }
             return data;
         }
@@ -1118,6 +1136,8 @@ export namespace scip {
                 writer.writeRepeatedString(3, this.documentation);
             if (this.relationships.length)
                 writer.writeRepeatedMessage(4, this.relationships, (item: Relationship) => item.serialize(writer));
+            if (this.kind != SymbolInformation.Kind.UnspecifiedKind)
+                writer.writeEnum(5, this.kind);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1136,6 +1156,9 @@ export namespace scip {
                     case 4:
                         reader.readMessage(message.relationships, () => pb_1.Message.addToRepeatedWrapperField(message, 4, Relationship.deserialize(reader), Relationship));
                         break;
+                    case 5:
+                        message.kind = reader.readEnum();
+                        break;
                     default: reader.skipField();
                 }
             }
@@ -1146,6 +1169,46 @@ export namespace scip {
         }
         static deserializeBinary(bytes: Uint8Array): SymbolInformation {
             return SymbolInformation.deserialize(bytes);
+        }
+    }
+    export namespace SymbolInformation {
+        export enum Kind {
+            UnspecifiedKind = 0,
+            Array = 1,
+            Boolean = 2,
+            Class = 3,
+            Constant = 4,
+            Constructor = 5,
+            Enum = 6,
+            Enumerator = 7,
+            EnumMember = 8,
+            Event = 9,
+            Field = 10,
+            File = 11,
+            Function = 12,
+            Interface = 13,
+            Key = 14,
+            Macro = 15,
+            Method = 16,
+            Module = 17,
+            Namespace = 18,
+            Null = 19,
+            Number = 20,
+            Object = 21,
+            Operator = 22,
+            Package = 23,
+            PackageObject = 24,
+            Parameter = 25,
+            Property = 26,
+            SelfParameter = 27,
+            String = 28,
+            Struct = 29,
+            Trait = 30,
+            Type = 31,
+            TypeParameter = 32,
+            Union = 33,
+            Value = 34,
+            Variable = 35
         }
     }
     export class Relationship extends pb_1.Message {

@@ -184,7 +184,58 @@ message SymbolInformation {
   repeated string documentation = 3;
   // (optional) Relationships to other symbols (e.g., implements, type definition).
   repeated Relationship relationships = 4;
+  // The kind of this symbol. Use this field instead of
+  // `SymbolDescriptor.Suffix` to determine whether something is, for example, a
+  // class or a method.
+  Kind kind = 5;
+  // Kind determines the type of a symbol using idiomatic names from the
+  // language's type system. For example, a Java method would have the kind
+  // `Method` while a Go function would have the kind `Function`, even if the
+  // symbols for these use the same syntax for the descriptor:
+  // `SymbolDescriptor.Suffix.Method`. Likewise, a Go struct has the symbol kind
+  // `Struct` while a Java class has the symbol kind `Class` even if they both have
+  // the same descriptor: `SymbolDescriptor.Suffix.Type`.
+  enum Kind {
+      UnspecifiedKind = 0;
+      Array = 1;
+      Boolean = 2;
+      Class = 3;
+      Constant = 4;
+      Constructor = 5;
+      Enum = 6;
+      Enumerator = 7;
+      EnumMember = 8;
+      Event = 9;
+      Field = 10;
+      File = 11;
+      Function = 12;
+      Interface = 13;
+      Key = 14;
+      Macro = 15;
+      Method = 16;
+      Module = 17;
+      Namespace = 18;
+      Null = 19;
+      Number = 20;
+      Object = 21;
+      Operator = 22;
+      Package = 23;
+      PackageObject = 24;
+      Parameter = 25;
+      Property = 26;
+      SelfParameter = 27;
+      String = 28;
+      Struct = 29;
+      Trait = 30;
+      Type = 31;
+      TypeParameter = 32;
+      Union = 33;
+      Value = 34;
+      Variable = 35;
+      // Feel free to open a PR proposing new language-specific kinds.
+  }
 }
+
 
 message Relationship {
   string symbol = 1;

@@ -296,6 +296,56 @@ docstring or what package it's defined it.
 | **symbol**                 | string       | Identifier of this symbol, which can be referenced from `Occurence.symbol`. The string must be formatted according to the grammar in `Symbol`.                                                                                                                                                    |
 | repeated **documentation** | string       | (optional, but strongly recommended) The markdown-formatted documentation for this symbol. This field is repeated to allow different kinds of documentation. For example, it's nice to include both the signature of a method (parameters and return type) along with the accompanying docstring. |
 | repeated **relationships** | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).                                                                                                                                                                                                                    |
+| **kind**                   | Kind         | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.                                                                                                                                                 |
+
+#### Kind
+
+Kind determines the type of a symbol using idiomatic names from the
+language's type system. For example, a Java method would have the kind
+`Method` while a Go function would have the kind `Function`, even if the
+symbols for these use the same syntax for the descriptor:
+`SymbolDescriptor.Suffix.Method`. Likewise, a Go struct has the symbol kind
+`Struct` while a Java class has the symbol kind `Class` even if they both have
+the same descriptor: `SymbolDescriptor.Suffix.Type`.
+
+| Number | Name            | Description                                                   |
+| ------ | --------------- | ------------------------------------------------------------- |
+| 0      | UnspecifiedKind |
+| 1      | Array           |
+| 2      | Boolean         |
+| 3      | Class           |
+| 4      | Constant        |
+| 5      | Constructor     |
+| 6      | Enum            |
+| 7      | Enumerator      |
+| 8      | EnumMember      |
+| 9      | Event           |
+| 10     | Field           |
+| 11     | File            |
+| 12     | Function        |
+| 13     | Interface       |
+| 14     | Key             |
+| 15     | Macro           |
+| 16     | Method          |
+| 17     | Module          |
+| 18     | Namespace       |
+| 19     | Null            |
+| 20     | Number          |
+| 21     | Object          |
+| 22     | Operator        |
+| 23     | Package         |
+| 24     | PackageObject   |
+| 25     | Parameter       |
+| 26     | Property        |
+| 27     | SelfParameter   |
+| 28     | String          |
+| 29     | Struct          |
+| 30     | Trait           |
+| 31     | Type            |
+| 32     | TypeParameter   |
+| 33     | Union           |
+| 34     | Value           |
+| 35     | Variable        | Feel free to open a PR proposing new language-specific kinds. |
 
 ### ToolInfo
 
