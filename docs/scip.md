@@ -297,12 +297,14 @@ docstring or what package it's defined it.
 | repeated **documentation** | string       | (optional, but strongly recommended) The markdown-formatted documentation for this symbol. This field is repeated to allow different kinds of documentation. For example, it's nice to include both the signature of a method (parameters and return type) along with the accompanying docstring. |
 | repeated **relationships** | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).                                                                                                                                                                                                                    |
 | **kind**                   | Kind         | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.                                                                                                                                                 |
-| **display_name**           | string       | (optional) The name of this symbol as it should be displayed to the user. The `symbol` field is not a reliable source of the display name for several reasons:                                                                                                                                    |
+| **display_name**           | string       | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:                               |
 
 Additional notes on **display_name**:
 
-(optional) The name of this symbol as it should be displayed to the user. The `symbol` field
-is not a reliable source of the display name for several reasons:
+(optional) The name of this symbol as it should be displayed to the user.
+For example, the symbol "com/example/MyClass#myMethod(+1)." should have the
+display name "myMethod". The `symbol` field is not a reliable source of
+the display name for several reasons:
 
 - Local symbols don't encode the name.
 - Some languages have case-insensitive names, so the symbol is all-lowercase.

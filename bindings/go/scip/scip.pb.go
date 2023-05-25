@@ -1739,8 +1739,10 @@ type SymbolInformation struct {
 	// `SymbolDescriptor.Suffix` to determine whether something is, for example, a
 	// class or a method.
 	Kind SymbolInformation_Kind `protobuf:"varint,5,opt,name=kind,proto3,enum=scip.SymbolInformation_Kind" json:"kind,omitempty"`
-	// (optional) The name of this symbol as it should be displayed to the user. The `symbol` field
-	// is not a reliable source of the display name for several reasons:
+	// (optional) The name of this symbol as it should be displayed to the user.
+	// For example, the symbol "com/example/MyClass#myMethod(+1)." should have the
+	// display name "myMethod". The `symbol` field is not a reliable source of
+	// the display name for several reasons:
 	//
 	// - Local symbols don't encode the name.
 	// - Some languages have case-insensitive names, so the symbol is all-lowercase.
