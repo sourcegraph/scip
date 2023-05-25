@@ -1042,6 +1042,7 @@ export namespace scip {
             documentation?: string[];
             relationships?: Relationship[];
             kind?: SymbolInformation.Kind;
+            display_name?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4], this.#one_of_decls);
@@ -1057,6 +1058,9 @@ export namespace scip {
                 }
                 if ("kind" in data && data.kind != undefined) {
                     this.kind = data.kind;
+                }
+                if ("display_name" in data && data.display_name != undefined) {
+                    this.display_name = data.display_name;
                 }
             }
         }
@@ -1084,11 +1088,18 @@ export namespace scip {
         set kind(value: SymbolInformation.Kind) {
             pb_1.Message.setField(this, 5, value);
         }
+        get display_name() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set display_name(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
         static fromObject(data: {
             symbol?: string;
             documentation?: string[];
             relationships?: ReturnType<typeof Relationship.prototype.toObject>[];
             kind?: SymbolInformation.Kind;
+            display_name?: string;
         }): SymbolInformation {
             const message = new SymbolInformation({});
             if (data.symbol != null) {
@@ -1103,6 +1114,9 @@ export namespace scip {
             if (data.kind != null) {
                 message.kind = data.kind;
             }
+            if (data.display_name != null) {
+                message.display_name = data.display_name;
+            }
             return message;
         }
         toObject() {
@@ -1111,6 +1125,7 @@ export namespace scip {
                 documentation?: string[];
                 relationships?: ReturnType<typeof Relationship.prototype.toObject>[];
                 kind?: SymbolInformation.Kind;
+                display_name?: string;
             } = {};
             if (this.symbol != null) {
                 data.symbol = this.symbol;
@@ -1123,6 +1138,9 @@ export namespace scip {
             }
             if (this.kind != null) {
                 data.kind = this.kind;
+            }
+            if (this.display_name != null) {
+                data.display_name = this.display_name;
             }
             return data;
         }
@@ -1138,6 +1156,8 @@ export namespace scip {
                 writer.writeRepeatedMessage(4, this.relationships, (item: Relationship) => item.serialize(writer));
             if (this.kind != SymbolInformation.Kind.UnspecifiedKind)
                 writer.writeEnum(5, this.kind);
+            if (this.display_name.length)
+                writer.writeString(6, this.display_name);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1158,6 +1178,9 @@ export namespace scip {
                         break;
                     case 5:
                         message.kind = reader.readEnum();
+                        break;
+                    case 6:
+                        message.display_name = reader.readString();
                         break;
                     default: reader.skipField();
                 }

@@ -188,7 +188,7 @@ message SymbolInformation {
   // `SymbolDescriptor.Suffix` to determine whether something is, for example, a
   // class or a method.
   Kind kind = 5;
-  // Kind represents the fine-grained category of a symbol, suitable for presenting
+  // (optional) Kind represents the fine-grained category of a symbol, suitable for presenting
   // information about the symbol's meaning in the language.
   //
   // For example:
@@ -299,6 +299,16 @@ message SymbolInformation {
       // Next = 62;
       // Feel free to open a PR proposing new language-specific kinds.
   }
+  // (optional) The name of this symbol as it should be displayed to the user.
+  // For example, the symbol "com/example/MyClass#myMethod(+1)." should have the
+  // display name "myMethod". The `symbol` field is not a reliable source of
+  // the display name for several reasons:
+  //
+  // - Local symbols don't encode the name.
+  // - Some languages have case-insensitive names, so the symbol is all-lowercase.
+  // - The symbol may encode names with special characters that should not be
+  //   displayed to the user.
+  string display_name = 6;
 }
 
 
