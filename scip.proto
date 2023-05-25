@@ -91,6 +91,15 @@ message Document {
   // but have a reference and are defined by some other symbol (see
   // Relationship.is_definition).
   repeated SymbolInformation symbols = 3;
+
+  // (optional) Text contents of the this document. Indexers are not expected to
+  // include the text by default. It's preferrable that clients read the text
+  // contents from the file system by resolving the absolute path from joining
+  // `Index.metadata.project_root` and `Document.relative_path`. This field was
+  // introduced to support `SymbolInformation.signature_documentation`, but it
+  // can be used for other purposes as well, for example testing or when working
+  // with virtual/in-memory documents.
+  string text = 5;
 }
 
 
@@ -178,9 +187,11 @@ message SymbolInformation {
   // The string must be formatted according to the grammar in `Symbol`.
   string symbol = 1;
   // (optional, but strongly recommended) The markdown-formatted documentation
-  // for this symbol. This field is repeated to allow different kinds of
-  // documentation. For example, it's nice to include both the signature of a
-  // method (parameters and return type) along with the accompanying docstring.
+  // for this symbol. Use `SymbolInformation.signature_documentation` to
+  // document the method/class/type signature of this symbol.
+  // Due to historical reasons, indexers may include signature documentation in
+  // this field by rendering markdown code blocks. New indexers should only
+  // include non-code documentation in this field, for example docstrings.
   repeated string documentation = 3;
   // (optional) Relationships to other symbols (e.g., implements, type definition).
   repeated Relationship relationships = 4;
@@ -309,6 +320,13 @@ message SymbolInformation {
   // - The symbol may encode names with special characters that should not be
   //   displayed to the user.
   string display_name = 6;
+  // (optional) The signature of this symbol as it's displayed in API
+  // documentation or in hover tooltips. For example, a Java method that adds
+  // two numbers this would have `Document.language = "java"` and `Document.text
+  // = "void add(int a, int b)". The `language` and `text` fields are required
+  // while other fields such as `Documentation.occurrences` can be optionally
+  // included to support hyperlinking referenced symbols in the signature.
+  repeated Document signature_documentation = 7;
 }
 
 

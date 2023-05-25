@@ -548,6 +548,7 @@ export namespace scip {
             relative_path?: string;
             occurrences?: Occurrence[];
             symbols?: SymbolInformation[];
+            text?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3], this.#one_of_decls);
@@ -563,6 +564,9 @@ export namespace scip {
                 }
                 if ("symbols" in data && data.symbols != undefined) {
                     this.symbols = data.symbols;
+                }
+                if ("text" in data && data.text != undefined) {
+                    this.text = data.text;
                 }
             }
         }
@@ -590,11 +594,18 @@ export namespace scip {
         set symbols(value: SymbolInformation[]) {
             pb_1.Message.setRepeatedWrapperField(this, 3, value);
         }
+        get text() {
+            return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
+        }
+        set text(value: string) {
+            pb_1.Message.setField(this, 5, value);
+        }
         static fromObject(data: {
             language?: string;
             relative_path?: string;
             occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
             symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
+            text?: string;
         }): Document {
             const message = new Document({});
             if (data.language != null) {
@@ -609,6 +620,9 @@ export namespace scip {
             if (data.symbols != null) {
                 message.symbols = data.symbols.map(item => SymbolInformation.fromObject(item));
             }
+            if (data.text != null) {
+                message.text = data.text;
+            }
             return message;
         }
         toObject() {
@@ -617,6 +631,7 @@ export namespace scip {
                 relative_path?: string;
                 occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
                 symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
+                text?: string;
             } = {};
             if (this.language != null) {
                 data.language = this.language;
@@ -629,6 +644,9 @@ export namespace scip {
             }
             if (this.symbols != null) {
                 data.symbols = this.symbols.map((item: SymbolInformation) => item.toObject());
+            }
+            if (this.text != null) {
+                data.text = this.text;
             }
             return data;
         }
@@ -644,6 +662,8 @@ export namespace scip {
                 writer.writeRepeatedMessage(2, this.occurrences, (item: Occurrence) => item.serialize(writer));
             if (this.symbols.length)
                 writer.writeRepeatedMessage(3, this.symbols, (item: SymbolInformation) => item.serialize(writer));
+            if (this.text.length)
+                writer.writeString(5, this.text);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -664,6 +684,9 @@ export namespace scip {
                         break;
                     case 3:
                         reader.readMessage(message.symbols, () => pb_1.Message.addToRepeatedWrapperField(message, 3, SymbolInformation.deserialize(reader), SymbolInformation));
+                        break;
+                    case 5:
+                        message.text = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -1043,9 +1066,10 @@ export namespace scip {
             relationships?: Relationship[];
             kind?: SymbolInformation.Kind;
             display_name?: string;
+            signature_documentation?: Document[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4, 7], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("symbol" in data && data.symbol != undefined) {
                     this.symbol = data.symbol;
@@ -1061,6 +1085,9 @@ export namespace scip {
                 }
                 if ("display_name" in data && data.display_name != undefined) {
                     this.display_name = data.display_name;
+                }
+                if ("signature_documentation" in data && data.signature_documentation != undefined) {
+                    this.signature_documentation = data.signature_documentation;
                 }
             }
         }
@@ -1094,12 +1121,19 @@ export namespace scip {
         set display_name(value: string) {
             pb_1.Message.setField(this, 6, value);
         }
+        get signature_documentation() {
+            return pb_1.Message.getRepeatedWrapperField(this, Document, 7) as Document[];
+        }
+        set signature_documentation(value: Document[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 7, value);
+        }
         static fromObject(data: {
             symbol?: string;
             documentation?: string[];
             relationships?: ReturnType<typeof Relationship.prototype.toObject>[];
             kind?: SymbolInformation.Kind;
             display_name?: string;
+            signature_documentation?: ReturnType<typeof Document.prototype.toObject>[];
         }): SymbolInformation {
             const message = new SymbolInformation({});
             if (data.symbol != null) {
@@ -1117,6 +1151,9 @@ export namespace scip {
             if (data.display_name != null) {
                 message.display_name = data.display_name;
             }
+            if (data.signature_documentation != null) {
+                message.signature_documentation = data.signature_documentation.map(item => Document.fromObject(item));
+            }
             return message;
         }
         toObject() {
@@ -1126,6 +1163,7 @@ export namespace scip {
                 relationships?: ReturnType<typeof Relationship.prototype.toObject>[];
                 kind?: SymbolInformation.Kind;
                 display_name?: string;
+                signature_documentation?: ReturnType<typeof Document.prototype.toObject>[];
             } = {};
             if (this.symbol != null) {
                 data.symbol = this.symbol;
@@ -1141,6 +1179,9 @@ export namespace scip {
             }
             if (this.display_name != null) {
                 data.display_name = this.display_name;
+            }
+            if (this.signature_documentation != null) {
+                data.signature_documentation = this.signature_documentation.map((item: Document) => item.toObject());
             }
             return data;
         }
@@ -1158,6 +1199,8 @@ export namespace scip {
                 writer.writeEnum(5, this.kind);
             if (this.display_name.length)
                 writer.writeString(6, this.display_name);
+            if (this.signature_documentation.length)
+                writer.writeRepeatedMessage(7, this.signature_documentation, (item: Document) => item.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1181,6 +1224,9 @@ export namespace scip {
                         break;
                     case 6:
                         message.display_name = reader.readString();
+                        break;
+                    case 7:
+                        reader.readMessage(message.signature_documentation, () => pb_1.Message.addToRepeatedWrapperField(message, 7, Document.deserialize(reader), Document));
                         break;
                     default: reader.skipField();
                 }
