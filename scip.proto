@@ -326,7 +326,7 @@ message SymbolInformation {
   // = "void add(int a, int b)". The `language` and `text` fields are required
   // while other fields such as `Documentation.occurrences` can be optionally
   // included to support hyperlinking referenced symbols in the signature.
-  repeated Document signature_documentation = 7;
+  Document signature_documentation = 7;
 }
 
 

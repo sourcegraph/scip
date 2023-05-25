@@ -1066,10 +1066,10 @@ export namespace scip {
             relationships?: Relationship[];
             kind?: SymbolInformation.Kind;
             display_name?: string;
-            signature_documentation?: Document[];
+            signature_documentation?: Document;
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4, 7], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("symbol" in data && data.symbol != undefined) {
                     this.symbol = data.symbol;
@@ -1122,10 +1122,13 @@ export namespace scip {
             pb_1.Message.setField(this, 6, value);
         }
         get signature_documentation() {
-            return pb_1.Message.getRepeatedWrapperField(this, Document, 7) as Document[];
+            return pb_1.Message.getWrapperField(this, Document, 7) as Document;
         }
-        set signature_documentation(value: Document[]) {
-            pb_1.Message.setRepeatedWrapperField(this, 7, value);
+        set signature_documentation(value: Document) {
+            pb_1.Message.setWrapperField(this, 7, value);
+        }
+        get has_signature_documentation() {
+            return pb_1.Message.getField(this, 7) != null;
         }
         static fromObject(data: {
             symbol?: string;
@@ -1133,7 +1136,7 @@ export namespace scip {
             relationships?: ReturnType<typeof Relationship.prototype.toObject>[];
             kind?: SymbolInformation.Kind;
             display_name?: string;
-            signature_documentation?: ReturnType<typeof Document.prototype.toObject>[];
+            signature_documentation?: ReturnType<typeof Document.prototype.toObject>;
         }): SymbolInformation {
             const message = new SymbolInformation({});
             if (data.symbol != null) {
@@ -1152,7 +1155,7 @@ export namespace scip {
                 message.display_name = data.display_name;
             }
             if (data.signature_documentation != null) {
-                message.signature_documentation = data.signature_documentation.map(item => Document.fromObject(item));
+                message.signature_documentation = Document.fromObject(data.signature_documentation);
             }
             return message;
         }
@@ -1163,7 +1166,7 @@ export namespace scip {
                 relationships?: ReturnType<typeof Relationship.prototype.toObject>[];
                 kind?: SymbolInformation.Kind;
                 display_name?: string;
-                signature_documentation?: ReturnType<typeof Document.prototype.toObject>[];
+                signature_documentation?: ReturnType<typeof Document.prototype.toObject>;
             } = {};
             if (this.symbol != null) {
                 data.symbol = this.symbol;
@@ -1181,7 +1184,7 @@ export namespace scip {
                 data.display_name = this.display_name;
             }
             if (this.signature_documentation != null) {
-                data.signature_documentation = this.signature_documentation.map((item: Document) => item.toObject());
+                data.signature_documentation = this.signature_documentation.toObject();
             }
             return data;
         }
@@ -1199,8 +1202,8 @@ export namespace scip {
                 writer.writeEnum(5, this.kind);
             if (this.display_name.length)
                 writer.writeString(6, this.display_name);
-            if (this.signature_documentation.length)
-                writer.writeRepeatedMessage(7, this.signature_documentation, (item: Document) => item.serialize(writer));
+            if (this.has_signature_documentation)
+                writer.writeMessage(7, this.signature_documentation, () => this.signature_documentation.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1226,7 +1229,7 @@ export namespace scip {
                         message.display_name = reader.readString();
                         break;
                     case 7:
-                        reader.readMessage(message.signature_documentation, () => pb_1.Message.addToRepeatedWrapperField(message, 7, Document.deserialize(reader), Document));
+                        reader.readMessage(message.signature_documentation, () => message.signature_documentation = Document.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }

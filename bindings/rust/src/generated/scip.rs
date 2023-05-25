@@ -1447,7 +1447,7 @@ pub struct SymbolInformation {
     ///  while other fields such as `Documentation.occurrences` can be optionally
     ///  included to support hyperlinking referenced symbols in the signature.
     // @@protoc_insertion_point(field:scip.SymbolInformation.signature_documentation)
-    pub signature_documentation: ::std::vec::Vec<Document>,
+    pub signature_documentation: ::protobuf::MessageField<Document>,
     // special fields
     // @@protoc_insertion_point(special_field:scip.SymbolInformation.special_fields)
     pub special_fields: ::protobuf::SpecialFields,
@@ -1492,7 +1492,7 @@ impl SymbolInformation {
             |m: &SymbolInformation| { &m.display_name },
             |m: &mut SymbolInformation| { &mut m.display_name },
         ));
-        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Document>(
             "signature_documentation",
             |m: &SymbolInformation| { &m.signature_documentation },
             |m: &mut SymbolInformation| { &mut m.signature_documentation },
@@ -1531,7 +1531,7 @@ impl ::protobuf::Message for SymbolInformation {
                     self.display_name = is.read_string()?;
                 },
                 58 => {
-                    self.signature_documentation.push(is.read_message()?);
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.signature_documentation)?;
                 },
                 tag => {
                     ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
@@ -1561,10 +1561,10 @@ impl ::protobuf::Message for SymbolInformation {
         if !self.display_name.is_empty() {
             my_size += ::protobuf::rt::string_size(6, &self.display_name);
         }
-        for value in &self.signature_documentation {
-            let len = value.compute_size();
+        if let Some(v) = self.signature_documentation.as_ref() {
+            let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
-        };
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
         self.special_fields.cached_size().set(my_size as u32);
         my_size
@@ -1586,9 +1586,9 @@ impl ::protobuf::Message for SymbolInformation {
         if !self.display_name.is_empty() {
             os.write_string(6, &self.display_name)?;
         }
-        for v in &self.signature_documentation {
+        if let Some(v) = self.signature_documentation.as_ref() {
             ::protobuf::rt::write_message_field_with_cached_size(7, v, os)?;
-        };
+        }
         os.write_unknown_fields(self.special_fields.unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -1622,7 +1622,7 @@ impl ::protobuf::Message for SymbolInformation {
             relationships: ::std::vec::Vec::new(),
             kind: ::protobuf::EnumOrUnknown::from_i32(0),
             display_name: ::std::string::String::new(),
-            signature_documentation: ::std::vec::Vec::new(),
+            signature_documentation: ::protobuf::MessageField::none(),
             special_fields: ::protobuf::SpecialFields::new(),
         };
         &instance
@@ -3824,7 +3824,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x128\n\rrelationships\x18\x04\x20\x03(\x0b2\x12.scip.RelationshipR\rrel\
     ationships\x120\n\x04kind\x18\x05\x20\x01(\x0e2\x1c.scip.SymbolInformati\
     on.KindR\x04kind\x12!\n\x0cdisplay_name\x18\x06\x20\x01(\tR\x0bdisplayNa\
-    me\x12G\n\x17signature_documentation\x18\x07\x20\x03(\x0b2\x0e.scip.Docu\
+    me\x12G\n\x17signature_documentation\x18\x07\x20\x01(\x0b2\x0e.scip.Docu\
     mentR\x16signatureDocumentation\"\xda\x06\n\x04Kind\x12\x13\n\x0fUnspeci\
     fiedKind\x10\0\x12\t\n\x05Array\x10\x01\x12\r\n\tAssertion\x10\x02\x12\
     \x12\n\x0eAssociatedType\x10\x03\x12\r\n\tAttribute\x10\x04\x12\t\n\x05A\
@@ -3930,7 +3930,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x0fTypeScriptReact\x10^\x12\x0f\n\x0bVisualBasic\x10?\x12\x07\n\x03Vue\
     \x10\x19\x12\x0b\n\x07Wolfram\x105\x12\x07\n\x03XML\x10\x1f\x12\x07\n\
     \x03XSL\x10\x20\x12\x08\n\x04YAML\x10J\x12\x07\n\x03Zig\x10&B/Z-github.c\
-    om/sourcegraph/scip/bindings/go/scip/J\x8e\x83\x02\n\x07\x12\x05\n\0\xdb\
+    om/sourcegraph/scip/bindings/go/scip/J\xff\x82\x02\n\x07\x12\x05\n\0\xdb\
     \x05\x01\n\x82\x04\n\x01\x0c\x12\x03\n\0\x122\xf7\x03\x20An\x20index\x20\
     contains\x20one\x20or\x20more\x20pieces\x20of\x20information\x20about\
     \x20a\x20given\x20piece\x20of\n\x20source\x20code\x20or\x20software\x20a\
@@ -4423,7 +4423,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x20should\x20not\x20be\n\x20\x20\x20displayed\x20to\x20the\x20user.\n\n\
     \r\n\x05\x04\x07\x02\x04\x05\x12\x04\xc1\x02\x02\x08\n\r\n\x05\x04\x07\
     \x02\x04\x01\x12\x04\xc1\x02\t\x15\n\r\n\x05\x04\x07\x02\x04\x03\x12\x04\
-    \xc1\x02\x18\x19\n\xc4\x03\n\x04\x04\x07\x02\x05\x12\x04\xc8\x02\x020\
+    \xc1\x02\x18\x19\n\xc4\x03\n\x04\x04\x07\x02\x05\x12\x04\xc8\x02\x02'\
     \x1a\xb5\x03\x20(optional)\x20The\x20signature\x20of\x20this\x20symbol\
     \x20as\x20it's\x20displayed\x20in\x20API\n\x20documentation\x20or\x20in\
     \x20hover\x20tooltips.\x20For\x20example,\x20a\x20Java\x20method\x20that\
@@ -4433,77 +4433,76 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x20are\x20required\n\x20while\x20other\x20fields\x20such\x20as\x20`Docu\
     mentation.occurrences`\x20can\x20be\x20optionally\n\x20included\x20to\
     \x20support\x20hyperlinking\x20referenced\x20symbols\x20in\x20the\x20sig\
-    nature.\n\n\r\n\x05\x04\x07\x02\x05\x04\x12\x04\xc8\x02\x02\n\n\r\n\x05\
-    \x04\x07\x02\x05\x06\x12\x04\xc8\x02\x0b\x13\n\r\n\x05\x04\x07\x02\x05\
-    \x01\x12\x04\xc8\x02\x14+\n\r\n\x05\x04\x07\x02\x05\x03\x12\x04\xc8\x02.\
-    /\n\x0c\n\x02\x04\x08\x12\x06\xcc\x02\0\x84\x03\x01\n\x0b\n\x03\x04\x08\
-    \x01\x12\x04\xcc\x02\x08\x14\n\x0c\n\x04\x04\x08\x02\0\x12\x04\xcd\x02\
-    \x02\x14\n\r\n\x05\x04\x08\x02\0\x05\x12\x04\xcd\x02\x02\x08\n\r\n\x05\
-    \x04\x08\x02\0\x01\x12\x04\xcd\x02\t\x0f\n\r\n\x05\x04\x08\x02\0\x03\x12\
-    \x04\xcd\x02\x12\x13\n\xde\x08\n\x04\x04\x08\x02\x01\x12\x04\xe6\x02\x02\
-    \x18\x1a\xcf\x08\x20When\x20resolving\x20\"Find\x20references\",\x20this\
-    \x20field\x20documents\x20what\x20other\x20symbols\n\x20should\x20be\x20\
-    included\x20together\x20with\x20this\x20symbol.\x20For\x20example,\x20co\
-    nsider\x20the\n\x20following\x20TypeScript\x20code\x20that\x20defines\
-    \x20two\x20symbols\x20`Animal#sound()`\x20and\n\x20`Dog#sound()`:\n\x20`\
-    ``ts\n\x20interface\x20Animal\x20{\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20^^^^^^\x20definition\x20Animal#\n\x20\x20\x20sound():\x20string\
-    \n\x20\x20\x20^^^^^\x20definition\x20Animal#sound()\n\x20}\n\x20class\
-    \x20Dog\x20implements\x20Animal\x20{\n\x20\x20\x20\x20\x20\x20\x20^^^\
-    \x20definition\x20Dog#,\x20relationships\x20=\x20[{symbol:\x20\"Animal#\
-    \",\x20is_implementation:\x20true}]\n\x20\x20\x20public\x20sound():\x20s\
-    tring\x20{\x20return\x20\"woof\"\x20}\n\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20^^^^^\x20definition\x20Dog#sound(),\x20references_symbols\x20=\
-    \x20Animal#sound(),\x20relationships\x20=\x20[{symbol:\x20\"Animal#sound\
-    ()\",\x20is_implementation:true,\x20is_reference:\x20true}]\n\x20}\n\x20\
-    const\x20animal:\x20Animal\x20=\x20new\x20Dog()\n\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^^\x20reference\x20Animal#\n\
-    \x20console.log(animal.sound())\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^\x20reference\x20Animal\
-    #sound()\n\x20```\n\x20Doing\x20\"Find\x20references\"\x20on\x20the\x20s\
-    ymbol\x20`Animal#sound()`\x20should\x20return\n\x20references\x20to\x20t\
-    he\x20`Dog#sound()`\x20method\x20as\x20well.\x20Vice-versa,\x20doing\x20\
-    \"Find\n\x20references\"\x20on\x20the\x20`Dog#sound()`\x20method\x20shou\
-    ld\x20include\x20references\x20to\x20the\n\x20`Animal#sound()`\x20method\
-    \x20as\x20well.\n\n\r\n\x05\x04\x08\x02\x01\x05\x12\x04\xe6\x02\x02\x06\
-    \n\r\n\x05\x04\x08\x02\x01\x01\x12\x04\xe6\x02\x07\x13\n\r\n\x05\x04\x08\
-    \x02\x01\x03\x12\x04\xe6\x02\x16\x17\n\xee\x03\n\x04\x04\x08\x02\x02\x12\
-    \x04\xef\x02\x02\x1d\x1a\xdf\x03\x20Similar\x20to\x20`is_reference`\x20b\
-    ut\x20for\x20\"Find\x20implementations\".\n\x20It's\x20common\x20for\x20\
-    `is_implementation`\x20and\x20`is_reference`\x20to\x20both\x20be\x20true\
-    \x20but\n\x20it's\x20not\x20always\x20the\x20case.\n\x20In\x20the\x20Typ\
-    eScript\x20example\x20above,\x20observe\x20that\x20`Dog#`\x20has\x20an\n\
-    \x20`is_implementation`\x20relationship\x20with\x20`\"Animal#\"`\x20but\
-    \x20not\x20`is_reference`.\n\x20This\x20is\x20because\x20\"Find\x20refer\
-    ences\"\x20on\x20the\x20\"Animal#\"\x20symbol\x20should\x20not\x20return\
-    \n\x20\"Dog#\".\x20We\x20only\x20want\x20\"Dog#\"\x20to\x20return\x20as\
-    \x20a\x20result\x20for\x20\"Find\n\x20implementations\"\x20on\x20the\x20\
-    \"Animal#\"\x20symbol.\n\n\r\n\x05\x04\x08\x02\x02\x05\x12\x04\xef\x02\
-    \x02\x06\n\r\n\x05\x04\x08\x02\x02\x01\x12\x04\xef\x02\x07\x18\n\r\n\x05\
-    \x04\x08\x02\x02\x03\x12\x04\xef\x02\x1b\x1c\nP\n\x04\x04\x08\x02\x03\
-    \x12\x04\xf1\x02\x02\x1e\x1aB\x20Similar\x20to\x20`references_symbols`\
-    \x20but\x20for\x20\"Go\x20to\x20type\x20definition\".\n\n\r\n\x05\x04\
-    \x08\x02\x03\x05\x12\x04\xf1\x02\x02\x06\n\r\n\x05\x04\x08\x02\x03\x01\
-    \x12\x04\xf1\x02\x07\x19\n\r\n\x05\x04\x08\x02\x03\x03\x12\x04\xf1\x02\
-    \x1c\x1d\n\xa7\x07\n\x04\x04\x08\x02\x04\x12\x04\x82\x03\x02\x19\x1a\xd5\
-    \x06\x20Allows\x20overriding\x20the\x20behavior\x20of\x20\"Go\x20to\x20d\
-    efinition\"\x20and\x20\"Find\x20references\"\n\x20for\x20symbols\x20whic\
-    h\x20do\x20not\x20have\x20a\x20definition\x20of\x20their\x20own\x20or\
-    \x20could\n\x20potentially\x20have\x20multiple\x20definitions.\n\n\x20Fo\
-    r\x20example,\x20in\x20a\x20language\x20with\x20single\x20inheritance\
-    \x20and\x20no\x20field\x20overriding,\n\x20inherited\x20fields\x20can\
-    \x20reuse\x20the\x20same\x20symbol\x20as\x20the\x20ancestor\x20which\x20\
-    declares\n\x20the\x20field.\x20In\x20such\x20a\x20situation,\x20is_defin\
-    ition\x20is\x20not\x20needed.\n\n\x20On\x20the\x20other\x20hand,\x20in\
-    \x20languages\x20with\x20single\x20inheritance\x20and\x20some\x20form\n\
-    \x20of\x20mixins,\x20you\x20can\x20use\x20is_definition\x20to\x20relate\
-    \x20the\x20symbol\x20to\x20the\n\x20matching\x20symbol\x20in\x20ancestor\
-    \x20classes,\x20and\x20is_reference\x20to\x20relate\x20the\n\x20symbol\
-    \x20to\x20the\x20matching\x20symbol\x20in\x20mixins.\n\n\x20NOTE:\x20At\
-    \x20the\x20moment,\x20due\x20to\x20limitations\x20of\x20the\x20SCIP\x20t\
-    o\x20LSIF\x20conversion,\n\x20only\x20global\x20symbols\x20in\x20an\x20i\
-    ndex\x20are\x20allowed\x20to\x20use\x20is_definition.\n\x20The\x20relati\
-    onship\x20may\x20not\x20get\x20recorded\x20if\x20either\x20symbol\x20is\
+    nature.\n\n\r\n\x05\x04\x07\x02\x05\x06\x12\x04\xc8\x02\x02\n\n\r\n\x05\
+    \x04\x07\x02\x05\x01\x12\x04\xc8\x02\x0b\"\n\r\n\x05\x04\x07\x02\x05\x03\
+    \x12\x04\xc8\x02%&\n\x0c\n\x02\x04\x08\x12\x06\xcc\x02\0\x84\x03\x01\n\
+    \x0b\n\x03\x04\x08\x01\x12\x04\xcc\x02\x08\x14\n\x0c\n\x04\x04\x08\x02\0\
+    \x12\x04\xcd\x02\x02\x14\n\r\n\x05\x04\x08\x02\0\x05\x12\x04\xcd\x02\x02\
+    \x08\n\r\n\x05\x04\x08\x02\0\x01\x12\x04\xcd\x02\t\x0f\n\r\n\x05\x04\x08\
+    \x02\0\x03\x12\x04\xcd\x02\x12\x13\n\xde\x08\n\x04\x04\x08\x02\x01\x12\
+    \x04\xe6\x02\x02\x18\x1a\xcf\x08\x20When\x20resolving\x20\"Find\x20refer\
+    ences\",\x20this\x20field\x20documents\x20what\x20other\x20symbols\n\x20\
+    should\x20be\x20included\x20together\x20with\x20this\x20symbol.\x20For\
+    \x20example,\x20consider\x20the\n\x20following\x20TypeScript\x20code\x20\
+    that\x20defines\x20two\x20symbols\x20`Animal#sound()`\x20and\n\x20`Dog#s\
+    ound()`:\n\x20```ts\n\x20interface\x20Animal\x20{\n\x20\x20\x20\x20\x20\
+    \x20\x20\x20\x20\x20\x20^^^^^^\x20definition\x20Animal#\n\x20\x20\x20sou\
+    nd():\x20string\n\x20\x20\x20^^^^^\x20definition\x20Animal#sound()\n\x20\
+    }\n\x20class\x20Dog\x20implements\x20Animal\x20{\n\x20\x20\x20\x20\x20\
+    \x20\x20^^^\x20definition\x20Dog#,\x20relationships\x20=\x20[{symbol:\
+    \x20\"Animal#\",\x20is_implementation:\x20true}]\n\x20\x20\x20public\x20\
+    sound():\x20string\x20{\x20return\x20\"woof\"\x20}\n\x20\x20\x20\x20\x20\
+    \x20\x20\x20\x20\x20^^^^^\x20definition\x20Dog#sound(),\x20references_sy\
+    mbols\x20=\x20Animal#sound(),\x20relationships\x20=\x20[{symbol:\x20\"An\
+    imal#sound()\",\x20is_implementation:true,\x20is_reference:\x20true}]\n\
+    \x20}\n\x20const\x20animal:\x20Animal\x20=\x20new\x20Dog()\n\x20\x20\x20\
+    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^^\x20reference\x20A\
+    nimal#\n\x20console.log(animal.sound())\n\x20\x20\x20\x20\x20\x20\x20\
+    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^\x20reference\
+    \x20Animal#sound()\n\x20```\n\x20Doing\x20\"Find\x20references\"\x20on\
+    \x20the\x20symbol\x20`Animal#sound()`\x20should\x20return\n\x20reference\
+    s\x20to\x20the\x20`Dog#sound()`\x20method\x20as\x20well.\x20Vice-versa,\
+    \x20doing\x20\"Find\n\x20references\"\x20on\x20the\x20`Dog#sound()`\x20m\
+    ethod\x20should\x20include\x20references\x20to\x20the\n\x20`Animal#sound\
+    ()`\x20method\x20as\x20well.\n\n\r\n\x05\x04\x08\x02\x01\x05\x12\x04\xe6\
+    \x02\x02\x06\n\r\n\x05\x04\x08\x02\x01\x01\x12\x04\xe6\x02\x07\x13\n\r\n\
+    \x05\x04\x08\x02\x01\x03\x12\x04\xe6\x02\x16\x17\n\xee\x03\n\x04\x04\x08\
+    \x02\x02\x12\x04\xef\x02\x02\x1d\x1a\xdf\x03\x20Similar\x20to\x20`is_ref\
+    erence`\x20but\x20for\x20\"Find\x20implementations\".\n\x20It's\x20commo\
+    n\x20for\x20`is_implementation`\x20and\x20`is_reference`\x20to\x20both\
+    \x20be\x20true\x20but\n\x20it's\x20not\x20always\x20the\x20case.\n\x20In\
+    \x20the\x20TypeScript\x20example\x20above,\x20observe\x20that\x20`Dog#`\
+    \x20has\x20an\n\x20`is_implementation`\x20relationship\x20with\x20`\"Ani\
+    mal#\"`\x20but\x20not\x20`is_reference`.\n\x20This\x20is\x20because\x20\
+    \"Find\x20references\"\x20on\x20the\x20\"Animal#\"\x20symbol\x20should\
+    \x20not\x20return\n\x20\"Dog#\".\x20We\x20only\x20want\x20\"Dog#\"\x20to\
+    \x20return\x20as\x20a\x20result\x20for\x20\"Find\n\x20implementations\"\
+    \x20on\x20the\x20\"Animal#\"\x20symbol.\n\n\r\n\x05\x04\x08\x02\x02\x05\
+    \x12\x04\xef\x02\x02\x06\n\r\n\x05\x04\x08\x02\x02\x01\x12\x04\xef\x02\
+    \x07\x18\n\r\n\x05\x04\x08\x02\x02\x03\x12\x04\xef\x02\x1b\x1c\nP\n\x04\
+    \x04\x08\x02\x03\x12\x04\xf1\x02\x02\x1e\x1aB\x20Similar\x20to\x20`refer\
+    ences_symbols`\x20but\x20for\x20\"Go\x20to\x20type\x20definition\".\n\n\
+    \r\n\x05\x04\x08\x02\x03\x05\x12\x04\xf1\x02\x02\x06\n\r\n\x05\x04\x08\
+    \x02\x03\x01\x12\x04\xf1\x02\x07\x19\n\r\n\x05\x04\x08\x02\x03\x03\x12\
+    \x04\xf1\x02\x1c\x1d\n\xa7\x07\n\x04\x04\x08\x02\x04\x12\x04\x82\x03\x02\
+    \x19\x1a\xd5\x06\x20Allows\x20overriding\x20the\x20behavior\x20of\x20\"G\
+    o\x20to\x20definition\"\x20and\x20\"Find\x20references\"\n\x20for\x20sym\
+    bols\x20which\x20do\x20not\x20have\x20a\x20definition\x20of\x20their\x20\
+    own\x20or\x20could\n\x20potentially\x20have\x20multiple\x20definitions.\
+    \n\n\x20For\x20example,\x20in\x20a\x20language\x20with\x20single\x20inhe\
+    ritance\x20and\x20no\x20field\x20overriding,\n\x20inherited\x20fields\
+    \x20can\x20reuse\x20the\x20same\x20symbol\x20as\x20the\x20ancestor\x20wh\
+    ich\x20declares\n\x20the\x20field.\x20In\x20such\x20a\x20situation,\x20i\
+    s_definition\x20is\x20not\x20needed.\n\n\x20On\x20the\x20other\x20hand,\
+    \x20in\x20languages\x20with\x20single\x20inheritance\x20and\x20some\x20f\
+    orm\n\x20of\x20mixins,\x20you\x20can\x20use\x20is_definition\x20to\x20re\
+    late\x20the\x20symbol\x20to\x20the\n\x20matching\x20symbol\x20in\x20ance\
+    stor\x20classes,\x20and\x20is_reference\x20to\x20relate\x20the\n\x20symb\
+    ol\x20to\x20the\x20matching\x20symbol\x20in\x20mixins.\n\n\x20NOTE:\x20A\
+    t\x20the\x20moment,\x20due\x20to\x20limitations\x20of\x20the\x20SCIP\x20\
+    to\x20LSIF\x20conversion,\n\x20only\x20global\x20symbols\x20in\x20an\x20\
+    index\x20are\x20allowed\x20to\x20use\x20is_definition.\n\x20The\x20relat\
+    ionship\x20may\x20not\x20get\x20recorded\x20if\x20either\x20symbol\x20is\
     \x20local.\n\"A\x20Update\x20registerInverseRelationships\x20on\x20addin\
     g\x20a\x20new\x20field\x20here.\n\n\r\n\x05\x04\x08\x02\x04\x05\x12\x04\
     \x82\x03\x02\x06\n\r\n\x05\x04\x08\x02\x04\x01\x12\x04\x82\x03\x07\x14\n\
