@@ -1067,6 +1067,7 @@ export namespace scip {
             kind?: SymbolInformation.Kind;
             display_name?: string;
             signature_documentation?: Document;
+            enclosing_symbol?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4], this.#one_of_decls);
@@ -1088,6 +1089,9 @@ export namespace scip {
                 }
                 if ("signature_documentation" in data && data.signature_documentation != undefined) {
                     this.signature_documentation = data.signature_documentation;
+                }
+                if ("enclosing_symbol" in data && data.enclosing_symbol != undefined) {
+                    this.enclosing_symbol = data.enclosing_symbol;
                 }
             }
         }
@@ -1130,6 +1134,12 @@ export namespace scip {
         get has_signature_documentation() {
             return pb_1.Message.getField(this, 7) != null;
         }
+        get enclosing_symbol() {
+            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+        }
+        set enclosing_symbol(value: string) {
+            pb_1.Message.setField(this, 8, value);
+        }
         static fromObject(data: {
             symbol?: string;
             documentation?: string[];
@@ -1137,6 +1147,7 @@ export namespace scip {
             kind?: SymbolInformation.Kind;
             display_name?: string;
             signature_documentation?: ReturnType<typeof Document.prototype.toObject>;
+            enclosing_symbol?: string;
         }): SymbolInformation {
             const message = new SymbolInformation({});
             if (data.symbol != null) {
@@ -1157,6 +1168,9 @@ export namespace scip {
             if (data.signature_documentation != null) {
                 message.signature_documentation = Document.fromObject(data.signature_documentation);
             }
+            if (data.enclosing_symbol != null) {
+                message.enclosing_symbol = data.enclosing_symbol;
+            }
             return message;
         }
         toObject() {
@@ -1167,6 +1181,7 @@ export namespace scip {
                 kind?: SymbolInformation.Kind;
                 display_name?: string;
                 signature_documentation?: ReturnType<typeof Document.prototype.toObject>;
+                enclosing_symbol?: string;
             } = {};
             if (this.symbol != null) {
                 data.symbol = this.symbol;
@@ -1186,6 +1201,9 @@ export namespace scip {
             if (this.signature_documentation != null) {
                 data.signature_documentation = this.signature_documentation.toObject();
             }
+            if (this.enclosing_symbol != null) {
+                data.enclosing_symbol = this.enclosing_symbol;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -1204,6 +1222,8 @@ export namespace scip {
                 writer.writeString(6, this.display_name);
             if (this.has_signature_documentation)
                 writer.writeMessage(7, this.signature_documentation, () => this.signature_documentation.serialize(writer));
+            if (this.enclosing_symbol.length)
+                writer.writeString(8, this.enclosing_symbol);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1230,6 +1250,9 @@ export namespace scip {
                         break;
                     case 7:
                         reader.readMessage(message.signature_documentation, () => message.signature_documentation = Document.deserialize(reader));
+                        break;
+                    case 8:
+                        message.enclosing_symbol = reader.readString();
                         break;
                     default: reader.skipField();
                 }
