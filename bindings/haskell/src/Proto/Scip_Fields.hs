@@ -80,6 +80,12 @@ enclosingRange ::
    Data.ProtoLens.Field.HasField s "enclosingRange" a) =>
   Lens.Family2.LensLike' f s a
 enclosingRange = Data.ProtoLens.Field.field @"enclosingRange"
+enclosingSymbol ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "enclosingSymbol" a) =>
+  Lens.Family2.LensLike' f s a
+enclosingSymbol = Data.ProtoLens.Field.field @"enclosingSymbol"
 externalSymbols ::
   forall f s a.
   (Prelude.Functor f,

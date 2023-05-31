@@ -1782,7 +1782,14 @@ type SymbolInformation struct {
 	// empty for local variables since local variables usually don't belong in API
 	// documentation. However, in the situation that you wish to include a local
 	// symbol in the hierarchy, then you can use `enclosing_symbol` to locate the
-	// "parent" or "owner" of this local symbol.
+	// "parent" or "owner" of this local symbol. For example, a Java indexer may
+	// choose to use local symbols for private class fields while providing an
+	// `enclosing_symbol` to reference the enclosing class to allow the field to
+	// be part of the class documentation hierarchy. From the perspective of an
+	// author of an indexer, the decision to use a local symbol or global symbol
+	// should exclusively be determined whether the local symbol is accessible
+	// outside the document, not by the capability to find the enclosing
+	// symbol.
 	EnclosingSymbol string `protobuf:"bytes,8,opt,name=enclosing_symbol,json=enclosingSymbol,proto3" json:"enclosing_symbol,omitempty"`
 }
 
