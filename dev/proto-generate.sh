@@ -19,7 +19,7 @@ fi
 
 echo "--- Haskell ---"
 command -v cabal > /dev/null 2>&1 || { echo >&2 "Haskell's 'cabal' command is not installed. Please install it first via https://www.haskell.org/ghcup/"; exit 1; }
-cabal install proto-lens-protoc --overwrite-policy=always
+cabal install proto-lens-protoc-0.7.1.1 --overwrite-policy=always
 ln -sfv `which proto-lens-protoc` "$PWD/.bin/protoc-gen-haskell"
 PATH="$PWD/.bin:$PATH"
 
