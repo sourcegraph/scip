@@ -503,7 +503,7 @@ func (DiagnosticTag) EnumDescriptor() ([]byte, []int) {
 // for the `Document.language` field. The primary purpose of this enum is to
 // prevent a situation where we have a single programming language ends up with
 // multiple string representations. For example, the C++ language uses the name
-// "CPlusPlus" in this enum and other names such as "cpp" are incompatible.
+// "CPP" in this enum and other names such as "cpp" are incompatible.
 // Feel free to send a pull-request to add missing programming languages.
 type Language int32
 
@@ -911,12 +911,12 @@ func (Descriptor_Suffix) EnumDescriptor() ([]byte, []int) {
 // information about the symbol's meaning in the language.
 //
 // For example:
-// - A Java method would have the kind `Method` while a Go function would
-//   have the kind `Function`, even if the symbols for these use the same
-//   syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
-// - A Go struct has the symbol kind `Struct` while a Java class has
-//   the symbol kind `Class` even if they both have the same descriptor:
-//   `SymbolDescriptor.Suffix.Type`.
+//   - A Java method would have the kind `Method` while a Go function would
+//     have the kind `Function`, even if the symbols for these use the same
+//     syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
+//   - A Go struct has the symbol kind `Struct` while a Java class has
+//     the symbol kind `Class` even if they both have the same descriptor:
+//     `SymbolDescriptor.Suffix.Type`.
 //
 // Since Kind is more fine-grained than Suffix:
 // - If two symbols have the same Kind, they should share the same Suffix.
@@ -1406,7 +1406,7 @@ type Document struct {
 
 	// The string ID for the programming language this file is written in.
 	// The `Language` enum contains the names of most common programming languages.
-	// This field is typed as a string to permit any programming langauge, including
+	// This field is typed as a string to permit any programming language, including
 	// ones that are not specified by the `Language` enum.
 	Language string `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`
 	// (Required) Unique path to the text document.

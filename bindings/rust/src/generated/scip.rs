@@ -551,7 +551,7 @@ pub struct Document {
     // message fields
     ///  The string ID for the programming language this file is written in.
     ///  The `Language` enum contains the names of most common programming languages.
-    ///  This field is typed as a string to permit any programming langauge, including
+    ///  This field is typed as a string to permit any programming language, including
     ///  ones that are not specified by the `Language` enum.
     // @@protoc_insertion_point(field:scip.Document.language)
     pub language: ::std::string::String,
@@ -3270,7 +3270,7 @@ impl DiagnosticTag {
 ///  for the `Document.language` field. The primary purpose of this enum is to
 ///  prevent a situation where we have a single programming language ends up with
 ///  multiple string representations. For example, the C++ language uses the name
-///  "CPlusPlus" in this enum and other names such as "cpp" are incompatible.
+///  "CPP" in this enum and other names such as "cpp" are incompatible.
 ///  Feel free to send a pull-request to add missing programming languages.
 #[derive(Clone,Copy,PartialEq,Eq,Debug,Hash)]
 // @@protoc_insertion_point(enum:scip.Language)
@@ -3930,7 +3930,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x0fTypeScriptReact\x10^\x12\x0f\n\x0bVisualBasic\x10?\x12\x07\n\x03Vue\
     \x10\x19\x12\x0b\n\x07Wolfram\x105\x12\x07\n\x03XML\x10\x1f\x12\x07\n\
     \x03XSL\x10\x20\x12\x08\n\x04YAML\x10J\x12\x07\n\x03Zig\x10&B/Z-github.c\
-    om/sourcegraph/scip/bindings/go/scip/J\xff\x82\x02\n\x07\x12\x05\n\0\xdb\
+    om/sourcegraph/scip/bindings/go/scip/J\xf9\x82\x02\n\x07\x12\x05\n\0\xdb\
     \x05\x01\n\x82\x04\n\x01\x0c\x12\x03\n\0\x122\xf7\x03\x20An\x20index\x20\
     contains\x20one\x20or\x20more\x20pieces\x20of\x20information\x20about\
     \x20a\x20given\x20piece\x20of\n\x20source\x20code\x20or\x20software\x20a\
@@ -4022,7 +4022,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     uage\x20this\x20file\x20is\x20written\x20in.\n\x20The\x20`Language`\x20e\
     num\x20contains\x20the\x20names\x20of\x20most\x20common\x20programming\
     \x20languages.\n\x20This\x20field\x20is\x20typed\x20as\x20a\x20string\
-    \x20to\x20permit\x20any\x20programming\x20langauge,\x20including\n\x20on\
+    \x20to\x20permit\x20any\x20programming\x20language,\x20including\n\x20on\
     es\x20that\x20are\x20not\x20specified\x20by\x20the\x20`Language`\x20enum\
     .\n\n\x0c\n\x05\x04\x03\x02\0\x05\x12\x03J\x02\x08\n\x0c\n\x05\x04\x03\
     \x02\0\x01\x12\x03J\t\x11\n\x0c\n\x05\x04\x03\x02\0\x03\x12\x03J\x14\x15\
@@ -4817,16 +4817,16 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x04\xeb\x04\x02\r\n\r\n\x05\x05\x05\x02\x01\x02\x12\x04\xeb\x04\x10\x11\
     \n\x0c\n\x04\x05\x05\x02\x02\x12\x04\xec\x04\x02\x11\n\r\n\x05\x05\x05\
     \x02\x02\x01\x12\x04\xec\x04\x02\x0c\n\r\n\x05\x05\x05\x02\x02\x02\x12\
-    \x04\xec\x04\x0f\x10\n\xd6\x03\n\x02\x05\x06\x12\x06\xf5\x04\0\xdb\x05\
-    \x01\x1a\xc7\x03\x20Language\x20standardises\x20names\x20of\x20common\
+    \x04\xec\x04\x0f\x10\n\xd0\x03\n\x02\x05\x06\x12\x06\xf5\x04\0\xdb\x05\
+    \x01\x1a\xc1\x03\x20Language\x20standardises\x20names\x20of\x20common\
     \x20programming\x20languages\x20that\x20can\x20be\x20used\n\x20for\x20th\
     e\x20`Document.language`\x20field.\x20The\x20primary\x20purpose\x20of\
     \x20this\x20enum\x20is\x20to\n\x20prevent\x20a\x20situation\x20where\x20\
     we\x20have\x20a\x20single\x20programming\x20language\x20ends\x20up\x20wi\
     th\n\x20multiple\x20string\x20representations.\x20For\x20example,\x20the\
-    \x20C++\x20language\x20uses\x20the\x20name\n\x20\"CPlusPlus\"\x20in\x20t\
-    his\x20enum\x20and\x20other\x20names\x20such\x20as\x20\"cpp\"\x20are\x20\
-    incompatible.\n\x20Feel\x20free\x20to\x20send\x20a\x20pull-request\x20to\
+    \x20C++\x20language\x20uses\x20the\x20name\n\x20\"CPP\"\x20in\x20this\
+    \x20enum\x20and\x20other\x20names\x20such\x20as\x20\"cpp\"\x20are\x20inc\
+    ompatible.\n\x20Feel\x20free\x20to\x20send\x20a\x20pull-request\x20to\
     \x20add\x20missing\x20programming\x20languages.\n\n\x0b\n\x03\x05\x06\
     \x01\x12\x04\xf5\x04\x05\r\n\x0c\n\x04\x05\x06\x02\0\x12\x04\xf6\x04\x02\
     \x1a\n\r\n\x05\x05\x06\x02\0\x01\x12\x04\xf6\x04\x02\x15\n\r\n\x05\x05\
