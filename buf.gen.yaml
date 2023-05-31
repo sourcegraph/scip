@@ -16,3 +16,5 @@ plugins:
   - name: rust
     path: ./.bin/bin/protoc-gen-rust
     out: ./bindings/rust/src/generated/
+  - name: haskell
+    out: ./bindings/haskell/src
