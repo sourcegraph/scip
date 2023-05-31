@@ -14,11 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Set up Haskell
+        uses: haskell/actions/setup@v2
+        with:
+          ghc-version: '8.10'
+          cabal-version: 'latest'
       - uses: ./.github/actions/asdf
         with:
           js: true
           rust: true
           golang: true
-      - run: cabal update
       - run: ./dev/proto-generate.sh
       - run: git diff --exit-code
