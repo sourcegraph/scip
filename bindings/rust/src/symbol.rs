@@ -342,6 +342,7 @@ impl SymbolParser {
                     '.' => Ok(new_descriptor(name, descriptor::Suffix::Term)),
                     '#' => Ok(new_descriptor(name, descriptor::Suffix::Type)),
                     ':' => Ok(new_descriptor(name, descriptor::Suffix::Meta)),
+                    '!' => Ok(new_descriptor(name, descriptor::Suffix::Macro)),
                     _ => Err(SymbolError::MissingDescriptor),
                 }
             }
@@ -523,5 +524,28 @@ mod test {
                 ..Default::default()
             })
         );
+    }
+
+    #[test]
+    fn parses_rust_method_with_macro() {
+        let input_symbol = "rust-analyzer cargo test_rust_dependency 0.1.0 println!";
+
+        assert_eq!(
+            parse_symbol(input_symbol).expect("rust symbol"),
+            Symbol {
+                scheme: "rust-analyzer".to_string(),
+                package: Package::new_with_values("cargo", "test_rust_dependency", "0.1.0"),
+                descriptors: vec![new_descriptor(
+                    "println".to_string(),
+                    descriptor::Suffix::Macro
+                ),],
+                special_fields: SpecialFields::default(),
+            }
+        );
+
+        assert_eq!(
+            input_symbol,
+            format_symbol(parse_symbol(input_symbol).expect("rust symbol"))
+        )
     }
 }
