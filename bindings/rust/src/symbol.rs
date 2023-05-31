@@ -54,17 +54,24 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
         parts.push(scheme);
     }
 
-    if let Some(package) = package {
-        if options.include_package_manager && !package.manager.is_empty() {
-            parts.push(package.manager);
+    if options.include_package_manager {
+        match &package {
+            Some(package) if !package.manager.is_empty() => parts.push(package.manager.clone()),
+            _ => parts.push(".".to_string()),
         }
+    }
 
-        if options.include_package_name && !package.name.is_empty() {
-            parts.push(package.name);
+    if options.include_package_name {
+        match &package {
+            Some(package) if !package.name.is_empty() => parts.push(package.name.clone()),
+            _ => parts.push(".".to_string()),
         }
+    }
 
-        if options.include_package_version && !package.version.is_empty() {
-            parts.push(package.version);
+    if options.include_package_version {
+        match &package {
+            Some(package) if !package.version.is_empty() => parts.push(package.version.clone()),
+            _ => parts.push(".".to_string()),
         }
     }
 
@@ -136,7 +143,7 @@ pub fn parse_symbol(symbol: &str) -> Result<Symbol, SymbolError> {
     Ok(Symbol {
         scheme,
         package: protobuf::MessageField::some(crate::types::Package {
-            manager: parser.accept_space_escaped_identifier("package.manager")?,
+            manager: dot(parser.accept_space_escaped_identifier("package.manager")?),
             name: dot(parser.accept_space_escaped_identifier("package.name")?),
             version: dot(parser.accept_space_escaped_identifier("package.version")?),
             special_fields: SpecialFields::default(),
@@ -482,5 +489,39 @@ mod test {
             input_symbol,
             format_symbol(parse_symbol(input_symbol).expect("rust symbol"))
         )
+    }
+
+    #[test]
+    fn formats_symbol_with_dots() {
+        assert_eq!(
+            "scip-ctags . . . foo.",
+            format_symbol(Symbol {
+                scheme: "scip-ctags".to_string(),
+                package: None.into(),
+                descriptors: vec![new_descriptor("foo".to_string(), descriptor::Suffix::Term)],
+                ..Default::default()
+            })
+        );
+
+        // Handles randomly some are empty and some are dots
+        assert_eq!(
+            "scip-ctags manager . . MyType#foo.",
+            format_symbol(Symbol {
+                scheme: "scip-ctags".to_string(),
+                package: Some(Package {
+                    manager: "manager".to_string(),
+                    name: ".".to_string(),
+                    version: "".to_string(),
+                    ..Default::default()
+                })
+                .into(),
+
+                descriptors: vec![
+                    new_descriptor("MyType".to_string(), descriptor::Suffix::Type),
+                    new_descriptor("foo".to_string(), descriptor::Suffix::Term)
+                ],
+                ..Default::default()
+            })
+        );
     }
 }
