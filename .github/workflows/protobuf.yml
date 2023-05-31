@@ -19,5 +19,6 @@ jobs:
           js: true
           rust: true
           golang: true
+      - run: cabal update
       - run: ./dev/proto-generate.sh
       - run: git diff --exit-code
