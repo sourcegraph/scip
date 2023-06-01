@@ -50,6 +50,19 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
         ..
     } = symbol;
 
+    // Handle local symbols first, to enforce simple formatting
+    if scheme == "local" {
+        if let Some(symbol) = descriptors
+            .iter()
+            .find_map(|desc| match desc.suffix.enum_value() {
+                Ok(descriptor::Suffix::Local) => Some(format!("local {}", desc.name)),
+                _ => None,
+            })
+        {
+            return symbol;
+        }
+    }
+
     if options.include_scheme {
         parts.push(scheme);
     }
@@ -524,6 +537,8 @@ mod test {
                 ..Default::default()
             })
         );
+
+        assert_eq!("local 7", format_symbol(Symbol::new_local(7)));
     }
 
     #[test]
