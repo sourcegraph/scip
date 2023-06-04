@@ -300,6 +300,7 @@ docstring or what package it's defined it.
 | **kind**                    | Kind         | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.                                                                                                                                                                                                                                                                                          |
 | **display_name**            | string       | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:                                                                                                                                                                        |
 | **signature_documentation** | Document     | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers this would have `Document.language = "java"` and `Document.text = "void add(int a, int b)". The `language`and`text`fields are required while other fields such as`Documentation.occurrences` can be optionally included to support hyperlinking referenced symbols in the signature. |
+| **enclosing_symbol**        | string       | (optional) The enclosing symbol if this is a local symbol. For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.                                                                                                                                                                                                                                                            |
 
 Additional notes on **display_name**:
 
@@ -312,6 +313,26 @@ the display name for several reasons:
 - Some languages have case-insensitive names, so the symbol is all-lowercase.
 - The symbol may encode names with special characters that should not be
   displayed to the user.
+
+Additional notes on **enclosing_symbol**:
+
+(optional) The enclosing symbol if this is a local symbol. For non-local
+symbols, the enclosing symbol should be parsed from the `symbol` field
+using the `Descriptor` grammar.
+
+The primary use-case for this field is to allow local symbol to be displayed
+in a symbol hierarchy for API documentation. It's OK to leave this field
+empty for local variables since local variables usually don't belong in API
+documentation. However, in the situation that you wish to include a local
+symbol in the hierarchy, then you can use `enclosing_symbol` to locate the
+"parent" or "owner" of this local symbol. For example, a Java indexer may
+choose to use local symbols for private class fields while providing an
+`enclosing_symbol` to reference the enclosing class to allow the field to
+be part of the class documentation hierarchy. From the perspective of an
+author of an indexer, the decision to use a local symbol or global symbol
+should exclusively be determined whether the local symbol is accessible
+outside the document, not by the capability to find the enclosing
+symbol.
 
 #### Kind
 
