@@ -94,22 +94,25 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
                 .iter()
                 .filter_map(|desc| {
                     Some(match desc.suffix.enum_value() {
-                        Ok(val) => match val {
-                            descriptor::Suffix::Package | descriptor::Suffix::Namespace => {
-                                format!("{}/", desc.name)
+                        Ok(val) => {
+                            let name = escape_name(&desc.name);
+                            match val {
+                                descriptor::Suffix::Package | descriptor::Suffix::Namespace => {
+                                    format!("{}/", name)
+                                }
+                                descriptor::Suffix::Type => format!("{}#", name),
+                                descriptor::Suffix::Term => format!("{}.", name),
+                                descriptor::Suffix::Method => {
+                                    format!("{}({}).", name, desc.disambiguator)
+                                }
+                                descriptor::Suffix::TypeParameter => format!("[{}]", name),
+                                descriptor::Suffix::Parameter => format!("({})", name),
+                                descriptor::Suffix::Macro => format!("{}!", name),
+                                descriptor::Suffix::Meta => format!("{}:", name),
+                                descriptor::Suffix::Local => format!("{}", name),
+                                descriptor::Suffix::UnspecifiedSuffix => return None,
                             }
-                            descriptor::Suffix::Type => format!("{}#", desc.name),
-                            descriptor::Suffix::Term => format!("{}.", desc.name),
-                            descriptor::Suffix::Method => {
-                                format!("{}({}).", desc.name, desc.disambiguator)
-                            }
-                            descriptor::Suffix::TypeParameter => format!("[{}]", desc.name),
-                            descriptor::Suffix::Parameter => format!("({})", desc.name),
-                            descriptor::Suffix::Macro => format!("{}!", desc.name),
-                            descriptor::Suffix::Meta => format!("{}:", desc.name),
-                            descriptor::Suffix::Local => format!("{}", desc.name),
-                            descriptor::Suffix::UnspecifiedSuffix => return None,
-                        },
+                        }
                         Err(_) => return None,
                     })
                 })
@@ -119,6 +122,17 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
     }
 
     parts.join(" ")
+}
+
+fn escape_name(name: &str) -> String {
+    if name
+        .chars()
+        .all(|ch| ch == '_' || ch == '+' || ch == '-' || ch == '$' || ch.is_ascii_alphanumeric())
+    {
+        name.to_string()
+    } else {
+        format!("`{}`", name)
+    }
 }
 
 pub fn format_symbol(symbol: Symbol) -> String {
@@ -153,14 +167,26 @@ pub fn parse_symbol(symbol: &str) -> Result<Symbol, SymbolError> {
         ));
     }
 
+    let package = crate::types::Package {
+        manager: dot(parser.accept_space_escaped_identifier("package.manager")?),
+        name: dot(parser.accept_space_escaped_identifier("package.name")?),
+        version: dot(parser.accept_space_escaped_identifier("package.version")?),
+        special_fields: SpecialFields::default(),
+    };
+
+    // If all the package fields are empty, we can just say that package is None
+    let package = match (
+        package.manager.as_str(),
+        package.name.as_str(),
+        package.version.as_str(),
+    ) {
+        ("", "", "") => protobuf::MessageField::none(),
+        _ => protobuf::MessageField::some(package),
+    };
+
     Ok(Symbol {
         scheme,
-        package: protobuf::MessageField::some(crate::types::Package {
-            manager: dot(parser.accept_space_escaped_identifier("package.manager")?),
-            name: dot(parser.accept_space_escaped_identifier("package.name")?),
-            version: dot(parser.accept_space_escaped_identifier("package.version")?),
-            special_fields: SpecialFields::default(),
-        }),
+        package,
         descriptors: parser.accept_descriptors()?,
         special_fields: SpecialFields::default(),
     })
@@ -562,5 +588,19 @@ mod test {
             input_symbol,
             format_symbol(parse_symbol(input_symbol).expect("rust symbol"))
         )
+    }
+
+    #[test]
+    fn test_properly_escapes_identifiers() {
+        let symbol_struct = Symbol {
+            scheme: "scip-ctags".to_string(),
+            package: None.into(),
+            descriptors: vec![new_descriptor("foo=".to_string(), descriptor::Suffix::Term)],
+            ..Default::default()
+        };
+        let symbol = format_symbol(symbol_struct.clone());
+
+        assert_eq!(symbol, "scip-ctags . . . `foo=`.");
+        assert_eq!(parse_symbol(&symbol).expect("to parse"), symbol_struct);
     }
 }
