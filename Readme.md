@@ -34,13 +34,13 @@ Also, check out the [Debugging section][] in the Development docs.
 
 Several indexers currently emit SCIP data:
 
-* [scip-java](https://github.com/sourcegraph/scip-java): Java, Scala, Kotlin
-* [scip-typescript](https://github.com/sourcegraph/scip-typescript): TypeScript, JavaScript
-* [rust-analyzer](https://github.com/sourcegraph/rust-analyzer): Rust
-* [scip-clang](https://github.com/sourcegraph/scip-clang): C++, C
-* [scip-ruby](https://github.com/sourcegraph/scip-ruby): Sorbet, Ruby
-* [scip-python](https://github.com/sourcegraph/scip-python): Python
-* [scip-dotnet](https://github.com/sourcegraph/scip-dotnet): C#, Visual Basic
+- [scip-java](https://github.com/sourcegraph/scip-java): Java, Scala, Kotlin
+- [scip-typescript](https://github.com/sourcegraph/scip-typescript): TypeScript, JavaScript
+- [rust-analyzer](https://github.com/sourcegraph/rust-analyzer): Rust
+- [scip-clang](https://github.com/sourcegraph/scip-clang): C++, C
+- [scip-ruby](https://github.com/sourcegraph/scip-ruby): Sorbet, Ruby
+- [scip-python](https://github.com/sourcegraph/scip-python): Python
+- [scip-dotnet](https://github.com/sourcegraph/scip-dotnet): C#, Visual Basic
 
 For more details about indexers, including LSIF-based indexers,
 see the [Sourcegraph documentation](https://docs.sourcegraph.com/code_navigation/references/indexers).
