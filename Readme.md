@@ -37,7 +37,7 @@ Several indexers currently emit SCIP data:
 * [scip-java](https://github.com/sourcegraph/scip-java): Java, Scala, Kotlin
 * [scip-typescript](https://github.com/sourcegraph/scip-typescript): TypeScript, JavaScript
 * [rust-analyzer](https://github.com/sourcegraph/rust-analyzer): Rust
-* [scip-ruby](https://github.com/sourcegraph/scip-clang): C++, C
+* [scip-clang](https://github.com/sourcegraph/scip-clang): C++, C
 * [scip-ruby](https://github.com/sourcegraph/scip-ruby): Sorbet, Ruby
 * [scip-python](https://github.com/sourcegraph/scip-python): Python
 * [scip-dotnet](https://github.com/sourcegraph/scip-dotnet): C#, Visual Basic
