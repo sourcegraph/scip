@@ -91,6 +91,15 @@ message Document {
   // but have a reference and are defined by some other symbol (see
   // Relationship.is_definition).
   repeated SymbolInformation symbols = 3;
+
+  // (optional) Text contents of the this document. Indexers are not expected to
+  // include the text by default. It's preferrable that clients read the text
+  // contents from the file system by resolving the absolute path from joining
+  // `Index.metadata.project_root` and `Document.relative_path`. This field was
+  // introduced to support `SymbolInformation.signature_documentation`, but it
+  // can be used for other purposes as well, for example testing or when working
+  // with virtual/in-memory documents.
+  string text = 5;
 }
 
 
@@ -178,13 +187,166 @@ message SymbolInformation {
   // The string must be formatted according to the grammar in `Symbol`.
   string symbol = 1;
   // (optional, but strongly recommended) The markdown-formatted documentation
-  // for this symbol. This field is repeated to allow different kinds of
-  // documentation. For example, it's nice to include both the signature of a
-  // method (parameters and return type) along with the accompanying docstring.
+  // for this symbol. Use `SymbolInformation.signature_documentation` to
+  // document the method/class/type signature of this symbol.
+  // Due to historical reasons, indexers may include signature documentation in
+  // this field by rendering markdown code blocks. New indexers should only
+  // include non-code documentation in this field, for example docstrings.
   repeated string documentation = 3;
   // (optional) Relationships to other symbols (e.g., implements, type definition).
   repeated Relationship relationships = 4;
+  // The kind of this symbol. Use this field instead of
+  // `SymbolDescriptor.Suffix` to determine whether something is, for example, a
+  // class or a method.
+  Kind kind = 5;
+  // (optional) Kind represents the fine-grained category of a symbol, suitable for presenting
+  // information about the symbol's meaning in the language.
+  //
+  // For example:
+  // - A Java method would have the kind `Method` while a Go function would
+  //   have the kind `Function`, even if the symbols for these use the same
+  //   syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
+  // - A Go struct has the symbol kind `Struct` while a Java class has
+  //   the symbol kind `Class` even if they both have the same descriptor:
+  //   `SymbolDescriptor.Suffix.Type`.
+  //
+  // Since Kind is more fine-grained than Suffix:
+  // - If two symbols have the same Kind, they should share the same Suffix.
+  // - If two symbols have different Suffixes, they should have different Kinds.
+  enum Kind {
+      UnspecifiedKind = 0;
+      Array = 1;
+      // For Alloy
+      Assertion = 2;
+      AssociatedType = 3;
+      // For C++
+      Attribute = 4;
+      // For Lean
+      Axiom = 5;
+      Boolean = 6;
+      Class = 7;
+      Constant = 8;
+      Constructor = 9;
+      // For Haskell
+      DataFamily = 10;
+      Enum = 11;
+      EnumMember = 12;
+      Event = 13;
+      // For Alloy
+      Fact = 14;
+      Field = 15;
+      File = 16;
+      Function = 17;
+      // For 'get' in Swift
+      Getter = 18;
+      // For Raku
+      Grammar = 19;
+      // For Purescript and Lean
+      Instance = 20;
+      Interface = 21;
+      Key = 22;
+      // For Racket
+      Lang = 23;
+      // For Lean
+      Lemma = 24;
+      Macro = 25;
+      Method = 26;
+      // Analogous to 'ThisParameter' and 'SelfParameter', but for languages
+      // like Go where the receiver doesn't have a conventional name.
+      MethodReceiver = 27;
+      // For Protobuf
+      Message = 28;
+      Module = 29;
+      Namespace = 30;
+      Null = 31;
+      Number = 32;
+      Object = 33;
+      Operator = 34;
+      Package = 35;
+      PackageObject = 36;
+      Parameter = 37;
+      ParameterLabel = 38;
+      // For Haskell's PatternSynonyms
+      Pattern = 39;
+      // For Alloy
+      Predicate = 40;
+      Property = 41;
+      // Analogous to 'Trait' and 'TypeClass', for Swift and Objective-C
+      Protocol = 42;
+      // For Haskell
+      Quasiquoter = 43;
+      // 'self' in Python, Rust, Swift etc.
+      SelfParameter = 44;
+      // For 'set' in Swift
+      Setter = 45;
+      // For Alloy, analogous to 'Struct'.
+      Signature = 46;
+      // For Swift
+      Subscript = 47;
+      String = 48;
+      Struct = 49;
+      // For Lean
+      Tactic = 50;
+      // For Lean
+      Theorem = 51;
+      // Method receiver for languages
+      // 'this' in JavaScript, C++, Java etc.
+      ThisParameter = 52;
+      // Analogous to 'Protocol' and 'TypeClass', for Rust.
+      Trait = 53;
+      // Data type definition for languages like OCaml which use `type`
+      // rather than separate keywords like `struct` and `enum`.
+      Type = 54;
+      TypeAlias = 55;
+      // Analogous to 'Trait' and 'Protocol', for Haskell, Purescript etc.
+      TypeClass = 56;
+      // For Haskell
+      TypeFamily = 57;
+      TypeParameter = 58;
+      // For C, C++, Capn Proto
+      Union = 59;
+      Value = 60;
+      Variable = 61;
+      // Next = 62;
+      // Feel free to open a PR proposing new language-specific kinds.
+  }
+  // (optional) The name of this symbol as it should be displayed to the user.
+  // For example, the symbol "com/example/MyClass#myMethod(+1)." should have the
+  // display name "myMethod". The `symbol` field is not a reliable source of
+  // the display name for several reasons:
+  //
+  // - Local symbols don't encode the name.
+  // - Some languages have case-insensitive names, so the symbol is all-lowercase.
+  // - The symbol may encode names with special characters that should not be
+  //   displayed to the user.
+  string display_name = 6;
+  // (optional) The signature of this symbol as it's displayed in API
+  // documentation or in hover tooltips. For example, a Java method that adds
+  // two numbers this would have `Document.language = "java"` and `Document.text
+  // = "void add(int a, int b)". The `language` and `text` fields are required
+  // while other fields such as `Documentation.occurrences` can be optionally
+  // included to support hyperlinking referenced symbols in the signature.
+  Document signature_documentation = 7;
+  // (optional) The enclosing symbol if this is a local symbol.  For non-local
+  // symbols, the enclosing symbol should be parsed from the `symbol` field
+  // using the `Descriptor` grammar.
+  //
+  // The primary use-case for this field is to allow local symbol to be displayed
+  // in a symbol hierarchy for API documentation. It's OK to leave this field
+  // empty for local variables since local variables usually don't belong in API
+  // documentation. However, in the situation that you wish to include a local
+  // symbol in the hierarchy, then you can use `enclosing_symbol` to locate the
+  // "parent" or "owner" of this local symbol. For example, a Java indexer may
+  // choose to use local symbols for private class fields while providing an
+  // `enclosing_symbol` to reference the enclosing class to allow the field to
+  // be part of the class documentation hierarchy. From the perspective of an
+  // author of an indexer, the decision to use a local symbol or global symbol
+  // should exclusively be determined whether the local symbol is accessible
+  // outside the document, not by the capability to find the enclosing
+  // symbol.
+  string enclosing_symbol = 8;
 }
+
 
 message Relationship {
   string symbol = 1;

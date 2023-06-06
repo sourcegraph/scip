@@ -1,4 +1,4 @@
-{- This file was auto-generated from scip.proto by the proto-lens-protoc program. -}
+{- This file was auto-generated from scip.proto by the protoc-gen-haskell program. -}
 {-# LANGUAGE ScopedTypeVariables, DataKinds, TypeFamilies, UndecidableInstances, GeneralizedNewtypeDeriving, MultiParamTypeClasses, FlexibleContexts, FlexibleInstances, PatternSynonyms, MagicHash, NoImplicitPrelude, DataKinds, BangPatterns, TypeApplications, OverloadedStrings, DerivingStrategies#-}
 {-# OPTIONS_GHC -Wno-unused-imports#-}
 {-# OPTIONS_GHC -Wno-duplicate-exports#-}
@@ -56,6 +56,12 @@ disambiguator ::
    Data.ProtoLens.Field.HasField s "disambiguator" a) =>
   Lens.Family2.LensLike' f s a
 disambiguator = Data.ProtoLens.Field.field @"disambiguator"
+displayName ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "displayName" a) =>
+  Lens.Family2.LensLike' f s a
+displayName = Data.ProtoLens.Field.field @"displayName"
 documentation ::
   forall f s a.
   (Prelude.Functor f,
@@ -68,6 +74,18 @@ documents ::
    Data.ProtoLens.Field.HasField s "documents" a) =>
   Lens.Family2.LensLike' f s a
 documents = Data.ProtoLens.Field.field @"documents"
+enclosingRange ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "enclosingRange" a) =>
+  Lens.Family2.LensLike' f s a
+enclosingRange = Data.ProtoLens.Field.field @"enclosingRange"
+enclosingSymbol ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "enclosingSymbol" a) =>
+  Lens.Family2.LensLike' f s a
+enclosingSymbol = Data.ProtoLens.Field.field @"enclosingSymbol"
 externalSymbols ::
   forall f s a.
   (Prelude.Functor f,
@@ -98,6 +116,11 @@ isTypeDefinition ::
    Data.ProtoLens.Field.HasField s "isTypeDefinition" a) =>
   Lens.Family2.LensLike' f s a
 isTypeDefinition = Data.ProtoLens.Field.field @"isTypeDefinition"
+kind ::
+  forall f s a.
+  (Prelude.Functor f, Data.ProtoLens.Field.HasField s "kind" a) =>
+  Lens.Family2.LensLike' f s a
+kind = Data.ProtoLens.Field.field @"kind"
 language ::
   forall f s a.
   (Prelude.Functor f,
@@ -121,6 +144,13 @@ maybe'package ::
    Data.ProtoLens.Field.HasField s "maybe'package" a) =>
   Lens.Family2.LensLike' f s a
 maybe'package = Data.ProtoLens.Field.field @"maybe'package"
+maybe'signatureDocumentation ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "maybe'signatureDocumentation" a) =>
+  Lens.Family2.LensLike' f s a
+maybe'signatureDocumentation
+  = Data.ProtoLens.Field.field @"maybe'signatureDocumentation"
 maybe'toolInfo ::
   forall f s a.
   (Prelude.Functor f,
@@ -195,6 +225,13 @@ severity ::
    Data.ProtoLens.Field.HasField s "severity" a) =>
   Lens.Family2.LensLike' f s a
 severity = Data.ProtoLens.Field.field @"severity"
+signatureDocumentation ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "signatureDocumentation" a) =>
+  Lens.Family2.LensLike' f s a
+signatureDocumentation
+  = Data.ProtoLens.Field.field @"signatureDocumentation"
 source ::
   forall f s a.
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "source" a) =>
@@ -232,6 +269,11 @@ tags ::
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "tags" a) =>
   Lens.Family2.LensLike' f s a
 tags = Data.ProtoLens.Field.field @"tags"
+text ::
+  forall f s a.
+  (Prelude.Functor f, Data.ProtoLens.Field.HasField s "text" a) =>
+  Lens.Family2.LensLike' f s a
+text = Data.ProtoLens.Field.field @"text"
 textDocumentEncoding ::
   forall f s a.
   (Prelude.Functor f,
@@ -275,6 +317,13 @@ vec'documents ::
    Data.ProtoLens.Field.HasField s "vec'documents" a) =>
   Lens.Family2.LensLike' f s a
 vec'documents = Data.ProtoLens.Field.field @"vec'documents"
+vec'enclosingRange ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "vec'enclosingRange" a) =>
+  Lens.Family2.LensLike' f s a
+vec'enclosingRange
+  = Data.ProtoLens.Field.field @"vec'enclosingRange"
 vec'externalSymbols ::
   forall f s a.
   (Prelude.Functor f,

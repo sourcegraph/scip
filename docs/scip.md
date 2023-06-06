@@ -50,12 +50,13 @@ reported for a document.
 
 Document defines the metadata about a source file on disk.
 
-| Name                     | Type              | Description                                                                                                                                                                                                                                                                        |
-| ------------------------ | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **language**             | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming langauge, including ones that are not specified by the `Language` enum. |
-| **relative_path**        | string            | (Required) Unique path to the text document.                                                                                                                                                                                                                                       |
-| repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                              |
-| repeated **symbols**     | SymbolInformation | Symbols that are "defined" within this document.                                                                                                                                                                                                                                   |
+| Name                     | Type              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **language**             | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming langauge, including ones that are not specified by the `Language` enum.                                                                                                                                                                                                                |
+| **relative_path**        | string            | (Required) Unique path to the text document.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| repeated **symbols**     | SymbolInformation | Symbols that are "defined" within this document.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| **text**                 | string            | (optional) Text contents of the this document. Indexers are not expected to include the text by default. It's preferrable that clients read the text contents from the file system by resolving the absolute path from joining `Index.metadata.project_root` and `Document.relative_path`. This field was introduced to support `SymbolInformation.signature_documentation`, but it can be used for other purposes as well, for example testing or when working with virtual/in-memory documents. |
 
 Additional notes on **relative_path**:
 
@@ -291,11 +292,131 @@ the file and the node corresponding to the symbol.
 SymbolInformation defines metadata about a symbol, such as the symbol's
 docstring or what package it's defined it.
 
-| Name                       | Type         | Description                                                                                                                                                                                                                                                                                       |
-| -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **symbol**                 | string       | Identifier of this symbol, which can be referenced from `Occurence.symbol`. The string must be formatted according to the grammar in `Symbol`.                                                                                                                                                    |
-| repeated **documentation** | string       | (optional, but strongly recommended) The markdown-formatted documentation for this symbol. This field is repeated to allow different kinds of documentation. For example, it's nice to include both the signature of a method (parameters and return type) along with the accompanying docstring. |
-| repeated **relationships** | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).                                                                                                                                                                                                                    |
+| Name                        | Type         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| --------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **symbol**                  | string       | Identifier of this symbol, which can be referenced from `Occurence.symbol`. The string must be formatted according to the grammar in `Symbol`.                                                                                                                                                                                                                                                                                             |
+| repeated **documentation**  | string       | (optional, but strongly recommended) The markdown-formatted documentation for this symbol. Use `SymbolInformation.signature_documentation` to document the method/class/type signature of this symbol. Due to historical reasons, indexers may include signature documentation in this field by rendering markdown code blocks. New indexers should only include non-code documentation in this field, for example docstrings.             |
+| repeated **relationships**  | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).                                                                                                                                                                                                                                                                                                                                                             |
+| **kind**                    | Kind         | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.                                                                                                                                                                                                                                                                                          |
+| **display_name**            | string       | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:                                                                                                                                                                        |
+| **signature_documentation** | Document     | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers this would have `Document.language = "java"` and `Document.text = "void add(int a, int b)". The `language`and`text`fields are required while other fields such as`Documentation.occurrences` can be optionally included to support hyperlinking referenced symbols in the signature. |
+| **enclosing_symbol**        | string       | (optional) The enclosing symbol if this is a local symbol. For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.                                                                                                                                                                                                                                                            |
+
+Additional notes on **display_name**:
+
+(optional) The name of this symbol as it should be displayed to the user.
+For example, the symbol "com/example/MyClass#myMethod(+1)." should have the
+display name "myMethod". The `symbol` field is not a reliable source of
+the display name for several reasons:
+
+- Local symbols don't encode the name.
+- Some languages have case-insensitive names, so the symbol is all-lowercase.
+- The symbol may encode names with special characters that should not be
+  displayed to the user.
+
+Additional notes on **enclosing_symbol**:
+
+(optional) The enclosing symbol if this is a local symbol. For non-local
+symbols, the enclosing symbol should be parsed from the `symbol` field
+using the `Descriptor` grammar.
+
+The primary use-case for this field is to allow local symbol to be displayed
+in a symbol hierarchy for API documentation. It's OK to leave this field
+empty for local variables since local variables usually don't belong in API
+documentation. However, in the situation that you wish to include a local
+symbol in the hierarchy, then you can use `enclosing_symbol` to locate the
+"parent" or "owner" of this local symbol. For example, a Java indexer may
+choose to use local symbols for private class fields while providing an
+`enclosing_symbol` to reference the enclosing class to allow the field to
+be part of the class documentation hierarchy. From the perspective of an
+author of an indexer, the decision to use a local symbol or global symbol
+should exclusively be determined whether the local symbol is accessible
+outside the document, not by the capability to find the enclosing
+symbol.
+
+#### Kind
+
+(optional) Kind represents the fine-grained category of a symbol, suitable for presenting
+information about the symbol's meaning in the language.
+
+For example:
+
+- A Java method would have the kind `Method` while a Go function would
+  have the kind `Function`, even if the symbols for these use the same
+  syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
+- A Go struct has the symbol kind `Struct` while a Java class has
+  the symbol kind `Class` even if they both have the same descriptor:
+  `SymbolDescriptor.Suffix.Type`.
+
+Since Kind is more fine-grained than Suffix:
+
+- If two symbols have the same Kind, they should share the same Suffix.
+- If two symbols have different Suffixes, they should have different Kinds.
+
+| Number | Name            | Description                                                                                                                      |
+| ------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | UnspecifiedKind |
+| 1      | Array           |
+| 2      | Assertion       | For Alloy                                                                                                                        |
+| 3      | AssociatedType  |
+| 4      | Attribute       | For C++                                                                                                                          |
+| 5      | Axiom           | For Lean                                                                                                                         |
+| 6      | Boolean         |
+| 7      | Class           |
+| 8      | Constant        |
+| 9      | Constructor     |
+| 10     | DataFamily      | For Haskell                                                                                                                      |
+| 11     | Enum            |
+| 12     | EnumMember      |
+| 13     | Event           |
+| 14     | Fact            | For Alloy                                                                                                                        |
+| 15     | Field           |
+| 16     | File            |
+| 17     | Function        |
+| 18     | Getter          | For 'get' in Swift                                                                                                               |
+| 19     | Grammar         | For Raku                                                                                                                         |
+| 20     | Instance        | For Purescript and Lean                                                                                                          |
+| 21     | Interface       |
+| 22     | Key             |
+| 23     | Lang            | For Racket                                                                                                                       |
+| 24     | Lemma           | For Lean                                                                                                                         |
+| 25     | Macro           |
+| 26     | Method          |
+| 27     | MethodReceiver  | Analogous to 'ThisParameter' and 'SelfParameter', but for languages like Go where the receiver doesn't have a conventional name. |
+| 28     | Message         | For Protobuf                                                                                                                     |
+| 29     | Module          |
+| 30     | Namespace       |
+| 31     | Null            |
+| 32     | Number          |
+| 33     | Object          |
+| 34     | Operator        |
+| 35     | Package         |
+| 36     | PackageObject   |
+| 37     | Parameter       |
+| 38     | ParameterLabel  |
+| 39     | Pattern         | For Haskell's PatternSynonyms                                                                                                    |
+| 40     | Predicate       | For Alloy                                                                                                                        |
+| 41     | Property        |
+| 42     | Protocol        | Analogous to 'Trait' and 'TypeClass', for Swift and Objective-C                                                                  |
+| 43     | Quasiquoter     | For Haskell                                                                                                                      |
+| 44     | SelfParameter   | 'self' in Python, Rust, Swift etc.                                                                                               |
+| 45     | Setter          | For 'set' in Swift                                                                                                               |
+| 46     | Signature       | For Alloy, analogous to 'Struct'.                                                                                                |
+| 47     | Subscript       | For Swift                                                                                                                        |
+| 48     | String          |
+| 49     | Struct          |
+| 50     | Tactic          | For Lean                                                                                                                         |
+| 51     | Theorem         | For Lean                                                                                                                         |
+| 52     | ThisParameter   | Method receiver for languages 'this' in JavaScript, C++, Java etc.                                                               |
+| 53     | Trait           | Analogous to 'Protocol' and 'TypeClass', for Rust.                                                                               |
+| 54     | Type            | Data type definition for languages like OCaml which use `type` rather than separate keywords like `struct` and `enum`.           |
+| 55     | TypeAlias       |
+| 56     | TypeClass       | Analogous to 'Trait' and 'Protocol', for Haskell, Purescript etc.                                                                |
+| 57     | TypeFamily      | For Haskell                                                                                                                      |
+| 58     | TypeParameter   |
+| 59     | Union           | For C, C++, Capn Proto                                                                                                           |
+| 60     | Value           |
+| 61     | Variable        | Next = 62; Feel free to open a PR proposing new language-specific kinds.                                                         |
 
 ### ToolInfo
 

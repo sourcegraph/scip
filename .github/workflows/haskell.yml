@@ -19,23 +19,6 @@ jobs:
         with:
           ghc-version: '8.10'
           cabal-version: 'latest'
-      - name: Install additional tools
-        run: |
-          sudo apt-get update
-          sudo apt install -y unzip curl
-      - name: Install protoc
-        run: |
-          PROTOC_ZIP=protoc-3.14.0-linux-x86_64.zip
-          curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/"$PROTOC_ZIP"
-          unzip -o "$PROTOC_ZIP" -d "$HOME/.protoc" bin/protoc
-          unzip -o "$PROTOC_ZIP" -d "$HOME/.protoc" 'include/*'
-          echo "$HOME/.protoc/bin" >> "$GITHUB_PATH"
-      - name: Build proto-lens-protoc wrapper
-        run: cabal install proto-lens-protoc --ghc-options='-j2 +RTS -A32m'
-        working-directory: bindings/haskell
-      - name: Generate Haskell
-        run: protoc --plugin=protoc-gen-haskell="$HOME/.cabal/bin/proto-lens-protoc" --haskell_out=src --proto_path=../.. scip.proto
-        working-directory: bindings/haskell
       - name: Build source
         run: cabal build --ghc-options='-j2 +RTS -A32m'
         working-directory: bindings/haskell

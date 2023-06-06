@@ -50,21 +50,41 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
         ..
     } = symbol;
 
+    // Handle local symbols first, to enforce simple formatting
+    if scheme == "local" {
+        if let Some(symbol) = descriptors
+            .iter()
+            .find_map(|desc| match desc.suffix.enum_value() {
+                Ok(descriptor::Suffix::Local) => Some(format!("local {}", desc.name)),
+                _ => None,
+            })
+        {
+            return symbol;
+        }
+    }
+
     if options.include_scheme {
         parts.push(scheme);
     }
 
-    if let Some(package) = package {
-        if options.include_package_manager && !package.manager.is_empty() {
-            parts.push(package.manager);
+    if options.include_package_manager {
+        match &package {
+            Some(package) if !package.manager.is_empty() => parts.push(package.manager.clone()),
+            _ => parts.push(".".to_string()),
         }
+    }
 
-        if options.include_package_name && !package.name.is_empty() {
-            parts.push(package.name);
+    if options.include_package_name {
+        match &package {
+            Some(package) if !package.name.is_empty() => parts.push(package.name.clone()),
+            _ => parts.push(".".to_string()),
         }
+    }
 
-        if options.include_package_version && !package.version.is_empty() {
-            parts.push(package.version);
+    if options.include_package_version {
+        match &package {
+            Some(package) if !package.version.is_empty() => parts.push(package.version.clone()),
+            _ => parts.push(".".to_string()),
         }
     }
 
@@ -74,22 +94,25 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
                 .iter()
                 .filter_map(|desc| {
                     Some(match desc.suffix.enum_value() {
-                        Ok(val) => match val {
-                            descriptor::Suffix::Package | descriptor::Suffix::Namespace => {
-                                format!("{}/", desc.name)
+                        Ok(val) => {
+                            let name = escape_name(&desc.name);
+                            match val {
+                                descriptor::Suffix::Package | descriptor::Suffix::Namespace => {
+                                    format!("{}/", name)
+                                }
+                                descriptor::Suffix::Type => format!("{}#", name),
+                                descriptor::Suffix::Term => format!("{}.", name),
+                                descriptor::Suffix::Method => {
+                                    format!("{}({}).", name, desc.disambiguator)
+                                }
+                                descriptor::Suffix::TypeParameter => format!("[{}]", name),
+                                descriptor::Suffix::Parameter => format!("({})", name),
+                                descriptor::Suffix::Macro => format!("{}!", name),
+                                descriptor::Suffix::Meta => format!("{}:", name),
+                                descriptor::Suffix::Local => format!("{}", name),
+                                descriptor::Suffix::UnspecifiedSuffix => return None,
                             }
-                            descriptor::Suffix::Type => format!("{}#", desc.name),
-                            descriptor::Suffix::Term => format!("{}.", desc.name),
-                            descriptor::Suffix::Method => {
-                                format!("{}({}).", desc.name, desc.disambiguator)
-                            }
-                            descriptor::Suffix::TypeParameter => format!("[{}]", desc.name),
-                            descriptor::Suffix::Parameter => format!("({})", desc.name),
-                            descriptor::Suffix::Macro => format!("{}!", desc.name),
-                            descriptor::Suffix::Meta => format!("{}:", desc.name),
-                            descriptor::Suffix::Local => format!("{}", desc.name),
-                            descriptor::Suffix::UnspecifiedSuffix => return None,
-                        },
+                        }
                         Err(_) => return None,
                     })
                 })
@@ -99,6 +122,17 @@ pub fn format_symbol_with(symbol: Symbol, options: SymbolFormatOptions) -> Strin
     }
 
     parts.join(" ")
+}
+
+fn escape_name(name: &str) -> String {
+    if name
+        .chars()
+        .all(|ch| ch == '_' || ch == '+' || ch == '-' || ch == '$' || ch.is_ascii_alphanumeric())
+    {
+        name.to_string()
+    } else {
+        format!("`{}`", name)
+    }
 }
 
 pub fn format_symbol(symbol: Symbol) -> String {
@@ -133,14 +167,26 @@ pub fn parse_symbol(symbol: &str) -> Result<Symbol, SymbolError> {
         ));
     }
 
+    let package = crate::types::Package {
+        manager: dot(parser.accept_space_escaped_identifier("package.manager")?),
+        name: dot(parser.accept_space_escaped_identifier("package.name")?),
+        version: dot(parser.accept_space_escaped_identifier("package.version")?),
+        special_fields: SpecialFields::default(),
+    };
+
+    // If all the package fields are empty, we can just say that package is None
+    let package = match (
+        package.manager.as_str(),
+        package.name.as_str(),
+        package.version.as_str(),
+    ) {
+        ("", "", "") => protobuf::MessageField::none(),
+        _ => protobuf::MessageField::some(package),
+    };
+
     Ok(Symbol {
         scheme,
-        package: protobuf::MessageField::some(crate::types::Package {
-            manager: parser.accept_space_escaped_identifier("package.manager")?,
-            name: dot(parser.accept_space_escaped_identifier("package.name")?),
-            version: dot(parser.accept_space_escaped_identifier("package.version")?),
-            special_fields: SpecialFields::default(),
-        }),
+        package,
         descriptors: parser.accept_descriptors()?,
         special_fields: SpecialFields::default(),
     })
@@ -335,6 +381,7 @@ impl SymbolParser {
                     '.' => Ok(new_descriptor(name, descriptor::Suffix::Term)),
                     '#' => Ok(new_descriptor(name, descriptor::Suffix::Type)),
                     ':' => Ok(new_descriptor(name, descriptor::Suffix::Meta)),
+                    '!' => Ok(new_descriptor(name, descriptor::Suffix::Macro)),
                     _ => Err(SymbolError::MissingDescriptor),
                 }
             }
@@ -482,5 +529,78 @@ mod test {
             input_symbol,
             format_symbol(parse_symbol(input_symbol).expect("rust symbol"))
         )
+    }
+
+    #[test]
+    fn formats_symbol_with_dots() {
+        assert_eq!(
+            "scip-ctags . . . foo.",
+            format_symbol(Symbol {
+                scheme: "scip-ctags".to_string(),
+                package: None.into(),
+                descriptors: vec![new_descriptor("foo".to_string(), descriptor::Suffix::Term)],
+                ..Default::default()
+            })
+        );
+
+        // Handles randomly some are empty and some are dots
+        assert_eq!(
+            "scip-ctags manager . . MyType#foo.",
+            format_symbol(Symbol {
+                scheme: "scip-ctags".to_string(),
+                package: Some(Package {
+                    manager: "manager".to_string(),
+                    name: ".".to_string(),
+                    version: "".to_string(),
+                    ..Default::default()
+                })
+                .into(),
+
+                descriptors: vec![
+                    new_descriptor("MyType".to_string(), descriptor::Suffix::Type),
+                    new_descriptor("foo".to_string(), descriptor::Suffix::Term)
+                ],
+                ..Default::default()
+            })
+        );
+
+        assert_eq!("local 7", format_symbol(Symbol::new_local(7)));
+    }
+
+    #[test]
+    fn parses_rust_method_with_macro() {
+        let input_symbol = "rust-analyzer cargo test_rust_dependency 0.1.0 println!";
+
+        assert_eq!(
+            parse_symbol(input_symbol).expect("rust symbol"),
+            Symbol {
+                scheme: "rust-analyzer".to_string(),
+                package: Package::new_with_values("cargo", "test_rust_dependency", "0.1.0"),
+                descriptors: vec![new_descriptor(
+                    "println".to_string(),
+                    descriptor::Suffix::Macro
+                ),],
+                special_fields: SpecialFields::default(),
+            }
+        );
+
+        assert_eq!(
+            input_symbol,
+            format_symbol(parse_symbol(input_symbol).expect("rust symbol"))
+        )
+    }
+
+    #[test]
+    fn test_properly_escapes_identifiers() {
+        let symbol_struct = Symbol {
+            scheme: "scip-ctags".to_string(),
+            package: None.into(),
+            descriptors: vec![new_descriptor("foo=".to_string(), descriptor::Suffix::Term)],
+            ..Default::default()
+        };
+        let symbol = format_symbol(symbol_struct.clone());
+
+        assert_eq!(symbol, "scip-ctags . . . `foo=`.");
+        assert_eq!(parse_symbol(&symbol).expect("to parse"), symbol_struct);
     }
 }
