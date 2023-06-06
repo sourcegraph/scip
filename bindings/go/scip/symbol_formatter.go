@@ -14,6 +14,8 @@ type SymbolFormatter struct {
 	IncludePackageName    func(name string) bool
 	IncludePackageVersion func(version string) bool
 	IncludeDescriptor     func(descriptor string) bool
+	IncludeRawDescriptor  func(descriptor *Descriptor) bool
+	IncludeDisambiguator  func(disambiguator string) bool
 }
 
 // VerboseSymbolFormatter formats all parts of the symbol.
@@ -24,6 +26,8 @@ var VerboseSymbolFormatter = SymbolFormatter{
 	IncludePackageName:    func(_ string) bool { return true },
 	IncludePackageVersion: func(_ string) bool { return true },
 	IncludeDescriptor:     func(_ string) bool { return true },
+	IncludeRawDescriptor:  func(_ *Descriptor) bool { return true },
+	IncludeDisambiguator:  func(_ string) bool { return true },
 }
 
 // Same as VerboseSymbolFormatter but silently ignores errors.
@@ -34,6 +38,8 @@ var LenientVerboseSymbolFormatter = SymbolFormatter{
 	IncludePackageName:    func(_ string) bool { return true },
 	IncludePackageVersion: func(_ string) bool { return true },
 	IncludeDescriptor:     func(_ string) bool { return true },
+	IncludeRawDescriptor:  func(_ *Descriptor) bool { return true },
+	IncludeDisambiguator:  func(_ string) bool { return true },
 }
 
 // DescriptorOnlyFormatter formats only the descriptor part of the symbol.
@@ -44,6 +50,8 @@ var DescriptorOnlyFormatter = SymbolFormatter{
 	IncludePackageName:    func(_ string) bool { return false },
 	IncludePackageVersion: func(_ string) bool { return false },
 	IncludeDescriptor:     func(_ string) bool { return true },
+	IncludeRawDescriptor:  func(_ *Descriptor) bool { return true },
+	IncludeDisambiguator:  func(_ string) bool { return true },
 }
 
 func (f *SymbolFormatter) Format(symbol string) (string, error) {
@@ -70,6 +78,9 @@ func (f *SymbolFormatter) FormatSymbol(symbol *Symbol) string {
 	}
 	descriptor := strings.Builder{}
 	for _, desc := range symbol.Descriptors {
+		if !f.IncludeRawDescriptor(desc) {
+			continue
+		}
 		switch desc.Suffix {
 		case Descriptor_Namespace:
 			descriptor.WriteString(desc.Name)
@@ -83,7 +94,9 @@ func (f *SymbolFormatter) FormatSymbol(symbol *Symbol) string {
 		case Descriptor_Method:
 			descriptor.WriteString(desc.Name)
 			descriptor.WriteRune('(')
-			descriptor.WriteString(desc.Disambiguator)
+			if f.IncludeDisambiguator(desc.Disambiguator) {
+				descriptor.WriteString(desc.Disambiguator)
+			}
 			descriptor.WriteString(").")
 		case Descriptor_TypeParameter:
 			descriptor.WriteRune('[')
