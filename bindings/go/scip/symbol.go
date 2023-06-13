@@ -96,7 +96,10 @@ func (s *symbolParser) error(message string) error {
 }
 
 func (s *symbolParser) current() rune {
-	return s.Symbol[s.index]
+	if s.index < len(s.Symbol) {
+		return s.Symbol[s.index]
+	}
+	return '\x00'
 }
 
 func (s *symbolParser) peekNext() rune {
@@ -119,6 +122,7 @@ func (s *symbolParser) parseDescriptors() ([]*Descriptor, error) {
 }
 
 func (s *symbolParser) parseDescriptor() (*Descriptor, error) {
+	start := s.index
 	switch s.peekNext() {
 	case '(':
 		s.index++
@@ -168,7 +172,12 @@ func (s *symbolParser) parseDescriptor() (*Descriptor, error) {
 		default:
 		}
 	}
-	return nil, nil
+
+	end := s.index
+	if s.index > len(s.Symbol) {
+		end = len(s.Symbol)
+	}
+	return nil, errors.Newf("unrecognized descriptor %q", string(s.Symbol[start:end]))
 }
 
 func (s *symbolParser) acceptIdentifier(what string) (string, error) {

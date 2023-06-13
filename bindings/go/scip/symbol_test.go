@@ -81,3 +81,16 @@ func TestParseSymbol(t *testing.T) {
 		})
 	}
 }
+
+func TestParseSymbolNoCrash(t *testing.T) {
+	for _, symbolName := range []string{
+		"lsif-java maven package 1.0.0",
+		"lsif-java maven package 1.0.0 java/io/File#Entry.trailingstring",
+		"lsif-java maven package 1.0.0 java/io/File#Entry.unrecognizedSuffix@",
+	} {
+
+		if _, err := ParseSymbol(symbolName); err == nil {
+			t.Fatalf("expected error from parsing %q", symbolName)
+		}
+	}
+}
