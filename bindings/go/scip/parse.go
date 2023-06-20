@@ -86,24 +86,20 @@ func ParseStreaming(r io.Reader, pi ProcessIndex) error {
 		if numRead == 0 {
 			return errors.New("read 0 bytes from index")
 		}
-		fieldIndex, fieldType, fieldLen := protowire.ConsumeTag(tagBuf)
-		if fieldLen < 0 {
-			return errors.Wrap(protowire.ParseError(fieldLen), "failed to consume tag")
+		fieldNumber, fieldType, errCode := protowire.ConsumeTag(tagBuf)
+		if errCode < 0 {
+			return errors.Wrap(protowire.ParseError(errCode), "failed to consume tag")
 		}
-		// In all these three cases, we need to check that the fieldType is LEN
-		// (because of the embedded message), read the length, resize the scratch buffer,
-		// read that many bytes, then parser the buffer accordingly and pass that to the
-		// underlying thing
-		switch fieldIndex {
+		switch fieldNumber {
 		// As per scip.proto, all of Metadata, Document and SymbolInformation are sub-messages
 		case metadataFieldNumber, documentsFieldNumber, externalSymbolsFieldNumber:
 			if fieldType != protowire.BytesType {
-				return errors.Newf("expected LEN type tag for %s", indexFieldName(fieldIndex))
+				return errors.Newf("expected LEN type tag for %s", indexFieldName(fieldNumber))
 			}
 			lenBuf = lenBuf[:0]
 			dataLen, err := readVarint(r, lenBuf)
 			if err != nil {
-				return errors.Wrapf(err, "failed to read length for %s", indexFieldName(fieldIndex))
+				return errors.Wrapf(err, "failed to read length for %s", indexFieldName(fieldNumber))
 			}
 			if dataLen > uint64(cap(dataBuf)) {
 				dataBuf = make([]byte, dataLen)
@@ -113,31 +109,32 @@ func ParseStreaming(r io.Reader, pi ProcessIndex) error {
 					dataBuf = append(dataBuf, 0)
 				}
 			}
+			// Keep going when len == 0 instead of short-circuiting to preserve empty sub-messages
 			if dataLen > 0 {
 				numRead, err := r.Read(dataBuf)
 				if err != nil {
-					return errors.Wrapf(err, "failed to read data for %s", indexFieldName(fieldIndex))
+					return errors.Wrapf(err, "failed to read data for %s", indexFieldName(fieldNumber))
 				}
 				if uint64(numRead) != dataLen {
 					return errors.Newf("expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
 				}
 			}
-			if fieldIndex == metadataFieldNumber && pi.ProcessMetadata != nil {
+			if fieldNumber == metadataFieldNumber && pi.ProcessMetadata != nil {
 				m := Metadata{}
 				if err := proto.Unmarshal(dataBuf, &m); err != nil {
-					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldIndex))
+					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 				}
 				pi.ProcessMetadata(&m)
-			} else if fieldIndex == documentsFieldNumber && pi.ProcessDocument != nil {
+			} else if fieldNumber == documentsFieldNumber && pi.ProcessDocument != nil {
 				d := Document{}
 				if err := proto.Unmarshal(dataBuf, &d); err != nil {
-					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldIndex))
+					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 				}
 				pi.ProcessDocument(&d)
-			} else if fieldIndex == externalSymbolsFieldNumber && pi.ProcessExternalSymbol != nil {
+			} else if fieldNumber == externalSymbolsFieldNumber && pi.ProcessExternalSymbol != nil {
 				s := SymbolInformation{}
 				if err := proto.Unmarshal(dataBuf, &s); err != nil {
-					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldIndex))
+					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 				}
 				pi.ProcessExternalSymbol(&s)
 			} else {
