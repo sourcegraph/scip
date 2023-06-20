@@ -67,8 +67,8 @@ func indexFieldName(i protowire.Number) string {
 // ParseStreaming processes an index by incrementally reading input from the io.Reader.
 func ParseStreaming(r io.Reader, pi ProcessIndex) error {
 	// (field_number << 3) | wire_type
-	// The tag is a varint with field number between 0-2
-	// So it will always fit in 1 byte
+	// The Index type has less than 15 fields, so the tag
+	// will fit in 1 byte with the varint encoding.
 	tagBuf := make([]byte, 1)
 	// Maximum size of varint is 10 bytes
 	// https://protobuf.dev/programming-guides/encoding/#varints
