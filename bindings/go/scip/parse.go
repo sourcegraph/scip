@@ -9,7 +9,7 @@ import (
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
-// This is a struct of functions rather than an interface since Go
+// ProcessIndex is a struct of functions rather than an interface since Go
 // doesn't support adding new functions to interfaces with default
 // implementations, so adding new functions here for new fields in
 // the SCIP schema would break clients.
@@ -18,6 +18,12 @@ type ProcessIndex struct {
 	ProcessDocument       func(*Document)
 	ProcessExternalSymbol func(*SymbolInformation)
 }
+
+const (
+	metadataFieldNumber        = 1
+	documentsFieldNumber       = 2
+	externalSymbolsFieldNumber = 3
+)
 
 // readVarint attempts to read a varint, using scratchBuf for temporary storage
 //
@@ -49,11 +55,11 @@ func readVarint(r io.Reader, scratchBuf []byte) (uint64, error) {
 }
 
 func indexFieldName(i protowire.Number) string {
-	if i == 0 {
+	if i == metadataFieldNumber {
 		return "metadata"
-	} else if i == 1 {
+	} else if i == documentsFieldNumber {
 		return "documents"
-	} else if i == 2 {
+	} else if i == externalSymbolsFieldNumber {
 		return "external_symbols"
 	}
 	return "<unknown>"
@@ -67,8 +73,8 @@ func ParseStreaming(r io.Reader, pi ProcessIndex) error {
 	tagBuf := make([]byte, 1)
 	// Maximum size of varint is 10 bytes
 	// https://protobuf.dev/programming-guides/encoding/#varints
-	lenBuf := make([]byte, 10, 0)
-	dataBuf := make([]byte, 1024, 0)
+	lenBuf := make([]byte, 0, 10)
+	dataBuf := make([]byte, 0, 1024)
 
 	for {
 		numRead, err := r.Read(tagBuf)
@@ -90,8 +96,8 @@ func ParseStreaming(r io.Reader, pi ProcessIndex) error {
 		// read that many bytes, then parser the buffer accordingly and pass that to the
 		// underlying thing
 		switch fieldIndex {
-		// As per scip.proto, all of Metadata, Document and SymbolInformation are submessages
-		case 0, 1, 2:
+		// As per scip.proto, all of Metadata, Document and SymbolInformation are sub-messages
+		case metadataFieldNumber, documentsFieldNumber, externalSymbolsFieldNumber:
 			if fieldType != protowire.BytesType {
 				return errors.Newf("expected LEN type tag for %s", indexFieldName(fieldIndex))
 			}
@@ -108,26 +114,28 @@ func ParseStreaming(r io.Reader, pi ProcessIndex) error {
 					dataBuf = append(dataBuf, 0)
 				}
 			}
-			numRead, err := r.Read(dataBuf)
-			if err != nil {
-				return errors.Wrapf(err, "failed to read data for %s", indexFieldName(fieldIndex))
+			if dataLen > 0 {
+				numRead, err := r.Read(dataBuf)
+				if err != nil {
+					return errors.Wrapf(err, "failed to read data for %s", indexFieldName(fieldIndex))
+				}
+				if uint64(numRead) != dataLen {
+					return errors.Newf("expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
+				}
 			}
-			if uint64(numRead) != dataLen {
-				return errors.Newf("expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
-			}
-			if fieldIndex == 0 && pi.ProcessMetadata != nil {
+			if fieldIndex == metadataFieldNumber && pi.ProcessMetadata != nil {
 				m := Metadata{}
 				if err := proto.Unmarshal(dataBuf, &m); err != nil {
 					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldIndex))
 				}
 				pi.ProcessMetadata(&m)
-			} else if fieldIndex == 1 && pi.ProcessDocument != nil {
+			} else if fieldIndex == documentsFieldNumber && pi.ProcessDocument != nil {
 				d := Document{}
 				if err := proto.Unmarshal(dataBuf, &d); err != nil {
 					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldIndex))
 				}
 				pi.ProcessDocument(&d)
-			} else if fieldIndex == 2 && pi.ProcessExternalSymbol != nil {
+			} else if fieldIndex == externalSymbolsFieldNumber && pi.ProcessExternalSymbol != nil {
 				s := SymbolInformation{}
 				if err := proto.Unmarshal(dataBuf, &s); err != nil {
 					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldIndex))
