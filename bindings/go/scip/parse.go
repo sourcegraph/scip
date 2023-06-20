@@ -19,17 +19,18 @@ type IndexVisitor struct {
 	VisitExternalSymbol func(*SymbolInformation)
 }
 
+// See https://protobuf.dev/programming-guides/encoding/#varints
+const maxVarintBytes = 10
+
 // ParseStreaming processes an index by incrementally reading input from the io.Reader.
 //
 // Parsing takes place at Document granularity for ease of use.
 func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
-	// (field_number << 3) | wire_type
-	// The Index type has less than 15 fields, so the tag
-	// will fit in 1 byte with the varint encoding.
+	// The tag is encoded as a varint with value: (field_number << 3) | wire_type
+	// Varints < 128 fit in 1 byte, which means 4 bits are available for field
+	// numbers. The Index type has less than 15 fields, so the tag will fit in 1 byte.
 	tagBuf := make([]byte, 1)
-	// Maximum size of varint is 10 bytes
-	// https://protobuf.dev/programming-guides/encoding/#varints
-	lenBuf := make([]byte, 0, 10)
+	lenBuf := make([]byte, 0, maxVarintBytes)
 	dataBuf := make([]byte, 0, 1024)
 
 	for {
