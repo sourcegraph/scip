@@ -22,7 +22,7 @@ type IndexVisitor struct {
 // ParseStreaming processes an index by incrementally reading input from the io.Reader.
 //
 // Parsing takes place at Document granularity for ease of use.
-func ParseStreaming(r io.Reader, pi IndexVisitor) error {
+func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
 	// (field_number << 3) | wire_type
 	// The Index type has less than 15 fields, so the tag
 	// will fit in 1 byte with the varint encoding.
@@ -73,7 +73,8 @@ func ParseStreaming(r io.Reader, pi IndexVisitor) error {
 					return errors.Wrapf(err, "failed to read data for %s", indexFieldName(fieldNumber))
 				}
 				if uint64(numRead) != dataLen {
-					return errors.Newf("expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
+					return errors.Newf(
+						"expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
 				}
 			}
 			if fieldNumber == metadataFieldNumber && pi.VisitMetadata != nil {

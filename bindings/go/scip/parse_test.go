@@ -24,7 +24,7 @@ func TestFuzz(t *testing.T) {
 		bytesReader := bytes.NewReader(indexBytes)
 		parsedIndex := Index{}
 
-		processIndex := IndexVisitor{func(metadata *Metadata) {
+		indexVisitor := IndexVisitor{func(metadata *Metadata) {
 			parsedIndex.Metadata = metadata
 		}, func(document *Document) {
 			parsedIndex.Documents = append(parsedIndex.Documents, document)
@@ -32,10 +32,9 @@ func TestFuzz(t *testing.T) {
 			parsedIndex.ExternalSymbols = append(parsedIndex.ExternalSymbols, extSym)
 		}}
 
-		if err := ParseStreaming(bytesReader, processIndex); err != nil {
+		if err := indexVisitor.ParseStreaming(bytesReader); err != nil {
 			t.Fatalf("failed to parse index: %s\ngot error: %v",
-				protojson.MarshalOptions{Multiline: true}.Format(&index),
-				err)
+				protojson.MarshalOptions{Multiline: true}.Format(&index), err)
 		}
 
 		if !proto.Equal(&index, &parsedIndex) {
