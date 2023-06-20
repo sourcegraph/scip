@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/bufbuild/buf v1.4.0
 	github.com/google/go-cmp v0.5.7
+	github.com/google/gofuzz v1.1.0
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/hhatto/gocloc v0.4.2
 	github.com/k0kubun/pp/v3 v3.1.0
