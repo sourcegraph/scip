@@ -93,6 +93,17 @@ once in the stream. Other field values may appear in any order.
 | repeated **documents**        | Document          | Documents that belong to this index.                                                                                                                                                                                                                                                                                                                                |
 | repeated **external_symbols** | SymbolInformation | (optional) Symbols that are referenced from this index but are defined in an external package (a separate `Index` message). Leave this field empty if you assume the external package will get indexed separately. If the external package won't get indexed for some reason then you can use this field to provide hover documentation for those external symbols. |
 
+Additional notes on **external_symbols**:
+
+(optional) Symbols that are referenced from this index but are defined in
+an external package (a separate `Index` message). Leave this field empty
+if you assume the external package will get indexed separately. If the
+external package won't get indexed for some reason then you can use this
+field to provide hover documentation for those external symbols.
+
+IMPORTANT: When adding a new field to `Index` here, add a matching
+function in `IndexVisitor` and update `ParseStreaming`.
+
 ### Metadata
 
 | Name                       | Type            | Description                                                                                                                                      |
