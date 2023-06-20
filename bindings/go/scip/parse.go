@@ -9,63 +9,20 @@ import (
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
-// ProcessIndex is a struct of functions rather than an interface since Go
+// IndexVisitor is a struct of functions rather than an interface since Go
 // doesn't support adding new functions to interfaces with default
 // implementations, so adding new functions here for new fields in
-// the SCIP schema would break clients.
-type ProcessIndex struct {
-	ProcessMetadata       func(*Metadata)
-	ProcessDocument       func(*Document)
-	ProcessExternalSymbol func(*SymbolInformation)
-}
-
-const (
-	metadataFieldNumber        = 1
-	documentsFieldNumber       = 2
-	externalSymbolsFieldNumber = 3
-)
-
-// readVarint attempts to read a varint, using scratchBuf for temporary storage
-//
-// scratchBuf should be able to accommodate any varint size
-// based on its capacity, and be cleared before readVarint is called
-func readVarint(r io.Reader, scratchBuf []byte) (uint64, error) {
-	nextByteBuf := make([]byte, 1, 1)
-	for i := 0; i < cap(scratchBuf); i++ {
-		numRead, err := r.Read(nextByteBuf)
-		if err != nil {
-			return 0, errors.Wrapf(err, "failed to read %d-th byte of Varint. soFar: %v", i, scratchBuf)
-		}
-		if numRead == 0 {
-			return 0, errors.Newf("failed to read %d-th byte of Varint. soFar: %v", scratchBuf)
-		}
-		nextByte := nextByteBuf[0]
-		scratchBuf = append(scratchBuf, nextByte)
-		if nextByte <= 127 { // https://protobuf.dev/programming-guides/encoding/#varints
-			// Continuation bit is not set, so Varint must've ended
-			break
-		}
-	}
-	value, errCode := protowire.ConsumeVarint(scratchBuf)
-	if errCode < 0 {
-		return value, protowire.ParseError(errCode)
-	}
-	return value, nil
-}
-
-func indexFieldName(i protowire.Number) string {
-	if i == metadataFieldNumber {
-		return "metadata"
-	} else if i == documentsFieldNumber {
-		return "documents"
-	} else if i == externalSymbolsFieldNumber {
-		return "external_symbols"
-	}
-	return "<unknown>"
+// the SCIP schema would break clients. Individual functions may be nil.
+type IndexVisitor struct {
+	VisitMetadata       func(*Metadata)
+	VisitDocument       func(*Document)
+	VisitExternalSymbol func(*SymbolInformation)
 }
 
 // ParseStreaming processes an index by incrementally reading input from the io.Reader.
-func ParseStreaming(r io.Reader, pi ProcessIndex) error {
+//
+// Parsing takes place at Document granularity for ease of use.
+func ParseStreaming(r io.Reader, pi IndexVisitor) error {
 	// (field_number << 3) | wire_type
 	// The Index type has less than 15 fields, so the tag
 	// will fit in 1 byte with the varint encoding.
@@ -119,24 +76,24 @@ func ParseStreaming(r io.Reader, pi ProcessIndex) error {
 					return errors.Newf("expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
 				}
 			}
-			if fieldNumber == metadataFieldNumber && pi.ProcessMetadata != nil {
+			if fieldNumber == metadataFieldNumber && pi.VisitMetadata != nil {
 				m := Metadata{}
 				if err := proto.Unmarshal(dataBuf, &m); err != nil {
 					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 				}
-				pi.ProcessMetadata(&m)
-			} else if fieldNumber == documentsFieldNumber && pi.ProcessDocument != nil {
+				pi.VisitMetadata(&m)
+			} else if fieldNumber == documentsFieldNumber && pi.VisitDocument != nil {
 				d := Document{}
 				if err := proto.Unmarshal(dataBuf, &d); err != nil {
 					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 				}
-				pi.ProcessDocument(&d)
-			} else if fieldNumber == externalSymbolsFieldNumber && pi.ProcessExternalSymbol != nil {
+				pi.VisitDocument(&d)
+			} else if fieldNumber == externalSymbolsFieldNumber && pi.VisitExternalSymbol != nil {
 				s := SymbolInformation{}
 				if err := proto.Unmarshal(dataBuf, &s); err != nil {
 					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 				}
-				pi.ProcessExternalSymbol(&s)
+				pi.VisitExternalSymbol(&s)
 			} else {
 				return errors.Newf("added new field in scip.Index but forgot to add unmarshaling code")
 			}
@@ -144,4 +101,49 @@ func ParseStreaming(r io.Reader, pi ProcessIndex) error {
 			return errors.Newf("added new field in scip.Index but forgot to update streaming parser")
 		}
 	}
+}
+
+const (
+	metadataFieldNumber        = 1
+	documentsFieldNumber       = 2
+	externalSymbolsFieldNumber = 3
+)
+
+// readVarint attempts to read a varint, using scratchBuf for temporary storage
+//
+// scratchBuf should be able to accommodate any varint size
+// based on its capacity, and be cleared before readVarint is called
+func readVarint(r io.Reader, scratchBuf []byte) (uint64, error) {
+	nextByteBuf := make([]byte, 1, 1)
+	for i := 0; i < cap(scratchBuf); i++ {
+		numRead, err := r.Read(nextByteBuf)
+		if err != nil {
+			return 0, errors.Wrapf(err, "failed to read %d-th byte of Varint. soFar: %v", i, scratchBuf)
+		}
+		if numRead == 0 {
+			return 0, errors.Newf("failed to read %d-th byte of Varint. soFar: %v", scratchBuf)
+		}
+		nextByte := nextByteBuf[0]
+		scratchBuf = append(scratchBuf, nextByte)
+		if nextByte <= 127 { // https://protobuf.dev/programming-guides/encoding/#varints
+			// Continuation bit is not set, so Varint must've ended
+			break
+		}
+	}
+	value, errCode := protowire.ConsumeVarint(scratchBuf)
+	if errCode < 0 {
+		return value, protowire.ParseError(errCode)
+	}
+	return value, nil
+}
+
+func indexFieldName(i protowire.Number) string {
+	if i == metadataFieldNumber {
+		return "metadata"
+	} else if i == documentsFieldNumber {
+		return "documents"
+	} else if i == externalSymbolsFieldNumber {
+		return "external_symbols"
+	}
+	return "<unknown>"
 }

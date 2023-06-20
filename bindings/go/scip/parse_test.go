@@ -24,7 +24,7 @@ func TestFuzz(t *testing.T) {
 		bytesReader := bytes.NewReader(indexBytes)
 		parsedIndex := Index{}
 
-		processIndex := ProcessIndex{func(metadata *Metadata) {
+		processIndex := IndexVisitor{func(metadata *Metadata) {
 			parsedIndex.Metadata = metadata
 		}, func(document *Document) {
 			parsedIndex.Documents = append(parsedIndex.Documents, document)
