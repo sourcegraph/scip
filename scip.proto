@@ -31,7 +31,8 @@ message Index {
   // external package won't get indexed for some reason then you can use this
   // field to provide hover documentation for those external symbols.
   repeated SymbolInformation external_symbols = 3;
-  // IMPORTANT: Update ParseStreaming on adding a new field here
+  // IMPORTANT: When adding a new field to `Index` here, add a matching
+  // function in `IndexVisitor` and update `ParseStreaming`.
 }
 
 message Metadata {
