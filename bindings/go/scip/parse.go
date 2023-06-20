@@ -30,7 +30,6 @@ const (
 // scratchBuf should be able to accommodate any varint size
 // based on its capacity, and be cleared before readVarint is called
 func readVarint(r io.Reader, scratchBuf []byte) (uint64, error) {
-	//buf := make([]byte, 10, 0)
 	nextByteBuf := make([]byte, 1, 1)
 	for i := 0; i < cap(scratchBuf); i++ {
 		numRead, err := r.Read(nextByteBuf)
