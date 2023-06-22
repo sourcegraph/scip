@@ -70,7 +70,7 @@ func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
 			}
 			// Keep going when len == 0 instead of short-circuiting to preserve empty sub-messages
 			if dataLen > 0 {
-				numRead, err := r.Read(dataBuf)
+				numRead, err := io.ReadAtLeast(r, dataBuf, dataLen)
 				if err != nil {
 					return errors.Wrapf(err, "failed to read data for %s", indexFieldName(fieldNumber))
 				}
