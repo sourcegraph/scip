@@ -55,15 +55,16 @@ func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
 				return errors.Newf("expected LEN type tag for %s", indexFieldName(fieldNumber))
 			}
 			lenBuf = lenBuf[:0]
-			dataLen, err := readVarint(r, lenBuf)
+			dataLenUint, err := readVarint(r, &lenBuf)
+			dataLen := int(dataLenUint)
 			if err != nil {
 				return errors.Wrapf(err, "failed to read length for %s", indexFieldName(fieldNumber))
 			}
-			if dataLen > uint64(cap(dataBuf)) {
+			if dataLen > cap(dataBuf) {
 				dataBuf = make([]byte, dataLen)
 			} else {
 				dataBuf = dataBuf[:0]
-				for i := uint64(0); i < dataLen; i++ {
+				for i := 0; i < dataLen; i++ {
 					dataBuf = append(dataBuf, 0)
 				}
 			}
@@ -73,7 +74,7 @@ func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
 				if err != nil {
 					return errors.Wrapf(err, "failed to read data for %s", indexFieldName(fieldNumber))
 				}
-				if uint64(numRead) != dataLen {
+				if numRead != dataLen {
 					return errors.Newf(
 						"expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
 				}
@@ -115,9 +116,9 @@ const (
 //
 // scratchBuf should be able to accommodate any varint size
 // based on its capacity, and be cleared before readVarint is called
-func readVarint(r io.Reader, scratchBuf []byte) (uint64, error) {
+func readVarint(r io.Reader, scratchBuf *[]byte) (uint64, error) {
 	nextByteBuf := make([]byte, 1, 1)
-	for i := 0; i < cap(scratchBuf); i++ {
+	for i := 0; i < cap(*scratchBuf); i++ {
 		numRead, err := r.Read(nextByteBuf)
 		if err != nil {
 			return 0, errors.Wrapf(err, "failed to read %d-th byte of Varint. soFar: %v", i, scratchBuf)
@@ -126,13 +127,13 @@ func readVarint(r io.Reader, scratchBuf []byte) (uint64, error) {
 			return 0, errors.Newf("failed to read %d-th byte of Varint. soFar: %v", scratchBuf)
 		}
 		nextByte := nextByteBuf[0]
-		scratchBuf = append(scratchBuf, nextByte)
+		*scratchBuf = append(*scratchBuf, nextByte)
 		if nextByte <= 127 { // https://protobuf.dev/programming-guides/encoding/#varints
 			// Continuation bit is not set, so Varint must've ended
 			break
 		}
 	}
-	value, errCode := protowire.ConsumeVarint(scratchBuf)
+	value, errCode := protowire.ConsumeVarint(*scratchBuf)
 	if errCode < 0 {
 		return value, protowire.ParseError(errCode)
 	}
