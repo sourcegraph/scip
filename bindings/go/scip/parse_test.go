@@ -3,6 +3,7 @@ package scip
 import (
 	"bytes"
 	"compress/gzip"
+	"io"
 	"os"
 	"regexp"
 	"testing"
@@ -14,6 +15,11 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+func TestEmpty(t *testing.T) {
+	index := Index{}
+	checkRoundtrip(t, &index)
+}
+
 func TestFuzz(t *testing.T) {
 	pat := regexp.MustCompile("^(state|sizeCache|unknownFields|SignatureDocumentation)$")
 	f := fuzz.New().NumElements(0, 2).SkipFieldsWithPattern(pat)
@@ -21,35 +27,11 @@ func TestFuzz(t *testing.T) {
 		index := Index{}
 		f.Fuzz(&index)
 
-		indexBytes, err := proto.Marshal(&index)
-		require.NoError(t, err)
-		bytesReader := bytes.NewReader(indexBytes)
-		parsedIndex := Index{}
-
-		indexVisitor := IndexVisitor{func(metadata *Metadata) {
-			parsedIndex.Metadata = metadata
-		}, func(document *Document) {
-			parsedIndex.Documents = append(parsedIndex.Documents, document)
-		}, func(extSym *SymbolInformation) {
-			parsedIndex.ExternalSymbols = append(parsedIndex.ExternalSymbols, extSym)
-		}}
-
-		if err := indexVisitor.ParseStreaming(bytesReader); err != nil {
-			t.Fatalf("failed to parse index: %s\ngot error: %v",
-				protojson.MarshalOptions{Multiline: true}.Format(&index), err)
-		}
-
-		if !proto.Equal(&index, &parsedIndex) {
-			want := protojson.MarshalOptions{Multiline: true}.Format(&index)
-			got := protojson.MarshalOptions{Multiline: true}.Format(&parsedIndex)
-			diff := cmp.Diff(want, got)
-			require.NotEqual(t, diff, "")
-			t.Fatalf("index (-want, +got): %s", diff)
-		}
+		checkRoundtrip(t, &index)
 	}
 }
 
-func TestLargeDocuments(t *testing.T) {
+func getTestIndex(t *testing.T) *gzip.Reader {
 	// Copied from the Sourcegraph monorepo, which triggered a bug
 	// where Reader.read() didn't actually fill a buffer completely,
 	// due to the presence of large documents.
@@ -61,7 +43,63 @@ func TestLargeDocuments(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error unzipping test file: %s", err)
 	}
+	return reader
+}
 
+func TestLargeDocuments(t *testing.T) {
+	reader := getTestIndex(t)
+	_ = parseStreaming(t, reader)
+}
+
+func TestDocumentsOnly(t *testing.T) {
+	pat := regexp.MustCompile("^(state|sizeCache|unknownFields|SignatureDocumentation)$")
+	f := fuzz.New().NumElements(0, 2).SkipFieldsWithPattern(pat)
+	for i := 0; i < 100; i++ {
+		index := Index{}
+		f.Fuzz(&index)
+
+		parsedIndex := Index{}
+
+		indexVisitor := IndexVisitor{VisitDocument: func(document *Document) {
+			parsedIndex.Documents = append(parsedIndex.Documents, document)
+		}}
+
+		indexBytes, err := proto.Marshal(&index)
+		require.NoError(t, err)
+		bytesReader := bytes.NewReader(indexBytes)
+
+		if err := indexVisitor.ParseStreaming(bytesReader); err != nil {
+			t.Fatalf("got error parsing index %v", err)
+		}
+
+		onlyDocumentsIndex := Index{}
+		onlyDocumentsIndex.Documents = index.Documents
+
+		checkIndexEqual(t, &onlyDocumentsIndex, &parsedIndex)
+	}
+}
+
+func checkIndexEqual(t *testing.T, expected *Index, got *Index) {
+	if !proto.Equal(expected, got) {
+		want := protojson.MarshalOptions{Multiline: true}.Format(expected)
+		got := protojson.MarshalOptions{Multiline: true}.Format(got)
+		diff := cmp.Diff(want, got)
+		require.NotEqual(t, diff, "")
+		t.Fatalf("index (-want, +got): %s", diff)
+	}
+}
+
+func checkRoundtrip(t *testing.T, index *Index) {
+	indexBytes, err := proto.Marshal(index)
+	require.NoError(t, err)
+	bytesReader := bytes.NewReader(indexBytes)
+
+	parsedIndex := parseStreaming(t, bytesReader)
+
+	checkIndexEqual(t, index, parsedIndex)
+}
+
+func parseStreaming(t *testing.T, reader io.Reader) *Index {
 	parsedIndex := Index{}
 
 	indexVisitor := IndexVisitor{func(metadata *Metadata) {
@@ -75,4 +113,5 @@ func TestLargeDocuments(t *testing.T) {
 	if err := indexVisitor.ParseStreaming(reader); err != nil {
 		t.Fatalf("got error parsing index %v", err)
 	}
+	return &parsedIndex
 }
