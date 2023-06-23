@@ -79,29 +79,37 @@ func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
 						"expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
 				}
 			}
-			if fieldNumber == metadataFieldNumber && pi.VisitMetadata != nil {
-				m := Metadata{}
-				if err := proto.Unmarshal(dataBuf, &m); err != nil {
-					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+			if fieldNumber == metadataFieldNumber {
+				if pi.VisitMetadata != nil {
+					m := Metadata{}
+					if err := proto.Unmarshal(dataBuf, &m); err != nil {
+						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+					}
+					pi.VisitMetadata(&m)
 				}
-				pi.VisitMetadata(&m)
-			} else if fieldNumber == documentsFieldNumber && pi.VisitDocument != nil {
-				d := Document{}
-				if err := proto.Unmarshal(dataBuf, &d); err != nil {
-					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+			} else if fieldNumber == documentsFieldNumber {
+				if pi.VisitDocument != nil {
+					d := Document{}
+					if err := proto.Unmarshal(dataBuf, &d); err != nil {
+						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+					}
+					pi.VisitDocument(&d)
 				}
-				pi.VisitDocument(&d)
-			} else if fieldNumber == externalSymbolsFieldNumber && pi.VisitExternalSymbol != nil {
-				s := SymbolInformation{}
-				if err := proto.Unmarshal(dataBuf, &s); err != nil {
-					return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+			} else if fieldNumber == externalSymbolsFieldNumber {
+				if pi.VisitExternalSymbol != nil {
+					s := SymbolInformation{}
+					if err := proto.Unmarshal(dataBuf, &s); err != nil {
+						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+					}
+					pi.VisitExternalSymbol(&s)
 				}
-				pi.VisitExternalSymbol(&s)
 			} else {
-				return errors.Newf("added new field in scip.Index but forgot to add unmarshaling code")
+				return errors.Newf(
+					"added new field with number: %v in scip.Index but missing unmarshaling code", fieldNumber)
 			}
 		default:
-			return errors.Newf("added new field in scip.Index but forgot to update streaming parser")
+			return errors.Newf(
+				"added new field with number: %v in scip.Index but forgot to update streaming parser", fieldNumber)
 		}
 	}
 }
