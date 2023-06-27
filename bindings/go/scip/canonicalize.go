@@ -10,11 +10,27 @@ func CanonicalizeDocument(document *Document) *Document {
 // CanonicalizeOccurrences deterministically re-orders the fields of the given occurrence slice.
 func CanonicalizeOccurrences(occurrences []*Occurrence) []*Occurrence {
 	canonicalized := make([]*Occurrence, 0, len(occurrences))
-	for _, occurrence := range FlattenOccurrences(occurrences) {
+	for _, occurrence := range FlattenOccurrences(RemoveIllegalOccurrences(occurrences)) {
 		canonicalized = append(canonicalized, CanonicalizeOccurrence(occurrence))
 	}
 
 	return SortOccurrences(canonicalized)
+}
+
+// RemoveIllegalOccurrences removes all occurrences that do not include a range. This is
+// emitted by some indexers and will silently crash a downstream process, including further
+// canonicalization, when trying to convert an empty slice into a valid range.
+func RemoveIllegalOccurrences(occurrences []*Occurrence) []*Occurrence {
+	filtered := occurrences[:0]
+	for _, occurrence := range occurrences {
+		if len(occurrence.Range) != 3 && len(occurrence.Range) != 4 {
+			continue
+		}
+
+		filtered = append(filtered, occurrence)
+	}
+
+	return filtered
 }
 
 // CanonicalizeOccurrence deterministically re-orders the fields of the given occurrence.
