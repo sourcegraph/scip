@@ -23,7 +23,7 @@ func CanonicalizeOccurrences(occurrences []*Occurrence) []*Occurrence {
 func RemoveIllegalOccurrences(occurrences []*Occurrence) []*Occurrence {
 	filtered := occurrences[:0]
 	for _, occurrence := range occurrences {
-		if len(occurrence.Range) == 0 {
+		if len(occurrence.Range) != 3 && len(occurrence.Range) != 4 {
 			continue
 		}
 
