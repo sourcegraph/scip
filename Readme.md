@@ -8,10 +8,10 @@ such as Go to definition, Find references, and Find implementations.
 This repository includes:
 
 - A [protobuf schema for SCIP](./scip.proto).
-- Rich Go bindings for SCIP: This includes many utility functions
+- Rich Go and Rust bindings for SCIP: These include many utility functions
   to help build tooling on top of SCIP.
-- Auto-generated bindings for TypeScript, Rust and Haskell.
-- The [`scip` CLI](./docs/CLI.md) makes SCIP indexes
+- Auto-generated bindings for TypeScript and Haskell.
+- The [`scip` CLI](./docs/CLI.md), which makes SCIP indexes
   a breeze to work with.
 
 If you're interested in better understanding the motivation behind SCIP,
@@ -36,11 +36,13 @@ Several indexers currently emit SCIP data:
 
 - [scip-java](https://github.com/sourcegraph/scip-java): Java, Scala, Kotlin
 - [scip-typescript](https://github.com/sourcegraph/scip-typescript): TypeScript, JavaScript
-- [rust-analyzer](https://github.com/rust-lang/rust-analyzer)): Rust
+- [rust-analyzer](https://github.com/rust-lang/rust-analyzer): Rust
 - [scip-clang](https://github.com/sourcegraph/scip-clang): C++, C
-- [scip-ruby](https://github.com/sourcegraph/scip-ruby): Sorbet, Ruby
+- [scip-ruby](https://github.com/sourcegraph/scip-ruby): Ruby
 - [scip-python](https://github.com/sourcegraph/scip-python): Python
 - [scip-dotnet](https://github.com/sourcegraph/scip-dotnet): C#, Visual Basic
+- [scip-dart](https://github.com/Workiva/scip-dart): Dart
+- [scip-php](https://github.com/davidrjenni/scip-php): PHP
 
 For more details about indexers, including LSIF-based indexers,
 see the [Sourcegraph documentation](https://docs.sourcegraph.com/code_navigation/references/indexers).
