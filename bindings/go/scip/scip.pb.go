@@ -911,12 +911,12 @@ func (Descriptor_Suffix) EnumDescriptor() ([]byte, []int) {
 // information about the symbol's meaning in the language.
 //
 // For example:
-// - A Java method would have the kind `Method` while a Go function would
-//   have the kind `Function`, even if the symbols for these use the same
-//   syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
-// - A Go struct has the symbol kind `Struct` while a Java class has
-//   the symbol kind `Class` even if they both have the same descriptor:
-//   `SymbolDescriptor.Suffix.Type`.
+//   - A Java method would have the kind `Method` while a Go function would
+//     have the kind `Function`, even if the symbols for these use the same
+//     syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
+//   - A Go struct has the symbol kind `Struct` while a Java class has
+//     the symbol kind `Class` even if they both have the same descriptor:
+//     `SymbolDescriptor.Suffix.Type`.
 //
 // Since Kind is more fine-grained than Suffix:
 // - If two symbols have the same Kind, they should share the same Suffix.

@@ -8,6 +8,7 @@ on:
       - 'bindings/**'
       - 'scip.proto'
       - 'buf**'
+      - '.tool-versions'
 
 jobs:
   protoc-gen-up-to-date:
