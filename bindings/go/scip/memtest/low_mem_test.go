@@ -15,6 +15,9 @@ import (
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
+// Do not add any other tests in this sub-package, so that the
+// SetMemoryLimit call doesn't interfere with other running tests
+
 func TestLowMemoryParsing(t *testing.T) {
 	tmpFile, err := os.CreateTemp(t.TempDir(), "very-large-index.scip")
 	require.NoError(t, err)
