@@ -20,6 +20,7 @@ func TestLowMemoryParsing(t *testing.T) {
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpFile.Name())
 
+	// Total index size will be about (textSize + ε) * docCount ~= 128 MB
 	const textSize = 128 * 1024
 	const docCount = 1000
 	{
