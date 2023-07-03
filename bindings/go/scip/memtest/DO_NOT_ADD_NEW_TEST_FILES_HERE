@@ -1,0 +1,4 @@
+This package should only have a single test
+so that we can use SetMemoryLimit without
+affecting other tests running in different
+goroutines in the same process.
