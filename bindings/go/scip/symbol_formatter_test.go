@@ -35,7 +35,7 @@ func TestSymbolFormatterRoundTrip(t *testing.T) {
 	tests := []test{
 		{"lsif-java maven package 1.0.0 java/io/File#Entry.method(+1).(param)[TypeParam]"},
 		{"rust-analyzer cargo std 1.0.0 macros/println!"},
-		{"mod first  escape second  escape third  escape `github.com/foo/``bar/n2/n3/n4`/T#f()."},
+		{"zeroth  escape first  escape second  escape third  escape `github.com/foo/``bar/n2/n3/n4`/T#f()."},
 	}
 	for _, test := range tests {
 		t.Run(test.Symbol, func(t *testing.T) {
