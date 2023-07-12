@@ -63,63 +63,124 @@ func (f *SymbolFormatter) Format(symbol string) (string, error) {
 }
 
 func (f *SymbolFormatter) FormatSymbol(symbol *Symbol) string {
-	var parts []string
-	if f.IncludeScheme(symbol.Scheme) { // Always include the scheme for local symbols
-		parts = append(parts, symbol.Scheme)
+	b := &strings.Builder{}
+	if f.IncludeScheme(symbol.Scheme) {
+		writeEscapedPackage(b, symbol.Scheme)
 	}
-	if symbol.Package != nil && symbol.Package.Manager != "" && f.IncludePackageManager(symbol.Package.Manager) {
-		parts = append(parts, symbol.Package.Manager)
-	}
-	if symbol.Package != nil && symbol.Package.Name != "" && f.IncludePackageName(symbol.Package.Name) {
-		parts = append(parts, symbol.Package.Name)
-	}
-	if symbol.Package != nil && symbol.Package.Version != "" && f.IncludePackageVersion(symbol.Package.Version) {
-		parts = append(parts, symbol.Package.Version)
-	}
-	descriptor := strings.Builder{}
-	for _, desc := range symbol.Descriptors {
-		if !f.IncludeRawDescriptor(desc) {
-			continue
+	if symbol.Package != nil {
+		if f.IncludePackageManager(symbol.Package.Manager) {
+			buffer(b)
+			writeEscapedPackage(b, symbol.Package.Manager)
 		}
-		switch desc.Suffix {
-		case Descriptor_Namespace:
-			descriptor.WriteString(desc.Name)
-			descriptor.WriteRune('/')
-		case Descriptor_Type:
-			descriptor.WriteString(desc.Name)
-			descriptor.WriteRune('#')
-		case Descriptor_Term:
-			descriptor.WriteString(desc.Name)
-			descriptor.WriteRune('.')
-		case Descriptor_Method:
-			descriptor.WriteString(desc.Name)
-			descriptor.WriteRune('(')
-			if f.IncludeDisambiguator(desc.Disambiguator) {
-				descriptor.WriteString(desc.Disambiguator)
-			}
-			descriptor.WriteString(").")
-		case Descriptor_TypeParameter:
-			descriptor.WriteRune('[')
-			descriptor.WriteString(desc.Name)
-			descriptor.WriteRune(']')
-		case Descriptor_Parameter:
-			descriptor.WriteRune('(')
-			descriptor.WriteString(desc.Name)
-			descriptor.WriteRune(')')
-		case Descriptor_Meta:
-			descriptor.WriteString(desc.Name)
-			descriptor.WriteRune(':')
-		case Descriptor_Macro:
-			descriptor.WriteString(desc.Name)
-			descriptor.WriteRune('!')
-		case Descriptor_Local:
-			descriptor.WriteString(desc.Name)
+		if f.IncludePackageName(symbol.Package.Name) {
+			buffer(b)
+			writeEscapedPackage(b, symbol.Package.Name)
 		}
-	}
-	descriptorString := descriptor.String()
-	if f.IncludeDescriptor(descriptorString) {
-		parts = append(parts, descriptorString)
+		if f.IncludePackageVersion(symbol.Package.Version) {
+			buffer(b)
+			writeEscapedPackage(b, symbol.Package.Version)
+		}
 	}
 
-	return strings.Join(parts, " ")
+	if descriptorString := f.FormatDescriptors(symbol.Descriptors); f.IncludeDescriptor(descriptorString) {
+		buffer(b)
+		b.WriteString(descriptorString)
+	}
+
+	return b.String()
+}
+
+func (f *SymbolFormatter) FormatDescriptors(descriptors []*Descriptor) string {
+	b := &strings.Builder{}
+	for _, descriptor := range descriptors {
+		if !f.IncludeRawDescriptor(descriptor) {
+			continue
+		}
+
+		switch descriptor.Suffix {
+		case Descriptor_Local:
+			b.WriteString(descriptor.Name)
+		case Descriptor_Namespace:
+			writeSuffixedDescriptor(b, descriptor.Name, '/')
+		case Descriptor_Type:
+			writeSuffixedDescriptor(b, descriptor.Name, '#')
+		case Descriptor_Term:
+			writeSuffixedDescriptor(b, descriptor.Name, '.')
+		case Descriptor_Meta:
+			writeSuffixedDescriptor(b, descriptor.Name, ':')
+		case Descriptor_Macro:
+			writeSuffixedDescriptor(b, descriptor.Name, '!')
+		case Descriptor_TypeParameter:
+			writeSandwichedDescriptor(b, '[', descriptor.Name, ']')
+		case Descriptor_Parameter:
+			writeSandwichedDescriptor(b, '(', descriptor.Name, ')')
+
+		case Descriptor_Method:
+			if f.IncludeDisambiguator(descriptor.Disambiguator) {
+				writeSuffixedDescriptor(b, descriptor.Name, '(')
+				writeSuffixedDescriptor(b, descriptor.Disambiguator, ')', '.')
+			} else {
+				writeSuffixedDescriptor(b, descriptor.Name, '(', ')', '.')
+			}
+		}
+	}
+
+	return b.String()
+}
+
+func writeEscapedPackage(b *strings.Builder, name string) {
+	if name == "" {
+		name = "."
+	}
+
+	writeGenericEscapedIdentifier(b, name, ' ')
+}
+
+func writeSuffixedDescriptor(b *strings.Builder, identifier string, suffixes ...rune) {
+	escape := false
+	for _, ch := range identifier {
+		if !isIdentifierCharacter(ch) {
+			escape = true
+			break
+		}
+	}
+
+	if escape {
+		b.WriteRune('`')
+		writeGenericEscapedIdentifier(b, identifier, '`')
+		b.WriteRune('`')
+	} else {
+		b.WriteString(identifier)
+	}
+
+	for _, suffix := range suffixes {
+		b.WriteRune(suffix)
+	}
+}
+
+func writeSandwichedDescriptor(b *strings.Builder, prefix rune, identifier string, suffixes ...rune) {
+	b.WriteRune(prefix)
+	writeSuffixedDescriptor(b, identifier, suffixes...)
+}
+
+func writeGenericEscapedIdentifier(b *strings.Builder, identifier string, escape rune) {
+	for {
+		idx := strings.IndexRune(identifier, escape)
+		if idx < 0 {
+			break
+		}
+
+		b.WriteString(identifier[:idx])
+		b.WriteRune(escape)
+		b.WriteRune(escape)
+		identifier = identifier[idx+1:]
+	}
+
+	b.WriteString(identifier)
+}
+
+func buffer(b *strings.Builder) {
+	if b.Len() > 0 {
+		b.WriteRune(' ')
+	}
 }
