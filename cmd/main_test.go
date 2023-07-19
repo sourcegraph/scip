@@ -45,7 +45,7 @@ func TestCLIReferenceInSync(t *testing.T) {
 		require.Nil(t, err)
 		help := strings.TrimSpace(string(helpBytes))
 		require.Truef(t, strings.Contains(readme, help),
-			"Readme.md missing help text %s for %s.\nRun `%s` and paste the output in the Readme.",
+			"docs/CLI.md missing help text %s for %s.\nRun `%s` and paste the output in the Readme.",
 			help, commandName, strings.Join(append([]string{"scip"}, args...), " "))
 	}
 
