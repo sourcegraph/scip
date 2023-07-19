@@ -74,3 +74,12 @@ func fromFlag(storage *string) *cli.StringFlag {
 		Value:       "index.scip",
 	}
 }
+
+func projectRootFlag(storage *string) *cli.StringFlag {
+	return &cli.StringFlag{
+		Name: "project-root",
+		Usage: "Override project root in the SCIP file. " +
+			"This can be helpful when the SCIP index was created on another computer",
+		Destination: storage,
+	}
+}

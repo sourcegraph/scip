@@ -16,7 +16,8 @@ import (
 )
 
 type statsFlags struct {
-	from string
+	from              string
+	customProjectRoot string
 }
 
 func statsCommand() cli.Command {
@@ -24,7 +25,10 @@ func statsCommand() cli.Command {
 	stats := cli.Command{
 		Name:  "stats",
 		Usage: "Output useful statistics about a SCIP index",
-		Flags: []cli.Flag{fromFlag(&statsFlags.from)},
+		Flags: []cli.Flag{
+			fromFlag(&statsFlags.from),
+			projectRootFlag(&statsFlags.customProjectRoot),
+		},
 		Action: func(c *cli.Context) error {
 			return statsMain(statsFlags)
 		},

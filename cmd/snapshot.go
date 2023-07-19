@@ -37,12 +37,7 @@ and symbol information.`,
 				Destination: &snapshotFlags.output,
 				Value:       "scip-snapshot",
 			},
-			&cli.StringFlag{
-				Name: "project-root",
-				Usage: "Override project root in the SCIP file. " +
-					"For example, this can be helpful when the SCIP index was created inside a Docker image or created on another computer",
-				Destination: &snapshotFlags.customProjectRoot,
-			},
+			projectRootFlag(&snapshotFlags.customProjectRoot),
 			&cli.BoolFlag{
 				Name:        "strict",
 				Usage:       "If true, fail fast on errors",
