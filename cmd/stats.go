@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -46,7 +47,7 @@ func statsMain(flags statsFlags) error {
 		return errors.Errorf("Index.Metadata is nil (--from=%s)", from)
 	}
 	output := map[string]interface{}{}
-	indexStats, err := countStatistics(index)
+	indexStats, err := countStatistics(index, flags.customProjectRoot)
 	if err != nil {
 		return errors.Wrap(err, "error counting stats")
 	}
@@ -65,8 +66,8 @@ type indexStatistics struct {
 	Definitions int32 `json:"definitions"`
 }
 
-func countStatistics(index *scip.Index) (*indexStatistics, error) {
-	loc, err := countLinesOfCode(index)
+func countStatistics(index *scip.Index, customProjectRoot string) (*indexStatistics, error) {
+	loc, err := countLinesOfCode(index, customProjectRoot)
 	if err != nil {
 		return nil, err
 	}
@@ -87,12 +88,27 @@ func countStatistics(index *scip.Index) (*indexStatistics, error) {
 	return stats, nil
 }
 
-func countLinesOfCode(index *scip.Index) (*gocloc.Result, error) {
+func countLinesOfCode(index *scip.Index, customProjectRoot string) (*gocloc.Result, error) {
+	var localSource string
 	root, err := url.Parse(index.Metadata.ProjectRoot)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to parse Index.Metadata.ProjectRoot as a URI %s", index.Metadata.ProjectRoot)
 	}
-	stat, err := os.Stat(root.Path)
+	if customProjectRoot != "" {
+		localSource = customProjectRoot
+	} else {
+		_, err := os.Stat(root.Path)
+		if errors.Is(err, os.ErrNotExist) {
+			cwd, _ := os.Getwd()
+			log.Printf("Project root [%s] doesn't exist, using current working directory [%s] instead. "+
+				"To override this behaviour, specify --project-root=<folder> option", root.Path, cwd)
+			localSource = cwd
+		} else if err != nil {
+			return nil, err
+		}
+	}
+
+	stat, err := os.Stat(localSource)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +118,7 @@ func countLinesOfCode(index *scip.Index) (*gocloc.Result, error) {
 	processor := gocloc.NewProcessor(gocloc.NewDefinedLanguages(), gocloc.NewClocOptions())
 	var paths []string
 	for _, document := range index.Documents {
-		paths = append(paths, filepath.Join(root.Path, document.RelativePath))
+		paths = append(paths, filepath.Join(localSource, document.RelativePath))
 	}
 	return processor.Analyze(paths)
 }
