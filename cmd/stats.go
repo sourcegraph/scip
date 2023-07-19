@@ -40,7 +40,7 @@ func statsMain(flags statsFlags) error {
 	from := flags.from
 	index, err := readFromOption(from)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error reading SCIP file")
 	}
 	if index.Metadata == nil {
 		return errors.Errorf("Index.Metadata is nil (--from=%s)", from)
@@ -48,7 +48,7 @@ func statsMain(flags statsFlags) error {
 	output := map[string]interface{}{}
 	indexStats, err := countStatistics(index)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error counting stats")
 	}
 	jsonBytes, err := json.MarshalIndent(indexStats, "", "  ")
 	if err != nil {
@@ -97,7 +97,7 @@ func countLinesOfCode(index *scip.Index) (*gocloc.Result, error) {
 		return nil, err
 	}
 	if !stat.IsDir() {
-		return nil, errors.Errorf("index.Metadata.ProjectRoot is not a directory: %s", root.Path)
+		return nil, errors.Errorf("Project root [%s] is not a directory", localSource)
 	}
 	processor := gocloc.NewProcessor(gocloc.NewDefinedLanguages(), gocloc.NewClocOptions())
 	var paths []string
