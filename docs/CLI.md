@@ -34,9 +34,8 @@ COMMANDS:
    help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --help, -h     show help (default: false)
-   --version, -v  print the version (default: false)
-
+   --help, -h     show help
+   --version, -v  print the version
 ```
 
 ## `scip convert`
@@ -69,9 +68,6 @@ DESCRIPTION:
 
    You may want to filter the output using `grep -v <pattern>`
    to narrow down on certain classes of errors.
-
-OPTIONS:
-   --help, -h  show help (default: false)
 ```
 
 ## `scip print`
@@ -88,7 +84,6 @@ DESCRIPTION:
    Do not rely on the output of this command in scripts
 
 OPTIONS:
-   --help, -h  show help (default: false)
    --json      Output in JSON format (default: false)
 ```
 
@@ -108,12 +103,11 @@ DESCRIPTION:
    and symbol information.
 
 OPTIONS:
-   --comment-syntax value  Comment syntax to use for snapshot files (default: "//")
    --from value            Path to SCIP index file (default: "index.scip")
-   --help, -h              show help (default: false)
+   --to value              Path to output directory for snapshot files (default: "scip-snapshot")
    --project-root value    Override project root in the SCIP file. For example, this can be helpful when the SCIP index was created inside a Docker image or created on another computer
    --strict                If true, fail fast on errors (default: true)
-   --to value              Path to output directory for snapshot files (default: "scip-snapshot")
+   --comment-syntax value  Comment syntax to use for snapshot files (default: "//")
 ```
 
 ## `scip stats`

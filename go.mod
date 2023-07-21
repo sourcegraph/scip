@@ -13,7 +13,7 @@ require (
 	github.com/smacker/go-tree-sitter v0.0.0-20220209044044-0d3022e933c3
 	github.com/sourcegraph/sourcegraph/lib v0.0.0-20220511160847-5a43d3ea24eb
 	github.com/stretchr/testify v1.7.1
-	github.com/urfave/cli/v2 v2.19.1
+	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/tools v0.1.10
 	google.golang.org/protobuf v1.28.0
 )
