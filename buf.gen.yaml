@@ -6,7 +6,7 @@ plugins:
     out: ./docs/
     opt: docs/scip.sprig,scip.md
     # NOTE: the sprig file is a template, it is not generated.
-  - remote: buf.build/library/plugins/go:v1.27.1-1
+  - name: go
     out: ./bindings/go/scip/
     opt:
       - paths=source_relative

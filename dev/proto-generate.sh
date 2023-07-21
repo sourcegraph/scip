@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -xeuo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.." # cd to repo root dir
 
