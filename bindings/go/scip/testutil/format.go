@@ -33,7 +33,7 @@ func FormatSnapshots(
 	} else if _, err := os.Stat(localSourcesRoot); errors.Is(err, os.ErrNotExist) {
 		cwd, _ := os.Getwd()
 		log.Printf("Project root [%s] doesn't exist, using current working directory [%s] instead. "+
-			"To override this behaviour, use --root=<folder> option directly", projectRootUrl.Path, cwd)
+			"To override this behaviour, use --project-root=<folder> option directly", projectRootUrl.Path, cwd)
 		localSourcesRoot = cwd
 	}
 
