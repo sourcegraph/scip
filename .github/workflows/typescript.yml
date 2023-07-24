@@ -20,4 +20,6 @@ jobs:
           js: true
       - run: yarn install
       - name: Check TypeScript
-        run: ./node_modules/.bin/tsc -b bindings/typescript
+        run: |
+          ./node_modules/.bin/tsc --version
+          ./node_modules/.bin/tsc -b bindings/typescript
