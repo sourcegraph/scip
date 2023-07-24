@@ -4,5 +4,6 @@
     "module": "commonjs",
     "rootDir": ".",
     "strict": true
-  }
+  },
+  "exclude": ["scip.ts"]
 }
