@@ -15,12 +15,12 @@
     functionality, such as for converting a SCIP index into an LSIF index.
     This is used by the CLI below as well as the
     [Sourcegraph CLI](https://github.com/sourcegraph/src-cli).
-- [cmd/](./cmd/): CLI for SCIP.
-  - [cmd/tests/](./cmd/tests/): Test data and packages for SCIP.
-    - [cmd/tests/reprolang/](./cmd/tests/reprolang/): A verbose, small language
+- [cmd/scip](./cmd/scip): CLI for SCIP.
+  - [cmd/scip/tests/](./cmd/scip/tests/): Test data and packages for SCIP.
+    - [cmd/scip/tests/reprolang/](./cmd/scip/tests/reprolang/): A verbose, small language
       which consists of declarations, references, imports and other minor bits
       of functionality, which is used to test the SCIP CLI. The language is
-      defined using a [tree-sitter grammar](cmd/tests/reprolang/grammar.js).
+      defined using a [tree-sitter grammar](cmd/scip/tests/reprolang/grammar.js).
       This functionality not meant for use outside of this repository.
 - [docs/](./docs/): Auto-generated documentation.
 
@@ -33,11 +33,11 @@
    For the Haskell bindings, see `bindings/haskell/README.md`.
 2. Regenerating snapshots after making changes to the CLI.
    ```
-   go test ./cmd -update-snapshots
+   go test ./cmd/scip -update-snapshots
    ```
 3. Regenerating parser for Repro after editing its grammar.
    ```
-   cd cmd/tests/reprolang
+   cd cmd/scip/tests/reprolang
    ./generate-tree-sitter-parser.sh
    ```
 
@@ -76,19 +76,19 @@ To do this, add a test file (and implement any new functionality) first.
 Then, regenerate the LSIF index with absolute paths.
 
 ```bash
-go test ./cmd -update-snapshots -debug-snapshot-abspaths
+go test ./cmd/scip -update-snapshots -debug-snapshot-abspaths
 ```
 
 The LSIF index can be uploaded to a local Sourcegraph instance using:
 
 ```bash
-PACKAGE=MY_PACKAGE_NAME SRC_ACCESS_TOKEN=MY_TOKEN SRC_ENDPOINT=https://sourcegraph.test:3443 src code-intel upload -file="cmd/tests/snapshots/output/$PACKAGE/dump.lsif" -root="cmd/tests/snapshots/input/$PACKAGE"
+PACKAGE=MY_PACKAGE_NAME SRC_ACCESS_TOKEN=MY_TOKEN SRC_ENDPOINT=https://sourcegraph.test:3443 src code-intel upload -file="cmd/scip/tests/snapshots/output/$PACKAGE/dump.lsif" -root="cmd/scip/tests/snapshots/input/$PACKAGE"
 ```
 
 ## Release a new version
 
 First, add release notes to the [CHANGELOG](CHANGELOG.md).
-Next, update the version in `cmd/version.txt`.
+Next, update the version in `cmd/scip/version.txt`.
 
 After landing a commit with those two changes, run the release script:
 (requires the [GitHub CLI](https://cli.github.com/))
