@@ -5,6 +5,7 @@
  * git: https://github.com/thesayyn/protoc-gen-ts */
 import * as pb_1 from "google-protobuf";
 export namespace scip {
+    export const removeMeAfteGreenCI: number = 'hello'
     export enum ProtocolVersion {
         UnspecifiedProtocolVersion = 0
     }
