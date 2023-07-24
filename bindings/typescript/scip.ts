@@ -1750,7 +1750,7 @@ export namespace scip {
             pb_1.Message.setField(this, 4, value);
         }
         get tags() {
-            return pb_1.Message.getFieldWithDefault(this, 5, DiagnosticTag.UnspecifiedDiagnosticTag) as DiagnosticTag[];
+            return pb_1.Message.getFieldWithDefault(this, 5, []) as DiagnosticTag[];
         }
         set tags(value: DiagnosticTag[]) {
             pb_1.Message.setField(this, 5, value);

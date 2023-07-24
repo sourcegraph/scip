@@ -3,60 +3,71 @@
 
 # Semantic Code Intelligence Protocol (SCIP) reference
 
+
 ### Descriptor
 
-| Name              | Type   | Description |
-| ----------------- | ------ | ----------- |
-| **name**          | string |
-| **disambiguator** | string |
-| **suffix**        | Suffix |
+
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **name** | string | 
+|  **disambiguator** | string | 
+|  **suffix** | Suffix | 
+
+
 
 #### Suffix
 
-| Number | Name              | Description                                  |
-| ------ | ----------------- | -------------------------------------------- |
-| 0      | UnspecifiedSuffix |
-| 1      | Namespace         | Unit of code abstraction and/or namespacing. |
-| 1      | Package           | Use Namespace instead.                       |
-| 2      | Type              |
-| 3      | Term              |
-| 4      | Method            |
-| 5      | TypeParameter     |
-| 6      | Parameter         |
-| 7      | Meta              | Can be used for any purpose.                 |
-| 8      | Local             |
-| 9      | Macro             |
+
+
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedSuffix | 
+| 1 | Namespace | Unit of code abstraction and/or namespacing.
+| 1 | Package | Use Namespace instead.
+| 2 | Type | 
+| 3 | Term | 
+| 4 | Method | 
+| 5 | TypeParameter | 
+| 6 | Parameter | 
+| 7 | Meta | Can be used for any purpose.
+| 8 | Local | 
+| 9 | Macro | 
 
 Additional notes on **Namespace**:
 
 Unit of code abstraction and/or namespacing.
 
 NOTE: This corresponds to a package in Go and JVM languages.
-
 ### Diagnostic
 
 Represents a diagnostic, such as a compiler error or warning, which should be
 reported for a document.
 
-| Name              | Type          | Description                                                                                                   |
-| ----------------- | ------------- | ------------------------------------------------------------------------------------------------------------- |
-| **severity**      | Severity      | Should this diagnostic be reported as an error, warning, info, or hint?                                       |
-| **code**          | string        | (optional) Code of this diagnostic, which might appear in the user interface.                                 |
-| **message**       | string        | Message of this diagnostic.                                                                                   |
-| **source**        | string        | (optional) Human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'. |
-| repeated **tags** | DiagnosticTag |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **severity** | Severity | Should this diagnostic be reported as an error, warning, info, or hint?
+|  **code** | string | (optional) Code of this diagnostic, which might appear in the user interface.
+|  **message** | string | Message of this diagnostic.
+|  **source** | string | (optional) Human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
+| repeated **tags** | DiagnosticTag | 
+
+
+
+
 
 ### Document
 
 Document defines the metadata about a source file on disk.
 
-| Name                     | Type              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **language**             | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming langauge, including ones that are not specified by the `Language` enum.                                                                                                                                                                                                                |
-| **relative_path**        | string            | (Required) Unique path to the text document.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| repeated **symbols**     | SymbolInformation | Symbols that are "defined" within this document.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| **text**                 | string            | (optional) Text contents of the this document. Indexers are not expected to include the text by default. It's preferrable that clients read the text contents from the file system by resolving the absolute path from joining `Index.metadata.project_root` and `Document.relative_path`. This field was introduced to support `SymbolInformation.signature_documentation`, but it can be used for other purposes as well, for example testing or when working with virtual/in-memory documents. |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **language** | string | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming langauge, including ones that are not specified by the `Language` enum.
+|  **relative_path** | string | (Required) Unique path to the text document.
+| repeated **occurrences** | Occurrence | Occurrences that appear in this file.
+| repeated **symbols** | SymbolInformation | Symbols that are "defined" within this document.
+|  **text** | string | (optional) Text contents of the this document. Indexers are not expected to include the text by default. It's preferrable that clients read the text contents from the file system by resolving the absolute path from joining `Index.metadata.project_root` and `Document.relative_path`. This field was introduced to support `SymbolInformation.signature_documentation`, but it can be used for other purposes as well, for example testing or when working with virtual/in-memory documents.
+
 
 Additional notes on **relative_path**:
 
@@ -70,6 +81,8 @@ Additional notes on **relative_path**:
 5. The path must be canonical; it cannot include empty components ('//'),
    or '.' or '..'.
 
+
+
 Additional notes on **symbols**:
 
 Symbols that are "defined" within this document.
@@ -77,6 +90,7 @@ Symbols that are "defined" within this document.
 This should include symbols which technically do not have any definition,
 but have a reference and are defined by some other symbol (see
 Relationship.is_definition).
+
 
 ### Index
 
@@ -87,11 +101,13 @@ value at a time. To permit streaming consumption of an Index payload, the
 `metadata` field must appear at the start of the stream and must only appear
 once in the stream. Other field values may appear in any order.
 
-| Name                          | Type              | Description                                                                                                                                                                                                                                                                                                                                                         |
-| ----------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **metadata**                  | Metadata          | Metadata about this index.                                                                                                                                                                                                                                                                                                                                          |
-| repeated **documents**        | Document          | Documents that belong to this index.                                                                                                                                                                                                                                                                                                                                |
-| repeated **external_symbols** | SymbolInformation | (optional) Symbols that are referenced from this index but are defined in an external package (a separate `Index` message). Leave this field empty if you assume the external package will get indexed separately. If the external package won't get indexed for some reason then you can use this field to provide hover documentation for those external symbols. |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **metadata** | Metadata | Metadata about this index.
+| repeated **documents** | Document | Documents that belong to this index.
+| repeated **external_symbols** | SymbolInformation | (optional) Symbols that are referenced from this index but are defined in an external package (a separate `Index` message). Leave this field empty if you assume the external package will get indexed separately. If the external package won't get indexed for some reason then you can use this field to provide hover documentation for those external symbols.
+
+
 
 Additional notes on **external_symbols**:
 
@@ -106,12 +122,17 @@ function in `IndexVisitor` and update `ParseStreaming`.
 
 ### Metadata
 
-| Name                       | Type            | Description                                                                                                                                      |
-| -------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **version**                | ProtocolVersion | Which version of this protocol was used to generate this index?                                                                                  |
-| **tool_info**              | ToolInfo        | Information about the tool that produced this index.                                                                                             |
-| **project_root**           | string          | URI-encoded absolute path to the root directory of this index. All documents in this index must appear in a subdirectory of this root directory. |
-| **text_document_encoding** | TextEncoding    | Text encoding of the source files on disk that are referenced from `Document.relative_path`.                                                     |
+
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **version** | ProtocolVersion | Which version of this protocol was used to generate this index?
+|  **tool_info** | ToolInfo | Information about the tool that produced this index.
+|  **project_root** | string | URI-encoded absolute path to the root directory of this index. All documents in this index must appear in a subdirectory of this root directory.
+|  **text_document_encoding** | TextEncoding | Text encoding of the source files on disk that are referenced from `Document.relative_path`.
+
+
+
 
 ### Occurrence
 
@@ -121,15 +142,15 @@ information.
 If possible, indexers should try to bundle logically related information
 across occurrences into a single occurrence to reduce payload sizes.
 
-| Name                                | Type       | Description                                                                                                                                                                                                                                                                                                                                                  |
-| ----------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| repeated **range**                  | int32      | Source position of this occurrence. Must be exactly three or four elements:                                                                                                                                                                                                                                                                                  |
-| **symbol**                          | string     | (optional) The symbol that appears at this position. See `SymbolInformation.symbol` for how to format symbols as strings.                                                                                                                                                                                                                                    |
-| **symbol_roles**                    | int32      | (optional) Bitset containing `SymbolRole`s in this occurrence. See `SymbolRole`'s documentation for how to read and write this field.                                                                                                                                                                                                                        |
-| repeated **override_documentation** | string     | (optional) CommonMark-formatted documentation for this specific range. If empty, the `Symbol.documentation` field is used instead. One example where this field might be useful is when the symbol represents a generic function (with abstract type parameters such as `List<T>`) and at this occurrence we know the exact values (such as `List<String>`). |
-| **syntax_kind**                     | SyntaxKind | (optional) What syntax highlighting class should be used for this range?                                                                                                                                                                                                                                                                                     |
-| repeated **diagnostics**            | Diagnostic | (optional) Diagnostics that have been reported for this specific range.                                                                                                                                                                                                                                                                                      |
-| repeated **enclosing_range**        | int32      | (optional) Using the same encoding as the sibling `range` field, source position of the nearest non-trivial enclosing AST node. This range must enclose the `range` field. Example applications that make use of the enclosing_range field:                                                                                                                  |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| repeated **range** | int32 | Source position of this occurrence. Must be exactly three or four elements:
+|  **symbol** | string | (optional) The symbol that appears at this position. See `SymbolInformation.symbol` for how to format symbols as strings.
+|  **symbol_roles** | int32 | (optional) Bitset containing `SymbolRole`s in this occurrence. See `SymbolRole`'s documentation for how to read and write this field.
+| repeated **override_documentation** | string | (optional) CommonMark-formatted documentation for this specific range. If empty, the `Symbol.documentation` field is used instead. One example where this field might be useful is when the symbol represents a generic function (with abstract type parameters such as `List<T>`) and at this occurrence we know the exact values (such as `List<String>`).
+|  **syntax_kind** | SyntaxKind | (optional) What syntax highlighting class should be used for this range?
+| repeated **diagnostics** | Diagnostic | (optional) Diagnostics that have been reported for this specific range.
+| repeated **enclosing_range** | int32 | (optional) Using the same encoding as the sibling `range` field, source position of the nearest non-trivial enclosing AST node. This range must enclose the `range` field. Example applications that make use of the enclosing_range field:
 
 Additional notes on **range**:
 
@@ -152,6 +173,9 @@ instead. The `repeated int32` encoding is admittedly more embarrassing to
 work with in some programming languages but we hope the performance
 improvements make up for it.
 
+
+
+
 Additional notes on **override_documentation**:
 
 (optional) CommonMark-formatted documentation for this specific range. If
@@ -162,6 +186,9 @@ occurrence we know the exact values (such as `List<String>`).
 
 This field can also be used for dynamically or gradually typed languages,
 which commonly allow for type-changing assignment.
+
+
+
 
 Additional notes on **enclosing_range**:
 
@@ -181,7 +208,6 @@ enclosing_range field:
 For definition occurrences, the enclosing range should indicate the
 start/end bounds of the entire definition AST node, including
 documentation.
-
 ```
 const n = 3
       ^ range
@@ -195,10 +221,8 @@ function parse(input string): string {                        |
 }                                                             |
 ^ enclosing_range end <---------------------------------------|
 ```
-
 For reference occurrences, the enclosing range should indicate the start/end
 bounds of the parent expression.
-
 ```
 const a = a.b
             ^ range
@@ -214,21 +238,29 @@ Unit of packaging and distribution.
 
 NOTE: This corresponds to a module in Go and JVM languages.
 
-| Name        | Type   | Description |
-| ----------- | ------ | ----------- |
-| **manager** | string |
-| **name**    | string |
-| **version** | string |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **manager** | string | 
+|  **name** | string | 
+|  **version** | string | 
+
+
 
 ### Relationship
 
-| Name                   | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| ---------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **symbol**             | string |
-| **is_reference**       | bool   | When resolving "Find references", this field documents what other symbols should be included together with this symbol. For example, consider the following TypeScript code that defines two symbols `Animal#sound()` and `Dog#sound()`: `ts interface Animal {           ^^^^^^ definition Animal#   sound(): string   ^^^^^ definition Animal#sound() } class Dog implements Animal {       ^^^ definition Dog#, relationships = [{symbol: "Animal#", is_implementation: true}]   public sound(): string { return "woof" }          ^^^^^ definition Dog#sound(), references_symbols = Animal#sound(), relationships = [{symbol: "Animal#sound()", is_implementation:true, is_reference: true}] } const animal: Animal = new Dog()               ^^^^^^ reference Animal# console.log(animal.sound())                    ^^^^^ reference Animal#sound() ` Doing "Find references" on the symbol `Animal#sound()` should return references to the `Dog#sound()` method as well. Vice-versa, doing "Find references" on the `Dog#sound()` method should include references to the `Animal#sound()` method as well. |
-| **is_implementation**  | bool   | Similar to `is_reference` but for "Find implementations". It's common for `is_implementation` and `is_reference` to both be true but it's not always the case. In the TypeScript example above, observe that `Dog#` has an `is_implementation` relationship with `"Animal#"` but not `is_reference`. This is because "Find references" on the "Animal#" symbol should not return "Dog#". We only want "Dog#" to return as a result for "Find implementations" on the "Animal#" symbol.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| **is_type_definition** | bool   | Similar to `references_symbols` but for "Go to type definition".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **is_definition**      | bool   | Allows overriding the behavior of "Go to definition" and "Find references" for symbols which do not have a definition of their own or could potentially have multiple definitions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **symbol** | string | 
+|  **is_reference** | bool | When resolving "Find references", this field documents what other symbols should be included together with this symbol. For example, consider the following TypeScript code that defines two symbols `Animal#sound()` and `Dog#sound()`: ```ts interface Animal {           ^^^^^^ definition Animal#   sound(): string   ^^^^^ definition Animal#sound() } class Dog implements Animal {       ^^^ definition Dog#, relationships = [{symbol: "Animal#", is_implementation: true}]   public sound(): string { return "woof" }          ^^^^^ definition Dog#sound(), references_symbols = Animal#sound(), relationships = [{symbol: "Animal#sound()", is_implementation:true, is_reference: true}] } const animal: Animal = new Dog()               ^^^^^^ reference Animal# console.log(animal.sound())                    ^^^^^ reference Animal#sound() ``` Doing "Find references" on the symbol `Animal#sound()` should return references to the `Dog#sound()` method as well. Vice-versa, doing "Find references" on the `Dog#sound()` method should include references to the `Animal#sound()` method as well.
+|  **is_implementation** | bool | Similar to `is_reference` but for "Find implementations". It's common for `is_implementation` and `is_reference` to both be true but it's not always the case. In the TypeScript example above, observe that `Dog#` has an `is_implementation` relationship with `"Animal#"` but not `is_reference`. This is because "Find references" on the "Animal#" symbol should not return "Dog#". We only want "Dog#" to return as a result for "Find implementations" on the "Animal#" symbol.
+|  **is_type_definition** | bool | Similar to `references_symbols` but for "Go to type definition".
+|  **is_definition** | bool | Allows overriding the behavior of "Go to definition" and "Find references" for symbols which do not have a definition of their own or could potentially have multiple definitions.
+
+
+
+
 
 Additional notes on **is_definition**:
 
@@ -259,7 +291,6 @@ the docstring.
 
 Symbol has a standardized string representation, which can be used
 interchangeably with `Symbol`. The syntax for Symbol is the following:
-
 ```
 # (<x>)+ stands for one or more repetitions of <x>
 <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>
@@ -292,26 +323,32 @@ identifier across the package. Typically, it will include one descriptor
 for every node in the AST (along the ancestry path) between the root of
 the file and the node corresponding to the symbol.
 
-| Name                     | Type       | Description |
-| ------------------------ | ---------- | ----------- |
-| **scheme**               | string     |
-| **package**              | Package    |
-| repeated **descriptors** | Descriptor |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **scheme** | string | 
+|  **package** | Package | 
+| repeated **descriptors** | Descriptor | 
+
+
 
 ### SymbolInformation
 
 SymbolInformation defines metadata about a symbol, such as the symbol's
 docstring or what package it's defined it.
 
-| Name                        | Type         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| --------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **symbol**                  | string       | Identifier of this symbol, which can be referenced from `Occurence.symbol`. The string must be formatted according to the grammar in `Symbol`.                                                                                                                                                                                                                                                                                             |
-| repeated **documentation**  | string       | (optional, but strongly recommended) The markdown-formatted documentation for this symbol. Use `SymbolInformation.signature_documentation` to document the method/class/type signature of this symbol. Due to historical reasons, indexers may include signature documentation in this field by rendering markdown code blocks. New indexers should only include non-code documentation in this field, for example docstrings.             |
-| repeated **relationships**  | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).                                                                                                                                                                                                                                                                                                                                                             |
-| **kind**                    | Kind         | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.                                                                                                                                                                                                                                                                                          |
-| **display_name**            | string       | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:                                                                                                                                                                        |
-| **signature_documentation** | Document     | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers this would have `Document.language = "java"` and `Document.text = "void add(int a, int b)". The `language`and`text`fields are required while other fields such as`Documentation.occurrences` can be optionally included to support hyperlinking referenced symbols in the signature. |
-| **enclosing_symbol**        | string       | (optional) The enclosing symbol if this is a local symbol. For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.                                                                                                                                                                                                                                                            |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **symbol** | string | Identifier of this symbol, which can be referenced from `Occurence.symbol`. The string must be formatted according to the grammar in `Symbol`.
+| repeated **documentation** | string | (optional, but strongly recommended) The markdown-formatted documentation for this symbol. Use `SymbolInformation.signature_documentation` to document the method/class/type signature of this symbol. Due to historical reasons, indexers may include signature documentation in this field by rendering markdown code blocks. New indexers should only include non-code documentation in this field, for example docstrings.
+| repeated **relationships** | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).
+|  **kind** | Kind | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.
+|  **display_name** | string | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:
+|  **signature_documentation** | Document | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers this would have `Document.language = "java"` and `Document.text = "void add(int a, int b)". The `language` and `text` fields are required while other fields such as `Documentation.occurrences` can be optionally included to support hyperlinking referenced symbols in the signature.
+|  **enclosing_symbol** | string | (optional) The enclosing symbol if this is a local symbol.  For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.
+
+
+
+
 
 Additional notes on **display_name**:
 
@@ -325,9 +362,11 @@ the display name for several reasons:
 - The symbol may encode names with special characters that should not be
   displayed to the user.
 
+
+
 Additional notes on **enclosing_symbol**:
 
-(optional) The enclosing symbol if this is a local symbol. For non-local
+(optional) The enclosing symbol if this is a local symbol.  For non-local
 symbols, the enclosing symbol should be parsed from the `symbol` field
 using the `Descriptor` grammar.
 
@@ -351,7 +390,6 @@ symbol.
 information about the symbol's meaning in the language.
 
 For example:
-
 - A Java method would have the kind `Method` while a Go function would
   have the kind `Function`, even if the symbols for these use the same
   syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
@@ -360,90 +398,97 @@ For example:
   `SymbolDescriptor.Suffix.Type`.
 
 Since Kind is more fine-grained than Suffix:
-
 - If two symbols have the same Kind, they should share the same Suffix.
 - If two symbols have different Suffixes, they should have different Kinds.
 
-| Number | Name            | Description                                                                                                                      |
-| ------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| 0      | UnspecifiedKind |
-| 1      | Array           |
-| 2      | Assertion       | For Alloy                                                                                                                        |
-| 3      | AssociatedType  |
-| 4      | Attribute       | For C++                                                                                                                          |
-| 5      | Axiom           | For Lean                                                                                                                         |
-| 6      | Boolean         |
-| 7      | Class           |
-| 8      | Constant        |
-| 9      | Constructor     |
-| 10     | DataFamily      | For Haskell                                                                                                                      |
-| 11     | Enum            |
-| 12     | EnumMember      |
-| 13     | Event           |
-| 14     | Fact            | For Alloy                                                                                                                        |
-| 15     | Field           |
-| 16     | File            |
-| 17     | Function        |
-| 18     | Getter          | For 'get' in Swift                                                                                                               |
-| 19     | Grammar         | For Raku                                                                                                                         |
-| 20     | Instance        | For Purescript and Lean                                                                                                          |
-| 21     | Interface       |
-| 22     | Key             |
-| 23     | Lang            | For Racket                                                                                                                       |
-| 24     | Lemma           | For Lean                                                                                                                         |
-| 25     | Macro           |
-| 26     | Method          |
-| 27     | MethodReceiver  | Analogous to 'ThisParameter' and 'SelfParameter', but for languages like Go where the receiver doesn't have a conventional name. |
-| 28     | Message         | For Protobuf                                                                                                                     |
-| 29     | Module          |
-| 30     | Namespace       |
-| 31     | Null            |
-| 32     | Number          |
-| 33     | Object          |
-| 34     | Operator        |
-| 35     | Package         |
-| 36     | PackageObject   |
-| 37     | Parameter       |
-| 38     | ParameterLabel  |
-| 39     | Pattern         | For Haskell's PatternSynonyms                                                                                                    |
-| 40     | Predicate       | For Alloy                                                                                                                        |
-| 41     | Property        |
-| 42     | Protocol        | Analogous to 'Trait' and 'TypeClass', for Swift and Objective-C                                                                  |
-| 43     | Quasiquoter     | For Haskell                                                                                                                      |
-| 44     | SelfParameter   | 'self' in Python, Rust, Swift etc.                                                                                               |
-| 45     | Setter          | For 'set' in Swift                                                                                                               |
-| 46     | Signature       | For Alloy, analogous to 'Struct'.                                                                                                |
-| 47     | Subscript       | For Swift                                                                                                                        |
-| 48     | String          |
-| 49     | Struct          |
-| 50     | Tactic          | For Lean                                                                                                                         |
-| 51     | Theorem         | For Lean                                                                                                                         |
-| 52     | ThisParameter   | Method receiver for languages 'this' in JavaScript, C++, Java etc.                                                               |
-| 53     | Trait           | Analogous to 'Protocol' and 'TypeClass', for Rust.                                                                               |
-| 54     | Type            | Data type definition for languages like OCaml which use `type` rather than separate keywords like `struct` and `enum`.           |
-| 55     | TypeAlias       |
-| 56     | TypeClass       | Analogous to 'Trait' and 'Protocol', for Haskell, Purescript etc.                                                                |
-| 57     | TypeFamily      | For Haskell                                                                                                                      |
-| 58     | TypeParameter   |
-| 59     | Union           | For C, C++, Capn Proto                                                                                                           |
-| 60     | Value           |
-| 61     | Variable        | Next = 62; Feel free to open a PR proposing new language-specific kinds.                                                         |
-
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedKind | 
+| 1 | Array | 
+| 2 | Assertion | For Alloy
+| 3 | AssociatedType | 
+| 4 | Attribute | For C++
+| 5 | Axiom | For Lean
+| 6 | Boolean | 
+| 7 | Class | 
+| 8 | Constant | 
+| 9 | Constructor | 
+| 10 | DataFamily | For Haskell
+| 11 | Enum | 
+| 12 | EnumMember | 
+| 13 | Event | 
+| 14 | Fact | For Alloy
+| 15 | Field | 
+| 16 | File | 
+| 17 | Function | 
+| 18 | Getter | For 'get' in Swift
+| 19 | Grammar | For Raku
+| 20 | Instance | For Purescript and Lean
+| 21 | Interface | 
+| 22 | Key | 
+| 23 | Lang | For Racket
+| 24 | Lemma | For Lean
+| 25 | Macro | 
+| 26 | Method | 
+| 27 | MethodReceiver | Analogous to 'ThisParameter' and 'SelfParameter', but for languages like Go where the receiver doesn't have a conventional name.
+| 28 | Message | For Protobuf
+| 29 | Module | 
+| 30 | Namespace | 
+| 31 | Null | 
+| 32 | Number | 
+| 33 | Object | 
+| 34 | Operator | 
+| 35 | Package | 
+| 36 | PackageObject | 
+| 37 | Parameter | 
+| 38 | ParameterLabel | 
+| 39 | Pattern | For Haskell's PatternSynonyms
+| 40 | Predicate | For Alloy
+| 41 | Property | 
+| 42 | Protocol | Analogous to 'Trait' and 'TypeClass', for Swift and Objective-C
+| 43 | Quasiquoter | For Haskell
+| 44 | SelfParameter | 'self' in Python, Rust, Swift etc.
+| 45 | Setter | For 'set' in Swift
+| 46 | Signature | For Alloy, analogous to 'Struct'.
+| 47 | Subscript | For Swift
+| 48 | String | 
+| 49 | Struct | 
+| 50 | Tactic | For Lean
+| 51 | Theorem | For Lean
+| 52 | ThisParameter | Method receiver for languages 'this' in JavaScript, C++, Java etc.
+| 53 | Trait | Analogous to 'Protocol' and 'TypeClass', for Rust.
+| 54 | Type | Data type definition for languages like OCaml which use `type` rather than separate keywords like `struct` and `enum`.
+| 55 | TypeAlias | 
+| 56 | TypeClass | Analogous to 'Trait' and 'Protocol', for Haskell, Purescript etc.
+| 57 | TypeFamily | For Haskell
+| 58 | TypeParameter | 
+| 59 | Union | For C, C++, Capn Proto
+| 60 | Value | 
+| 61 | Variable | Next = 62; Feel free to open a PR proposing new language-specific kinds.
 ### ToolInfo
 
-| Name                   | Type   | Description                                                   |
-| ---------------------- | ------ | ------------------------------------------------------------- |
-| **name**               | string | Name of the indexer that produced this index.                 |
-| **version**            | string | Version of the indexer that produced this index.              |
-| repeated **arguments** | string | Command-line arguments that were used to invoke this indexer. |
+
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **name** | string | Name of the indexer that produced this index.
+|  **version** | string | Version of the indexer that produced this index.
+| repeated **arguments** | string | Command-line arguments that were used to invoke this indexer.
+
+
+
+
 
 ### DiagnosticTag
 
-| Number | Name                     | Description |
-| ------ | ------------------------ | ----------- |
-| 0      | UnspecifiedDiagnosticTag |
-| 1      | Unnecessary              |
-| 2      | Deprecated               |
+
+
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedDiagnosticTag | 
+| 1 | Unnecessary | 
+| 2 | Deprecated | 
+
 
 ### Language
 
@@ -454,118 +499,125 @@ multiple string representations. For example, the C++ language uses the name
 "CPlusPlus" in this enum and other names such as "cpp" are incompatible.
 Feel free to send a pull-request to add missing programming languages.
 
-| Number | Name                | Description                                                                                                                                                                                                                                                                                                                                                                                 |
-| ------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0      | UnspecifiedLanguage |
-| 60     | ABAP                |
-| 49     | APL                 |
-| 39     | Ada                 |
-| 45     | Agda                |
-| 86     | AsciiDoc            |
-| 58     | Assembly            |
-| 66     | Awk                 |
-| 68     | Bat                 |
-| 81     | BibTeX              |
-| 34     | C                   |
-| 59     | COBOL               |
-| 35     | CPP                 | C++ (the name "CPP" was chosen for consistency with LSP)                                                                                                                                                                                                                                                                                                                                    |
-| 26     | CSS                 |
-| 1      | CSharp              |
-| 8      | Clojure             |
-| 21     | Coffeescript        |
-| 9      | CommonLisp          |
-| 47     | Coq                 |
-| 3      | Dart                |
-| 57     | Delphi              |
-| 88     | Diff                |
-| 80     | Dockerfile          |
-| 50     | Dyalog              |
-| 17     | Elixir              |
-| 18     | Erlang              |
-| 42     | FSharp              |
-| 65     | Fish                |
-| 24     | Flow                |
-| 56     | Fortran             |
-| 91     | Git_Commit          |
-| 89     | Git_Config          |
-| 92     | Git_Rebase          |
-| 33     | Go                  |
-| 7      | Groovy              |
-| 30     | HTML                |
-| 20     | Hack                |
-| 90     | Handlebars          |
-| 44     | Haskell             |
-| 46     | Idris               |
-| 72     | Ini                 |
-| 51     | J                   |
-| 75     | JSON                |
-| 6      | Java                |
-| 22     | JavaScript          |
-| 93     | JavaScriptReact     |
-| 76     | Jsonnet             |
-| 55     | Julia               |
-| 4      | Kotlin              |
-| 83     | LaTeX               |
-| 48     | Lean                |
-| 27     | Less                |
-| 12     | Lua                 |
-| 79     | Makefile            |
-| 84     | Markdown            |
-| 52     | Matlab              |
-| 77     | Nix                 |
-| 41     | OCaml               |
-| 36     | Objective_C         |
-| 37     | Objective_CPP       |
-| 19     | PHP                 |
-| 70     | PLSQL               |
-| 13     | Perl                |
-| 67     | PowerShell          |
-| 71     | Prolog              |
-| 15     | Python              |
-| 54     | R                   |
-| 11     | Racket              |
-| 14     | Raku                |
-| 62     | Razor               |
-| 85     | ReST                |
-| 16     | Ruby                |
-| 40     | Rust                |
-| 61     | SAS                 |
-| 29     | SCSS                |
-| 43     | SML                 |
-| 69     | SQL                 |
-| 28     | Sass                |
-| 5      | Scala               |
-| 10     | Scheme              |
-| 64     | ShellScript         | Bash                                                                                                                                                                                                                                                                                                                                                                                        |
-| 78     | Skylark             |
-| 2      | Swift               |
-| 73     | TOML                |
-| 82     | TeX                 |
-| 23     | TypeScript          |
-| 94     | TypeScriptReact     |
-| 63     | VisualBasic         |
-| 25     | Vue                 |
-| 53     | Wolfram             |
-| 31     | XML                 |
-| 32     | XSL                 |
-| 74     | YAML                |
-| 38     | Zig                 | NextLanguage = 95; Steps add a new language: 1. Copy-paste the "NextLanguage = N" line above 2. Increment "NextLanguage = N" to "NextLanguage = N+1" 3. Replace "NextLanguage = N" with the name of the new language. 4. Move the new language to the correct line above using alphabetical order 5. (optional) Add a brief comment behind the language if the name is not self-explanatory |
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedLanguage | 
+| 60 | ABAP | 
+| 49 | APL | 
+| 39 | Ada | 
+| 45 | Agda | 
+| 86 | AsciiDoc | 
+| 58 | Assembly | 
+| 66 | Awk | 
+| 68 | Bat | 
+| 81 | BibTeX | 
+| 34 | C | 
+| 59 | COBOL | 
+| 35 | CPP | C++ (the name "CPP" was chosen for consistency with LSP)
+| 26 | CSS | 
+| 1 | CSharp | 
+| 8 | Clojure | 
+| 21 | Coffeescript | 
+| 9 | CommonLisp | 
+| 47 | Coq | 
+| 3 | Dart | 
+| 57 | Delphi | 
+| 88 | Diff | 
+| 80 | Dockerfile | 
+| 50 | Dyalog | 
+| 17 | Elixir | 
+| 18 | Erlang | 
+| 42 | FSharp | 
+| 65 | Fish | 
+| 24 | Flow | 
+| 56 | Fortran | 
+| 91 | Git_Commit | 
+| 89 | Git_Config | 
+| 92 | Git_Rebase | 
+| 33 | Go | 
+| 7 | Groovy | 
+| 30 | HTML | 
+| 20 | Hack | 
+| 90 | Handlebars | 
+| 44 | Haskell | 
+| 46 | Idris | 
+| 72 | Ini | 
+| 51 | J | 
+| 75 | JSON | 
+| 6 | Java | 
+| 22 | JavaScript | 
+| 93 | JavaScriptReact | 
+| 76 | Jsonnet | 
+| 55 | Julia | 
+| 4 | Kotlin | 
+| 83 | LaTeX | 
+| 48 | Lean | 
+| 27 | Less | 
+| 12 | Lua | 
+| 79 | Makefile | 
+| 84 | Markdown | 
+| 52 | Matlab | 
+| 77 | Nix | 
+| 41 | OCaml | 
+| 36 | Objective_C | 
+| 37 | Objective_CPP | 
+| 19 | PHP | 
+| 70 | PLSQL | 
+| 13 | Perl | 
+| 67 | PowerShell | 
+| 71 | Prolog | 
+| 15 | Python | 
+| 54 | R | 
+| 11 | Racket | 
+| 14 | Raku | 
+| 62 | Razor | 
+| 85 | ReST | 
+| 16 | Ruby | 
+| 40 | Rust | 
+| 61 | SAS | 
+| 29 | SCSS | 
+| 43 | SML | 
+| 69 | SQL | 
+| 28 | Sass | 
+| 5 | Scala | 
+| 10 | Scheme | 
+| 64 | ShellScript | Bash
+| 78 | Skylark | 
+| 2 | Swift | 
+| 73 | TOML | 
+| 82 | TeX | 
+| 23 | TypeScript | 
+| 94 | TypeScriptReact | 
+| 63 | VisualBasic | 
+| 25 | Vue | 
+| 53 | Wolfram | 
+| 31 | XML | 
+| 32 | XSL | 
+| 74 | YAML | 
+| 38 | Zig | NextLanguage = 95; Steps add a new language: 1. Copy-paste the "NextLanguage = N" line above 2. Increment "NextLanguage = N" to "NextLanguage = N+1" 3. Replace "NextLanguage = N" with the name of the new language. 4. Move the new language to the correct line above using alphabetical order 5. (optional) Add a brief comment behind the language if the name is not self-explanatory
+
 
 ### ProtocolVersion
 
-| Number | Name                       | Description |
-| ------ | -------------------------- | ----------- |
-| 0      | UnspecifiedProtocolVersion |
+
+
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedProtocolVersion | 
+
 
 ### Severity
 
-| Number | Name                | Description |
-| ------ | ------------------- | ----------- |
-| 0      | UnspecifiedSeverity |
-| 1      | Error               |
-| 2      | Warning             |
-| 3      | Information         |
-| 4      | Hint                |
+
+
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedSeverity | 
+| 1 | Error | 
+| 2 | Warning | 
+| 3 | Information | 
+| 4 | Hint | 
+
 
 ### SymbolRole
 
@@ -575,59 +627,62 @@ to determine if the `Import` role is set, test whether the second bit of the
 enum value is defined. In pseudocode, this can be implemented with the
 logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 
-| Number | Name                  | Description                                                                                           |
-| ------ | --------------------- | ----------------------------------------------------------------------------------------------------- |
-| 0      | UnspecifiedSymbolRole | This case is not meant to be used; it only exists to avoid an error from the Protobuf code generator. |
-| 1      | Definition            | Is the symbol defined here? If not, then this is a symbol reference.                                  |
-| 2      | Import                | Is the symbol imported here?                                                                          |
-| 4      | WriteAccess           | Is the symbol written here?                                                                           |
-| 8      | ReadAccess            | Is the symbol read here?                                                                              |
-| 16     | Generated             | Is the symbol in generated code?                                                                      |
-| 32     | Test                  | Is the symbol in test code?                                                                           |
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedSymbolRole | This case is not meant to be used; it only exists to avoid an error from the Protobuf code generator.
+| 1 | Definition | Is the symbol defined here? If not, then this is a symbol reference.
+| 2 | Import | Is the symbol imported here?
+| 4 | WriteAccess | Is the symbol written here?
+| 8 | ReadAccess | Is the symbol read here?
+| 16 | Generated | Is the symbol in generated code?
+| 32 | Test | Is the symbol in test code?
+
 
 ### SyntaxKind
 
-| Number | Name                         | Description                                                                     |
-| ------ | ---------------------------- | ------------------------------------------------------------------------------- | ------ |
-| 0      | UnspecifiedSyntaxKind        |
-| 1      | Comment                      | Comment, including comment markers and text                                     |
-| 2      | PunctuationDelimiter         | `;` `.` `,`                                                                     |
-| 3      | PunctuationBracket           | (), {}, [] when used syntactically                                              |
-| 4      | Keyword                      | `if`, `else`, `return`, `class`, etc.                                           |
-| 4      | IdentifierKeyword            |
-| 5      | IdentifierOperator           | `+`, `*`, etc.                                                                  |
-| 6      | Identifier                   | non-specific catch-all for any identifier not better described elsewhere        |
-| 7      | IdentifierBuiltin            | Identifiers builtin to the language: `min`, `print` in Python.                  |
-| 8      | IdentifierNull               | Identifiers representing `null`-like values: `None` in Python, `nil` in Go.     |
-| 9      | IdentifierConstant           | `xyz` in `const xyz = "hello"`                                                  |
-| 10     | IdentifierMutableGlobal      | `var X = "hello"` in Go                                                         |
-| 11     | IdentifierParameter          | Parameter definition and references                                             |
-| 12     | IdentifierLocal              | Identifiers for variable definitions and references within a local scope        |
-| 13     | IdentifierShadowed           | Identifiers that shadow other identifiers in an outer scope                     |
-| 14     | IdentifierNamespace          | Identifier representing a unit of code abstraction and/or namespacing.          |
-| 14     | IdentifierModule             |
-| 15     | IdentifierFunction           | Function references, including calls                                            |
-| 16     | IdentifierFunctionDefinition | Function definition only                                                        |
-| 17     | IdentifierMacro              | Macro references, including invocations                                         |
-| 18     | IdentifierMacroDefinition    | Macro definition only                                                           |
-| 19     | IdentifierType               | non-builtin types                                                               |
-| 20     | IdentifierBuiltinType        | builtin types only, such as `str` for Python or `int` in Go                     |
-| 21     | IdentifierAttribute          | Python decorators, c-like **attribute**                                         |
-| 22     | RegexEscape                  | `\b`                                                                            |
-| 23     | RegexRepeated                | `*`, `+`                                                                        |
-| 24     | RegexWildcard                | `.`                                                                             |
-| 25     | RegexDelimiter               | `(`, `)`, `[`, `]`                                                              |
-| 26     | RegexJoin                    | `                                                                               | `, `-` |
-| 27     | StringLiteral                | Literal strings: "Hello, world!"                                                |
-| 28     | StringLiteralEscape          | non-regex escapes: "\t", "\n"                                                   |
-| 29     | StringLiteralSpecial         | datetimes within strings, special words within a string, `{}` in format strings |
-| 30     | StringLiteralKey             | "key" in { "key": "value" }, useful for example in JSON                         |
-| 31     | CharacterLiteral             | 'c' or similar, in languages that differentiate strings and characters          |
-| 32     | NumericLiteral               | Literal numbers, both floats and integers                                       |
-| 33     | BooleanLiteral               | `true`, `false`                                                                 |
-| 34     | Tag                          | Used for XML-like tags                                                          |
-| 35     | TagAttribute                 | Attribute name in XML-like tags                                                 |
-| 36     | TagDelimiter                 | Delimiters for XML-like tags                                                    |
+
+
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedSyntaxKind | 
+| 1 | Comment | Comment, including comment markers and text
+| 2 | PunctuationDelimiter | `;` `.` `,`
+| 3 | PunctuationBracket | (), {}, [] when used syntactically
+| 4 | Keyword | `if`, `else`, `return`, `class`, etc.
+| 4 | IdentifierKeyword | 
+| 5 | IdentifierOperator | `+`, `*`, etc.
+| 6 | Identifier | non-specific catch-all for any identifier not better described elsewhere
+| 7 | IdentifierBuiltin | Identifiers builtin to the language: `min`, `print` in Python.
+| 8 | IdentifierNull | Identifiers representing `null`-like values: `None` in Python, `nil` in Go.
+| 9 | IdentifierConstant | `xyz` in `const xyz = "hello"`
+| 10 | IdentifierMutableGlobal | `var X = "hello"` in Go
+| 11 | IdentifierParameter | Parameter definition and references
+| 12 | IdentifierLocal | Identifiers for variable definitions and references within a local scope
+| 13 | IdentifierShadowed | Identifiers that shadow other identifiers in an outer scope
+| 14 | IdentifierNamespace | Identifier representing a unit of code abstraction and/or namespacing.
+| 14 | IdentifierModule | 
+| 15 | IdentifierFunction | Function references, including calls
+| 16 | IdentifierFunctionDefinition | Function definition only
+| 17 | IdentifierMacro | Macro references, including invocations
+| 18 | IdentifierMacroDefinition | Macro definition only
+| 19 | IdentifierType | non-builtin types
+| 20 | IdentifierBuiltinType | builtin types only, such as `str` for Python or `int` in Go
+| 21 | IdentifierAttribute | Python decorators, c-like __attribute__
+| 22 | RegexEscape | `\b`
+| 23 | RegexRepeated | `*`, `+`
+| 24 | RegexWildcard | `.`
+| 25 | RegexDelimiter | `(`, `)`, `[`, `]`
+| 26 | RegexJoin | `|`, `-`
+| 27 | StringLiteral | Literal strings: "Hello, world!"
+| 28 | StringLiteralEscape | non-regex escapes: "\t", "\n"
+| 29 | StringLiteralSpecial | datetimes within strings, special words within a string, `{}` in format strings
+| 30 | StringLiteralKey | "key" in { "key": "value" }, useful for example in JSON
+| 31 | CharacterLiteral | 'c' or similar, in languages that differentiate strings and characters
+| 32 | NumericLiteral | Literal numbers, both floats and integers
+| 33 | BooleanLiteral | `true`, `false`
+| 34 | Tag | Used for XML-like tags
+| 35 | TagAttribute | Attribute name in XML-like tags
+| 36 | TagDelimiter | Delimiters for XML-like tags
 
 Additional notes on **IdentifierNamespace**:
 
@@ -636,10 +691,13 @@ Identifier representing a unit of code abstraction and/or namespacing.
 NOTE: This corresponds to a package in Go and JVM languages,
 and a module in languages like Python and JavaScript.
 
+
 ### TextEncoding
 
-| Number | Name                    | Description |
-| ------ | ----------------------- | ----------- |
-| 0      | UnspecifiedTextEncoding |
-| 1      | UTF8                    |
-| 2      | UTF16                   |
+
+
+| Number | Name | Description |
+| ------ | ---- | ----------- |
+| 0 | UnspecifiedTextEncoding | 
+| 1 | UTF8 | 
+| 2 | UTF16 | 
