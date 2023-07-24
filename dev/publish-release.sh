@@ -15,8 +15,8 @@ if ! grep -q "## v$NEW_VERSION" CHANGELOG.md; then
   exit 1
 fi
 
-if ! grep -q "$NEW_VERSION" cmd/version.txt; then
-  echo "error: SCIP version in cmd/version.txt doesn't match NEW_VERSION=$NEW_VERSION"
+if ! grep -q "$NEW_VERSION" cmd/scip/version.txt; then
+  echo "error: SCIP version in cmd/scip/version.txt doesn't match NEW_VERSION=$NEW_VERSION"
   exit 1
 fi
 
