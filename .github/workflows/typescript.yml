@@ -18,5 +18,5 @@ jobs:
         with:
           js: true
       - run: yarn install
-      - name: Check TypeScript
-        run: ./node_modules/.bin/tsc -b bindings/typescript
+      - name: Typecheck TypeScript
+        run: yarn run build
