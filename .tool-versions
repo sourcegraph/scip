@@ -1,5 +1,5 @@
 golang 1.19.10
-nodejs 16.7.0
+nodejs 18.17.0
 shellcheck 0.7.1
 yarn 1.22.17
 rust 1.71.0
