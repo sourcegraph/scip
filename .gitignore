@@ -13,8 +13,6 @@
 *.test
 
 # CLI binary
-cmd/cmd
-cmd/scip
 /scip
 
 # Output of the go coverage tool, specifically when used with LiteIDE

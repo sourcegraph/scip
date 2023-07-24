@@ -21,7 +21,7 @@ jobs:
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
           sha256sum: true
-          project_path: cmd
+          project_path: cmd/scip
           binary_name: scip
           ldflags: "-X 'main.Reproducible=true'"
           asset_name: scip-${{ matrix.goos }}-${{ matrix.goarch }}

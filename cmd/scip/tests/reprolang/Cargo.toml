@@ -2,7 +2,7 @@
 name = "tree-sitter-repro"
 description = "repro grammar for the tree-sitter parsing library"
 version = "0.1.0"
-repository = "https://github.com/sourcegraph/scip/cmd/tests/reprolang"
+repository = "https://github.com/sourcegraph/scip/cmd/scip/tests/reprolang"
 edition = "2021"
 license = "Apache-2.0"
 

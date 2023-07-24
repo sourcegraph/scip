@@ -15,7 +15,7 @@ import (
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
-	"github.com/sourcegraph/scip/cmd/tests/reprolang/bindings/go/repro"
+	"github.com/sourcegraph/scip/cmd/scip/tests/reprolang/bindings/go/repro"
 )
 
 func TestMain(m *testing.M) {
@@ -25,7 +25,7 @@ func TestMain(m *testing.M) {
 
 func TestCLIReferenceInSync(t *testing.T) {
 	app := scipApp()
-	readmeBytes, err := os.ReadFile(filepath.Join("..", "docs", "CLI.md"))
+	readmeBytes, err := os.ReadFile(filepath.Join("..", "..", "docs", "CLI.md"))
 	require.Nil(t, err)
 	readme := string(readmeBytes)
 

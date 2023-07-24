@@ -58,7 +58,7 @@ You can also compile a binary locally using:
 ```sh
 git clone https://github.com/sourcegraph/scip.git --depth=1
 cd scip
-go build -o scip ./cmd
+go build ./cmd/scip
 ```
 
 You can consult the [CLI reference](docs/CLI.md) or `--help` for usage information.
