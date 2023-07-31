@@ -5987,7 +5987,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\247\140\STX\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\241\140\STX\n\
     \\a\DC2\ENQ\n\
     \\NUL\239\ENQ\SOH\n\
     \\130\EOT\n\
@@ -6188,7 +6188,7 @@ packedFileDescriptor
     \\165\STX\n\
     \\EOT\EOT\ETX\STX\NUL\DC2\ETXL\STX\SYN\SUB\151\STX The string ID for the programming language this file is written in.\n\
     \ The `Language` enum contains the names of most common programming languages.\n\
-    \ This field is typed as a string to permit any programming langauge, including\n\
+    \ This field is typed as a string to permit any programming language, including\n\
     \ ones that are not specified by the `Language` enum.\n\
     \\n\
     \\f\n\
@@ -7754,12 +7754,12 @@ packedFileDescriptor
     \\ENQ\ENQ\ENQ\STX\STX\SOH\DC2\EOT\128\ENQ\STX\f\n\
     \\r\n\
     \\ENQ\ENQ\ENQ\STX\STX\STX\DC2\EOT\128\ENQ\SI\DLE\n\
-    \\214\ETX\n\
-    \\STX\ENQ\ACK\DC2\ACK\137\ENQ\NUL\239\ENQ\SOH\SUB\199\ETX Language standardises names of common programming languages that can be used\n\
+    \\208\ETX\n\
+    \\STX\ENQ\ACK\DC2\ACK\137\ENQ\NUL\239\ENQ\SOH\SUB\193\ETX Language standardises names of common programming languages that can be used\n\
     \ for the `Document.language` field. The primary purpose of this enum is to\n\
     \ prevent a situation where we have a single programming language ends up with\n\
     \ multiple string representations. For example, the C++ language uses the name\n\
-    \ \"CPlusPlus\" in this enum and other names such as \"cpp\" are incompatible.\n\
+    \ \"CPP\" in this enum and other names such as \"cpp\" are incompatible.\n\
     \ Feel free to send a pull-request to add missing programming languages.\n\
     \\n\
     \\v\n\
