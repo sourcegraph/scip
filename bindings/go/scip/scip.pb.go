@@ -503,7 +503,7 @@ func (DiagnosticTag) EnumDescriptor() ([]byte, []int) {
 // for the `Document.language` field. The primary purpose of this enum is to
 // prevent a situation where we have a single programming language ends up with
 // multiple string representations. For example, the C++ language uses the name
-// "CPlusPlus" in this enum and other names such as "cpp" are incompatible.
+// "CPP" in this enum and other names such as "cpp" are incompatible.
 // Feel free to send a pull-request to add missing programming languages.
 type Language int32
 
@@ -1406,7 +1406,7 @@ type Document struct {
 
 	// The string ID for the programming language this file is written in.
 	// The `Language` enum contains the names of most common programming languages.
-	// This field is typed as a string to permit any programming langauge, including
+	// This field is typed as a string to permit any programming language, including
 	// ones that are not specified by the `Language` enum.
 	Language string `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`
 	// (Required) Unique path to the text document.
