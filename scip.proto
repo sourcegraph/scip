@@ -229,10 +229,13 @@ message SymbolInformation {
       Class = 7;
       Constant = 8;
       Constructor = 9;
+      // For Solidity
+      Contract = 62;
       // For Haskell
       DataFamily = 10;
       Enum = 11;
       EnumMember = 12;
+      Error = 63;
       Event = 13;
       // For Alloy
       Fact = 14;
@@ -251,6 +254,8 @@ message SymbolInformation {
       Lang = 23;
       // For Lean
       Lemma = 24;
+      // For solidity
+      Library = 64;
       Macro = 25;
       Method = 26;
       // Analogous to 'ThisParameter' and 'SelfParameter', but for languages
@@ -258,6 +263,8 @@ message SymbolInformation {
       MethodReceiver = 27;
       // For Protobuf
       Message = 28;
+      // For Solidity
+      Modifier = 65;
       Module = 29;
       Namespace = 30;
       Null = 31;
@@ -309,7 +316,7 @@ message SymbolInformation {
       Union = 59;
       Value = 60;
       Variable = 61;
-      // Next = 62;
+      // Next = 66;
       // Feel free to open a PR proposing new language-specific kinds.
   }
   // (optional) The name of this symbol as it should be displayed to the user.
@@ -730,6 +737,7 @@ enum Language {
   Scheme = 10;
   ShellScript = 64; // Bash
   Skylark = 78;
+  Solidity = 95;
   Swift = 2;
   TOML = 73;
   TeX = 82;
@@ -742,7 +750,7 @@ enum Language {
   XSL = 32;
   YAML = 74;
   Zig = 38;
-  // NextLanguage = 95;
+  // NextLanguage = 96;
   // Steps add a new language:
   // 1. Copy-paste the "NextLanguage = N" line above
   // 2. Increment "NextLanguage = N" to "NextLanguage = N+1"
