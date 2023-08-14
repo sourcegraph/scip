@@ -376,9 +376,11 @@ Since Kind is more fine-grained than Suffix:
 | 7      | Class           |
 | 8      | Constant        |
 | 9      | Constructor     |
+| 62     | Contract        | For Solidity                                                                                                                     |
 | 10     | DataFamily      | For Haskell                                                                                                                      |
 | 11     | Enum            |
 | 12     | EnumMember      |
+| 63     | Error           |
 | 13     | Event           |
 | 14     | Fact            | For Alloy                                                                                                                        |
 | 15     | Field           |
@@ -391,10 +393,12 @@ Since Kind is more fine-grained than Suffix:
 | 22     | Key             |
 | 23     | Lang            | For Racket                                                                                                                       |
 | 24     | Lemma           | For Lean                                                                                                                         |
+| 64     | Library         | For solidity                                                                                                                     |
 | 25     | Macro           |
 | 26     | Method          |
 | 27     | MethodReceiver  | Analogous to 'ThisParameter' and 'SelfParameter', but for languages like Go where the receiver doesn't have a conventional name. |
 | 28     | Message         | For Protobuf                                                                                                                     |
+| 65     | Modifier        | For Solidity                                                                                                                     |
 | 29     | Module          |
 | 30     | Namespace       |
 | 31     | Null            |
@@ -427,7 +431,7 @@ Since Kind is more fine-grained than Suffix:
 | 58     | TypeParameter   |
 | 59     | Union           | For C, C++, Capn Proto                                                                                                           |
 | 60     | Value           |
-| 61     | Variable        | Next = 62; Feel free to open a PR proposing new language-specific kinds.                                                         |
+| 61     | Variable        | Next = 66; Feel free to open a PR proposing new language-specific kinds.                                                         |
 
 ### ToolInfo
 
@@ -538,6 +542,7 @@ Feel free to send a pull-request to add missing programming languages.
 | 10     | Scheme              |
 | 64     | ShellScript         | Bash                                                                                                                                                                                                                                                                                                                                                                                        |
 | 78     | Skylark             |
+| 95     | Solidity            |
 | 2      | Swift               |
 | 73     | TOML                |
 | 82     | TeX                 |
@@ -549,7 +554,7 @@ Feel free to send a pull-request to add missing programming languages.
 | 31     | XML                 |
 | 32     | XSL                 |
 | 74     | YAML                |
-| 38     | Zig                 | NextLanguage = 95; Steps add a new language: 1. Copy-paste the "NextLanguage = N" line above 2. Increment "NextLanguage = N" to "NextLanguage = N+1" 3. Replace "NextLanguage = N" with the name of the new language. 4. Move the new language to the correct line above using alphabetical order 5. (optional) Add a brief comment behind the language if the name is not self-explanatory |
+| 38     | Zig                 | NextLanguage = 96; Steps add a new language: 1. Copy-paste the "NextLanguage = N" line above 2. Increment "NextLanguage = N" to "NextLanguage = N+1" 3. Replace "NextLanguage = N" with the name of the new language. 4. Move the new language to the correct line above using alphabetical order 5. (optional) Add a brief comment behind the language if the name is not self-explanatory |
 
 ### ProtocolVersion
 
