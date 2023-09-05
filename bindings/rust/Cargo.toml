@@ -7,6 +7,7 @@ description = """
 SCIP (pronunciation: "skip") is a language-agnostic protocol for indexing source code, which can be used to power code navigation functionality such as Go to definition, Find references, and Find implementations.
 """
 repository = "https://github.com/sourcegraph/scip"
+readme = "Readme.md"
 
 # We need >= 1.60.0 because the generated code uses
 # https://doc.rust-lang.org/std/vec/struct.Vec.html#method.spare_capacity_mut
