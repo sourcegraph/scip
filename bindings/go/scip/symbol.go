@@ -8,12 +8,41 @@ import (
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
+// IsGlobalSymbol returns true if the symbol is obviously not a local symbol.
+//
+// CAUTION: Does not perform full validation of the symbol string's contents.
 func IsGlobalSymbol(symbol string) bool {
-	return !IsLocalSymbol(symbol)
+	return !strings.HasPrefix(symbol, "local ")
+}
+
+func isSimpleIdentifier(s string) bool {
+	for _, c := range s {
+		if ('0' <= c && c <= '9') || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') ||
+			c == '$' || c == '+' || c == '-' || c == '_' {
+			continue
+		}
+		return false
+	}
+	return true
 }
 
 func IsLocalSymbol(symbol string) bool {
-	return strings.HasPrefix(symbol, "local ")
+	if !strings.HasPrefix(symbol, "local ") {
+		return false
+	}
+	suffix := symbol[6:]
+	return len(suffix) > 0 && isSimpleIdentifier(suffix)
+}
+
+func tryParseLocalSymbol(symbol string) (string, error) {
+	if !strings.HasPrefix(symbol, "local ") {
+		return "", nil
+	}
+	suffix := symbol[6:]
+	if len(suffix) > 0 && isSimpleIdentifier(suffix) {
+		return suffix, nil
+	}
+	return "", errors.Newf("expected format 'local <simple-identifier>' but got: %v", symbol)
 }
 
 // ParseSymbol parses an SCIP string into the Symbol message.
@@ -24,13 +53,17 @@ func ParseSymbol(symbol string) (*Symbol, error) {
 // ParsePartialSymbol parses an SCIP string into the Symbol message
 // with the option to exclude the `.Descriptor` field.
 func ParsePartialSymbol(symbol string, includeDescriptors bool) (*Symbol, error) {
+	local, err := tryParseLocalSymbol(symbol)
+	if err != nil {
+		return nil, err
+	}
+	if local != "" {
+		return newLocalSymbol(local), nil
+	}
 	s := newSymbolParser(symbol)
 	scheme, err := s.acceptSpaceEscapedIdentifier("scheme")
 	if err != nil {
 		return nil, err
-	}
-	if scheme == "local" {
-		return newLocalSymbol(string(s.Symbol[s.index:])), nil
 	}
 	manager, err := s.acceptSpaceEscapedIdentifier("package manager")
 	if err != nil {

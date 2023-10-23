@@ -293,6 +293,9 @@ identifier across the package. Typically, it will include one descriptor
 for every node in the AST (along the ancestry path) between the root of
 the file and the node corresponding to the symbol.
 
+Local symbols MUST only be used for entities which are local to a Document,
+and cannot be accessed from outside the Document.
+
 | Name                     | Type       | Description |
 | ------------------------ | ---------- | ----------- |
 | **scheme**               | string     |
