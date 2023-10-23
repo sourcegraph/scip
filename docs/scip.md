@@ -462,10 +462,11 @@ multiple string representations. For example, the C++ language uses the name
 "CPP" in this enum and other names such as "cpp" are incompatible.
 Feel free to send a pull-request to add missing programming languages.
 
-| Number | Name                | Description                                                                                                                                                                                                                                                                                                                                                                                 |
-| ------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Number | Name                | Description                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------ | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0      | UnspecifiedLanguage |
 | 60     | ABAP                |
+| 96     | Apex                |
 | 49     | APL                 |
 | 39     | Ada                 |
 | 45     | Agda                |
@@ -476,13 +477,14 @@ Feel free to send a pull-request to add missing programming languages.
 | 81     | BibTeX              |
 | 34     | C                   |
 | 59     | COBOL               |
-| 35     | CPP                 | C++ (the name "CPP" was chosen for consistency with LSP)                                                                                                                                                                                                                                                                                                                                    |
+| 35     | CPP                 | C++ (the name "CPP" was chosen for consistency with LSP)                                                                                                                                                                                                                                                                                                                                     |
 | 26     | CSS                 |
 | 1      | CSharp              |
 | 8      | Clojure             |
 | 21     | Coffeescript        |
 | 9      | CommonLisp          |
 | 47     | Coq                 |
+| 97     | CUDA                |
 | 3      | Dart                |
 | 57     | Delphi              |
 | 88     | Diff                |
@@ -498,6 +500,7 @@ Feel free to send a pull-request to add missing programming languages.
 | 89     | Git_Config          |
 | 92     | Git_Rebase          |
 | 33     | Go                  |
+| 98     | GraphQL             |
 | 7      | Groovy              |
 | 30     | HTML                |
 | 20     | Hack                |
@@ -512,28 +515,34 @@ Feel free to send a pull-request to add missing programming languages.
 | 93     | JavaScriptReact     |
 | 76     | Jsonnet             |
 | 55     | Julia               |
+| 109    | Justfile            |
 | 4      | Kotlin              |
 | 83     | LaTeX               |
 | 48     | Lean                |
 | 27     | Less                |
 | 12     | Lua                 |
+| 108    | Luau                |
 | 79     | Makefile            |
 | 84     | Markdown            |
 | 52     | Matlab              |
+| 110    | Nickel              | https://nickel-lang.org/                                                                                                                                                                                                                                                                                                                                                                     |
 | 77     | Nix                 |
 | 41     | OCaml               |
 | 36     | Objective_C         |
 | 37     | Objective_CPP       |
+| 99     | Pascal              |
 | 19     | PHP                 |
 | 70     | PLSQL               |
 | 13     | Perl                |
 | 67     | PowerShell          |
 | 71     | Prolog              |
+| 100    | Protobuf            |
 | 15     | Python              |
 | 54     | R                   |
 | 11     | Racket              |
 | 14     | Raku                |
 | 62     | Razor               |
+| 102    | Repro               | Internal language for testing SCIP                                                                                                                                                                                                                                                                                                                                                           |
 | 85     | ReST                |
 | 16     | Ruby                |
 | 40     | Rust                |
@@ -544,21 +553,27 @@ Feel free to send a pull-request to add missing programming languages.
 | 28     | Sass                |
 | 5      | Scala               |
 | 10     | Scheme              |
-| 64     | ShellScript         | Bash                                                                                                                                                                                                                                                                                                                                                                                        |
+| 64     | ShellScript         | Bash                                                                                                                                                                                                                                                                                                                                                                                         |
 | 78     | Skylark             |
+| 107    | Slang               |
 | 95     | Solidity            |
+| 106    | Svelte              |
 | 2      | Swift               |
+| 101    | Tcl                 |
 | 73     | TOML                |
 | 82     | TeX                 |
+| 103    | Thrift              |
 | 23     | TypeScript          |
 | 94     | TypeScriptReact     |
+| 104    | Verilog             |
+| 105    | VHDL                |
 | 63     | VisualBasic         |
 | 25     | Vue                 |
 | 53     | Wolfram             |
 | 31     | XML                 |
 | 32     | XSL                 |
 | 74     | YAML                |
-| 38     | Zig                 | NextLanguage = 96; Steps add a new language: 1. Copy-paste the "NextLanguage = N" line above 2. Increment "NextLanguage = N" to "NextLanguage = N+1" 3. Replace "NextLanguage = N" with the name of the new language. 4. Move the new language to the correct line above using alphabetical order 5. (optional) Add a brief comment behind the language if the name is not self-explanatory |
+| 38     | Zig                 | NextLanguage = 111; Steps add a new language: 1. Copy-paste the "NextLanguage = N" line above 2. Increment "NextLanguage = N" to "NextLanguage = N+1" 3. Replace "NextLanguage = N" with the name of the new language. 4. Move the new language to the correct line above using alphabetical order 5. (optional) Add a brief comment behind the language if the name is not self-explanatory |
 
 ### ProtocolVersion
 
