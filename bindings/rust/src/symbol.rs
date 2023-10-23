@@ -19,19 +19,18 @@ pub enum SymbolError {
 ///
 /// CAUTION: Does not perform full validation of the symbol string's contents.
 pub fn is_global_symbol(sym: &str) -> bool {
-    !sym.starts_with("local ")
+    !is_local_symbol(sym)
+}
+
+/// Returns true if the symbol is obviously not a global symbol.
+///
+/// CAUTION: Does not perform full validation of the symbol string's contents.
+pub fn is_local_symbol(sym: &str) -> bool {
+    sym.starts_with("local ")
 }
 
 pub fn is_simple_identifier(sym: &str) -> bool {
     sym.chars().all(|c| c.is_alphanumeric() || c == '$' || c == '+' || c == '-' || c == '_')
-}
-
-pub fn is_local_symbol(sym: &str) -> bool {
-    if !sym.starts_with("local ") {
-        return false;
-    }
-    let suffix = &sym[6..];
-    !suffix.is_empty() && is_simple_identifier(suffix)
 }
 
 pub fn try_parse_local_symbol(sym: &str) -> Result<Option<&str>, SymbolError> {

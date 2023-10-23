@@ -12,7 +12,14 @@ import (
 //
 // CAUTION: Does not perform full validation of the symbol string's contents.
 func IsGlobalSymbol(symbol string) bool {
-	return !strings.HasPrefix(symbol, "local ")
+	return !IsLocalSymbol(symbol)
+}
+
+// IsLocalSymbol returns true if the symbol is obviously not a global symbol.
+//
+// CAUTION: Does not perform full validation of the symbol string's contents.
+func IsLocalSymbol(symbol string) bool {
+	return strings.HasPrefix(symbol, "local ")
 }
 
 func isSimpleIdentifier(s string) bool {
@@ -24,14 +31,6 @@ func isSimpleIdentifier(s string) bool {
 		return false
 	}
 	return true
-}
-
-func IsLocalSymbol(symbol string) bool {
-	if !strings.HasPrefix(symbol, "local ") {
-		return false
-	}
-	suffix := symbol[6:]
-	return len(suffix) > 0 && isSimpleIdentifier(suffix)
 }
 
 func tryParseLocalSymbol(symbol string) (string, error) {
