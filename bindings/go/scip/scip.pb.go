@@ -1552,6 +1552,7 @@ func (x *Document) GetText() string {
 // <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit
 // <escaped-identifier>   ::= '`' (<escaped-character>)+ '`'
 // <escaped-characters>   ::= any UTF-8 character, escape backticks with double backtick.
+// <local-id>             ::= <simple-identifier>
 // ```
 //
 // The list of descriptors for a symbol should together form a fully
