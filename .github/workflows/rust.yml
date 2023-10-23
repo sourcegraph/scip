@@ -16,7 +16,7 @@ jobs:
       - uses: ./.github/actions/asdf
         with:
           rust: true
-      - run: cargo check
+      - run: cargo test
         working-directory: bindings/rust
       - run: cargo check
         working-directory: cmd/scip/tests/reprolang

@@ -1552,6 +1552,7 @@ func (x *Document) GetText() string {
 // <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit
 // <escaped-identifier>   ::= '`' (<escaped-character>)+ '`'
 // <escaped-characters>   ::= any UTF-8 character, escape backticks with double backtick.
+// <local-id>             ::= <simple-identifier>
 // ```
 //
 // The list of descriptors for a symbol should together form a fully
@@ -1559,6 +1560,9 @@ func (x *Document) GetText() string {
 // identifier across the package. Typically, it will include one descriptor
 // for every node in the AST (along the ancestry path) between the root of
 // the file and the node corresponding to the symbol.
+//
+// Local symbols MUST only be used for entities which are local to a Document,
+// and cannot be accessed from outside the Document.
 type Symbol struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -4,6 +4,7 @@ use crate::types::{descriptor, Descriptor};
 use crate::types::{Package, Symbol};
 use protobuf::{MessageField, SpecialFields};
 
+#[non_exhaustive]
 #[derive(Debug, PartialEq)]
 pub enum SymbolError {
     InvalidIndex,
@@ -11,14 +12,36 @@ pub enum SymbolError {
     MissingDescriptor,
     MissingCharacter(String),
     EndOfSymbol(String),
+    InvalidLocalSymbol(String),
 }
 
+/// Returns true if the symbol is obviously not a local symbol.
+///
+/// CAUTION: Does not perform full validation of the symbol string's contents.
 pub fn is_global_symbol(sym: &str) -> bool {
     !is_local_symbol(sym)
 }
 
+/// Returns true if the symbol is obviously not a global symbol.
+///
+/// CAUTION: Does not perform full validation of the symbol string's contents.
 pub fn is_local_symbol(sym: &str) -> bool {
     sym.starts_with("local ")
+}
+
+pub fn is_simple_identifier(sym: &str) -> bool {
+    sym.chars().all(|c| c.is_alphanumeric() || c == '$' || c == '+' || c == '-' || c == '_')
+}
+
+pub fn try_parse_local_symbol(sym: &str) -> Result<Option<&str>, SymbolError> {
+    if !sym.starts_with("local ") {
+        return Ok(None);
+    }
+    let suffix = &sym[6..];
+    if !suffix.is_empty() && is_simple_identifier(suffix) {
+        return Ok(Some(suffix));
+    }
+    Err(SymbolError::InvalidLocalSymbol(sym.to_string()))
 }
 
 pub struct SymbolFormatOptions {
@@ -154,18 +177,15 @@ pub fn parse_symbol(symbol: &str) -> Result<Symbol, SymbolError> {
         }
     }
 
+    match try_parse_local_symbol(symbol) {
+        Ok(Some(s)) => return Ok(internal_local_symbol(s)),
+        Err(err) => return Err(err),
+        Ok(None) => {},
+    }
+
     let mut parser = SymbolParser::new(symbol);
 
     let scheme = parser.accept_space_escaped_identifier("scheme")?;
-    if scheme == "local" {
-        return Ok(internal_local_symbol(
-            symbol
-                .chars()
-                .skip(parser.index)
-                .collect::<String>()
-                .as_str(),
-        ));
-    }
 
     let package = crate::types::Package {
         manager: dot(parser.accept_space_escaped_identifier("package.manager")?),
@@ -602,5 +622,21 @@ mod test {
 
         assert_eq!(symbol, "scip-ctags . . . `foo=`.");
         assert_eq!(parse_symbol(&symbol).expect("to parse"), symbol_struct);
+    }
+
+    #[test]
+    fn test_parse_error() {
+        let test_cases = vec![
+            "",
+            "lsif-java maven package 1.0.0",
+            "lsif-java maven package 1.0.0 java/io/File#Entry.trailingstring",
+            "lsif-java maven package 1.0.0 java/io/File#Entry.unrecognizedSuffix@",
+            "local 🧠",
+            "local ",
+            "local &&&",
+        ];
+        for test_case in test_cases {
+            assert!(parse_symbol(test_case).is_err());
+        }
     }
 }
