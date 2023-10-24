@@ -265,6 +265,8 @@ message SymbolInformation {
       // Analogous to 'ThisParameter' and 'SelfParameter', but for languages
       // like Go where the receiver doesn't have a conventional name.
       MethodReceiver = 27;
+      // A method specification on an interface
+      MethodSpec = 66;
       // For Protobuf
       Message = 28;
       // For Solidity
@@ -320,7 +322,7 @@ message SymbolInformation {
       Union = 59;
       Value = 60;
       Variable = 61;
-      // Next = 66;
+      // Next = 67;
       // Feel free to open a PR proposing new language-specific kinds.
   }
   // (optional) The name of this symbol as it should be displayed to the user.
