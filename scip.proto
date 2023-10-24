@@ -661,6 +661,7 @@ enum DiagnosticTag {
 enum Language {
   UnspecifiedLanguage = 0;
   ABAP = 60;
+  Apex = 96;
   APL = 49;
   Ada = 39;
   Agda = 45;
@@ -678,6 +679,7 @@ enum Language {
   Coffeescript = 21;
   CommonLisp = 9;
   Coq = 47;
+  CUDA = 97;
   Dart = 3;
   Delphi = 57;
   Diff = 88;
@@ -693,6 +695,7 @@ enum Language {
   Git_Config = 89;
   Git_Rebase = 92;
   Go = 33;
+  GraphQL = 98;
   Groovy = 7;
   HTML = 30;
   Hack = 20;
@@ -707,28 +710,34 @@ enum Language {
   JavaScriptReact = 93;
   Jsonnet = 76;
   Julia =  55;
+  Justfile = 109;
   Kotlin = 4;
   LaTeX = 83;
   Lean = 48;
   Less = 27;
   Lua = 12;
+  Luau = 108;
   Makefile = 79;
   Markdown = 84;
   Matlab = 52;
+  Nickel = 110; // https://nickel-lang.org/
   Nix = 77;
   OCaml = 41;
   Objective_C = 36;
   Objective_CPP = 37;
+  Pascal = 99;
   PHP = 19;
   PLSQL = 70;
   Perl = 13;
   PowerShell = 67;
   Prolog = 71;
+  Protobuf = 100;
   Python = 15;
   R = 54;
   Racket = 11;
   Raku = 14;
   Razor = 62;
+  Repro = 102; // Internal language for testing SCIP
   ReST = 85;
   Ruby = 16;
   Rust = 40;
@@ -741,12 +750,18 @@ enum Language {
   Scheme = 10;
   ShellScript = 64; // Bash
   Skylark = 78;
+  Slang = 107;
   Solidity = 95;
+  Svelte = 106;
   Swift = 2;
+  Tcl = 101;
   TOML = 73;
   TeX = 82;
+  Thrift = 103;
   TypeScript = 23;
   TypeScriptReact = 94;
+  Verilog = 104;
+  VHDL = 105;
   VisualBasic = 63;
   Vue = 25;
   Wolfram = 53;
@@ -754,7 +769,7 @@ enum Language {
   XSL = 32;
   YAML = 74;
   Zig = 38;
-  // NextLanguage = 96;
+  // NextLanguage = 111;
   // Steps add a new language:
   // 1. Copy-paste the "NextLanguage = N" line above
   // 2. Increment "NextLanguage = N" to "NextLanguage = N+1"
