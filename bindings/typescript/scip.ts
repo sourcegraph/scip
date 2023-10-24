@@ -1315,6 +1315,7 @@ export namespace scip {
             Macro = 25,
             Method = 26,
             MethodReceiver = 27,
+            MethodSpec = 66,
             Message = 28,
             Modifier = 65,
             Module = 29,

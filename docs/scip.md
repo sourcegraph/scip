@@ -401,6 +401,7 @@ Since Kind is more fine-grained than Suffix:
 | 25     | Macro           |
 | 26     | Method          |
 | 27     | MethodReceiver  | Analogous to 'ThisParameter' and 'SelfParameter', but for languages like Go where the receiver doesn't have a conventional name. |
+| 66     | MethodSpec      | A method specification on an interface                                                                                           |
 | 28     | Message         | For Protobuf                                                                                                                     |
 | 65     | Modifier        | For Solidity                                                                                                                     |
 | 29     | Module          |
@@ -435,7 +436,7 @@ Since Kind is more fine-grained than Suffix:
 | 58     | TypeParameter   |
 | 59     | Union           | For C, C++, Capn Proto                                                                                                           |
 | 60     | Value           |
-| 61     | Variable        | Next = 66; Feel free to open a PR proposing new language-specific kinds.                                                         |
+| 61     | Variable        | Next = 67; Feel free to open a PR proposing new language-specific kinds.                                                         |
 
 ### ToolInfo
 
