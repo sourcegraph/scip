@@ -20,6 +20,11 @@ if ! grep -q "$NEW_VERSION" cmd/scip/version.txt; then
   exit 1
 fi
 
+if ! grep -q "version = \"$NEW_VERSION\"" bindings/rust/Cargo.toml; then
+  echo "error: SCIP version in bindings/rust/Cargo.toml doesn't match NEW_VERSION=$NEW_VERSION"
+  exit 1
+fi
+
 if ! git diff --quiet; then
   echo "error: Found unstaged changes; aborting."
   exit 1
