@@ -223,6 +223,8 @@ message SymbolInformation {
       UnspecifiedKind = 0;
       // A method which may or may not have a body. For Java, Kotlin etc.
       AbstractMethod = 66;
+      // For Ruby's attr_accessor
+      Accessor = 72;
       Array = 1;
       // For Alloy
       Assertion = 2;
@@ -239,6 +241,8 @@ message SymbolInformation {
       Contract = 62;
       // For Haskell
       DataFamily = 10;
+      // For C# and F#
+      Delegate = 73;
       Enum = 11;
       EnumMember = 12;
       Error = 63;
@@ -248,7 +252,7 @@ message SymbolInformation {
       Field = 15;
       File = 16;
       Function = 17;
-      // For 'get' in Swift
+      // For 'get' in Swift, 'attr_reader' in Ruby
       Getter = 18;
       // For Raku
       Grammar = 19;
@@ -264,6 +268,8 @@ message SymbolInformation {
       Library = 64;
       Macro = 25;
       Method = 26;
+      // For Ruby
+      MethodAlias = 74;
       // Analogous to 'ThisParameter' and 'SelfParameter', but for languages
       // like Go where the receiver doesn't have a conventional name.
       MethodReceiver = 27;
@@ -298,14 +304,30 @@ message SymbolInformation {
       Quasiquoter = 43;
       // 'self' in Python, Rust, Swift etc.
       SelfParameter = 44;
-      // For 'set' in Swift
+      // For 'set' in Swift, 'attr_writer' in Ruby
       Setter = 45;
       // For Alloy, analogous to 'Struct'.
       Signature = 46;
-      // For Swift
-      Subscript = 47;
+      // For Ruby
+      SingletonClass = 75;
+      // Analogous to 'StaticMethod', for Ruby.
+      SingletonMethod = 76;
+      // Analogous to 'StaticField', for C++
+      StaticDataMember = 77;
+      // For C#
+      StaticEvent = 78;
+      // For C#
+      StaticField = 79;
+      // For Java, C#, C++ etc.
+      StaticMethod = 80;
+      // For C#, TypeScript etc.
+      StaticProperty = 81;
+      // For C, C++
+      StaticVariable = 82;
       String = 48;
       Struct = 49;
+      // For Swift
+      Subscript = 47;
       // For Lean
       Tactic = 50;
       // For Lean
@@ -332,7 +354,7 @@ message SymbolInformation {
       Union = 59;
       Value = 60;
       Variable = 61;
-      // Next = 72;
+      // Next = 83;
       // Feel free to open a PR proposing new language-specific kinds.
   }
   // (optional) The name of this symbol as it should be displayed to the user.

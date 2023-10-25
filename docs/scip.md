@@ -372,6 +372,7 @@ Since Kind is more fine-grained than Suffix:
 | ------ | ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | 0      | UnspecifiedKind     |
 | 66     | AbstractMethod      | A method which may or may not have a body. For Java, Kotlin etc.                                                                 |
+| 72     | Accessor            | For Ruby's attr_accessor                                                                                                         |
 | 1      | Array               |
 | 2      | Assertion           | For Alloy                                                                                                                        |
 | 3      | AssociatedType      |
@@ -383,6 +384,7 @@ Since Kind is more fine-grained than Suffix:
 | 9      | Constructor         |
 | 62     | Contract            | For Solidity                                                                                                                     |
 | 10     | DataFamily          | For Haskell                                                                                                                      |
+| 73     | Delegate            | For C# and F#                                                                                                                    |
 | 11     | Enum                |
 | 12     | EnumMember          |
 | 63     | Error               |
@@ -391,7 +393,7 @@ Since Kind is more fine-grained than Suffix:
 | 15     | Field               |
 | 16     | File                |
 | 17     | Function            |
-| 18     | Getter              | For 'get' in Swift                                                                                                               |
+| 18     | Getter              | For 'get' in Swift, 'attr_reader' in Ruby                                                                                        |
 | 19     | Grammar             | For Raku                                                                                                                         |
 | 20     | Instance            | For Purescript and Lean                                                                                                          |
 | 21     | Interface           |
@@ -401,6 +403,7 @@ Since Kind is more fine-grained than Suffix:
 | 64     | Library             | For solidity                                                                                                                     |
 | 25     | Macro               |
 | 26     | Method              |
+| 74     | MethodAlias         | For Ruby                                                                                                                         |
 | 27     | MethodReceiver      | Analogous to 'ThisParameter' and 'SelfParameter', but for languages like Go where the receiver doesn't have a conventional name. |
 | 67     | MethodSpecification | Analogous to 'AbstractMethod', for Go.                                                                                           |
 | 28     | Message             | For Protobuf                                                                                                                     |
@@ -423,11 +426,19 @@ Since Kind is more fine-grained than Suffix:
 | 69     | PureVirtualMethod   | Analogous to 'AbstractMethod', for C++.                                                                                          |
 | 43     | Quasiquoter         | For Haskell                                                                                                                      |
 | 44     | SelfParameter       | 'self' in Python, Rust, Swift etc.                                                                                               |
-| 45     | Setter              | For 'set' in Swift                                                                                                               |
+| 45     | Setter              | For 'set' in Swift, 'attr_writer' in Ruby                                                                                        |
 | 46     | Signature           | For Alloy, analogous to 'Struct'.                                                                                                |
-| 47     | Subscript           | For Swift                                                                                                                        |
+| 75     | SingletonClass      | For Ruby                                                                                                                         |
+| 76     | SingletonMethod     | Analogous to 'StaticMethod', for Ruby.                                                                                           |
+| 77     | StaticDataMember    | Analogous to 'StaticField', for C++                                                                                              |
+| 78     | StaticEvent         | For C#                                                                                                                           |
+| 79     | StaticField         | For C#                                                                                                                           |
+| 80     | StaticMethod        | For Java, C#, C++ etc.                                                                                                           |
+| 81     | StaticProperty      | For C#, TypeScript etc.                                                                                                          |
+| 82     | StaticVariable      | For C, C++                                                                                                                       |
 | 48     | String              |
 | 49     | Struct              |
+| 47     | Subscript           | For Swift                                                                                                                        |
 | 50     | Tactic              | For Lean                                                                                                                         |
 | 51     | Theorem             | For Lean                                                                                                                         |
 | 52     | ThisParameter       | Method receiver for languages 'this' in JavaScript, C++, Java etc.                                                               |
@@ -441,7 +452,7 @@ Since Kind is more fine-grained than Suffix:
 | 58     | TypeParameter       |
 | 59     | Union               | For C, C++, Capn Proto                                                                                                           |
 | 60     | Value               |
-| 61     | Variable            | Next = 72; Feel free to open a PR proposing new language-specific kinds.                                                         |
+| 61     | Variable            | Next = 83; Feel free to open a PR proposing new language-specific kinds.                                                         |
 
 ### ToolInfo
 
