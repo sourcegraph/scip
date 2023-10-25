@@ -1,8 +1,49 @@
 # ChangeLog
 
+## v0.3.1
+
+SCIP schema:
+
+- Added new `Kind` enum constants to represent more detailed
+  information about different pieces of syntax in different languages.
+  (https://github.com/sourcegraph/scip/pull/195,
+  https://github.com/sourcegraph/scip/pull/208,
+  https://github.com/sourcegraph/scip/pull/209)
+- Added new `Language` enum constants.
+  (https://github.com/sourcegraph/scip/pull/195,
+  https://github.com/sourcegraph/scip/pull/207)
+- Minor documentation improvements.
+  (https://github.com/sourcegraph/scip/pull/194,
+  https://github.com/sourcegraph/scip/pull/206)
+
+scip CLI:
+
+- Added a new `--project-root` flag to `scip stats`.
+  (https://github.com/sourcegraph/scip/pull/187)
+
+Go bindings:
+
+- Added missing validation for local symbols when
+  parsing a symbol string.
+  (https://github.com/sourcegraph/scip/pull/206)
+- Fixed a bug related to escaping in symbol formatting.
+  (https://github.com/sourcegraph/scip/pull/186)
+  (https://github.com/sourcegraph/scip/pull/206)
+- Fixed a bug in occurrence canonicalization.
+  (https://github.com/sourcegraph/scip/pull/180)
+- Fixed some bugs in the new streaming parsing APIs.
+  (https://github.com/sourcegraph/scip/pull/176,
+  https://github.com/sourcegraph/scip/pull/177)
+
+Rust bindings:
+
+- Added missing validation for local symbols when
+  parsing a symbol string.
+  (https://github.com/sourcegraph/scip/pull/206)
+
 ## v0.3.0
 
-scip schema:
+SCIP schema:
 
 - Several new fields were added:
   [`SymbolInformation.signature_documentation`](https://github.com/sourcegraph/scip/pull/159),
@@ -22,7 +63,9 @@ scip CLI:
 
 Go bindings:
 
-- Adds API for parsing indexes in a streaming fashion.
+- Added new APIs to parse SCIP indexes in a streaming
+  fashion at Document granularity. This allows consumers
+  to process SCIP indexes with better control over memory usage.
   (https://github.com/sourcegraph/scip/pull/172)
 - Fixed a panic when descriptors are incomplete
   (https://github.com/sourcegraph/scip/pull/171)

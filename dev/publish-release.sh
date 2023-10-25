@@ -5,7 +5,7 @@ set -euo pipefail
 {
 if [ -z "${NEW_VERSION:-}" ]; then
   echo "error: Missing value for environment variable NEW_VERSION"
-  echo "hint: Invoke this script as NEW_VERSION=M.N.P ./tools/scripts/publish-release.sh"
+  echo "hint: Invoke this script as NEW_VERSION=M.N.P ./dev/publish-release.sh"
   exit 1
 fi
 
