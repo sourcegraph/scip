@@ -221,6 +221,8 @@ message SymbolInformation {
   // - If two symbols have different Suffixes, they should have different Kinds.
   enum Kind {
       UnspecifiedKind = 0;
+      // A method which may or may not have a body. For Java, Kotlin etc.
+      AbstractMethod = 66;
       Array = 1;
       // For Alloy
       Assertion = 2;
@@ -265,6 +267,8 @@ message SymbolInformation {
       // Analogous to 'ThisParameter' and 'SelfParameter', but for languages
       // like Go where the receiver doesn't have a conventional name.
       MethodReceiver = 27;
+      // Analogous to 'AbstractMethod', for Go.
+      MethodSpecification = 67;
       // For Protobuf
       Message = 28;
       // For Solidity
@@ -286,6 +290,10 @@ message SymbolInformation {
       Property = 41;
       // Analogous to 'Trait' and 'TypeClass', for Swift and Objective-C
       Protocol = 42;
+      // Analogous to 'AbstractMethod', for Swift and Objective-C.
+      ProtocolMethod = 68;
+      // Analogous to 'AbstractMethod', for C++.
+      PureVirtualMethod = 69;
       // For Haskell
       Quasiquoter = 43;
       // 'self' in Python, Rust, Swift etc.
@@ -305,14 +313,18 @@ message SymbolInformation {
       // Method receiver for languages
       // 'this' in JavaScript, C++, Java etc.
       ThisParameter = 52;
-      // Analogous to 'Protocol' and 'TypeClass', for Rust.
+      // Analogous to 'Protocol' and 'TypeClass', for Rust, Scala etc.
       Trait = 53;
+      // Analogous to 'AbstractMethod', for Rust, Scala etc.
+      TraitMethod = 70;
       // Data type definition for languages like OCaml which use `type`
       // rather than separate keywords like `struct` and `enum`.
       Type = 54;
       TypeAlias = 55;
       // Analogous to 'Trait' and 'Protocol', for Haskell, Purescript etc.
       TypeClass = 56;
+      // Analogous to 'AbstractMethod', for Haskell, Purescript etc.
+      TypeClassMethod = 71;
       // For Haskell
       TypeFamily = 57;
       TypeParameter = 58;
@@ -320,7 +332,7 @@ message SymbolInformation {
       Union = 59;
       Value = 60;
       Variable = 61;
-      // Next = 66;
+      // Next = 72;
       // Feel free to open a PR proposing new language-specific kinds.
   }
   // (optional) The name of this symbol as it should be displayed to the user.
