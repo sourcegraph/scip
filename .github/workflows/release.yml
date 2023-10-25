@@ -13,7 +13,7 @@ jobs:
         with:
           rust: true
       - run: cargo publish --token '${{ secrets.CRATES_TOKEN }}'
-          working-directory: bindings/rust
+        working-directory: bindings/rust
 
   build-go-binaries:
     runs-on: ubuntu-latest
