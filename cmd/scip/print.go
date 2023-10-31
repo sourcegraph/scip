@@ -4,6 +4,7 @@ import (
 	"io"
 	"math"
 	"os"
+	"strings"
 
 	"github.com/k0kubun/pp/v3"
 	"github.com/urfave/cli/v2"
@@ -40,10 +41,10 @@ Do not rely on non-JSON output in scripts`,
 			}
 			// Following https://no-color.org/
 			if val, found := os.LookupEnv("NO_COLOR"); found && val != "" {
-				switch val {
+				switch strings.ToLower(val) {
 				case "":
 					break
-				case "0", "false", "FALSE", "off", "OFF":
+				case "0", "false", "off":
 					colorOutput = false
 				default:
 					colorOutput = true
