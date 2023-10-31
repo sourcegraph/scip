@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"math"
+	"os"
 
 	"github.com/k0kubun/pp/v3"
 	"github.com/urfave/cli/v2"
@@ -12,17 +13,24 @@ import (
 )
 
 func printCommand() cli.Command {
-	var json bool
+	var json, colorOutput bool
 	snapshot := cli.Command{
 		Name:  "print",
-		Usage: "Print a SCIP index in a human-readable format for debugging",
-		Description: `WARNING: The output may change over time.
-Do not rely on the output of this command in scripts`,
+		Usage: "Print a SCIP index for debugging",
+		Description: `WARNING: The TTY output may change over time.
+Do not rely on non-JSON output in scripts`,
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:        "json",
 				Usage:       "Output in JSON format",
 				Destination: &json,
+			},
+			&cli.BoolFlag{
+				Name:        "color",
+				Usage:       "Enable color output for TTY (no effect for JSON)",
+				Destination: &colorOutput,
+				Value:       true,
+				DefaultText: "true",
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -30,13 +38,24 @@ Do not rely on the output of this command in scripts`,
 			if indexPath == "" {
 				return errors.New("missing argument for path to SCIP index")
 			}
-			return printMain(indexPath, json, c.App.Writer)
+			// Following https://no-color.org/
+			if val, found := os.LookupEnv("NO_COLOR"); found && val != "" {
+				switch val {
+				case "":
+					break
+				case "0", "false", "FALSE", "off", "OFF":
+					colorOutput = false
+				default:
+					colorOutput = true
+				}
+			}
+			return printMain(indexPath, colorOutput, json, c.App.Writer)
 		},
 	}
 	return snapshot
 }
 
-func printMain(indexPath string, json bool, out io.Writer) error {
+func printMain(indexPath string, colorOutput bool, json bool, out io.Writer) error {
 	index, err := readFromOption(indexPath)
 	if err != nil {
 		return err
@@ -51,6 +70,7 @@ func printMain(indexPath string, json bool, out io.Writer) error {
 		return err
 	} else {
 		prettyPrinter := pp.New()
+		prettyPrinter.SetColoringEnabled(colorOutput)
 		prettyPrinter.SetExportedOnly(true)
 		prettyPrinter.SetOutput(out)
 		_, err = prettyPrinter.Print(index)
