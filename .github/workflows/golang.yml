@@ -7,6 +7,8 @@ on:
       - '**.go'
       - '**/go.mod'
       - '**/go.sum'
+      - 'cmd/scip/**'
+      - 'docs/CLI.md'
 
 jobs:
   go-test:
