@@ -28,7 +28,7 @@ DESCRIPTION:
 COMMANDS:
    convert   Convert a SCIP index to an LSIF index
    lint      Flag potential issues with a SCIP index
-   print     Print a SCIP index in a human-readable format for debugging
+   print     Print a SCIP index for debugging
    snapshot  Generate snapshot files for golden testing
    stats     Output useful statistics about a SCIP index
    help, h   Shows a list of commands or help for one command
@@ -74,17 +74,19 @@ DESCRIPTION:
 
 ```
 NAME:
-   scip print - Print a SCIP index in a human-readable format for debugging
+   scip print - Print a SCIP index for debugging
 
 USAGE:
    scip print [command options] [arguments...]
 
 DESCRIPTION:
-   WARNING: The output may change over time.
-   Do not rely on the output of this command in scripts
+   WARNING: The TTY output may change over time.
+   Do not rely on non-JSON output in scripts
 
 OPTIONS:
    --json      Output in JSON format (default: false)
+   --color     Enable color output for TTY (no effect for JSON) (default: true)
+   --help, -h  show help
 ```
 
 ## `scip snapshot`
