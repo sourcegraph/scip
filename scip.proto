@@ -474,6 +474,11 @@ enum SymbolRole {
   Generated = 0x10;
   // Is the symbol in test code?
   Test = 0x20;
+  // Is this a forward declaration for the symbol?
+  //
+  // Applies to languages like C, C++ and Objective-C
+  // Forward declarations should not use the Definition role.
+  ForwardDeclaration = 0x40;
 }
 
 enum SyntaxKind {

@@ -625,6 +625,14 @@ logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 | 8      | ReadAccess            | Is the symbol read here?                                                                              |
 | 16     | Generated             | Is the symbol in generated code?                                                                      |
 | 32     | Test                  | Is the symbol in test code?                                                                           |
+| 64     | ForwardDeclaration    | Is this a forward declaration for the symbol?                                                         |
+
+Additional notes on **ForwardDeclaration**:
+
+Is this a forward declaration for the symbol?
+
+Applies to languages like C, C++ and Objective-C
+Forward declarations should not use the Definition role.
 
 ### SyntaxKind
 
