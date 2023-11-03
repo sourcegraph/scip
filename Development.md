@@ -87,9 +87,8 @@ PACKAGE=MY_PACKAGE_NAME SRC_ACCESS_TOKEN=MY_TOKEN SRC_ENDPOINT=https://sourcegra
 
 ## Release a new version
 
-First, add release notes to the [CHANGELOG](CHANGELOG.md).
-Next, update the version in `cmd/scip/version.txt`
-and `bindings/rust/Cargo.toml`.
+First, add release notes to the [CHANGELOG](CHANGELOG.md). Next, update the
+version in `cmd/scip/version.txt`, `bindings/rust/Cargo.toml` and `docs/CLI.md`
 
 After landing a commit with those two changes, run the release script:
 (requires the [GitHub CLI](https://cli.github.com/))

@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v0.3.2
+
+SCIP schema:
+
+- Added new `SymbolRole`: `ForwardDefinition`
+  (https://github.com/sourcegraph/scip/pull/217)
+
 ## v0.3.1
 
 SCIP schema:
