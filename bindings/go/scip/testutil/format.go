@@ -110,9 +110,11 @@ func FormatSnapshot(
 			}
 			b.WriteRune(' ')
 			role := "reference"
-			isDefinition := occ.SymbolRoles&int32(scip.SymbolRole_Definition) > 0
+			isDefinition := scip.SymbolRole_Definition.Matches(occ)
 			if isDefinition {
 				role = "definition"
+			} else if scip.SymbolRole_ForwardDefinition.Matches(occ) {
+				role = "forward_definition"
 			}
 			b.WriteString(role)
 			b.WriteRune(' ')

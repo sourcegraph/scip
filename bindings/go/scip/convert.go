@@ -230,7 +230,7 @@ func (g *graph) emitDocument(index *Index, doc *Document) {
 		rangeIDs = append(rangeIDs, rangeID)
 		resultIDs := g.getOrInsertSymbolInformationIDs(occ.Symbol, localSymbolInformationTable)
 		g.emitEdge("next", reader.Edge{OutV: rangeID, InV: resultIDs.ResultSet})
-		isDefinition := occ.SymbolRoles&int32(SymbolRole_Definition) != 0
+		isDefinition := SymbolRole_Definition.Matches(occ)
 		if isDefinition && resultIDs.DefinitionResult > 0 {
 			g.emitEdge("item", reader.Edge{OutV: resultIDs.DefinitionResult, InVs: []int{rangeID}, Document: documentID})
 			symbolInfo, ok := documentSymbolTable[occ.Symbol]

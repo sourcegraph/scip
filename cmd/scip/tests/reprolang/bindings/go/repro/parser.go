@@ -62,7 +62,8 @@ func (s *reproSourceFile) loadStatements() {
 			}
 		case "reference_statement":
 			s.references = append(s.references, &referenceStatement{
-				name: newIdentifier(s, child.ChildByFieldName("name")),
+				name:         newIdentifier(s, child.ChildByFieldName("name")),
+				isForwardDef: child.ChildByFieldName("forward_definition") != nil,
 			})
 		}
 	}

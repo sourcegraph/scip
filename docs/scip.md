@@ -625,6 +625,15 @@ logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
 | 8      | ReadAccess            | Is the symbol read here?                                                                              |
 | 16     | Generated             | Is the symbol in generated code?                                                                      |
 | 32     | Test                  | Is the symbol in test code?                                                                           |
+| 64     | ForwardDefinition     | Is this a signature for a symbol that is defined elsewhere?                                           |
+
+Additional notes on **ForwardDefinition**:
+
+Is this a signature for a symbol that is defined elsewhere?
+
+Applies to forward declarations for languages like C, C++
+and Objective-C, as well as `val` declarations in interface
+files in languages like SML and OCaml.
 
 ### SyntaxKind
 

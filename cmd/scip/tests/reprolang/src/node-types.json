@@ -145,6 +145,16 @@
     "type": "reference_statement",
     "named": true,
     "fields": {
+      "forward_definition": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "forward_definition",
+            "named": false
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -272,6 +282,10 @@
   },
   {
     "type": "definition",
+    "named": false
+  },
+  {
+    "type": "forward_definition",
     "named": false
   },
   {

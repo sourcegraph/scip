@@ -63,7 +63,11 @@ func (s *reproSourceFile) occurrences() []*scip.Occurrence {
 		emit(rel.relations)
 	}
 	for _, ref := range s.references {
-		result = append(result, ref.name.occurrence(scip.SymbolRole_UnspecifiedSymbolRole))
+		role := scip.SymbolRole_UnspecifiedSymbolRole
+		if ref.isForwardDef {
+			role = scip.SymbolRole_ForwardDefinition
+		}
+		result = append(result, ref.name.occurrence(role))
 	}
 	return result
 }
