@@ -1,0 +1,8 @@
+ reference forward_definition abc#
+#                             ^^^^ forward_definition forward_def.repro/abc#
+ definition abc#
+#           ^^^^ definition forward_def.repro/abc#
+#           documentation signature of abc#
+ reference abc#
+#          ^^^^ reference forward_def.repro/abc#
+ 

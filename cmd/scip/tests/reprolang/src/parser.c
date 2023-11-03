@@ -21,7 +21,7 @@ enum {
   anon_sym_LF = 2,
   anon_sym_definition = 3,
   anon_sym_reference = 4,
-  anon_sym_forward_decl = 5,
+  anon_sym_forward_definition = 5,
   anon_sym_implements = 6,
   anon_sym_type_defines = 7,
   anon_sym_references = 8,
@@ -57,7 +57,7 @@ static const char * const ts_symbol_names[] = {
   [anon_sym_LF] = "\n",
   [anon_sym_definition] = "definition",
   [anon_sym_reference] = "reference",
-  [anon_sym_forward_decl] = "forward_decl",
+  [anon_sym_forward_definition] = "forward_definition",
   [anon_sym_implements] = "implements",
   [anon_sym_type_defines] = "type_defines",
   [anon_sym_references] = "references",
@@ -93,7 +93,7 @@ static const TSSymbol ts_symbol_map[] = {
   [anon_sym_LF] = anon_sym_LF,
   [anon_sym_definition] = anon_sym_definition,
   [anon_sym_reference] = anon_sym_reference,
-  [anon_sym_forward_decl] = anon_sym_forward_decl,
+  [anon_sym_forward_definition] = anon_sym_forward_definition,
   [anon_sym_implements] = anon_sym_implements,
   [anon_sym_type_defines] = anon_sym_type_defines,
   [anon_sym_references] = anon_sym_references,
@@ -144,7 +144,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = false,
   },
-  [anon_sym_forward_decl] = {
+  [anon_sym_forward_definition] = {
     .visible = true,
     .named = false,
   },
@@ -261,7 +261,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
 enum {
   field_descriptors = 1,
   field_docstring = 2,
-  field_forward_decl = 3,
+  field_forward_definition = 3,
   field_global = 4,
   field_name = 5,
   field_project_name = 6,
@@ -273,7 +273,7 @@ static const char * const ts_field_names[] = {
   [0] = NULL,
   [field_descriptors] = "descriptors",
   [field_docstring] = "docstring",
-  [field_forward_decl] = "forward_decl",
+  [field_forward_definition] = "forward_definition",
   [field_global] = "global",
   [field_name] = "name",
   [field_project_name] = "project_name",
@@ -303,7 +303,7 @@ static const TSFieldMapEntry ts_field_map_entries[] = {
     {field_name, 1},
     {field_roles, 2},
   [5] =
-    {field_forward_decl, 1},
+    {field_forward_definition, 1},
     {field_name, 2},
   [7] =
     {field_descriptors, 2},
@@ -982,7 +982,7 @@ static bool ts_lex_keywords(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(anon_sym_defined_by);
       END_STATE();
     case 53:
-      if (lookahead == 'c') ADVANCE(57);
+      if (lookahead == 'f') ADVANCE(57);
       END_STATE();
     case 54:
       ACCEPT_TOKEN(anon_sym_implements);
@@ -994,16 +994,34 @@ static bool ts_lex_keywords(TSLexer *lexer, TSStateId state) {
       if (lookahead == 'e') ADVANCE(58);
       END_STATE();
     case 57:
-      if (lookahead == 'l') ADVANCE(59);
+      if (lookahead == 'i') ADVANCE(59);
       END_STATE();
     case 58:
       if (lookahead == 's') ADVANCE(60);
       END_STATE();
     case 59:
-      ACCEPT_TOKEN(anon_sym_forward_decl);
+      if (lookahead == 'n') ADVANCE(61);
       END_STATE();
     case 60:
       ACCEPT_TOKEN(anon_sym_type_defines);
+      END_STATE();
+    case 61:
+      if (lookahead == 'i') ADVANCE(62);
+      END_STATE();
+    case 62:
+      if (lookahead == 't') ADVANCE(63);
+      END_STATE();
+    case 63:
+      if (lookahead == 'i') ADVANCE(64);
+      END_STATE();
+    case 64:
+      if (lookahead == 'o') ADVANCE(65);
+      END_STATE();
+    case 65:
+      if (lookahead == 'n') ADVANCE(66);
+      END_STATE();
+    case 66:
+      ACCEPT_TOKEN(anon_sym_forward_definition);
       END_STATE();
     default:
       return false;
@@ -1060,7 +1078,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_workspace_identifier] = ACTIONS(1),
     [anon_sym_definition] = ACTIONS(1),
     [anon_sym_reference] = ACTIONS(1),
-    [anon_sym_forward_decl] = ACTIONS(1),
+    [anon_sym_forward_definition] = ACTIONS(1),
     [anon_sym_implements] = ACTIONS(1),
     [anon_sym_type_defines] = ACTIONS(1),
     [anon_sym_references] = ACTIONS(1),
@@ -1288,7 +1306,7 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(87), 1,
       sym_workspace_identifier,
     ACTIONS(89), 1,
-      anon_sym_forward_decl,
+      anon_sym_forward_definition,
     ACTIONS(91), 1,
       anon_sym_global,
     STATE(13), 1,

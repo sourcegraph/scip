@@ -101,13 +101,13 @@
         },
         {
           "type": "FIELD",
-          "name": "forward_decl",
+          "name": "forward_definition",
           "content": {
             "type": "CHOICE",
             "members": [
               {
                 "type": "STRING",
-                "value": "forward_decl"
+                "value": "forward_definition"
               },
               {
                 "type": "BLANK"

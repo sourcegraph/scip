@@ -6,12 +6,12 @@
 {"id":6,"type":"edge","label":"textDocument/definition","inV":2,"outV":3}
 {"id":7,"type":"edge","label":"textDocument/references","inV":4,"outV":3}
 {"id":8,"type":"edge","label":"textDocument/hover","inV":5,"outV":3}
-{"id":9,"type":"vertex","label":"moniker","identifier":"reprolang repro_manager forward-decl 1.0.0 forward_decl.repro/abc#","kind":"export","scheme":"reprolang"}
+{"id":9,"type":"vertex","label":"moniker","identifier":"reprolang repro_manager forward-def 1.0.0 forward_def.repro/abc#","kind":"export","scheme":"reprolang"}
 {"id":10,"type":"edge","label":"moniker","inV":9,"outV":3}
-{"id":11,"name":"forward-decl","version":"1.0.0","manager":"repro_manager","type":"vertex","label":"packageInformation"}
+{"id":11,"name":"forward-def","version":"1.0.0","manager":"repro_manager","type":"vertex","label":"packageInformation"}
 {"id":12,"type":"edge","label":"packageInformation","inV":11,"outV":9}
-{"id":13,"type":"vertex","label":"document","uri":"file:/root/forward_decl.repro"}
-{"id":14,"type":"vertex","label":"range","start":{"line":0,"character":23},"end":{"line":0,"character":27}}
+{"id":13,"type":"vertex","label":"document","uri":"file:/root/forward_def.repro"}
+{"id":14,"type":"vertex","label":"range","start":{"line":0,"character":29},"end":{"line":0,"character":33}}
 {"id":15,"type":"edge","label":"next","inV":3,"outV":14}
 {"id":16,"type":"edge","label":"item","inVs":[14],"outV":4,"document":13}
 {"id":17,"type":"vertex","label":"range","start":{"line":1,"character":11},"end":{"line":1,"character":15}}

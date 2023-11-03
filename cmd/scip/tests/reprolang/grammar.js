@@ -25,7 +25,7 @@ module.exports = grammar({
     reference_statement: $ =>
       seq(
         'reference',
-        field('forward_decl', optional('forward_decl')),
+        field('forward_definition', optional('forward_definition')),
         field('name', $.identifier)
       ),
     _definition_relations: $ =>
