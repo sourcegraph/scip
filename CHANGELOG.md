@@ -7,6 +7,12 @@ SCIP schema:
 - Added new `SymbolRole`: `ForwardDefinition`
   (https://github.com/sourcegraph/scip/pull/217)
 
+scip CLI:
+
+- `scip print` supports turning off colorful output using `--color=false` or
+  by setting the environment variable `NO_COLOR=1`.
+  (https://github.com/sourcegraph/scip/pull/214)
+
 ## v0.3.1
 
 SCIP schema:
