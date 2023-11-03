@@ -204,6 +204,9 @@ func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
 	if occ.Symbol == "" {
 		return emptyStringError{what: "symbol", context: fmt.Sprintf("occurrence at %s @ %s", path, scipRangeToString(*scip.NewRange(occ.Range)))}
 	}
+	if scip.SymbolRole_Definition.Matches(occ) && scip.SymbolRole_ForwardDeclaration.Matches(occ) {
+		return forwardDeclIsDefinitionError{occ.Symbol, path, *scip.NewRange(occ.Range)}
+	}
 	tryInsertOccurrence := func(occMap fileOccurrenceMap) error {
 		occKey := scipOccurrenceKey(occ)
 		if fileOccs, ok := occMap[path]; ok {
@@ -325,6 +328,17 @@ func (e missingSymbolForOccurrenceError) Error() string {
 	return fmt.Sprintf("error: found occurrence at %s @ %s"+
 		" for symbol %s, but there is no matching SymbolInformation"+
 		" in external symbols or any document", e.path, scipRangeToString(e.occ), e.symbol)
+}
+
+type forwardDeclIsDefinitionError struct {
+	symbol string
+	path   string
+	range_ scip.Range
+}
+
+func (e forwardDeclIsDefinitionError) Error() string {
+	return fmt.Sprintf("error: forward declaration for %v at %v @ %v was marked as definition",
+		e.symbol, e.path, scipRangeToString(e.range_))
 }
 
 type duplicateOccurrenceWarning struct {
