@@ -22,7 +22,12 @@ module.exports = grammar({
         field('name', $.identifier),
         field('roles', repeat($._definition_relations))
       ),
-    reference_statement: $ => seq('reference', field('name', $.identifier)),
+    reference_statement: $ =>
+      seq(
+        'reference',
+        field('forward_decl', optional('forward_decl')),
+        field('name', $.identifier)
+      ),
     _definition_relations: $ =>
       choice(
         $.implementation_relation,

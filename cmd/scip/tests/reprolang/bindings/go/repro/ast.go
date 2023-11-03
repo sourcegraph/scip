@@ -27,7 +27,8 @@ func (r *relationships) identifiers() []*identifier {
 }
 
 type referenceStatement struct {
-	name *identifier
+	name          *identifier
+	isForwardDecl bool
 }
 
 type identifier struct {
