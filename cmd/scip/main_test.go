@@ -92,7 +92,7 @@ func TestSCIPSnapshots(t *testing.T) {
 		require.Nil(t, err)
 		symbolFormatter := scip.DescriptorOnlyFormatter
 		symbolFormatter.IncludePackageName = func(name string) bool { return name != testName }
-		snapshots, err := testutil.FormatSnapshots(index, "#", symbolFormatter, inputDirectory)
+		snapshots, err := testutil.FormatSnapshots(index, false, "#", symbolFormatter, inputDirectory)
 		require.Nil(t, err)
 		if debugSnapshotAbspaths != nil && *debugSnapshotAbspaths {
 			inputDirAbsPath, err := filepath.Abs(inputDirectory)
