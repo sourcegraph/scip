@@ -17,6 +17,7 @@ import (
 // that is suitable for snapshot testing.
 func FormatSnapshots(
 	index *scip.Index,
+	includeDiagnostics bool,
 	commentSyntax string,
 	symbolFormatter scip.SymbolFormatter,
 	customProjectRoot string,
@@ -40,7 +41,7 @@ func FormatSnapshots(
 	var documentErrors error
 	for _, document := range index.Documents {
 		sourceFilePath := filepath.Join(localSourcesRoot, document.RelativePath)
-		snapshot, err := FormatSnapshot(document, index, commentSyntax, symbolFormatter, sourceFilePath)
+		snapshot, err := FormatSnapshot(document, index, includeDiagnostics, commentSyntax, symbolFormatter, sourceFilePath)
 		err = symbolFormatter.OnError(err)
 		if err != nil {
 			documentErrors = errors.CombineErrors(
@@ -65,6 +66,7 @@ func FormatSnapshots(
 func FormatSnapshot(
 	document *scip.Document,
 	index *scip.Index,
+	includeDiagnostics bool,
 	commentSyntax string,
 	formatter scip.SymbolFormatter,
 	sourceFilePath string,
@@ -151,6 +153,14 @@ func FormatSnapshot(
 					if relationship.IsTypeDefinition {
 						b.WriteString(" type_definition")
 					}
+				}
+			}
+
+			if includeDiagnostics {
+				for _, diagnostic := range occ.Diagnostics {
+					b.WriteString(prefix)
+					b.WriteString("diagnostic ")
+					b.WriteString(diagnostic.Code)
 				}
 			}
 

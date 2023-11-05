@@ -13,11 +13,12 @@ import (
 )
 
 type snapshotFlags struct {
-	from              string
-	output            string
-	customProjectRoot string
-	strict            bool
-	commentSyntax     string
+	from               string
+	output             string
+	includeDiagnostics bool
+	customProjectRoot  string
+	strict             bool
+	commentSyntax      string
 }
 
 func snapshotCommand() cli.Command {
@@ -43,6 +44,12 @@ and symbol information.`,
 				Usage:       "If true, fail fast on errors",
 				Destination: &snapshotFlags.strict,
 				Value:       true,
+			},
+			&cli.BoolFlag{
+				Name:        "include-diagnostics",
+				Usage:       "Whether or not to include scip diagnostics in snapshot files",
+				Destination: &snapshotFlags.includeDiagnostics,
+				Value:       false,
 			},
 			&cli.StringFlag{
 				Name:        "comment-syntax",
@@ -76,7 +83,7 @@ func snapshotMain(flags snapshotFlags) error {
 			return errors.Wrap(err, "use --strict=false to ignore this error")
 		}
 	}
-	snapshots, err := testutil.FormatSnapshots(index, flags.commentSyntax, symbolFormatter, flags.customProjectRoot)
+	snapshots, err := testutil.FormatSnapshots(index, flags.includeDiagnostics, flags.commentSyntax, symbolFormatter, flags.customProjectRoot)
 	if err != nil {
 		return err
 	}
