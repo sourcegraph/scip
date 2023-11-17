@@ -196,6 +196,18 @@ function parse(input string): string {                        |
 ^ enclosing_range end <---------------------------------------|
 ```
 
+Any attributes/decorators/attached macros should also be part of the
+enclosing range.
+
+```python
+@cache
+^ enclosing_range start---------------------|
+def factorial(n):                           |
+    return n * factorial(n-1) if n else 1   |
+< enclosing_range end-----------------------|
+
+```
+
 For reference occurrences, the enclosing range should indicate the start/end
 bounds of the parent expression.
 
