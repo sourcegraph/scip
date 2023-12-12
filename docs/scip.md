@@ -57,6 +57,7 @@ Document defines the metadata about a source file on disk.
 | repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | repeated **symbols**     | SymbolInformation | Symbols that are "defined" within this document.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | **text**                 | string            | (optional) Text contents of the this document. Indexers are not expected to include the text by default. It's preferrable that clients read the text contents from the file system by resolving the absolute path from joining `Index.metadata.project_root` and `Document.relative_path`. This field was introduced to support `SymbolInformation.signature_documentation`, but it can be used for other purposes as well, for example testing or when working with virtual/in-memory documents. |
+| **position_encoding**    | PositionEncoding  | Specifies the encoding used for source ranges in this Document.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 Additional notes on **relative_path**:
 
@@ -77,6 +78,20 @@ Symbols that are "defined" within this document.
 This should include symbols which technically do not have any definition,
 but have a reference and are defined by some other symbol (see
 Relationship.is_definition).
+
+Additional notes on **position_encoding**:
+
+Specifies the encoding used for source ranges in this Document.
+
+Usually, this will match the type used to index the string type
+in the indexer's implementation language in O(1) time.
+
+- For an indexer implemented in JVM/.NET language or JavaScript/TypeScript,
+  use UTF16CodeUnitOffsetFromLineStart.
+- For an indexer implemented in Python,
+  use UTF8CodeUnitOffsetFromLineStart.
+- For an indexer implemented in Go, Rust or C++,
+  use UTF8ByteOffsetFromLineStart.
 
 ### Index
 
@@ -106,12 +121,12 @@ function in `IndexVisitor` and update `ParseStreaming`.
 
 ### Metadata
 
-| Name                       | Type            | Description                                                                                                                                      |
-| -------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **version**                | ProtocolVersion | Which version of this protocol was used to generate this index?                                                                                  |
-| **tool_info**              | ToolInfo        | Information about the tool that produced this index.                                                                                             |
-| **project_root**           | string          | URI-encoded absolute path to the root directory of this index. All documents in this index must appear in a subdirectory of this root directory. |
-| **text_document_encoding** | TextEncoding    | Text encoding of the source files on disk that are referenced from `Document.relative_path`.                                                     |
+| Name                       | Type            | Description                                                                                                                                                                                                    |
+| -------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **version**                | ProtocolVersion | Which version of this protocol was used to generate this index?                                                                                                                                                |
+| **tool_info**              | ToolInfo        | Information about the tool that produced this index.                                                                                                                                                           |
+| **project_root**           | string          | URI-encoded absolute path to the root directory of this index. All documents in this index must appear in a subdirectory of this root directory.                                                               |
+| **text_document_encoding** | TextEncoding    | Text encoding of the source files on disk that are referenced from `Document.relative_path`. This value is unrelated to the `Document.text` field, which is a Protobuf string and hence must be UTF-8 encoded. |
 
 ### Occurrence
 
@@ -143,6 +158,9 @@ elements:
 Line numbers and characters are always 0-based. Make sure to increment the
 line/character values before displaying them in an editor-like UI because
 editors conventionally use 1-based numbers.
+
+The 'character' value is interpreted based on the PositionEncoding for
+the Document.
 
 Historical note: the original draft of this schema had a `Range` message
 type with `start` and `end` fields of type `Position`, mirroring LSP.
@@ -603,6 +621,43 @@ Feel free to send a pull-request to add missing programming languages.
 | 32     | XSL                 |
 | 74     | YAML                |
 | 38     | Zig                 | NextLanguage = 111; Steps add a new language: 1. Copy-paste the "NextLanguage = N" line above 2. Increment "NextLanguage = N" to "NextLanguage = N+1" 3. Replace "NextLanguage = N" with the name of the new language. 4. Move the new language to the correct line above using alphabetical order 5. (optional) Add a brief comment behind the language if the name is not self-explanatory |
+
+### PositionEncoding
+
+Encoding used to interpret the 'character' value in source ranges.
+
+| Number | Name                             | Description                                                                                                                        |
+| ------ | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | UnspecifiedPositionEncoding      | Default value. This value should not be used by new SCIP indexers so that a consumer can process the SCIP index without ambiguity. |
+| 1      | UTF8ByteOffsetFromLineStart      | The 'character' value is interpreted as a byte offset, assuming that the text for the line is encoded as UTF-8.                    |
+| 2      | UTF8CodeUnitOffsetFromLineStart  | The 'character' value is interpreted as an offset in terms of UTF-8 code units.                                                    |
+| 3      | UTF16CodeUnitOffsetFromLineStart | The 'character' value is interpreted as an offset in terms of UTF-16 code units.                                                   |
+
+Additional notes on **UTF8ByteOffsetFromLineStart**:
+
+The 'character' value is interpreted as a byte offset,
+assuming that the text for the line is encoded as UTF-8.
+
+Example: For the string "🚀 Woo" in UTF-8, the bytes are
+[240, 159, 154, 128, 32, 87, 111, 111], so the offset for 'W'
+would be 5.
+
+Additional notes on **UTF8CodeUnitOffsetFromLineStart**:
+
+The 'character' value is interpreted as an offset in terms
+of UTF-8 code units.
+
+Example: For the string "🚀 Woo", the UTF-8 code units are
+['🚀', ' ', 'W', 'o', 'o'], so the offset for 'W' would be 2.
+
+Additional notes on **UTF16CodeUnitOffsetFromLineStart**:
+
+The 'character' value is interpreted as an offset in terms
+of UTF-16 code units.
+
+Example: For the string "🚀 Woo", the UTF-16 code units are
+['\ud83d', '\ude80', ' ', 'W', 'o', 'o'], so the offset for 'W'
+would be 3.
 
 ### ProtocolVersion
 
