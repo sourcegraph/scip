@@ -1648,6 +1648,15 @@ type Document struct {
 	// with virtual/in-memory documents.
 	Text string `protobuf:"bytes,5,opt,name=text,proto3" json:"text,omitempty"`
 	// Specifies the encoding used for source ranges in this Document.
+	//
+	// Usually, this will match the type used to index the string type
+	// in the indexer's implementation language in O(1) time.
+	//   - For an indexer implemented in JVM/.NET language or JavaScript/TypeScript,
+	//     use UTF16CodeUnitOffsetFromLineStart.
+	//   - For an indexer implemented in Python,
+	//     use UTF8CodeUnitOffsetFromLineStart.
+	//   - For an indexer implemented in Go, Rust or C++,
+	//     use UTF8ByteOffsetFromLineStart.
 	PositionEncoding PositionEncoding `protobuf:"varint,6,opt,name=position_encoding,json=positionEncoding,proto3,enum=scip.PositionEncoding" json:"position_encoding,omitempty"`
 }
 

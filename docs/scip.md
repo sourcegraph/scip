@@ -79,6 +79,20 @@ This should include symbols which technically do not have any definition,
 but have a reference and are defined by some other symbol (see
 Relationship.is_definition).
 
+Additional notes on **position_encoding**:
+
+Specifies the encoding used for source ranges in this Document.
+
+Usually, this will match the type used to index the string type
+in the indexer's implementation language in O(1) time.
+
+- For an indexer implemented in JVM/.NET language or JavaScript/TypeScript,
+  use UTF16CodeUnitOffsetFromLineStart.
+- For an indexer implemented in Python,
+  use UTF8CodeUnitOffsetFromLineStart.
+- For an indexer implemented in Go, Rust or C++,
+  use UTF8ByteOffsetFromLineStart.
+
 ### Index
 
 Index represents a complete SCIP index for a workspace this is rooted at a
