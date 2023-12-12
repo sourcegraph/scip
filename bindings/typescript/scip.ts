@@ -13,6 +13,12 @@ export namespace scip {
         UTF8 = 1,
         UTF16 = 2
     }
+    export enum PositionEncoding {
+        UnspecifiedPositionEncoding = 0,
+        UTF8ByteOffsetFromLineStart = 1,
+        UTF8CodeUnitOffsetFromLineStart = 2,
+        UTF16CodeUnitOffsetFromLineStart = 3
+    }
     export enum SymbolRole {
         UnspecifiedSymbolRole = 0,
         Definition = 1,
@@ -566,6 +572,7 @@ export namespace scip {
             occurrences?: Occurrence[];
             symbols?: SymbolInformation[];
             text?: string;
+            position_encoding?: PositionEncoding;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3], this.#one_of_decls);
@@ -584,6 +591,9 @@ export namespace scip {
                 }
                 if ("text" in data && data.text != undefined) {
                     this.text = data.text;
+                }
+                if ("position_encoding" in data && data.position_encoding != undefined) {
+                    this.position_encoding = data.position_encoding;
                 }
             }
         }
@@ -617,12 +627,19 @@ export namespace scip {
         set text(value: string) {
             pb_1.Message.setField(this, 5, value);
         }
+        get position_encoding() {
+            return pb_1.Message.getFieldWithDefault(this, 6, PositionEncoding.UnspecifiedPositionEncoding) as PositionEncoding;
+        }
+        set position_encoding(value: PositionEncoding) {
+            pb_1.Message.setField(this, 6, value);
+        }
         static fromObject(data: {
             language?: string;
             relative_path?: string;
             occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
             symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
             text?: string;
+            position_encoding?: PositionEncoding;
         }): Document {
             const message = new Document({});
             if (data.language != null) {
@@ -640,6 +657,9 @@ export namespace scip {
             if (data.text != null) {
                 message.text = data.text;
             }
+            if (data.position_encoding != null) {
+                message.position_encoding = data.position_encoding;
+            }
             return message;
         }
         toObject() {
@@ -649,6 +669,7 @@ export namespace scip {
                 occurrences?: ReturnType<typeof Occurrence.prototype.toObject>[];
                 symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
                 text?: string;
+                position_encoding?: PositionEncoding;
             } = {};
             if (this.language != null) {
                 data.language = this.language;
@@ -664,6 +685,9 @@ export namespace scip {
             }
             if (this.text != null) {
                 data.text = this.text;
+            }
+            if (this.position_encoding != null) {
+                data.position_encoding = this.position_encoding;
             }
             return data;
         }
@@ -681,6 +705,8 @@ export namespace scip {
                 writer.writeRepeatedMessage(3, this.symbols, (item: SymbolInformation) => item.serialize(writer));
             if (this.text.length)
                 writer.writeString(5, this.text);
+            if (this.position_encoding != PositionEncoding.UnspecifiedPositionEncoding)
+                writer.writeEnum(6, this.position_encoding);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -704,6 +730,9 @@ export namespace scip {
                         break;
                     case 5:
                         message.text = reader.readString();
+                        break;
+                    case 6:
+                        message.position_encoding = reader.readEnum();
                         break;
                     default: reader.skipField();
                 }

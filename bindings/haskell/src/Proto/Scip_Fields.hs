@@ -191,6 +191,12 @@ package ::
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "package" a) =>
   Lens.Family2.LensLike' f s a
 package = Data.ProtoLens.Field.field @"package"
+positionEncoding ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "positionEncoding" a) =>
+  Lens.Family2.LensLike' f s a
+positionEncoding = Data.ProtoLens.Field.field @"positionEncoding"
 projectRoot ::
   forall f s a.
   (Prelude.Functor f,
