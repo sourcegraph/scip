@@ -15,9 +15,9 @@ export namespace scip {
     }
     export enum PositionEncoding {
         UnspecifiedPositionEncoding = 0,
-        UTF8ByteOffsetFromLineStart = 1,
-        UTF8CodeUnitOffsetFromLineStart = 2,
-        UTF16CodeUnitOffsetFromLineStart = 3
+        UTF8CodeUnitOffsetFromLineStart = 1,
+        UTF16CodeUnitOffsetFromLineStart = 2,
+        UTF32CodeUnitOffsetFromLineStart = 3
     }
     export enum SymbolRole {
         UnspecifiedSymbolRole = 0,
