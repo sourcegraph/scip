@@ -629,14 +629,14 @@ Encoding used to interpret the 'character' value in source ranges.
 | Number | Name                             | Description                                                                                                                        |
 | ------ | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | 0      | UnspecifiedPositionEncoding      | Default value. This value should not be used by new SCIP indexers so that a consumer can process the SCIP index without ambiguity. |
-| 1      | UTF8ByteOffsetFromLineStart      | The 'character' value is interpreted as a byte offset, assuming that the text for the line is encoded as UTF-8.                    |
+| 1      | UTF8CodeUnitOffsetFromLineStart  | The 'character' value is interpreted as an offset in terms of UTF-8 code units (i.e. bytes).                                       |
 | 2      | UTF16CodeUnitOffsetFromLineStart | The 'character' value is interpreted as an offset in terms of UTF-16 code units (each is 2 bytes).                                 |
 | 3      | UTF32CodeUnitOffsetFromLineStart | The 'character' value is interpreted as an offset in terms of UTF-32 code units (each is 4 bytes).                                 |
 
-Additional notes on **UTF8ByteOffsetFromLineStart**:
+Additional notes on **UTF8CodeUnitOffsetFromLineStart**:
 
-The 'character' value is interpreted as a byte offset,
-assuming that the text for the line is encoded as UTF-8.
+The 'character' value is interpreted as an offset in terms
+of UTF-8 code units (i.e. bytes).
 
 Example: For the string "🚀 Woo" in UTF-8, the bytes are
 [240, 159, 154, 128, 32, 87, 111, 111], so the offset for 'W'

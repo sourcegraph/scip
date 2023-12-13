@@ -3341,14 +3341,14 @@ newtype PositionEncoding'UnrecognizedValue
   deriving stock (Prelude.Eq, Prelude.Ord, Prelude.Show)
 data PositionEncoding
   = UnspecifiedPositionEncoding |
-    UTF8ByteOffsetFromLineStart |
+    UTF8CodeUnitOffsetFromLineStart |
     UTF16CodeUnitOffsetFromLineStart |
     UTF32CodeUnitOffsetFromLineStart |
     PositionEncoding'Unrecognized !PositionEncoding'UnrecognizedValue
   deriving stock (Prelude.Show, Prelude.Eq, Prelude.Ord)
 instance Data.ProtoLens.MessageEnum PositionEncoding where
   maybeToEnum 0 = Prelude.Just UnspecifiedPositionEncoding
-  maybeToEnum 1 = Prelude.Just UTF8ByteOffsetFromLineStart
+  maybeToEnum 1 = Prelude.Just UTF8CodeUnitOffsetFromLineStart
   maybeToEnum 2 = Prelude.Just UTF16CodeUnitOffsetFromLineStart
   maybeToEnum 3 = Prelude.Just UTF32CodeUnitOffsetFromLineStart
   maybeToEnum k
@@ -3357,8 +3357,8 @@ instance Data.ProtoLens.MessageEnum PositionEncoding where
            (PositionEncoding'UnrecognizedValue (Prelude.fromIntegral k)))
   showEnum UnspecifiedPositionEncoding
     = "UnspecifiedPositionEncoding"
-  showEnum UTF8ByteOffsetFromLineStart
-    = "UTF8ByteOffsetFromLineStart"
+  showEnum UTF8CodeUnitOffsetFromLineStart
+    = "UTF8CodeUnitOffsetFromLineStart"
   showEnum UTF16CodeUnitOffsetFromLineStart
     = "UTF16CodeUnitOffsetFromLineStart"
   showEnum UTF32CodeUnitOffsetFromLineStart
@@ -3369,8 +3369,8 @@ instance Data.ProtoLens.MessageEnum PositionEncoding where
   readEnum k
     | (Prelude.==) k "UnspecifiedPositionEncoding"
     = Prelude.Just UnspecifiedPositionEncoding
-    | (Prelude.==) k "UTF8ByteOffsetFromLineStart"
-    = Prelude.Just UTF8ByteOffsetFromLineStart
+    | (Prelude.==) k "UTF8CodeUnitOffsetFromLineStart"
+    = Prelude.Just UTF8CodeUnitOffsetFromLineStart
     | (Prelude.==) k "UTF16CodeUnitOffsetFromLineStart"
     = Prelude.Just UTF16CodeUnitOffsetFromLineStart
     | (Prelude.==) k "UTF32CodeUnitOffsetFromLineStart"
@@ -3389,7 +3389,7 @@ instance Prelude.Enum PositionEncoding where
               (Prelude.show k__)))
         Prelude.id (Data.ProtoLens.maybeToEnum k__)
   fromEnum UnspecifiedPositionEncoding = 0
-  fromEnum UTF8ByteOffsetFromLineStart = 1
+  fromEnum UTF8CodeUnitOffsetFromLineStart = 1
   fromEnum UTF16CodeUnitOffsetFromLineStart = 2
   fromEnum UTF32CodeUnitOffsetFromLineStart = 3
   fromEnum
@@ -3398,8 +3398,9 @@ instance Prelude.Enum PositionEncoding where
   succ UTF32CodeUnitOffsetFromLineStart
     = Prelude.error
         "PositionEncoding.succ: bad argument UTF32CodeUnitOffsetFromLineStart. This value would be out of bounds."
-  succ UnspecifiedPositionEncoding = UTF8ByteOffsetFromLineStart
-  succ UTF8ByteOffsetFromLineStart = UTF16CodeUnitOffsetFromLineStart
+  succ UnspecifiedPositionEncoding = UTF8CodeUnitOffsetFromLineStart
+  succ UTF8CodeUnitOffsetFromLineStart
+    = UTF16CodeUnitOffsetFromLineStart
   succ UTF16CodeUnitOffsetFromLineStart
     = UTF32CodeUnitOffsetFromLineStart
   succ (PositionEncoding'Unrecognized _)
@@ -3408,8 +3409,9 @@ instance Prelude.Enum PositionEncoding where
   pred UnspecifiedPositionEncoding
     = Prelude.error
         "PositionEncoding.pred: bad argument UnspecifiedPositionEncoding. This value would be out of bounds."
-  pred UTF8ByteOffsetFromLineStart = UnspecifiedPositionEncoding
-  pred UTF16CodeUnitOffsetFromLineStart = UTF8ByteOffsetFromLineStart
+  pred UTF8CodeUnitOffsetFromLineStart = UnspecifiedPositionEncoding
+  pred UTF16CodeUnitOffsetFromLineStart
+    = UTF8CodeUnitOffsetFromLineStart
   pred UTF32CodeUnitOffsetFromLineStart
     = UTF16CodeUnitOffsetFromLineStart
   pred (PositionEncoding'Unrecognized _)
@@ -6294,10 +6296,10 @@ packedFileDescriptor
     \\fTextEncoding\DC2\ESC\n\
     \\ETBUnspecifiedTextEncoding\DLE\NUL\DC2\b\n\
     \\EOTUTF8\DLE\SOH\DC2\t\n\
-    \\ENQUTF16\DLE\STX*\160\SOH\n\
+    \\ENQUTF16\DLE\STX*\164\SOH\n\
     \\DLEPositionEncoding\DC2\US\n\
-    \\ESCUnspecifiedPositionEncoding\DLE\NUL\DC2\US\n\
-    \\ESCUTF8ByteOffsetFromLineStart\DLE\SOH\DC2$\n\
+    \\ESCUnspecifiedPositionEncoding\DLE\NUL\DC2#\n\
+    \\USUTF8CodeUnitOffsetFromLineStart\DLE\SOH\DC2$\n\
     \ UTF16CodeUnitOffsetFromLineStart\DLE\STX\DC2$\n\
     \ UTF32CodeUnitOffsetFromLineStart\DLE\ETX*\148\SOH\n\
     \\n\
@@ -6506,7 +6508,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\247\180\STX\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\228\180\STX\n\
     \\a\DC2\ENQ\n\
     \\NUL\233\ACK\SOH\n\
     \\130\EOT\n\
@@ -6809,18 +6811,18 @@ packedFileDescriptor
     \\ENQ\ENQ\STX\STX\NUL\SOH\DC2\ETX{\STX\GS\n\
     \\f\n\
     \\ENQ\ENQ\STX\STX\NUL\STX\DC2\ETX{ !\n\
-    \\139\STX\n\
-    \\EOT\ENQ\STX\STX\SOH\DC2\EOT\130\SOH\STX\"\SUB\252\SOH The 'character' value is interpreted as a byte offset,\n\
-    \ assuming that the text for the line is encoded as UTF-8.\n\
+    \\248\SOH\n\
+    \\EOT\ENQ\STX\STX\SOH\DC2\EOT\130\SOH\STX&\SUB\233\SOH The 'character' value is interpreted as an offset in terms\n\
+    \ of UTF-8 code units (i.e. bytes).\n\
     \\n\
     \ Example: For the string \"\240\159\154\128 Woo\" in UTF-8, the bytes are \n\
     \ [240, 159, 154, 128, 32, 87, 111, 111], so the offset for 'W'\n\
     \ would be 5.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\SOH\SOH\DC2\EOT\130\SOH\STX\GS\n\
+    \\ENQ\ENQ\STX\STX\SOH\SOH\DC2\EOT\130\SOH\STX!\n\
     \\r\n\
-    \\ENQ\ENQ\STX\STX\SOH\STX\DC2\EOT\130\SOH !\n\
+    \\ENQ\ENQ\STX\STX\SOH\STX\DC2\EOT\130\SOH$%\n\
     \\130\STX\n\
     \\EOT\ENQ\STX\STX\STX\DC2\EOT\137\SOH\STX'\SUB\243\SOH The 'character' value is interpreted as an offset in terms\n\
     \ of UTF-16 code units (each is 2 bytes).\n\
