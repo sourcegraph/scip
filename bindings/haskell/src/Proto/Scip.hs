@@ -3342,15 +3342,15 @@ newtype PositionEncoding'UnrecognizedValue
 data PositionEncoding
   = UnspecifiedPositionEncoding |
     UTF8ByteOffsetFromLineStart |
-    UTF8CodeUnitOffsetFromLineStart |
     UTF16CodeUnitOffsetFromLineStart |
+    UTF32CodeUnitOffsetFromLineStart |
     PositionEncoding'Unrecognized !PositionEncoding'UnrecognizedValue
   deriving stock (Prelude.Show, Prelude.Eq, Prelude.Ord)
 instance Data.ProtoLens.MessageEnum PositionEncoding where
   maybeToEnum 0 = Prelude.Just UnspecifiedPositionEncoding
   maybeToEnum 1 = Prelude.Just UTF8ByteOffsetFromLineStart
-  maybeToEnum 2 = Prelude.Just UTF8CodeUnitOffsetFromLineStart
-  maybeToEnum 3 = Prelude.Just UTF16CodeUnitOffsetFromLineStart
+  maybeToEnum 2 = Prelude.Just UTF16CodeUnitOffsetFromLineStart
+  maybeToEnum 3 = Prelude.Just UTF32CodeUnitOffsetFromLineStart
   maybeToEnum k
     = Prelude.Just
         (PositionEncoding'Unrecognized
@@ -3359,10 +3359,10 @@ instance Data.ProtoLens.MessageEnum PositionEncoding where
     = "UnspecifiedPositionEncoding"
   showEnum UTF8ByteOffsetFromLineStart
     = "UTF8ByteOffsetFromLineStart"
-  showEnum UTF8CodeUnitOffsetFromLineStart
-    = "UTF8CodeUnitOffsetFromLineStart"
   showEnum UTF16CodeUnitOffsetFromLineStart
     = "UTF16CodeUnitOffsetFromLineStart"
+  showEnum UTF32CodeUnitOffsetFromLineStart
+    = "UTF32CodeUnitOffsetFromLineStart"
   showEnum
     (PositionEncoding'Unrecognized (PositionEncoding'UnrecognizedValue k))
     = Prelude.show k
@@ -3371,15 +3371,15 @@ instance Data.ProtoLens.MessageEnum PositionEncoding where
     = Prelude.Just UnspecifiedPositionEncoding
     | (Prelude.==) k "UTF8ByteOffsetFromLineStart"
     = Prelude.Just UTF8ByteOffsetFromLineStart
-    | (Prelude.==) k "UTF8CodeUnitOffsetFromLineStart"
-    = Prelude.Just UTF8CodeUnitOffsetFromLineStart
     | (Prelude.==) k "UTF16CodeUnitOffsetFromLineStart"
     = Prelude.Just UTF16CodeUnitOffsetFromLineStart
+    | (Prelude.==) k "UTF32CodeUnitOffsetFromLineStart"
+    = Prelude.Just UTF32CodeUnitOffsetFromLineStart
     | Prelude.otherwise
     = (Prelude.>>=) (Text.Read.readMaybe k) Data.ProtoLens.maybeToEnum
 instance Prelude.Bounded PositionEncoding where
   minBound = UnspecifiedPositionEncoding
-  maxBound = UTF16CodeUnitOffsetFromLineStart
+  maxBound = UTF32CodeUnitOffsetFromLineStart
 instance Prelude.Enum PositionEncoding where
   toEnum k__
     = Prelude.maybe
@@ -3390,18 +3390,18 @@ instance Prelude.Enum PositionEncoding where
         Prelude.id (Data.ProtoLens.maybeToEnum k__)
   fromEnum UnspecifiedPositionEncoding = 0
   fromEnum UTF8ByteOffsetFromLineStart = 1
-  fromEnum UTF8CodeUnitOffsetFromLineStart = 2
-  fromEnum UTF16CodeUnitOffsetFromLineStart = 3
+  fromEnum UTF16CodeUnitOffsetFromLineStart = 2
+  fromEnum UTF32CodeUnitOffsetFromLineStart = 3
   fromEnum
     (PositionEncoding'Unrecognized (PositionEncoding'UnrecognizedValue k))
     = Prelude.fromIntegral k
-  succ UTF16CodeUnitOffsetFromLineStart
+  succ UTF32CodeUnitOffsetFromLineStart
     = Prelude.error
-        "PositionEncoding.succ: bad argument UTF16CodeUnitOffsetFromLineStart. This value would be out of bounds."
+        "PositionEncoding.succ: bad argument UTF32CodeUnitOffsetFromLineStart. This value would be out of bounds."
   succ UnspecifiedPositionEncoding = UTF8ByteOffsetFromLineStart
-  succ UTF8ByteOffsetFromLineStart = UTF8CodeUnitOffsetFromLineStart
-  succ UTF8CodeUnitOffsetFromLineStart
-    = UTF16CodeUnitOffsetFromLineStart
+  succ UTF8ByteOffsetFromLineStart = UTF16CodeUnitOffsetFromLineStart
+  succ UTF16CodeUnitOffsetFromLineStart
+    = UTF32CodeUnitOffsetFromLineStart
   succ (PositionEncoding'Unrecognized _)
     = Prelude.error
         "PositionEncoding.succ: bad argument: unrecognized value"
@@ -3409,9 +3409,9 @@ instance Prelude.Enum PositionEncoding where
     = Prelude.error
         "PositionEncoding.pred: bad argument UnspecifiedPositionEncoding. This value would be out of bounds."
   pred UTF8ByteOffsetFromLineStart = UnspecifiedPositionEncoding
-  pred UTF8CodeUnitOffsetFromLineStart = UTF8ByteOffsetFromLineStart
-  pred UTF16CodeUnitOffsetFromLineStart
-    = UTF8CodeUnitOffsetFromLineStart
+  pred UTF16CodeUnitOffsetFromLineStart = UTF8ByteOffsetFromLineStart
+  pred UTF32CodeUnitOffsetFromLineStart
+    = UTF16CodeUnitOffsetFromLineStart
   pred (PositionEncoding'Unrecognized _)
     = Prelude.error
         "PositionEncoding.pred: bad argument: unrecognized value"
@@ -6294,12 +6294,12 @@ packedFileDescriptor
     \\fTextEncoding\DC2\ESC\n\
     \\ETBUnspecifiedTextEncoding\DLE\NUL\DC2\b\n\
     \\EOTUTF8\DLE\SOH\DC2\t\n\
-    \\ENQUTF16\DLE\STX*\159\SOH\n\
+    \\ENQUTF16\DLE\STX*\160\SOH\n\
     \\DLEPositionEncoding\DC2\US\n\
     \\ESCUnspecifiedPositionEncoding\DLE\NUL\DC2\US\n\
-    \\ESCUTF8ByteOffsetFromLineStart\DLE\SOH\DC2#\n\
-    \\USUTF8CodeUnitOffsetFromLineStart\DLE\STX\DC2$\n\
-    \ UTF16CodeUnitOffsetFromLineStart\DLE\ETX*\148\SOH\n\
+    \\ESCUTF8ByteOffsetFromLineStart\DLE\SOH\DC2$\n\
+    \ UTF16CodeUnitOffsetFromLineStart\DLE\STX\DC2$\n\
+    \ UTF32CodeUnitOffsetFromLineStart\DLE\ETX*\148\SOH\n\
     \\n\
     \SymbolRole\DC2\EM\n\
     \\NAKUnspecifiedSymbolRole\DLE\NUL\DC2\SO\n\
@@ -6506,7 +6506,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\208\180\STX\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\247\180\STX\n\
     \\a\DC2\ENQ\n\
     \\NUL\233\ACK\SOH\n\
     \\130\EOT\n\
@@ -6777,15 +6777,15 @@ packedFileDescriptor
     \\ENQ\EOT\ETX\STX\EOT\SOH\DC2\ETXh\t\r\n\
     \\f\n\
     \\ENQ\EOT\ETX\STX\EOT\ETX\DC2\ETXh\DLE\DC1\n\
-    \\230\ETX\n\
-    \\EOT\EOT\ETX\STX\ENQ\DC2\ETXt\STX)\SUB\216\ETX Specifies the encoding used for source ranges in this Document.\n\
+    \\231\ETX\n\
+    \\EOT\EOT\ETX\STX\ENQ\DC2\ETXt\STX)\SUB\217\ETX Specifies the encoding used for source ranges in this Document.\n\
     \\n\
     \ Usually, this will match the type used to index the string type\n\
     \ in the indexer's implementation language in O(1) time.\n\
     \ - For an indexer implemented in JVM/.NET language or JavaScript/TypeScript,\n\
     \   use UTF16CodeUnitOffsetFromLineStart.\n\
     \ - For an indexer implemented in Python,\n\
-    \   use UTF8CodeUnitOffsetFromLineStart.\n\
+    \   use UTF32CodeUnitOffsetFromLineStart.\n\
     \ - For an indexer implemented in Go, Rust or C++,\n\
     \   use UTF8ByteOffsetFromLineStart.\n\
     \\n\
@@ -6821,24 +6821,24 @@ packedFileDescriptor
     \\ENQ\ENQ\STX\STX\SOH\SOH\DC2\EOT\130\SOH\STX\GS\n\
     \\r\n\
     \\ENQ\ENQ\STX\STX\SOH\STX\DC2\EOT\130\SOH !\n\
-    \\225\SOH\n\
-    \\EOT\ENQ\STX\STX\STX\DC2\EOT\136\SOH\STX&\SUB\210\SOH The 'character' value is interpreted as an offset in terms\n\
-    \ of UTF-8 code units.\n\
-    \\n\
-    \ Example: For the string \"\240\159\154\128 Woo\", the UTF-8 code units are\n\
-    \ ['\240\159\154\128', ' ', 'W', 'o', 'o'], so the offset for 'W' would be 2.\n\
-    \\n\
-    \\r\n\
-    \\ENQ\ENQ\STX\STX\STX\SOH\DC2\EOT\136\SOH\STX!\n\
-    \\r\n\
-    \\ENQ\ENQ\STX\STX\STX\STX\DC2\EOT\136\SOH$%\n\
-    \\240\SOH\n\
-    \\EOT\ENQ\STX\STX\ETX\DC2\EOT\143\SOH\STX'\SUB\225\SOH The 'character' value is interpreted as an offset in terms\n\
-    \ of UTF-16 code units.\n\
+    \\130\STX\n\
+    \\EOT\ENQ\STX\STX\STX\DC2\EOT\137\SOH\STX'\SUB\243\SOH The 'character' value is interpreted as an offset in terms\n\
+    \ of UTF-16 code units (each is 2 bytes).\n\
     \\n\
     \ Example: For the string \"\240\159\154\128 Woo\", the UTF-16 code units are\n\
     \ ['\\ud83d', '\\ude80', ' ', 'W', 'o', 'o'], so the offset for 'W'\n\
     \ would be 3.\n\
+    \\n\
+    \\r\n\
+    \\ENQ\ENQ\STX\STX\STX\SOH\DC2\EOT\137\SOH\STX\"\n\
+    \\r\n\
+    \\ENQ\ENQ\STX\STX\STX\STX\DC2\EOT\137\SOH%&\n\
+    \\245\SOH\n\
+    \\EOT\ENQ\STX\STX\ETX\DC2\EOT\143\SOH\STX'\SUB\230\SOH The 'character' value is interpreted as an offset in terms\n\
+    \ of UTF-32 code units (each is 4 bytes).\n\
+    \\n\
+    \ Example: For the string \"\240\159\154\128 Woo\", the UTF-32 code units are\n\
+    \ ['\240\159\154\128', ' ', 'W', 'o', 'o'], so the offset for 'W' would be 2.\n\
     \\n\
     \\r\n\
     \\ENQ\ENQ\STX\STX\ETX\SOH\DC2\EOT\143\SOH\STX\"\n\
