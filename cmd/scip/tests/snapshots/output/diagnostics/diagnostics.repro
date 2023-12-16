@@ -1,0 +1,8 @@
+ definition deprecatedMethod.
+#           ^^^^^^^^^^^^^^^^^ definition diagnostics.repro/deprecatedMethod.
+#           documentation signature of deprecatedMethod.
+#           diagnostic 
+ reference deprecatedMethod.
+#          ^^^^^^^^^^^^^^^^^ reference diagnostics.repro/deprecatedMethod.
+#          diagnostic 
+ 

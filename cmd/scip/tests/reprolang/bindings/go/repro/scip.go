@@ -8,10 +8,19 @@ import (
 )
 
 func (i *identifier) occurrence(roles scip.SymbolRole) *scip.Occurrence {
+	var diagnostics []*scip.Diagnostic
+	if strings.HasPrefix(i.value, "deprecated") {
+		diagnostics = []*scip.Diagnostic{{
+			Severity: scip.Severity_Warning,
+			Message: "deprecated identifier",
+		}}
+	}
+
 	return &scip.Occurrence{
 		Range:       i.position.SCIPRange(),
 		Symbol:      i.symbol,
 		SymbolRoles: int32(roles),
+		Diagnostics: diagnostics,
 	}
 }
 
