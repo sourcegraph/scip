@@ -109,7 +109,6 @@ OPTIONS:
    --to value              Path to output directory for snapshot files (default: "scip-snapshot")
    --project-root value    Override project root in the SCIP file. For example, this can be helpful when the SCIP index was created inside a Docker image or created on another computer
    --strict                If true, fail fast on errors (default: true)
-   --include-diagnostics   Whether or not to include scip diagnostics in snapshot files (default: false)
    --comment-syntax value  Comment syntax to use for snapshot files (default: "//")
 ```
 
