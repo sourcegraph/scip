@@ -13,11 +13,11 @@ import (
 )
 
 type snapshotFlags struct {
-	from               string
-	output             string
-	customProjectRoot  string
-	strict             bool
-	commentSyntax      string
+	from              string
+	output            string
+	customProjectRoot string
+	strict            bool
+	commentSyntax     string
 }
 
 func snapshotCommand() cli.Command {
