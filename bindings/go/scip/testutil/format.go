@@ -155,9 +155,7 @@ func FormatSnapshot(
 			}
 
 			for _, diagnostic := range occ.Diagnostics {
-				b.WriteString(prefix)
-				b.WriteString("diagnostic ")
-				b.WriteString(diagnostic.Code)
+				writeDiagnostic(&b, prefix, diagnostic)
 			}
 
 			b.WriteString("\n")
@@ -183,6 +181,19 @@ func writeDocumentation(b *strings.Builder, documentation string, prefix string,
 		truncatedDocumentation = documentation[0:newlineIndex]
 	}
 	b.WriteString(truncatedDocumentation)
+}
+
+func writeDiagnostic(b *strings.Builder, prefix string, diagnostic *scip.Diagnostic) {
+	b.WriteString(prefix)
+	b.WriteString("diagnostic ")
+	b.WriteString(diagnostic.Severity.String() + ": ")
+
+	message := diagnostic.Message
+	newlineIndex := strings.Index(message, "\n")
+	if newlineIndex >= 0 {
+		message = message[0:newlineIndex]
+	}
+	b.WriteString(message)
 }
 
 // isRangeLess compares two SCIP ranges (which are encoded as []int32).
