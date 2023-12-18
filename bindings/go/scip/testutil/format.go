@@ -40,7 +40,7 @@ func FormatSnapshots(
 	var documentErrors error
 	for _, document := range index.Documents {
 		sourceFilePath := filepath.Join(localSourcesRoot, document.RelativePath)
-		snapshot, err := FormatSnapshot(document, index, commentSyntax, symbolFormatter, sourceFilePath)
+		snapshot, err := FormatSnapshot(document, commentSyntax, symbolFormatter, sourceFilePath)
 		err = symbolFormatter.OnError(err)
 		if err != nil {
 			documentErrors = errors.CombineErrors(
@@ -64,7 +64,6 @@ func FormatSnapshots(
 // that is suitable for snapshot testing.
 func FormatSnapshot(
 	document *scip.Document,
-	index *scip.Index,
 	commentSyntax string,
 	formatter scip.SymbolFormatter,
 	sourceFilePath string,
