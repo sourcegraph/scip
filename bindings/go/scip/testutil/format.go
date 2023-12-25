@@ -164,35 +164,31 @@ func FormatSnapshot(
 	return b.String(), formattingError
 }
 
-func writeDocumentation(b *strings.Builder, documentation string, prefix string, override bool) {
-	// At least get the first line of documentation if there is leading whitespace
-	documentation = strings.TrimSpace(documentation)
+func writeMultiline(b *strings.Builder, prefix string, paragraph string) {
+	for _, s := range strings.Split(paragraph, "\n") {
+		b.WriteString(prefix)
+		b.WriteString("> ")
+		b.WriteString(s)
+	}
+}
 
+func writeDocumentation(b *strings.Builder, documentation string, prefix string, override bool) {
 	b.WriteString(prefix)
 	if override {
 		b.WriteString("override_")
 	}
-	b.WriteString("documentation ")
+	b.WriteString("documentation")
 
-	truncatedDocumentation := documentation
-	newlineIndex := strings.Index(documentation, "\n")
-	if newlineIndex >= 0 {
-		truncatedDocumentation = documentation[0:newlineIndex]
-	}
-	b.WriteString(truncatedDocumentation)
+	writeMultiline(b, prefix, documentation)
 }
 
 func writeDiagnostic(b *strings.Builder, prefix string, diagnostic *scip.Diagnostic) {
 	b.WriteString(prefix)
 	b.WriteString("diagnostic ")
-	b.WriteString(diagnostic.Severity.String() + ": ")
+	b.WriteString(diagnostic.Severity.String())
+	b.WriteRune(':')
 
-	message := diagnostic.Message
-	newlineIndex := strings.Index(message, "\n")
-	if newlineIndex >= 0 {
-		message = message[0:newlineIndex]
-	}
-	b.WriteString(message)
+	writeMultiline(b, prefix, diagnostic.Message)
 }
 
 // isRangeLess compares two SCIP ranges (which are encoded as []int32).
