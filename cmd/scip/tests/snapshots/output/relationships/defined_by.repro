@@ -1,10 +1,12 @@
  definition M_f.
 #           ^^^^ definition defined_by.repro/M_f.
-#           documentation signature of M_f.
+#           documentation
+#           > signature of M_f.
  
  definition C1_f.
 #           ^^^^^ definition defined_by.repro/C1_f.
-#           documentation signature of C1_f.
+#           documentation
+#           > signature of C1_f.
  
  reference C2_f.
 #          ^^^^^ reference defined_by.repro/C1_f.

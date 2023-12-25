@@ -40,7 +40,7 @@ func FormatSnapshots(
 	var documentErrors error
 	for _, document := range index.Documents {
 		sourceFilePath := filepath.Join(localSourcesRoot, document.RelativePath)
-		snapshot, err := FormatSnapshot(document, index, commentSyntax, symbolFormatter, sourceFilePath)
+		snapshot, err := FormatSnapshot(document, commentSyntax, symbolFormatter, sourceFilePath)
 		err = symbolFormatter.OnError(err)
 		if err != nil {
 			documentErrors = errors.CombineErrors(
@@ -64,7 +64,6 @@ func FormatSnapshots(
 // that is suitable for snapshot testing.
 func FormatSnapshot(
 	document *scip.Document,
-	index *scip.Index,
 	commentSyntax string,
 	formatter scip.SymbolFormatter,
 	sourceFilePath string,
@@ -154,6 +153,10 @@ func FormatSnapshot(
 				}
 			}
 
+			for _, diagnostic := range occ.Diagnostics {
+				writeDiagnostic(&b, prefix, diagnostic)
+			}
+
 			b.WriteString("\n")
 			i++
 		}
@@ -161,22 +164,31 @@ func FormatSnapshot(
 	return b.String(), formattingError
 }
 
-func writeDocumentation(b *strings.Builder, documentation string, prefix string, override bool) {
-	// At least get the first line of documentation if there is leading whitespace
-	documentation = strings.TrimSpace(documentation)
+func writeMultiline(b *strings.Builder, prefix string, paragraph string) {
+	for _, s := range strings.Split(paragraph, "\n") {
+		b.WriteString(prefix)
+		b.WriteString("> ")
+		b.WriteString(s)
+	}
+}
 
+func writeDocumentation(b *strings.Builder, documentation string, prefix string, override bool) {
 	b.WriteString(prefix)
 	if override {
 		b.WriteString("override_")
 	}
-	b.WriteString("documentation ")
+	b.WriteString("documentation")
 
-	truncatedDocumentation := documentation
-	newlineIndex := strings.Index(documentation, "\n")
-	if newlineIndex >= 0 {
-		truncatedDocumentation = documentation[0:newlineIndex]
-	}
-	b.WriteString(truncatedDocumentation)
+	writeMultiline(b, prefix, documentation)
+}
+
+func writeDiagnostic(b *strings.Builder, prefix string, diagnostic *scip.Diagnostic) {
+	b.WriteString(prefix)
+	b.WriteString("diagnostic ")
+	b.WriteString(diagnostic.Severity.String())
+	b.WriteRune(':')
+
+	writeMultiline(b, prefix, diagnostic.Message)
 }
 
 // isRangeLess compares two SCIP ranges (which are encoded as []int32).
