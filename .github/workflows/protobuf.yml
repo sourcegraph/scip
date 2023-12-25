@@ -9,6 +9,7 @@ on:
       - 'scip.proto'
       - 'buf**'
       - '.tool-versions'
+      - 'dev/proto-generate.sh'
 
 jobs:
   protoc-gen-up-to-date:
