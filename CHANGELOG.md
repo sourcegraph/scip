@@ -1,5 +1,17 @@
 # ChangeLog
 
+## v0.3.3
+
+SCIP schema:
+
+- Added new `PositionEncoding` field to specify how consumers
+  should interpret the character offsets.
+  (https://github.com/sourcegraph/scip/pull/224, https://github.com/sourcegraph/scip/pull/225)
+
+scip CLI:
+
+- `scip snapshot` output includes the `diagnostics` field.
+
 ## v0.3.2
 
 SCIP schema:
