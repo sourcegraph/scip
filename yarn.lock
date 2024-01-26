@@ -22,10 +22,10 @@ prettier@^2.8.8:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.8.tgz#e8c5d7e98a4305ffe3de2e1fc4aca1a71c28b1da"
   integrity sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==
 
-protoc-gen-ts@0.8.6:
-  version "0.8.6"
-  resolved "https://registry.yarnpkg.com/protoc-gen-ts/-/protoc-gen-ts-0.8.6.tgz#e789a6fc3fbe09bdc119acecc349b9554ec5940e"
-  integrity sha512-66oeorGy4QBvYjQGd/gaeOYyFqKyRmRgTpofmnw8buMG0P7A0jQjoKSvKJz5h5tNUaVkIzvGBUTRVGakrhhwpA==
+protoc-gen-ts@0.8.7:
+  version "0.8.7"
+  resolved "https://registry.yarnpkg.com/protoc-gen-ts/-/protoc-gen-ts-0.8.7.tgz#63e4d9af2ad30b753acf6f739323d01fc9f80b52"
+  integrity sha512-jr4VJey2J9LVYCV7EVyVe53g1VMw28cCmYJhBe5e3YX5wiyiDwgxWxeDf9oTqAe4P1bN/YGAkW2jhlH8LohwiQ==
 
 tree-sitter-cli@^0.20.4:
   version "0.20.6"
