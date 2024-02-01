@@ -431,6 +431,9 @@ message SymbolInformation {
   // outside the document, not by the capability to find the enclosing
   // symbol.
   string enclosing_symbol = 8;
+
+  // (optional) Experimental support for structured signatures.
+  Signature signature = 9;
 }
 
 
@@ -872,3 +875,208 @@ enum Language {
   // 4. Move the new language to the correct line above using alphabetical order
   // 5. (optional) Add a brief comment behind the language if the name is not self-explanatory
 }
+
+
+message Annotation {
+  Type tpe = 1;
+}
+
+message Scope {
+  repeated string symlinks = 1;
+  repeated SymbolInformation hardlinks = 2;
+}
+
+message Type {
+  reserved 1, 3, 4, 5, 6, 11, 12, 15, 16;
+  oneof sealed_value {
+    TypeRef type_ref = 2;
+    SingleType single_type = 20;
+    ThisType this_type = 21;
+    SuperType super_type = 22;
+    ConstantType constant_type = 23;
+    IntersectionType intersection_type = 17;
+    UnionType union_type = 18;
+    WithType with_type = 19;
+    StructuralType structural_type = 7;
+    AnnotatedType annotated_type = 8;
+    ExistentialType existential_type = 9;
+    UniversalType universal_type = 10;
+    ByNameType by_name_type = 13;
+    RepeatedType repeated_type = 14;
+    MatchType match_type = 25;
+    LambdaType lambda_type = 26;
+  }
+}
+
+message LambdaType {
+  Scope parameters = 1;
+  Type return_type = 2;
+}
+
+message TypeRef {
+  Type prefix = 1;
+  string symbol = 2;
+  repeated Type type_arguments = 3;
+}
+
+message SingleType {
+  Type prefix = 1;
+  string symbol = 2;
+}
+
+message ThisType {
+  string symbol = 1;
+}
+
+message SuperType {
+  Type prefix = 1;
+  string symbol = 2;
+}
+
+message ConstantType {
+  Constant constant = 1;
+}
+
+message IntersectionType {
+  repeated Type types = 1;
+}
+
+message UnionType {
+  repeated Type types = 1;
+}
+
+message WithType {
+  repeated Type types = 1;
+}
+
+message StructuralType {
+  reserved 1, 2, 3;
+  Type tpe = 4;
+  Scope declarations = 5;
+}
+
+message AnnotatedType {
+  reserved 2;
+  repeated Annotation annotations = 3;
+  Type tpe = 1;
+}
+
+message ExistentialType {
+  reserved 2;
+  Type tpe = 1;
+  Scope declarations = 3;
+}
+
+message UniversalType {
+  reserved 1;
+  Scope type_parameters = 3;
+  Type tpe = 2;
+}
+
+message ByNameType {
+  Type tpe = 1;
+}
+
+message RepeatedType {
+  Type tpe = 1;
+}
+
+message MatchType {
+  message CaseType {
+    Type key = 1;
+    Type body = 2;
+  }
+  Type scrutinee = 1;
+  repeated CaseType cases = 2;
+}
+
+message Constant {
+  oneof sealed_value {
+    UnitConstant unit_constant = 1;
+    BooleanConstant boolean_constant = 2;
+    ByteConstant byte_constant = 3;
+    ShortConstant short_constant = 4;
+    CharConstant char_constant = 5;
+    IntConstant int_constant = 6;
+    LongConstant long_constant = 7;
+    FloatConstant float_constant = 8;
+    DoubleConstant double_constant = 9;
+    StringConstant string_constant = 10;
+    NullConstant null_constant = 11;
+  }
+}
+
+message UnitConstant {
+}
+
+message BooleanConstant {
+  bool value = 1;
+}
+
+message ByteConstant {
+  int32 value = 1;
+}
+
+message ShortConstant {
+  int32 value = 1;
+}
+
+message CharConstant {
+  int32 value = 1;
+}
+
+message IntConstant {
+  int32 value = 1;
+}
+
+message LongConstant {
+  int64 value = 1;
+}
+
+message FloatConstant {
+  float value = 1;
+}
+
+message DoubleConstant {
+  double value = 1;
+}
+
+message StringConstant {
+  string value = 1;
+}
+
+message NullConstant {
+}
+
+message Signature {
+  oneof sealed_value {
+    ClassSignature class_signature = 1;
+    MethodSignature method_signature = 2;
+    TypeSignature type_signature = 3;
+    ValueSignature value_signature = 4;
+  }
+}
+
+message ClassSignature {
+  Scope type_parameters = 1;
+  repeated Type parents = 2;
+  Type self = 3;
+  Scope declarations = 4;
+}
+
+message MethodSignature {
+  Scope type_parameters = 1;
+  repeated Scope parameter_lists = 2;
+  Type return_type = 3;
+}
+
+message TypeSignature {
+  Scope type_parameters = 1;
+  Type lower_bound = 2;
+  Type upper_bound = 3;
+}
+
+message ValueSignature {
+  Type tpe = 1;
+}
+

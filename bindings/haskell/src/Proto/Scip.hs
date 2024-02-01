@@ -4,23 +4,46 @@
 {-# OPTIONS_GHC -Wno-duplicate-exports#-}
 {-# OPTIONS_GHC -Wno-dodgy-exports#-}
 module Proto.Scip (
+        AnnotatedType(), Annotation(), BooleanConstant(), ByNameType(),
+        ByteConstant(), CharConstant(), ClassSignature(), Constant(),
+        Constant'SealedValue(..), _Constant'UnitConstant,
+        _Constant'BooleanConstant, _Constant'ByteConstant,
+        _Constant'ShortConstant, _Constant'CharConstant,
+        _Constant'IntConstant, _Constant'LongConstant,
+        _Constant'FloatConstant, _Constant'DoubleConstant,
+        _Constant'StringConstant, _Constant'NullConstant, ConstantType(),
         Descriptor(), Descriptor'Suffix(..),
         Descriptor'Suffix(Descriptor'Package),
         Descriptor'Suffix'UnrecognizedValue, Diagnostic(),
         DiagnosticTag(..), DiagnosticTag(),
-        DiagnosticTag'UnrecognizedValue, Document(), Index(), Language(..),
-        Language(), Language'UnrecognizedValue, Metadata(), Occurrence(),
-        Package(), PositionEncoding(..), PositionEncoding(),
-        PositionEncoding'UnrecognizedValue, ProtocolVersion(..),
-        ProtocolVersion(), ProtocolVersion'UnrecognizedValue,
-        Relationship(), Severity(..), Severity(),
-        Severity'UnrecognizedValue, Symbol(), SymbolInformation(),
-        SymbolInformation'Kind(..), SymbolInformation'Kind(),
-        SymbolInformation'Kind'UnrecognizedValue, SymbolRole(..),
-        SymbolRole(), SymbolRole'UnrecognizedValue, SyntaxKind(..),
-        SyntaxKind(IdentifierKeyword, IdentifierModule),
+        DiagnosticTag'UnrecognizedValue, Document(), DoubleConstant(),
+        ExistentialType(), FloatConstant(), Index(), IntConstant(),
+        IntersectionType(), LambdaType(), Language(..), Language(),
+        Language'UnrecognizedValue, LongConstant(), MatchType(),
+        MatchType'CaseType(), Metadata(), MethodSignature(),
+        NullConstant(), Occurrence(), Package(), PositionEncoding(..),
+        PositionEncoding(), PositionEncoding'UnrecognizedValue,
+        ProtocolVersion(..), ProtocolVersion(),
+        ProtocolVersion'UnrecognizedValue, Relationship(), RepeatedType(),
+        Scope(), Severity(..), Severity(), Severity'UnrecognizedValue,
+        ShortConstant(), Signature(), Signature'SealedValue(..),
+        _Signature'ClassSignature, _Signature'MethodSignature,
+        _Signature'TypeSignature, _Signature'ValueSignature, SingleType(),
+        StringConstant(), StructuralType(), SuperType(), Symbol(),
+        SymbolInformation(), SymbolInformation'Kind(..),
+        SymbolInformation'Kind(), SymbolInformation'Kind'UnrecognizedValue,
+        SymbolRole(..), SymbolRole(), SymbolRole'UnrecognizedValue,
+        SyntaxKind(..), SyntaxKind(IdentifierKeyword, IdentifierModule),
         SyntaxKind'UnrecognizedValue, TextEncoding(..), TextEncoding(),
-        TextEncoding'UnrecognizedValue, ToolInfo()
+        TextEncoding'UnrecognizedValue, ThisType(), ToolInfo(), Type(),
+        Type'SealedValue(..), _Type'TypeRef, _Type'SingleType,
+        _Type'ThisType, _Type'SuperType, _Type'ConstantType,
+        _Type'IntersectionType, _Type'UnionType, _Type'WithType,
+        _Type'StructuralType, _Type'AnnotatedType, _Type'ExistentialType,
+        _Type'UniversalType, _Type'ByNameType, _Type'RepeatedType,
+        _Type'MatchType, _Type'LambdaType, TypeRef(), TypeSignature(),
+        UnionType(), UnitConstant(), UniversalType(), ValueSignature(),
+        WithType()
     ) where
 import qualified Data.ProtoLens.Runtime.Control.DeepSeq as Control.DeepSeq
 import qualified Data.ProtoLens.Runtime.Data.ProtoLens.Prism as Data.ProtoLens.Prism
@@ -47,6 +70,2023 @@ import qualified Data.ProtoLens.Runtime.Data.Vector as Data.Vector
 import qualified Data.ProtoLens.Runtime.Data.Vector.Generic as Data.Vector.Generic
 import qualified Data.ProtoLens.Runtime.Data.Vector.Unboxed as Data.Vector.Unboxed
 import qualified Data.ProtoLens.Runtime.Text.Read as Text.Read
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.annotations' @:: Lens' AnnotatedType [Annotation]@
+         * 'Proto.Scip_Fields.vec'annotations' @:: Lens' AnnotatedType (Data.Vector.Vector Annotation)@
+         * 'Proto.Scip_Fields.tpe' @:: Lens' AnnotatedType Type@
+         * 'Proto.Scip_Fields.maybe'tpe' @:: Lens' AnnotatedType (Prelude.Maybe Type)@ -}
+data AnnotatedType
+  = AnnotatedType'_constructor {_AnnotatedType'annotations :: !(Data.Vector.Vector Annotation),
+                                _AnnotatedType'tpe :: !(Prelude.Maybe Type),
+                                _AnnotatedType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show AnnotatedType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField AnnotatedType "annotations" [Annotation] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _AnnotatedType'annotations
+           (\ x__ y__ -> x__ {_AnnotatedType'annotations = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField AnnotatedType "vec'annotations" (Data.Vector.Vector Annotation) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _AnnotatedType'annotations
+           (\ x__ y__ -> x__ {_AnnotatedType'annotations = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField AnnotatedType "tpe" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _AnnotatedType'tpe (\ x__ y__ -> x__ {_AnnotatedType'tpe = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField AnnotatedType "maybe'tpe" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _AnnotatedType'tpe (\ x__ y__ -> x__ {_AnnotatedType'tpe = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message AnnotatedType where
+  messageName _ = Data.Text.pack "scip.AnnotatedType"
+  packedMessageDescriptor _
+    = "\n\
+      \\rAnnotatedType\DC22\n\
+      \\vannotations\CAN\ETX \ETX(\v2\DLE.scip.AnnotationR\vannotations\DC2\FS\n\
+      \\ETXtpe\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ETXtpeJ\EOT\b\STX\DLE\ETX"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        annotations__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "annotations"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Annotation)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked
+                 (Data.ProtoLens.Field.field @"annotations")) ::
+              Data.ProtoLens.FieldDescriptor AnnotatedType
+        tpe__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "tpe"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'tpe")) ::
+              Data.ProtoLens.FieldDescriptor AnnotatedType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 3, annotations__field_descriptor),
+           (Data.ProtoLens.Tag 1, tpe__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _AnnotatedType'_unknownFields
+        (\ x__ y__ -> x__ {_AnnotatedType'_unknownFields = y__})
+  defMessage
+    = AnnotatedType'_constructor
+        {_AnnotatedType'annotations = Data.Vector.Generic.empty,
+         _AnnotatedType'tpe = Prelude.Nothing,
+         _AnnotatedType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          AnnotatedType
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Annotation
+             -> Data.ProtoLens.Encoding.Bytes.Parser AnnotatedType
+        loop x mutable'annotations
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'annotations <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                              (Data.ProtoLens.Encoding.Growing.unsafeFreeze
+                                                 mutable'annotations)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'annotations") frozen'annotations
+                              x))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        26
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "annotations"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append
+                                          mutable'annotations y)
+                                loop x v
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "tpe"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"tpe") y x)
+                                  mutable'annotations
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'annotations
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'annotations <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'annotations)
+          "AnnotatedType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                (\ _v
+                   -> (Data.Monoid.<>)
+                        (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                        ((Prelude..)
+                           (\ bs
+                              -> (Data.Monoid.<>)
+                                   (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                      (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                   (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                           Data.ProtoLens.encodeMessage _v))
+                (Lens.Family2.view
+                   (Data.ProtoLens.Field.field @"vec'annotations") _x))
+             ((Data.Monoid.<>)
+                (case
+                     Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'tpe") _x
+                 of
+                   Prelude.Nothing -> Data.Monoid.mempty
+                   (Prelude.Just _v)
+                     -> (Data.Monoid.<>)
+                          (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                          ((Prelude..)
+                             (\ bs
+                                -> (Data.Monoid.<>)
+                                     (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                        (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                     (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                             Data.ProtoLens.encodeMessage _v))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData AnnotatedType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_AnnotatedType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_AnnotatedType'annotations x__)
+                (Control.DeepSeq.deepseq (_AnnotatedType'tpe x__) ()))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.tpe' @:: Lens' Annotation Type@
+         * 'Proto.Scip_Fields.maybe'tpe' @:: Lens' Annotation (Prelude.Maybe Type)@ -}
+data Annotation
+  = Annotation'_constructor {_Annotation'tpe :: !(Prelude.Maybe Type),
+                             _Annotation'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show Annotation where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField Annotation "tpe" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Annotation'tpe (\ x__ y__ -> x__ {_Annotation'tpe = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField Annotation "maybe'tpe" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Annotation'tpe (\ x__ y__ -> x__ {_Annotation'tpe = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message Annotation where
+  messageName _ = Data.Text.pack "scip.Annotation"
+  packedMessageDescriptor _
+    = "\n\
+      \\n\
+      \Annotation\DC2\FS\n\
+      \\ETXtpe\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ETXtpe"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        tpe__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "tpe"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'tpe")) ::
+              Data.ProtoLens.FieldDescriptor Annotation
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, tpe__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _Annotation'_unknownFields
+        (\ x__ y__ -> x__ {_Annotation'_unknownFields = y__})
+  defMessage
+    = Annotation'_constructor
+        {_Annotation'tpe = Prelude.Nothing,
+         _Annotation'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          Annotation -> Data.ProtoLens.Encoding.Bytes.Parser Annotation
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "tpe"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"tpe") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "Annotation"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'tpe") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData Annotation where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_Annotation'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_Annotation'tpe x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.value' @:: Lens' BooleanConstant Prelude.Bool@ -}
+data BooleanConstant
+  = BooleanConstant'_constructor {_BooleanConstant'value :: !Prelude.Bool,
+                                  _BooleanConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show BooleanConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField BooleanConstant "value" Prelude.Bool where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _BooleanConstant'value
+           (\ x__ y__ -> x__ {_BooleanConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message BooleanConstant where
+  messageName _ = Data.Text.pack "scip.BooleanConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\SIBooleanConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\bR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.BoolField ::
+                 Data.ProtoLens.FieldTypeDescriptor Prelude.Bool)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor BooleanConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _BooleanConstant'_unknownFields
+        (\ x__ y__ -> x__ {_BooleanConstant'_unknownFields = y__})
+  defMessage
+    = BooleanConstant'_constructor
+        {_BooleanConstant'value = Data.ProtoLens.fieldDefault,
+         _BooleanConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          BooleanConstant
+          -> Data.ProtoLens.Encoding.Bytes.Parser BooleanConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        8 -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          ((Prelude./=) 0) Data.ProtoLens.Encoding.Bytes.getVarInt)
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "BooleanConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 8)
+                      ((Prelude..)
+                         Data.ProtoLens.Encoding.Bytes.putVarInt (\ b -> if b then 1 else 0)
+                         _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData BooleanConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_BooleanConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_BooleanConstant'value x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.tpe' @:: Lens' ByNameType Type@
+         * 'Proto.Scip_Fields.maybe'tpe' @:: Lens' ByNameType (Prelude.Maybe Type)@ -}
+data ByNameType
+  = ByNameType'_constructor {_ByNameType'tpe :: !(Prelude.Maybe Type),
+                             _ByNameType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show ByNameType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField ByNameType "tpe" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ByNameType'tpe (\ x__ y__ -> x__ {_ByNameType'tpe = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField ByNameType "maybe'tpe" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ByNameType'tpe (\ x__ y__ -> x__ {_ByNameType'tpe = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message ByNameType where
+  messageName _ = Data.Text.pack "scip.ByNameType"
+  packedMessageDescriptor _
+    = "\n\
+      \\n\
+      \ByNameType\DC2\FS\n\
+      \\ETXtpe\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ETXtpe"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        tpe__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "tpe"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'tpe")) ::
+              Data.ProtoLens.FieldDescriptor ByNameType
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, tpe__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _ByNameType'_unknownFields
+        (\ x__ y__ -> x__ {_ByNameType'_unknownFields = y__})
+  defMessage
+    = ByNameType'_constructor
+        {_ByNameType'tpe = Prelude.Nothing,
+         _ByNameType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          ByNameType -> Data.ProtoLens.Encoding.Bytes.Parser ByNameType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "tpe"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"tpe") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "ByNameType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'tpe") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData ByNameType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_ByNameType'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_ByNameType'tpe x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.value' @:: Lens' ByteConstant Data.Int.Int32@ -}
+data ByteConstant
+  = ByteConstant'_constructor {_ByteConstant'value :: !Data.Int.Int32,
+                               _ByteConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show ByteConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField ByteConstant "value" Data.Int.Int32 where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ByteConstant'value (\ x__ y__ -> x__ {_ByteConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message ByteConstant where
+  messageName _ = Data.Text.pack "scip.ByteConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\fByteConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\ENQR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.Int32Field ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Int.Int32)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor ByteConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _ByteConstant'_unknownFields
+        (\ x__ y__ -> x__ {_ByteConstant'_unknownFields = y__})
+  defMessage
+    = ByteConstant'_constructor
+        {_ByteConstant'value = Data.ProtoLens.fieldDefault,
+         _ByteConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          ByteConstant -> Data.ProtoLens.Encoding.Bytes.Parser ByteConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        8 -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          Prelude.fromIntegral
+                                          Data.ProtoLens.Encoding.Bytes.getVarInt)
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "ByteConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 8)
+                      ((Prelude..)
+                         Data.ProtoLens.Encoding.Bytes.putVarInt Prelude.fromIntegral _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData ByteConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_ByteConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_ByteConstant'value x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.value' @:: Lens' CharConstant Data.Int.Int32@ -}
+data CharConstant
+  = CharConstant'_constructor {_CharConstant'value :: !Data.Int.Int32,
+                               _CharConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show CharConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField CharConstant "value" Data.Int.Int32 where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _CharConstant'value (\ x__ y__ -> x__ {_CharConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message CharConstant where
+  messageName _ = Data.Text.pack "scip.CharConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\fCharConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\ENQR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.Int32Field ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Int.Int32)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor CharConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _CharConstant'_unknownFields
+        (\ x__ y__ -> x__ {_CharConstant'_unknownFields = y__})
+  defMessage
+    = CharConstant'_constructor
+        {_CharConstant'value = Data.ProtoLens.fieldDefault,
+         _CharConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          CharConstant -> Data.ProtoLens.Encoding.Bytes.Parser CharConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        8 -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          Prelude.fromIntegral
+                                          Data.ProtoLens.Encoding.Bytes.getVarInt)
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "CharConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 8)
+                      ((Prelude..)
+                         Data.ProtoLens.Encoding.Bytes.putVarInt Prelude.fromIntegral _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData CharConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_CharConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_CharConstant'value x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.typeParameters' @:: Lens' ClassSignature Scope@
+         * 'Proto.Scip_Fields.maybe'typeParameters' @:: Lens' ClassSignature (Prelude.Maybe Scope)@
+         * 'Proto.Scip_Fields.parents' @:: Lens' ClassSignature [Type]@
+         * 'Proto.Scip_Fields.vec'parents' @:: Lens' ClassSignature (Data.Vector.Vector Type)@
+         * 'Proto.Scip_Fields.self' @:: Lens' ClassSignature Type@
+         * 'Proto.Scip_Fields.maybe'self' @:: Lens' ClassSignature (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.declarations' @:: Lens' ClassSignature Scope@
+         * 'Proto.Scip_Fields.maybe'declarations' @:: Lens' ClassSignature (Prelude.Maybe Scope)@ -}
+data ClassSignature
+  = ClassSignature'_constructor {_ClassSignature'typeParameters :: !(Prelude.Maybe Scope),
+                                 _ClassSignature'parents :: !(Data.Vector.Vector Type),
+                                 _ClassSignature'self :: !(Prelude.Maybe Type),
+                                 _ClassSignature'declarations :: !(Prelude.Maybe Scope),
+                                 _ClassSignature'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show ClassSignature where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField ClassSignature "typeParameters" Scope where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ClassSignature'typeParameters
+           (\ x__ y__ -> x__ {_ClassSignature'typeParameters = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField ClassSignature "maybe'typeParameters" (Prelude.Maybe Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ClassSignature'typeParameters
+           (\ x__ y__ -> x__ {_ClassSignature'typeParameters = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField ClassSignature "parents" [Type] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ClassSignature'parents
+           (\ x__ y__ -> x__ {_ClassSignature'parents = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField ClassSignature "vec'parents" (Data.Vector.Vector Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ClassSignature'parents
+           (\ x__ y__ -> x__ {_ClassSignature'parents = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField ClassSignature "self" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ClassSignature'self
+           (\ x__ y__ -> x__ {_ClassSignature'self = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField ClassSignature "maybe'self" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ClassSignature'self
+           (\ x__ y__ -> x__ {_ClassSignature'self = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField ClassSignature "declarations" Scope where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ClassSignature'declarations
+           (\ x__ y__ -> x__ {_ClassSignature'declarations = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField ClassSignature "maybe'declarations" (Prelude.Maybe Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ClassSignature'declarations
+           (\ x__ y__ -> x__ {_ClassSignature'declarations = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message ClassSignature where
+  messageName _ = Data.Text.pack "scip.ClassSignature"
+  packedMessageDescriptor _
+    = "\n\
+      \\SOClassSignature\DC24\n\
+      \\SItype_parameters\CAN\SOH \SOH(\v2\v.scip.ScopeR\SOtypeParameters\DC2$\n\
+      \\aparents\CAN\STX \ETX(\v2\n\
+      \.scip.TypeR\aparents\DC2\RS\n\
+      \\EOTself\CAN\ETX \SOH(\v2\n\
+      \.scip.TypeR\EOTself\DC2/\n\
+      \\fdeclarations\CAN\EOT \SOH(\v2\v.scip.ScopeR\fdeclarations"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        typeParameters__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "type_parameters"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'typeParameters")) ::
+              Data.ProtoLens.FieldDescriptor ClassSignature
+        parents__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "parents"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked (Data.ProtoLens.Field.field @"parents")) ::
+              Data.ProtoLens.FieldDescriptor ClassSignature
+        self__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "self"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'self")) ::
+              Data.ProtoLens.FieldDescriptor ClassSignature
+        declarations__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "declarations"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'declarations")) ::
+              Data.ProtoLens.FieldDescriptor ClassSignature
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, typeParameters__field_descriptor),
+           (Data.ProtoLens.Tag 2, parents__field_descriptor),
+           (Data.ProtoLens.Tag 3, self__field_descriptor),
+           (Data.ProtoLens.Tag 4, declarations__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _ClassSignature'_unknownFields
+        (\ x__ y__ -> x__ {_ClassSignature'_unknownFields = y__})
+  defMessage
+    = ClassSignature'_constructor
+        {_ClassSignature'typeParameters = Prelude.Nothing,
+         _ClassSignature'parents = Data.Vector.Generic.empty,
+         _ClassSignature'self = Prelude.Nothing,
+         _ClassSignature'declarations = Prelude.Nothing,
+         _ClassSignature'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          ClassSignature
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Type
+             -> Data.ProtoLens.Encoding.Bytes.Parser ClassSignature
+        loop x mutable'parents
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'parents <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                          (Data.ProtoLens.Encoding.Growing.unsafeFreeze
+                                             mutable'parents)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'parents") frozen'parents x))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "type_parameters"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"typeParameters") y x)
+                                  mutable'parents
+                        18
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "parents"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append mutable'parents y)
+                                loop x v
+                        26
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "self"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"self") y x)
+                                  mutable'parents
+                        34
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "declarations"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"declarations") y x)
+                                  mutable'parents
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'parents
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'parents <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                   Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'parents)
+          "ClassSignature"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'typeParameters") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                   (\ _v
+                      -> (Data.Monoid.<>)
+                           (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                           ((Prelude..)
+                              (\ bs
+                                 -> (Data.Monoid.<>)
+                                      (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                         (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                      (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                              Data.ProtoLens.encodeMessage _v))
+                   (Lens.Family2.view (Data.ProtoLens.Field.field @"vec'parents") _x))
+                ((Data.Monoid.<>)
+                   (case
+                        Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'self") _x
+                    of
+                      Prelude.Nothing -> Data.Monoid.mempty
+                      (Prelude.Just _v)
+                        -> (Data.Monoid.<>)
+                             (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                             ((Prelude..)
+                                (\ bs
+                                   -> (Data.Monoid.<>)
+                                        (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                           (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                        (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                                Data.ProtoLens.encodeMessage _v))
+                   ((Data.Monoid.<>)
+                      (case
+                           Lens.Family2.view
+                             (Data.ProtoLens.Field.field @"maybe'declarations") _x
+                       of
+                         Prelude.Nothing -> Data.Monoid.mempty
+                         (Prelude.Just _v)
+                           -> (Data.Monoid.<>)
+                                (Data.ProtoLens.Encoding.Bytes.putVarInt 34)
+                                ((Prelude..)
+                                   (\ bs
+                                      -> (Data.Monoid.<>)
+                                           (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                              (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                           (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                                   Data.ProtoLens.encodeMessage _v))
+                      (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                         (Lens.Family2.view Data.ProtoLens.unknownFields _x)))))
+instance Control.DeepSeq.NFData ClassSignature where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_ClassSignature'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_ClassSignature'typeParameters x__)
+                (Control.DeepSeq.deepseq
+                   (_ClassSignature'parents x__)
+                   (Control.DeepSeq.deepseq
+                      (_ClassSignature'self x__)
+                      (Control.DeepSeq.deepseq (_ClassSignature'declarations x__) ()))))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.maybe'sealedValue' @:: Lens' Constant (Prelude.Maybe Constant'SealedValue)@
+         * 'Proto.Scip_Fields.maybe'unitConstant' @:: Lens' Constant (Prelude.Maybe UnitConstant)@
+         * 'Proto.Scip_Fields.unitConstant' @:: Lens' Constant UnitConstant@
+         * 'Proto.Scip_Fields.maybe'booleanConstant' @:: Lens' Constant (Prelude.Maybe BooleanConstant)@
+         * 'Proto.Scip_Fields.booleanConstant' @:: Lens' Constant BooleanConstant@
+         * 'Proto.Scip_Fields.maybe'byteConstant' @:: Lens' Constant (Prelude.Maybe ByteConstant)@
+         * 'Proto.Scip_Fields.byteConstant' @:: Lens' Constant ByteConstant@
+         * 'Proto.Scip_Fields.maybe'shortConstant' @:: Lens' Constant (Prelude.Maybe ShortConstant)@
+         * 'Proto.Scip_Fields.shortConstant' @:: Lens' Constant ShortConstant@
+         * 'Proto.Scip_Fields.maybe'charConstant' @:: Lens' Constant (Prelude.Maybe CharConstant)@
+         * 'Proto.Scip_Fields.charConstant' @:: Lens' Constant CharConstant@
+         * 'Proto.Scip_Fields.maybe'intConstant' @:: Lens' Constant (Prelude.Maybe IntConstant)@
+         * 'Proto.Scip_Fields.intConstant' @:: Lens' Constant IntConstant@
+         * 'Proto.Scip_Fields.maybe'longConstant' @:: Lens' Constant (Prelude.Maybe LongConstant)@
+         * 'Proto.Scip_Fields.longConstant' @:: Lens' Constant LongConstant@
+         * 'Proto.Scip_Fields.maybe'floatConstant' @:: Lens' Constant (Prelude.Maybe FloatConstant)@
+         * 'Proto.Scip_Fields.floatConstant' @:: Lens' Constant FloatConstant@
+         * 'Proto.Scip_Fields.maybe'doubleConstant' @:: Lens' Constant (Prelude.Maybe DoubleConstant)@
+         * 'Proto.Scip_Fields.doubleConstant' @:: Lens' Constant DoubleConstant@
+         * 'Proto.Scip_Fields.maybe'stringConstant' @:: Lens' Constant (Prelude.Maybe StringConstant)@
+         * 'Proto.Scip_Fields.stringConstant' @:: Lens' Constant StringConstant@
+         * 'Proto.Scip_Fields.maybe'nullConstant' @:: Lens' Constant (Prelude.Maybe NullConstant)@
+         * 'Proto.Scip_Fields.nullConstant' @:: Lens' Constant NullConstant@ -}
+data Constant
+  = Constant'_constructor {_Constant'sealedValue :: !(Prelude.Maybe Constant'SealedValue),
+                           _Constant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show Constant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+data Constant'SealedValue
+  = Constant'UnitConstant !UnitConstant |
+    Constant'BooleanConstant !BooleanConstant |
+    Constant'ByteConstant !ByteConstant |
+    Constant'ShortConstant !ShortConstant |
+    Constant'CharConstant !CharConstant |
+    Constant'IntConstant !IntConstant |
+    Constant'LongConstant !LongConstant |
+    Constant'FloatConstant !FloatConstant |
+    Constant'DoubleConstant !DoubleConstant |
+    Constant'StringConstant !StringConstant |
+    Constant'NullConstant !NullConstant
+  deriving stock (Prelude.Show, Prelude.Eq, Prelude.Ord)
+instance Data.ProtoLens.Field.HasField Constant "maybe'sealedValue" (Prelude.Maybe Constant'SealedValue) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField Constant "maybe'unitConstant" (Prelude.Maybe UnitConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'UnitConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'UnitConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "unitConstant" UnitConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'UnitConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'UnitConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'booleanConstant" (Prelude.Maybe BooleanConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'BooleanConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'BooleanConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "booleanConstant" BooleanConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'BooleanConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'BooleanConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'byteConstant" (Prelude.Maybe ByteConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'ByteConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'ByteConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "byteConstant" ByteConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'ByteConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'ByteConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'shortConstant" (Prelude.Maybe ShortConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'ShortConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'ShortConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "shortConstant" ShortConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'ShortConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'ShortConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'charConstant" (Prelude.Maybe CharConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'CharConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'CharConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "charConstant" CharConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'CharConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'CharConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'intConstant" (Prelude.Maybe IntConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'IntConstant x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'IntConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "intConstant" IntConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'IntConstant x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'IntConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'longConstant" (Prelude.Maybe LongConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'LongConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'LongConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "longConstant" LongConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'LongConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'LongConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'floatConstant" (Prelude.Maybe FloatConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'FloatConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'FloatConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "floatConstant" FloatConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'FloatConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'FloatConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'doubleConstant" (Prelude.Maybe DoubleConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'DoubleConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'DoubleConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "doubleConstant" DoubleConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'DoubleConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'DoubleConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'stringConstant" (Prelude.Maybe StringConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'StringConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'StringConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "stringConstant" StringConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'StringConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'StringConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Constant "maybe'nullConstant" (Prelude.Maybe NullConstant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Constant'NullConstant x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Constant'NullConstant y__))
+instance Data.ProtoLens.Field.HasField Constant "nullConstant" NullConstant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Constant'sealedValue
+           (\ x__ y__ -> x__ {_Constant'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Constant'NullConstant x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Constant'NullConstant y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Message Constant where
+  messageName _ = Data.Text.pack "scip.Constant"
+  packedMessageDescriptor _
+    = "\n\
+      \\bConstant\DC29\n\
+      \\runit_constant\CAN\SOH \SOH(\v2\DC2.scip.UnitConstantH\NULR\funitConstant\DC2B\n\
+      \\DLEboolean_constant\CAN\STX \SOH(\v2\NAK.scip.BooleanConstantH\NULR\SIbooleanConstant\DC29\n\
+      \\rbyte_constant\CAN\ETX \SOH(\v2\DC2.scip.ByteConstantH\NULR\fbyteConstant\DC2<\n\
+      \\SOshort_constant\CAN\EOT \SOH(\v2\DC3.scip.ShortConstantH\NULR\rshortConstant\DC29\n\
+      \\rchar_constant\CAN\ENQ \SOH(\v2\DC2.scip.CharConstantH\NULR\fcharConstant\DC26\n\
+      \\fint_constant\CAN\ACK \SOH(\v2\DC1.scip.IntConstantH\NULR\vintConstant\DC29\n\
+      \\rlong_constant\CAN\a \SOH(\v2\DC2.scip.LongConstantH\NULR\flongConstant\DC2<\n\
+      \\SOfloat_constant\CAN\b \SOH(\v2\DC3.scip.FloatConstantH\NULR\rfloatConstant\DC2?\n\
+      \\SIdouble_constant\CAN\t \SOH(\v2\DC4.scip.DoubleConstantH\NULR\SOdoubleConstant\DC2?\n\
+      \\SIstring_constant\CAN\n\
+      \ \SOH(\v2\DC4.scip.StringConstantH\NULR\SOstringConstant\DC29\n\
+      \\rnull_constant\CAN\v \SOH(\v2\DC2.scip.NullConstantH\NULR\fnullConstantB\SO\n\
+      \\fsealed_value"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        unitConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "unit_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor UnitConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'unitConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        booleanConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "boolean_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor BooleanConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'booleanConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        byteConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "byte_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor ByteConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'byteConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        shortConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "short_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor ShortConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'shortConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        charConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "char_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor CharConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'charConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        intConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "int_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor IntConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'intConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        longConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "long_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor LongConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'longConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        floatConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "float_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor FloatConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'floatConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        doubleConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "double_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor DoubleConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'doubleConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        stringConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "string_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor StringConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'stringConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+        nullConstant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "null_constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor NullConstant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'nullConstant")) ::
+              Data.ProtoLens.FieldDescriptor Constant
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, unitConstant__field_descriptor),
+           (Data.ProtoLens.Tag 2, booleanConstant__field_descriptor),
+           (Data.ProtoLens.Tag 3, byteConstant__field_descriptor),
+           (Data.ProtoLens.Tag 4, shortConstant__field_descriptor),
+           (Data.ProtoLens.Tag 5, charConstant__field_descriptor),
+           (Data.ProtoLens.Tag 6, intConstant__field_descriptor),
+           (Data.ProtoLens.Tag 7, longConstant__field_descriptor),
+           (Data.ProtoLens.Tag 8, floatConstant__field_descriptor),
+           (Data.ProtoLens.Tag 9, doubleConstant__field_descriptor),
+           (Data.ProtoLens.Tag 10, stringConstant__field_descriptor),
+           (Data.ProtoLens.Tag 11, nullConstant__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _Constant'_unknownFields
+        (\ x__ y__ -> x__ {_Constant'_unknownFields = y__})
+  defMessage
+    = Constant'_constructor
+        {_Constant'sealedValue = Prelude.Nothing,
+         _Constant'_unknownFields = []}
+  parseMessage
+    = let
+        loop :: Constant -> Data.ProtoLens.Encoding.Bytes.Parser Constant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "unit_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"unitConstant") y x)
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "boolean_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"booleanConstant") y x)
+                        26
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "byte_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"byteConstant") y x)
+                        34
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "short_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"shortConstant") y x)
+                        42
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "char_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"charConstant") y x)
+                        50
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "int_constant"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"intConstant") y x)
+                        58
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "long_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"longConstant") y x)
+                        66
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "float_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"floatConstant") y x)
+                        74
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "double_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"doubleConstant") y x)
+                        82
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "string_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"stringConstant") y x)
+                        90
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "null_constant"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"nullConstant") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "Constant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'sealedValue") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just (Constant'UnitConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'BooleanConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'ByteConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'ShortConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 34)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'CharConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 42)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'IntConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 50)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'LongConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 58)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'FloatConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 66)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'DoubleConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 74)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'StringConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 82)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Constant'NullConstant v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 90)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData Constant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_Constant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_Constant'sealedValue x__) ())
+instance Control.DeepSeq.NFData Constant'SealedValue where
+  rnf (Constant'UnitConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'BooleanConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'ByteConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'ShortConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'CharConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'IntConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'LongConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'FloatConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'DoubleConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'StringConstant x__) = Control.DeepSeq.rnf x__
+  rnf (Constant'NullConstant x__) = Control.DeepSeq.rnf x__
+_Constant'UnitConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue UnitConstant
+_Constant'UnitConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'UnitConstant
+      (\ p__
+         -> case p__ of
+              (Constant'UnitConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'BooleanConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue BooleanConstant
+_Constant'BooleanConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'BooleanConstant
+      (\ p__
+         -> case p__ of
+              (Constant'BooleanConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'ByteConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue ByteConstant
+_Constant'ByteConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'ByteConstant
+      (\ p__
+         -> case p__ of
+              (Constant'ByteConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'ShortConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue ShortConstant
+_Constant'ShortConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'ShortConstant
+      (\ p__
+         -> case p__ of
+              (Constant'ShortConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'CharConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue CharConstant
+_Constant'CharConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'CharConstant
+      (\ p__
+         -> case p__ of
+              (Constant'CharConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'IntConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue IntConstant
+_Constant'IntConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'IntConstant
+      (\ p__
+         -> case p__ of
+              (Constant'IntConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'LongConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue LongConstant
+_Constant'LongConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'LongConstant
+      (\ p__
+         -> case p__ of
+              (Constant'LongConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'FloatConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue FloatConstant
+_Constant'FloatConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'FloatConstant
+      (\ p__
+         -> case p__ of
+              (Constant'FloatConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'DoubleConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue DoubleConstant
+_Constant'DoubleConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'DoubleConstant
+      (\ p__
+         -> case p__ of
+              (Constant'DoubleConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'StringConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue StringConstant
+_Constant'StringConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'StringConstant
+      (\ p__
+         -> case p__ of
+              (Constant'StringConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Constant'NullConstant ::
+  Data.ProtoLens.Prism.Prism' Constant'SealedValue NullConstant
+_Constant'NullConstant
+  = Data.ProtoLens.Prism.prism'
+      Constant'NullConstant
+      (\ p__
+         -> case p__ of
+              (Constant'NullConstant p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.constant' @:: Lens' ConstantType Constant@
+         * 'Proto.Scip_Fields.maybe'constant' @:: Lens' ConstantType (Prelude.Maybe Constant)@ -}
+data ConstantType
+  = ConstantType'_constructor {_ConstantType'constant :: !(Prelude.Maybe Constant),
+                               _ConstantType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show ConstantType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField ConstantType "constant" Constant where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ConstantType'constant
+           (\ x__ y__ -> x__ {_ConstantType'constant = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField ConstantType "maybe'constant" (Prelude.Maybe Constant) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ConstantType'constant
+           (\ x__ y__ -> x__ {_ConstantType'constant = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message ConstantType where
+  messageName _ = Data.Text.pack "scip.ConstantType"
+  packedMessageDescriptor _
+    = "\n\
+      \\fConstantType\DC2*\n\
+      \\bconstant\CAN\SOH \SOH(\v2\SO.scip.ConstantR\bconstant"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        constant__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "constant"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Constant)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'constant")) ::
+              Data.ProtoLens.FieldDescriptor ConstantType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, constant__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _ConstantType'_unknownFields
+        (\ x__ y__ -> x__ {_ConstantType'_unknownFields = y__})
+  defMessage
+    = ConstantType'_constructor
+        {_ConstantType'constant = Prelude.Nothing,
+         _ConstantType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          ConstantType -> Data.ProtoLens.Encoding.Bytes.Parser ConstantType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "constant"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"constant") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "ConstantType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'constant") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData ConstantType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_ConstantType'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_ConstantType'constant x__) ())
 {- | Fields :
      
          * 'Proto.Scip_Fields.name' @:: Lens' Descriptor Data.Text.Text@
@@ -1238,6 +3278,396 @@ instance Control.DeepSeq.NFData Document where
                             (Control.DeepSeq.deepseq (_Document'positionEncoding x__) ()))))))
 {- | Fields :
      
+         * 'Proto.Scip_Fields.value' @:: Lens' DoubleConstant Prelude.Double@ -}
+data DoubleConstant
+  = DoubleConstant'_constructor {_DoubleConstant'value :: !Prelude.Double,
+                                 _DoubleConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show DoubleConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField DoubleConstant "value" Prelude.Double where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _DoubleConstant'value
+           (\ x__ y__ -> x__ {_DoubleConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message DoubleConstant where
+  messageName _ = Data.Text.pack "scip.DoubleConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\SODoubleConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\SOHR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.DoubleField ::
+                 Data.ProtoLens.FieldTypeDescriptor Prelude.Double)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor DoubleConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _DoubleConstant'_unknownFields
+        (\ x__ y__ -> x__ {_DoubleConstant'_unknownFields = y__})
+  defMessage
+    = DoubleConstant'_constructor
+        {_DoubleConstant'value = Data.ProtoLens.fieldDefault,
+         _DoubleConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          DoubleConstant
+          -> Data.ProtoLens.Encoding.Bytes.Parser DoubleConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        9 -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          Data.ProtoLens.Encoding.Bytes.wordToDouble
+                                          Data.ProtoLens.Encoding.Bytes.getFixed64)
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "DoubleConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 9)
+                      ((Prelude..)
+                         Data.ProtoLens.Encoding.Bytes.putFixed64
+                         Data.ProtoLens.Encoding.Bytes.doubleToWord _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData DoubleConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_DoubleConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_DoubleConstant'value x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.tpe' @:: Lens' ExistentialType Type@
+         * 'Proto.Scip_Fields.maybe'tpe' @:: Lens' ExistentialType (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.declarations' @:: Lens' ExistentialType Scope@
+         * 'Proto.Scip_Fields.maybe'declarations' @:: Lens' ExistentialType (Prelude.Maybe Scope)@ -}
+data ExistentialType
+  = ExistentialType'_constructor {_ExistentialType'tpe :: !(Prelude.Maybe Type),
+                                  _ExistentialType'declarations :: !(Prelude.Maybe Scope),
+                                  _ExistentialType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show ExistentialType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField ExistentialType "tpe" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ExistentialType'tpe
+           (\ x__ y__ -> x__ {_ExistentialType'tpe = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField ExistentialType "maybe'tpe" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ExistentialType'tpe
+           (\ x__ y__ -> x__ {_ExistentialType'tpe = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField ExistentialType "declarations" Scope where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ExistentialType'declarations
+           (\ x__ y__ -> x__ {_ExistentialType'declarations = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField ExistentialType "maybe'declarations" (Prelude.Maybe Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ExistentialType'declarations
+           (\ x__ y__ -> x__ {_ExistentialType'declarations = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message ExistentialType where
+  messageName _ = Data.Text.pack "scip.ExistentialType"
+  packedMessageDescriptor _
+    = "\n\
+      \\SIExistentialType\DC2\FS\n\
+      \\ETXtpe\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ETXtpe\DC2/\n\
+      \\fdeclarations\CAN\ETX \SOH(\v2\v.scip.ScopeR\fdeclarationsJ\EOT\b\STX\DLE\ETX"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        tpe__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "tpe"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'tpe")) ::
+              Data.ProtoLens.FieldDescriptor ExistentialType
+        declarations__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "declarations"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'declarations")) ::
+              Data.ProtoLens.FieldDescriptor ExistentialType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, tpe__field_descriptor),
+           (Data.ProtoLens.Tag 3, declarations__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _ExistentialType'_unknownFields
+        (\ x__ y__ -> x__ {_ExistentialType'_unknownFields = y__})
+  defMessage
+    = ExistentialType'_constructor
+        {_ExistentialType'tpe = Prelude.Nothing,
+         _ExistentialType'declarations = Prelude.Nothing,
+         _ExistentialType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          ExistentialType
+          -> Data.ProtoLens.Encoding.Bytes.Parser ExistentialType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "tpe"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"tpe") y x)
+                        26
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "declarations"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"declarations") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "ExistentialType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'tpe") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (case
+                     Lens.Family2.view
+                       (Data.ProtoLens.Field.field @"maybe'declarations") _x
+                 of
+                   Prelude.Nothing -> Data.Monoid.mempty
+                   (Prelude.Just _v)
+                     -> (Data.Monoid.<>)
+                          (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                          ((Prelude..)
+                             (\ bs
+                                -> (Data.Monoid.<>)
+                                     (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                        (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                     (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                             Data.ProtoLens.encodeMessage _v))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData ExistentialType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_ExistentialType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_ExistentialType'tpe x__)
+                (Control.DeepSeq.deepseq (_ExistentialType'declarations x__) ()))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.value' @:: Lens' FloatConstant Prelude.Float@ -}
+data FloatConstant
+  = FloatConstant'_constructor {_FloatConstant'value :: !Prelude.Float,
+                                _FloatConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show FloatConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField FloatConstant "value" Prelude.Float where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _FloatConstant'value
+           (\ x__ y__ -> x__ {_FloatConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message FloatConstant where
+  messageName _ = Data.Text.pack "scip.FloatConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\rFloatConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\STXR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.FloatField ::
+                 Data.ProtoLens.FieldTypeDescriptor Prelude.Float)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor FloatConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _FloatConstant'_unknownFields
+        (\ x__ y__ -> x__ {_FloatConstant'_unknownFields = y__})
+  defMessage
+    = FloatConstant'_constructor
+        {_FloatConstant'value = Data.ProtoLens.fieldDefault,
+         _FloatConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          FloatConstant -> Data.ProtoLens.Encoding.Bytes.Parser FloatConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        13
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          Data.ProtoLens.Encoding.Bytes.wordToFloat
+                                          Data.ProtoLens.Encoding.Bytes.getFixed32)
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "FloatConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 13)
+                      ((Prelude..)
+                         Data.ProtoLens.Encoding.Bytes.putFixed32
+                         Data.ProtoLens.Encoding.Bytes.floatToWord _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData FloatConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_FloatConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_FloatConstant'value x__) ())
+{- | Fields :
+     
          * 'Proto.Scip_Fields.metadata' @:: Lens' Index Metadata@
          * 'Proto.Scip_Fields.maybe'metadata' @:: Lens' Index (Prelude.Maybe Metadata)@
          * 'Proto.Scip_Fields.documents' @:: Lens' Index [Document]@
@@ -1490,6 +3920,422 @@ instance Control.DeepSeq.NFData Index where
                 (Control.DeepSeq.deepseq
                    (_Index'documents x__)
                    (Control.DeepSeq.deepseq (_Index'externalSymbols x__) ())))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.value' @:: Lens' IntConstant Data.Int.Int32@ -}
+data IntConstant
+  = IntConstant'_constructor {_IntConstant'value :: !Data.Int.Int32,
+                              _IntConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show IntConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField IntConstant "value" Data.Int.Int32 where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _IntConstant'value (\ x__ y__ -> x__ {_IntConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message IntConstant where
+  messageName _ = Data.Text.pack "scip.IntConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\vIntConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\ENQR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.Int32Field ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Int.Int32)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor IntConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _IntConstant'_unknownFields
+        (\ x__ y__ -> x__ {_IntConstant'_unknownFields = y__})
+  defMessage
+    = IntConstant'_constructor
+        {_IntConstant'value = Data.ProtoLens.fieldDefault,
+         _IntConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          IntConstant -> Data.ProtoLens.Encoding.Bytes.Parser IntConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        8 -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          Prelude.fromIntegral
+                                          Data.ProtoLens.Encoding.Bytes.getVarInt)
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "IntConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 8)
+                      ((Prelude..)
+                         Data.ProtoLens.Encoding.Bytes.putVarInt Prelude.fromIntegral _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData IntConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_IntConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_IntConstant'value x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.types' @:: Lens' IntersectionType [Type]@
+         * 'Proto.Scip_Fields.vec'types' @:: Lens' IntersectionType (Data.Vector.Vector Type)@ -}
+data IntersectionType
+  = IntersectionType'_constructor {_IntersectionType'types :: !(Data.Vector.Vector Type),
+                                   _IntersectionType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show IntersectionType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField IntersectionType "types" [Type] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _IntersectionType'types
+           (\ x__ y__ -> x__ {_IntersectionType'types = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField IntersectionType "vec'types" (Data.Vector.Vector Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _IntersectionType'types
+           (\ x__ y__ -> x__ {_IntersectionType'types = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message IntersectionType where
+  messageName _ = Data.Text.pack "scip.IntersectionType"
+  packedMessageDescriptor _
+    = "\n\
+      \\DLEIntersectionType\DC2 \n\
+      \\ENQtypes\CAN\SOH \ETX(\v2\n\
+      \.scip.TypeR\ENQtypes"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        types__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "types"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked (Data.ProtoLens.Field.field @"types")) ::
+              Data.ProtoLens.FieldDescriptor IntersectionType
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, types__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _IntersectionType'_unknownFields
+        (\ x__ y__ -> x__ {_IntersectionType'_unknownFields = y__})
+  defMessage
+    = IntersectionType'_constructor
+        {_IntersectionType'types = Data.Vector.Generic.empty,
+         _IntersectionType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          IntersectionType
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Type
+             -> Data.ProtoLens.Encoding.Bytes.Parser IntersectionType
+        loop x mutable'types
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'types <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                        (Data.ProtoLens.Encoding.Growing.unsafeFreeze mutable'types)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'types") frozen'types x))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "types"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append mutable'types y)
+                                loop x v
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'types
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'types <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                 Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'types)
+          "IntersectionType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                (\ _v
+                   -> (Data.Monoid.<>)
+                        (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                        ((Prelude..)
+                           (\ bs
+                              -> (Data.Monoid.<>)
+                                   (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                      (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                   (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                           Data.ProtoLens.encodeMessage _v))
+                (Lens.Family2.view (Data.ProtoLens.Field.field @"vec'types") _x))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData IntersectionType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_IntersectionType'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_IntersectionType'types x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.parameters' @:: Lens' LambdaType Scope@
+         * 'Proto.Scip_Fields.maybe'parameters' @:: Lens' LambdaType (Prelude.Maybe Scope)@
+         * 'Proto.Scip_Fields.returnType' @:: Lens' LambdaType Type@
+         * 'Proto.Scip_Fields.maybe'returnType' @:: Lens' LambdaType (Prelude.Maybe Type)@ -}
+data LambdaType
+  = LambdaType'_constructor {_LambdaType'parameters :: !(Prelude.Maybe Scope),
+                             _LambdaType'returnType :: !(Prelude.Maybe Type),
+                             _LambdaType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show LambdaType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField LambdaType "parameters" Scope where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _LambdaType'parameters
+           (\ x__ y__ -> x__ {_LambdaType'parameters = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField LambdaType "maybe'parameters" (Prelude.Maybe Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _LambdaType'parameters
+           (\ x__ y__ -> x__ {_LambdaType'parameters = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField LambdaType "returnType" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _LambdaType'returnType
+           (\ x__ y__ -> x__ {_LambdaType'returnType = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField LambdaType "maybe'returnType" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _LambdaType'returnType
+           (\ x__ y__ -> x__ {_LambdaType'returnType = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message LambdaType where
+  messageName _ = Data.Text.pack "scip.LambdaType"
+  packedMessageDescriptor _
+    = "\n\
+      \\n\
+      \LambdaType\DC2+\n\
+      \\n\
+      \parameters\CAN\SOH \SOH(\v2\v.scip.ScopeR\n\
+      \parameters\DC2+\n\
+      \\vreturn_type\CAN\STX \SOH(\v2\n\
+      \.scip.TypeR\n\
+      \returnType"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        parameters__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "parameters"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'parameters")) ::
+              Data.ProtoLens.FieldDescriptor LambdaType
+        returnType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "return_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'returnType")) ::
+              Data.ProtoLens.FieldDescriptor LambdaType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, parameters__field_descriptor),
+           (Data.ProtoLens.Tag 2, returnType__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _LambdaType'_unknownFields
+        (\ x__ y__ -> x__ {_LambdaType'_unknownFields = y__})
+  defMessage
+    = LambdaType'_constructor
+        {_LambdaType'parameters = Prelude.Nothing,
+         _LambdaType'returnType = Prelude.Nothing,
+         _LambdaType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          LambdaType -> Data.ProtoLens.Encoding.Bytes.Parser LambdaType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "parameters"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"parameters") y x)
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "return_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"returnType") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "LambdaType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'parameters") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (case
+                     Lens.Family2.view
+                       (Data.ProtoLens.Field.field @"maybe'returnType") _x
+                 of
+                   Prelude.Nothing -> Data.Monoid.mempty
+                   (Prelude.Just _v)
+                     -> (Data.Monoid.<>)
+                          (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                          ((Prelude..)
+                             (\ bs
+                                -> (Data.Monoid.<>)
+                                     (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                        (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                     (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                             Data.ProtoLens.encodeMessage _v))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData LambdaType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_LambdaType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_LambdaType'parameters x__)
+                (Control.DeepSeq.deepseq (_LambdaType'returnType x__) ()))
 newtype Language'UnrecognizedValue
   = Language'UnrecognizedValue Data.Int.Int32
   deriving stock (Prelude.Eq, Prelude.Ord, Prelude.Show)
@@ -2307,6 +5153,475 @@ instance Control.DeepSeq.NFData Language where
   rnf x__ = Prelude.seq x__ ()
 {- | Fields :
      
+         * 'Proto.Scip_Fields.value' @:: Lens' LongConstant Data.Int.Int64@ -}
+data LongConstant
+  = LongConstant'_constructor {_LongConstant'value :: !Data.Int.Int64,
+                               _LongConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show LongConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField LongConstant "value" Data.Int.Int64 where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _LongConstant'value (\ x__ y__ -> x__ {_LongConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message LongConstant where
+  messageName _ = Data.Text.pack "scip.LongConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\fLongConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\ETXR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.Int64Field ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Int.Int64)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor LongConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _LongConstant'_unknownFields
+        (\ x__ y__ -> x__ {_LongConstant'_unknownFields = y__})
+  defMessage
+    = LongConstant'_constructor
+        {_LongConstant'value = Data.ProtoLens.fieldDefault,
+         _LongConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          LongConstant -> Data.ProtoLens.Encoding.Bytes.Parser LongConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        8 -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          Prelude.fromIntegral
+                                          Data.ProtoLens.Encoding.Bytes.getVarInt)
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "LongConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 8)
+                      ((Prelude..)
+                         Data.ProtoLens.Encoding.Bytes.putVarInt Prelude.fromIntegral _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData LongConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_LongConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_LongConstant'value x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.scrutinee' @:: Lens' MatchType Type@
+         * 'Proto.Scip_Fields.maybe'scrutinee' @:: Lens' MatchType (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.cases' @:: Lens' MatchType [MatchType'CaseType]@
+         * 'Proto.Scip_Fields.vec'cases' @:: Lens' MatchType (Data.Vector.Vector MatchType'CaseType)@ -}
+data MatchType
+  = MatchType'_constructor {_MatchType'scrutinee :: !(Prelude.Maybe Type),
+                            _MatchType'cases :: !(Data.Vector.Vector MatchType'CaseType),
+                            _MatchType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show MatchType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField MatchType "scrutinee" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MatchType'scrutinee
+           (\ x__ y__ -> x__ {_MatchType'scrutinee = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField MatchType "maybe'scrutinee" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MatchType'scrutinee
+           (\ x__ y__ -> x__ {_MatchType'scrutinee = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField MatchType "cases" [MatchType'CaseType] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MatchType'cases (\ x__ y__ -> x__ {_MatchType'cases = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField MatchType "vec'cases" (Data.Vector.Vector MatchType'CaseType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MatchType'cases (\ x__ y__ -> x__ {_MatchType'cases = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message MatchType where
+  messageName _ = Data.Text.pack "scip.MatchType"
+  packedMessageDescriptor _
+    = "\n\
+      \\tMatchType\DC2(\n\
+      \\tscrutinee\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\tscrutinee\DC2.\n\
+      \\ENQcases\CAN\STX \ETX(\v2\CAN.scip.MatchType.CaseTypeR\ENQcases\SUBH\n\
+      \\bCaseType\DC2\FS\n\
+      \\ETXkey\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ETXkey\DC2\RS\n\
+      \\EOTbody\CAN\STX \SOH(\v2\n\
+      \.scip.TypeR\EOTbody"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        scrutinee__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "scrutinee"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'scrutinee")) ::
+              Data.ProtoLens.FieldDescriptor MatchType
+        cases__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "cases"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor MatchType'CaseType)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked (Data.ProtoLens.Field.field @"cases")) ::
+              Data.ProtoLens.FieldDescriptor MatchType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, scrutinee__field_descriptor),
+           (Data.ProtoLens.Tag 2, cases__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _MatchType'_unknownFields
+        (\ x__ y__ -> x__ {_MatchType'_unknownFields = y__})
+  defMessage
+    = MatchType'_constructor
+        {_MatchType'scrutinee = Prelude.Nothing,
+         _MatchType'cases = Data.Vector.Generic.empty,
+         _MatchType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          MatchType
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld MatchType'CaseType
+             -> Data.ProtoLens.Encoding.Bytes.Parser MatchType
+        loop x mutable'cases
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'cases <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                        (Data.ProtoLens.Encoding.Growing.unsafeFreeze mutable'cases)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'cases") frozen'cases x))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "scrutinee"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"scrutinee") y x)
+                                  mutable'cases
+                        18
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "cases"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append mutable'cases y)
+                                loop x v
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'cases
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'cases <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                 Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'cases)
+          "MatchType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'scrutinee") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                   (\ _v
+                      -> (Data.Monoid.<>)
+                           (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                           ((Prelude..)
+                              (\ bs
+                                 -> (Data.Monoid.<>)
+                                      (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                         (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                      (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                              Data.ProtoLens.encodeMessage _v))
+                   (Lens.Family2.view (Data.ProtoLens.Field.field @"vec'cases") _x))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData MatchType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_MatchType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_MatchType'scrutinee x__)
+                (Control.DeepSeq.deepseq (_MatchType'cases x__) ()))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.key' @:: Lens' MatchType'CaseType Type@
+         * 'Proto.Scip_Fields.maybe'key' @:: Lens' MatchType'CaseType (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.body' @:: Lens' MatchType'CaseType Type@
+         * 'Proto.Scip_Fields.maybe'body' @:: Lens' MatchType'CaseType (Prelude.Maybe Type)@ -}
+data MatchType'CaseType
+  = MatchType'CaseType'_constructor {_MatchType'CaseType'key :: !(Prelude.Maybe Type),
+                                     _MatchType'CaseType'body :: !(Prelude.Maybe Type),
+                                     _MatchType'CaseType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show MatchType'CaseType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField MatchType'CaseType "key" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MatchType'CaseType'key
+           (\ x__ y__ -> x__ {_MatchType'CaseType'key = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField MatchType'CaseType "maybe'key" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MatchType'CaseType'key
+           (\ x__ y__ -> x__ {_MatchType'CaseType'key = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField MatchType'CaseType "body" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MatchType'CaseType'body
+           (\ x__ y__ -> x__ {_MatchType'CaseType'body = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField MatchType'CaseType "maybe'body" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MatchType'CaseType'body
+           (\ x__ y__ -> x__ {_MatchType'CaseType'body = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message MatchType'CaseType where
+  messageName _ = Data.Text.pack "scip.MatchType.CaseType"
+  packedMessageDescriptor _
+    = "\n\
+      \\bCaseType\DC2\FS\n\
+      \\ETXkey\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ETXkey\DC2\RS\n\
+      \\EOTbody\CAN\STX \SOH(\v2\n\
+      \.scip.TypeR\EOTbody"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        key__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "key"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'key")) ::
+              Data.ProtoLens.FieldDescriptor MatchType'CaseType
+        body__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "body"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'body")) ::
+              Data.ProtoLens.FieldDescriptor MatchType'CaseType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, key__field_descriptor),
+           (Data.ProtoLens.Tag 2, body__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _MatchType'CaseType'_unknownFields
+        (\ x__ y__ -> x__ {_MatchType'CaseType'_unknownFields = y__})
+  defMessage
+    = MatchType'CaseType'_constructor
+        {_MatchType'CaseType'key = Prelude.Nothing,
+         _MatchType'CaseType'body = Prelude.Nothing,
+         _MatchType'CaseType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          MatchType'CaseType
+          -> Data.ProtoLens.Encoding.Bytes.Parser MatchType'CaseType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "key"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"key") y x)
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "body"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"body") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "CaseType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'key") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (case
+                     Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'body") _x
+                 of
+                   Prelude.Nothing -> Data.Monoid.mempty
+                   (Prelude.Just _v)
+                     -> (Data.Monoid.<>)
+                          (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                          ((Prelude..)
+                             (\ bs
+                                -> (Data.Monoid.<>)
+                                     (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                        (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                     (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                             Data.ProtoLens.encodeMessage _v))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData MatchType'CaseType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_MatchType'CaseType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_MatchType'CaseType'key x__)
+                (Control.DeepSeq.deepseq (_MatchType'CaseType'body x__) ()))
+{- | Fields :
+     
          * 'Proto.Scip_Fields.version' @:: Lens' Metadata ProtocolVersion@
          * 'Proto.Scip_Fields.toolInfo' @:: Lens' Metadata ToolInfo@
          * 'Proto.Scip_Fields.maybe'toolInfo' @:: Lens' Metadata (Prelude.Maybe ToolInfo)@
@@ -2567,6 +5882,319 @@ instance Control.DeepSeq.NFData Metadata where
                       (_Metadata'projectRoot x__)
                       (Control.DeepSeq.deepseq
                          (_Metadata'textDocumentEncoding x__) ()))))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.typeParameters' @:: Lens' MethodSignature Scope@
+         * 'Proto.Scip_Fields.maybe'typeParameters' @:: Lens' MethodSignature (Prelude.Maybe Scope)@
+         * 'Proto.Scip_Fields.parameterLists' @:: Lens' MethodSignature [Scope]@
+         * 'Proto.Scip_Fields.vec'parameterLists' @:: Lens' MethodSignature (Data.Vector.Vector Scope)@
+         * 'Proto.Scip_Fields.returnType' @:: Lens' MethodSignature Type@
+         * 'Proto.Scip_Fields.maybe'returnType' @:: Lens' MethodSignature (Prelude.Maybe Type)@ -}
+data MethodSignature
+  = MethodSignature'_constructor {_MethodSignature'typeParameters :: !(Prelude.Maybe Scope),
+                                  _MethodSignature'parameterLists :: !(Data.Vector.Vector Scope),
+                                  _MethodSignature'returnType :: !(Prelude.Maybe Type),
+                                  _MethodSignature'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show MethodSignature where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField MethodSignature "typeParameters" Scope where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MethodSignature'typeParameters
+           (\ x__ y__ -> x__ {_MethodSignature'typeParameters = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField MethodSignature "maybe'typeParameters" (Prelude.Maybe Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MethodSignature'typeParameters
+           (\ x__ y__ -> x__ {_MethodSignature'typeParameters = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField MethodSignature "parameterLists" [Scope] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MethodSignature'parameterLists
+           (\ x__ y__ -> x__ {_MethodSignature'parameterLists = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField MethodSignature "vec'parameterLists" (Data.Vector.Vector Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MethodSignature'parameterLists
+           (\ x__ y__ -> x__ {_MethodSignature'parameterLists = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField MethodSignature "returnType" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MethodSignature'returnType
+           (\ x__ y__ -> x__ {_MethodSignature'returnType = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField MethodSignature "maybe'returnType" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _MethodSignature'returnType
+           (\ x__ y__ -> x__ {_MethodSignature'returnType = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message MethodSignature where
+  messageName _ = Data.Text.pack "scip.MethodSignature"
+  packedMessageDescriptor _
+    = "\n\
+      \\SIMethodSignature\DC24\n\
+      \\SItype_parameters\CAN\SOH \SOH(\v2\v.scip.ScopeR\SOtypeParameters\DC24\n\
+      \\SIparameter_lists\CAN\STX \ETX(\v2\v.scip.ScopeR\SOparameterLists\DC2+\n\
+      \\vreturn_type\CAN\ETX \SOH(\v2\n\
+      \.scip.TypeR\n\
+      \returnType"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        typeParameters__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "type_parameters"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'typeParameters")) ::
+              Data.ProtoLens.FieldDescriptor MethodSignature
+        parameterLists__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "parameter_lists"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked
+                 (Data.ProtoLens.Field.field @"parameterLists")) ::
+              Data.ProtoLens.FieldDescriptor MethodSignature
+        returnType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "return_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'returnType")) ::
+              Data.ProtoLens.FieldDescriptor MethodSignature
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, typeParameters__field_descriptor),
+           (Data.ProtoLens.Tag 2, parameterLists__field_descriptor),
+           (Data.ProtoLens.Tag 3, returnType__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _MethodSignature'_unknownFields
+        (\ x__ y__ -> x__ {_MethodSignature'_unknownFields = y__})
+  defMessage
+    = MethodSignature'_constructor
+        {_MethodSignature'typeParameters = Prelude.Nothing,
+         _MethodSignature'parameterLists = Data.Vector.Generic.empty,
+         _MethodSignature'returnType = Prelude.Nothing,
+         _MethodSignature'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          MethodSignature
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Scope
+             -> Data.ProtoLens.Encoding.Bytes.Parser MethodSignature
+        loop x mutable'parameterLists
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'parameterLists <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                                 (Data.ProtoLens.Encoding.Growing.unsafeFreeze
+                                                    mutable'parameterLists)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'parameterLists")
+                              frozen'parameterLists x))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "type_parameters"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"typeParameters") y x)
+                                  mutable'parameterLists
+                        18
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "parameter_lists"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append
+                                          mutable'parameterLists y)
+                                loop x v
+                        26
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "return_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"returnType") y x)
+                                  mutable'parameterLists
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'parameterLists
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'parameterLists <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                          Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'parameterLists)
+          "MethodSignature"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'typeParameters") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                   (\ _v
+                      -> (Data.Monoid.<>)
+                           (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                           ((Prelude..)
+                              (\ bs
+                                 -> (Data.Monoid.<>)
+                                      (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                         (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                      (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                              Data.ProtoLens.encodeMessage _v))
+                   (Lens.Family2.view
+                      (Data.ProtoLens.Field.field @"vec'parameterLists") _x))
+                ((Data.Monoid.<>)
+                   (case
+                        Lens.Family2.view
+                          (Data.ProtoLens.Field.field @"maybe'returnType") _x
+                    of
+                      Prelude.Nothing -> Data.Monoid.mempty
+                      (Prelude.Just _v)
+                        -> (Data.Monoid.<>)
+                             (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                             ((Prelude..)
+                                (\ bs
+                                   -> (Data.Monoid.<>)
+                                        (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                           (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                        (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                                Data.ProtoLens.encodeMessage _v))
+                   (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                      (Lens.Family2.view Data.ProtoLens.unknownFields _x))))
+instance Control.DeepSeq.NFData MethodSignature where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_MethodSignature'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_MethodSignature'typeParameters x__)
+                (Control.DeepSeq.deepseq
+                   (_MethodSignature'parameterLists x__)
+                   (Control.DeepSeq.deepseq (_MethodSignature'returnType x__) ())))
+{- | Fields :
+      -}
+data NullConstant
+  = NullConstant'_constructor {_NullConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show NullConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Message NullConstant where
+  messageName _ = Data.Text.pack "scip.NullConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\fNullConstant"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag = let in Data.Map.fromList []
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _NullConstant'_unknownFields
+        (\ x__ y__ -> x__ {_NullConstant'_unknownFields = y__})
+  defMessage
+    = NullConstant'_constructor {_NullConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          NullConstant -> Data.ProtoLens.Encoding.Bytes.Parser NullConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of {
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x) }
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "NullConstant"
+  buildMessage
+    = \ _x
+        -> Data.ProtoLens.Encoding.Wire.buildFieldSet
+             (Lens.Family2.view Data.ProtoLens.unknownFields _x)
+instance Control.DeepSeq.NFData NullConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq (_NullConstant'_unknownFields x__) ()
 {- | Fields :
      
          * 'Proto.Scip_Fields.range' @:: Lens' Occurrence [Data.Int.Int32]@
@@ -3776,6 +7404,323 @@ instance Control.DeepSeq.NFData Relationship where
                       (Control.DeepSeq.deepseq
                          (_Relationship'isTypeDefinition x__)
                          (Control.DeepSeq.deepseq (_Relationship'isDefinition x__) ())))))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.tpe' @:: Lens' RepeatedType Type@
+         * 'Proto.Scip_Fields.maybe'tpe' @:: Lens' RepeatedType (Prelude.Maybe Type)@ -}
+data RepeatedType
+  = RepeatedType'_constructor {_RepeatedType'tpe :: !(Prelude.Maybe Type),
+                               _RepeatedType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show RepeatedType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField RepeatedType "tpe" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _RepeatedType'tpe (\ x__ y__ -> x__ {_RepeatedType'tpe = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField RepeatedType "maybe'tpe" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _RepeatedType'tpe (\ x__ y__ -> x__ {_RepeatedType'tpe = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message RepeatedType where
+  messageName _ = Data.Text.pack "scip.RepeatedType"
+  packedMessageDescriptor _
+    = "\n\
+      \\fRepeatedType\DC2\FS\n\
+      \\ETXtpe\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ETXtpe"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        tpe__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "tpe"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'tpe")) ::
+              Data.ProtoLens.FieldDescriptor RepeatedType
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, tpe__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _RepeatedType'_unknownFields
+        (\ x__ y__ -> x__ {_RepeatedType'_unknownFields = y__})
+  defMessage
+    = RepeatedType'_constructor
+        {_RepeatedType'tpe = Prelude.Nothing,
+         _RepeatedType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          RepeatedType -> Data.ProtoLens.Encoding.Bytes.Parser RepeatedType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "tpe"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"tpe") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "RepeatedType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'tpe") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData RepeatedType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_RepeatedType'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_RepeatedType'tpe x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.symlinks' @:: Lens' Scope [Data.Text.Text]@
+         * 'Proto.Scip_Fields.vec'symlinks' @:: Lens' Scope (Data.Vector.Vector Data.Text.Text)@
+         * 'Proto.Scip_Fields.hardlinks' @:: Lens' Scope [SymbolInformation]@
+         * 'Proto.Scip_Fields.vec'hardlinks' @:: Lens' Scope (Data.Vector.Vector SymbolInformation)@ -}
+data Scope
+  = Scope'_constructor {_Scope'symlinks :: !(Data.Vector.Vector Data.Text.Text),
+                        _Scope'hardlinks :: !(Data.Vector.Vector SymbolInformation),
+                        _Scope'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show Scope where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField Scope "symlinks" [Data.Text.Text] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Scope'symlinks (\ x__ y__ -> x__ {_Scope'symlinks = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField Scope "vec'symlinks" (Data.Vector.Vector Data.Text.Text) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Scope'symlinks (\ x__ y__ -> x__ {_Scope'symlinks = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField Scope "hardlinks" [SymbolInformation] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Scope'hardlinks (\ x__ y__ -> x__ {_Scope'hardlinks = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField Scope "vec'hardlinks" (Data.Vector.Vector SymbolInformation) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Scope'hardlinks (\ x__ y__ -> x__ {_Scope'hardlinks = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message Scope where
+  messageName _ = Data.Text.pack "scip.Scope"
+  packedMessageDescriptor _
+    = "\n\
+      \\ENQScope\DC2\SUB\n\
+      \\bsymlinks\CAN\SOH \ETX(\tR\bsymlinks\DC25\n\
+      \\thardlinks\CAN\STX \ETX(\v2\ETB.scip.SymbolInformationR\thardlinks"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        symlinks__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "symlinks"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.StringField ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked
+                 (Data.ProtoLens.Field.field @"symlinks")) ::
+              Data.ProtoLens.FieldDescriptor Scope
+        hardlinks__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "hardlinks"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor SymbolInformation)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked
+                 (Data.ProtoLens.Field.field @"hardlinks")) ::
+              Data.ProtoLens.FieldDescriptor Scope
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, symlinks__field_descriptor),
+           (Data.ProtoLens.Tag 2, hardlinks__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _Scope'_unknownFields
+        (\ x__ y__ -> x__ {_Scope'_unknownFields = y__})
+  defMessage
+    = Scope'_constructor
+        {_Scope'symlinks = Data.Vector.Generic.empty,
+         _Scope'hardlinks = Data.Vector.Generic.empty,
+         _Scope'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          Scope
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld SymbolInformation
+             -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Data.Text.Text
+                -> Data.ProtoLens.Encoding.Bytes.Parser Scope
+        loop x mutable'hardlinks mutable'symlinks
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'hardlinks <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                            (Data.ProtoLens.Encoding.Growing.unsafeFreeze
+                                               mutable'hardlinks)
+                      frozen'symlinks <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                           (Data.ProtoLens.Encoding.Growing.unsafeFreeze
+                                              mutable'symlinks)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'hardlinks") frozen'hardlinks
+                              (Lens.Family2.set
+                                 (Data.ProtoLens.Field.field @"vec'symlinks") frozen'symlinks x)))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do value <- do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                        Data.ProtoLens.Encoding.Bytes.getBytes
+                                                          (Prelude.fromIntegral len)
+                                            Data.ProtoLens.Encoding.Bytes.runEither
+                                              (case Data.Text.Encoding.decodeUtf8' value of
+                                                 (Prelude.Left err)
+                                                   -> Prelude.Left (Prelude.show err)
+                                                 (Prelude.Right r) -> Prelude.Right r))
+                                        "symlinks"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append mutable'symlinks y)
+                                loop x mutable'hardlinks v
+                        18
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "hardlinks"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append mutable'hardlinks y)
+                                loop x v mutable'symlinks
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'hardlinks mutable'symlinks
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'hardlinks <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                     Data.ProtoLens.Encoding.Growing.new
+              mutable'symlinks <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                    Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'hardlinks mutable'symlinks)
+          "Scope"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                (\ _v
+                   -> (Data.Monoid.<>)
+                        (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                        ((Prelude..)
+                           (\ bs
+                              -> (Data.Monoid.<>)
+                                   (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                      (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                   (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                           Data.Text.Encoding.encodeUtf8 _v))
+                (Lens.Family2.view
+                   (Data.ProtoLens.Field.field @"vec'symlinks") _x))
+             ((Data.Monoid.<>)
+                (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                   (\ _v
+                      -> (Data.Monoid.<>)
+                           (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                           ((Prelude..)
+                              (\ bs
+                                 -> (Data.Monoid.<>)
+                                      (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                         (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                      (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                              Data.ProtoLens.encodeMessage _v))
+                   (Lens.Family2.view
+                      (Data.ProtoLens.Field.field @"vec'hardlinks") _x))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData Scope where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_Scope'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_Scope'symlinks x__)
+                (Control.DeepSeq.deepseq (_Scope'hardlinks x__) ()))
 newtype Severity'UnrecognizedValue
   = Severity'UnrecognizedValue Data.Int.Int32
   deriving stock (Prelude.Eq, Prelude.Ord, Prelude.Show)
@@ -3856,6 +7801,1104 @@ instance Data.ProtoLens.FieldDefault Severity where
   fieldDefault = UnspecifiedSeverity
 instance Control.DeepSeq.NFData Severity where
   rnf x__ = Prelude.seq x__ ()
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.value' @:: Lens' ShortConstant Data.Int.Int32@ -}
+data ShortConstant
+  = ShortConstant'_constructor {_ShortConstant'value :: !Data.Int.Int32,
+                                _ShortConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show ShortConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField ShortConstant "value" Data.Int.Int32 where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ShortConstant'value
+           (\ x__ y__ -> x__ {_ShortConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message ShortConstant where
+  messageName _ = Data.Text.pack "scip.ShortConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\rShortConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\ENQR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.Int32Field ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Int.Int32)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor ShortConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _ShortConstant'_unknownFields
+        (\ x__ y__ -> x__ {_ShortConstant'_unknownFields = y__})
+  defMessage
+    = ShortConstant'_constructor
+        {_ShortConstant'value = Data.ProtoLens.fieldDefault,
+         _ShortConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          ShortConstant -> Data.ProtoLens.Encoding.Bytes.Parser ShortConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        8 -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (Prelude.fmap
+                                          Prelude.fromIntegral
+                                          Data.ProtoLens.Encoding.Bytes.getVarInt)
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "ShortConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 8)
+                      ((Prelude..)
+                         Data.ProtoLens.Encoding.Bytes.putVarInt Prelude.fromIntegral _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData ShortConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_ShortConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_ShortConstant'value x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.maybe'sealedValue' @:: Lens' Signature (Prelude.Maybe Signature'SealedValue)@
+         * 'Proto.Scip_Fields.maybe'classSignature' @:: Lens' Signature (Prelude.Maybe ClassSignature)@
+         * 'Proto.Scip_Fields.classSignature' @:: Lens' Signature ClassSignature@
+         * 'Proto.Scip_Fields.maybe'methodSignature' @:: Lens' Signature (Prelude.Maybe MethodSignature)@
+         * 'Proto.Scip_Fields.methodSignature' @:: Lens' Signature MethodSignature@
+         * 'Proto.Scip_Fields.maybe'typeSignature' @:: Lens' Signature (Prelude.Maybe TypeSignature)@
+         * 'Proto.Scip_Fields.typeSignature' @:: Lens' Signature TypeSignature@
+         * 'Proto.Scip_Fields.maybe'valueSignature' @:: Lens' Signature (Prelude.Maybe ValueSignature)@
+         * 'Proto.Scip_Fields.valueSignature' @:: Lens' Signature ValueSignature@ -}
+data Signature
+  = Signature'_constructor {_Signature'sealedValue :: !(Prelude.Maybe Signature'SealedValue),
+                            _Signature'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show Signature where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+data Signature'SealedValue
+  = Signature'ClassSignature !ClassSignature |
+    Signature'MethodSignature !MethodSignature |
+    Signature'TypeSignature !TypeSignature |
+    Signature'ValueSignature !ValueSignature
+  deriving stock (Prelude.Show, Prelude.Eq, Prelude.Ord)
+instance Data.ProtoLens.Field.HasField Signature "maybe'sealedValue" (Prelude.Maybe Signature'SealedValue) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField Signature "maybe'classSignature" (Prelude.Maybe ClassSignature) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Signature'ClassSignature x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Signature'ClassSignature y__))
+instance Data.ProtoLens.Field.HasField Signature "classSignature" ClassSignature where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Signature'ClassSignature x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Signature'ClassSignature y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Signature "maybe'methodSignature" (Prelude.Maybe MethodSignature) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Signature'MethodSignature x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Signature'MethodSignature y__))
+instance Data.ProtoLens.Field.HasField Signature "methodSignature" MethodSignature where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Signature'MethodSignature x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Signature'MethodSignature y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Signature "maybe'typeSignature" (Prelude.Maybe TypeSignature) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Signature'TypeSignature x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Signature'TypeSignature y__))
+instance Data.ProtoLens.Field.HasField Signature "typeSignature" TypeSignature where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Signature'TypeSignature x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Signature'TypeSignature y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Signature "maybe'valueSignature" (Prelude.Maybe ValueSignature) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Signature'ValueSignature x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Signature'ValueSignature y__))
+instance Data.ProtoLens.Field.HasField Signature "valueSignature" ValueSignature where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Signature'sealedValue
+           (\ x__ y__ -> x__ {_Signature'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Signature'ValueSignature x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Signature'ValueSignature y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Message Signature where
+  messageName _ = Data.Text.pack "scip.Signature"
+  packedMessageDescriptor _
+    = "\n\
+      \\tSignature\DC2?\n\
+      \\SIclass_signature\CAN\SOH \SOH(\v2\DC4.scip.ClassSignatureH\NULR\SOclassSignature\DC2B\n\
+      \\DLEmethod_signature\CAN\STX \SOH(\v2\NAK.scip.MethodSignatureH\NULR\SImethodSignature\DC2<\n\
+      \\SOtype_signature\CAN\ETX \SOH(\v2\DC3.scip.TypeSignatureH\NULR\rtypeSignature\DC2?\n\
+      \\SIvalue_signature\CAN\EOT \SOH(\v2\DC4.scip.ValueSignatureH\NULR\SOvalueSignatureB\SO\n\
+      \\fsealed_value"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        classSignature__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "class_signature"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor ClassSignature)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'classSignature")) ::
+              Data.ProtoLens.FieldDescriptor Signature
+        methodSignature__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "method_signature"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor MethodSignature)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'methodSignature")) ::
+              Data.ProtoLens.FieldDescriptor Signature
+        typeSignature__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "type_signature"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor TypeSignature)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'typeSignature")) ::
+              Data.ProtoLens.FieldDescriptor Signature
+        valueSignature__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value_signature"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor ValueSignature)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'valueSignature")) ::
+              Data.ProtoLens.FieldDescriptor Signature
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, classSignature__field_descriptor),
+           (Data.ProtoLens.Tag 2, methodSignature__field_descriptor),
+           (Data.ProtoLens.Tag 3, typeSignature__field_descriptor),
+           (Data.ProtoLens.Tag 4, valueSignature__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _Signature'_unknownFields
+        (\ x__ y__ -> x__ {_Signature'_unknownFields = y__})
+  defMessage
+    = Signature'_constructor
+        {_Signature'sealedValue = Prelude.Nothing,
+         _Signature'_unknownFields = []}
+  parseMessage
+    = let
+        loop :: Signature -> Data.ProtoLens.Encoding.Bytes.Parser Signature
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "class_signature"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"classSignature") y x)
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "method_signature"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"methodSignature") y x)
+                        26
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "type_signature"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"typeSignature") y x)
+                        34
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "value_signature"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"valueSignature") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "Signature"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'sealedValue") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just (Signature'ClassSignature v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Signature'MethodSignature v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Signature'TypeSignature v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Signature'ValueSignature v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 34)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData Signature where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_Signature'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_Signature'sealedValue x__) ())
+instance Control.DeepSeq.NFData Signature'SealedValue where
+  rnf (Signature'ClassSignature x__) = Control.DeepSeq.rnf x__
+  rnf (Signature'MethodSignature x__) = Control.DeepSeq.rnf x__
+  rnf (Signature'TypeSignature x__) = Control.DeepSeq.rnf x__
+  rnf (Signature'ValueSignature x__) = Control.DeepSeq.rnf x__
+_Signature'ClassSignature ::
+  Data.ProtoLens.Prism.Prism' Signature'SealedValue ClassSignature
+_Signature'ClassSignature
+  = Data.ProtoLens.Prism.prism'
+      Signature'ClassSignature
+      (\ p__
+         -> case p__ of
+              (Signature'ClassSignature p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Signature'MethodSignature ::
+  Data.ProtoLens.Prism.Prism' Signature'SealedValue MethodSignature
+_Signature'MethodSignature
+  = Data.ProtoLens.Prism.prism'
+      Signature'MethodSignature
+      (\ p__
+         -> case p__ of
+              (Signature'MethodSignature p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Signature'TypeSignature ::
+  Data.ProtoLens.Prism.Prism' Signature'SealedValue TypeSignature
+_Signature'TypeSignature
+  = Data.ProtoLens.Prism.prism'
+      Signature'TypeSignature
+      (\ p__
+         -> case p__ of
+              (Signature'TypeSignature p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Signature'ValueSignature ::
+  Data.ProtoLens.Prism.Prism' Signature'SealedValue ValueSignature
+_Signature'ValueSignature
+  = Data.ProtoLens.Prism.prism'
+      Signature'ValueSignature
+      (\ p__
+         -> case p__ of
+              (Signature'ValueSignature p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.prefix' @:: Lens' SingleType Type@
+         * 'Proto.Scip_Fields.maybe'prefix' @:: Lens' SingleType (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.symbol' @:: Lens' SingleType Data.Text.Text@ -}
+data SingleType
+  = SingleType'_constructor {_SingleType'prefix :: !(Prelude.Maybe Type),
+                             _SingleType'symbol :: !Data.Text.Text,
+                             _SingleType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show SingleType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField SingleType "prefix" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _SingleType'prefix (\ x__ y__ -> x__ {_SingleType'prefix = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField SingleType "maybe'prefix" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _SingleType'prefix (\ x__ y__ -> x__ {_SingleType'prefix = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField SingleType "symbol" Data.Text.Text where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _SingleType'symbol (\ x__ y__ -> x__ {_SingleType'symbol = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message SingleType where
+  messageName _ = Data.Text.pack "scip.SingleType"
+  packedMessageDescriptor _
+    = "\n\
+      \\n\
+      \SingleType\DC2\"\n\
+      \\ACKprefix\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ACKprefix\DC2\SYN\n\
+      \\ACKsymbol\CAN\STX \SOH(\tR\ACKsymbol"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        prefix__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "prefix"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'prefix")) ::
+              Data.ProtoLens.FieldDescriptor SingleType
+        symbol__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "symbol"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.StringField ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"symbol")) ::
+              Data.ProtoLens.FieldDescriptor SingleType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, prefix__field_descriptor),
+           (Data.ProtoLens.Tag 2, symbol__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _SingleType'_unknownFields
+        (\ x__ y__ -> x__ {_SingleType'_unknownFields = y__})
+  defMessage
+    = SingleType'_constructor
+        {_SingleType'prefix = Prelude.Nothing,
+         _SingleType'symbol = Data.ProtoLens.fieldDefault,
+         _SingleType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          SingleType -> Data.ProtoLens.Encoding.Bytes.Parser SingleType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "prefix"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"prefix") y x)
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do value <- do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                       Data.ProtoLens.Encoding.Bytes.getBytes
+                                                         (Prelude.fromIntegral len)
+                                           Data.ProtoLens.Encoding.Bytes.runEither
+                                             (case Data.Text.Encoding.decodeUtf8' value of
+                                                (Prelude.Left err)
+                                                  -> Prelude.Left (Prelude.show err)
+                                                (Prelude.Right r) -> Prelude.Right r))
+                                       "symbol"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"symbol") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "SingleType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'prefix") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (let
+                   _v = Lens.Family2.view (Data.ProtoLens.Field.field @"symbol") _x
+                 in
+                   if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                       Data.Monoid.mempty
+                   else
+                       (Data.Monoid.<>)
+                         (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                         ((Prelude..)
+                            (\ bs
+                               -> (Data.Monoid.<>)
+                                    (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                       (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                    (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                            Data.Text.Encoding.encodeUtf8 _v))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData SingleType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_SingleType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_SingleType'prefix x__)
+                (Control.DeepSeq.deepseq (_SingleType'symbol x__) ()))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.value' @:: Lens' StringConstant Data.Text.Text@ -}
+data StringConstant
+  = StringConstant'_constructor {_StringConstant'value :: !Data.Text.Text,
+                                 _StringConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show StringConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField StringConstant "value" Data.Text.Text where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _StringConstant'value
+           (\ x__ y__ -> x__ {_StringConstant'value = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message StringConstant where
+  messageName _ = Data.Text.pack "scip.StringConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\SOStringConstant\DC2\DC4\n\
+      \\ENQvalue\CAN\SOH \SOH(\tR\ENQvalue"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        value__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "value"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.StringField ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"value")) ::
+              Data.ProtoLens.FieldDescriptor StringConstant
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, value__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _StringConstant'_unknownFields
+        (\ x__ y__ -> x__ {_StringConstant'_unknownFields = y__})
+  defMessage
+    = StringConstant'_constructor
+        {_StringConstant'value = Data.ProtoLens.fieldDefault,
+         _StringConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          StringConstant
+          -> Data.ProtoLens.Encoding.Bytes.Parser StringConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do value <- do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                       Data.ProtoLens.Encoding.Bytes.getBytes
+                                                         (Prelude.fromIntegral len)
+                                           Data.ProtoLens.Encoding.Bytes.runEither
+                                             (case Data.Text.Encoding.decodeUtf8' value of
+                                                (Prelude.Left err)
+                                                  -> Prelude.Left (Prelude.show err)
+                                                (Prelude.Right r) -> Prelude.Right r))
+                                       "value"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"value") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "StringConstant"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"value") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                      ((Prelude..)
+                         (\ bs
+                            -> (Data.Monoid.<>)
+                                 (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                    (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                 (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                         Data.Text.Encoding.encodeUtf8 _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData StringConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_StringConstant'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_StringConstant'value x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.tpe' @:: Lens' StructuralType Type@
+         * 'Proto.Scip_Fields.maybe'tpe' @:: Lens' StructuralType (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.declarations' @:: Lens' StructuralType Scope@
+         * 'Proto.Scip_Fields.maybe'declarations' @:: Lens' StructuralType (Prelude.Maybe Scope)@ -}
+data StructuralType
+  = StructuralType'_constructor {_StructuralType'tpe :: !(Prelude.Maybe Type),
+                                 _StructuralType'declarations :: !(Prelude.Maybe Scope),
+                                 _StructuralType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show StructuralType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField StructuralType "tpe" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _StructuralType'tpe (\ x__ y__ -> x__ {_StructuralType'tpe = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField StructuralType "maybe'tpe" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _StructuralType'tpe (\ x__ y__ -> x__ {_StructuralType'tpe = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField StructuralType "declarations" Scope where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _StructuralType'declarations
+           (\ x__ y__ -> x__ {_StructuralType'declarations = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField StructuralType "maybe'declarations" (Prelude.Maybe Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _StructuralType'declarations
+           (\ x__ y__ -> x__ {_StructuralType'declarations = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message StructuralType where
+  messageName _ = Data.Text.pack "scip.StructuralType"
+  packedMessageDescriptor _
+    = "\n\
+      \\SOStructuralType\DC2\FS\n\
+      \\ETXtpe\CAN\EOT \SOH(\v2\n\
+      \.scip.TypeR\ETXtpe\DC2/\n\
+      \\fdeclarations\CAN\ENQ \SOH(\v2\v.scip.ScopeR\fdeclarationsJ\EOT\b\SOH\DLE\STXJ\EOT\b\STX\DLE\ETXJ\EOT\b\ETX\DLE\EOT"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        tpe__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "tpe"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'tpe")) ::
+              Data.ProtoLens.FieldDescriptor StructuralType
+        declarations__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "declarations"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'declarations")) ::
+              Data.ProtoLens.FieldDescriptor StructuralType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 4, tpe__field_descriptor),
+           (Data.ProtoLens.Tag 5, declarations__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _StructuralType'_unknownFields
+        (\ x__ y__ -> x__ {_StructuralType'_unknownFields = y__})
+  defMessage
+    = StructuralType'_constructor
+        {_StructuralType'tpe = Prelude.Nothing,
+         _StructuralType'declarations = Prelude.Nothing,
+         _StructuralType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          StructuralType
+          -> Data.ProtoLens.Encoding.Bytes.Parser StructuralType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        34
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "tpe"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"tpe") y x)
+                        42
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "declarations"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"declarations") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "StructuralType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'tpe") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 34)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (case
+                     Lens.Family2.view
+                       (Data.ProtoLens.Field.field @"maybe'declarations") _x
+                 of
+                   Prelude.Nothing -> Data.Monoid.mempty
+                   (Prelude.Just _v)
+                     -> (Data.Monoid.<>)
+                          (Data.ProtoLens.Encoding.Bytes.putVarInt 42)
+                          ((Prelude..)
+                             (\ bs
+                                -> (Data.Monoid.<>)
+                                     (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                        (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                     (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                             Data.ProtoLens.encodeMessage _v))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData StructuralType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_StructuralType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_StructuralType'tpe x__)
+                (Control.DeepSeq.deepseq (_StructuralType'declarations x__) ()))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.prefix' @:: Lens' SuperType Type@
+         * 'Proto.Scip_Fields.maybe'prefix' @:: Lens' SuperType (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.symbol' @:: Lens' SuperType Data.Text.Text@ -}
+data SuperType
+  = SuperType'_constructor {_SuperType'prefix :: !(Prelude.Maybe Type),
+                            _SuperType'symbol :: !Data.Text.Text,
+                            _SuperType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show SuperType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField SuperType "prefix" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _SuperType'prefix (\ x__ y__ -> x__ {_SuperType'prefix = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField SuperType "maybe'prefix" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _SuperType'prefix (\ x__ y__ -> x__ {_SuperType'prefix = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField SuperType "symbol" Data.Text.Text where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _SuperType'symbol (\ x__ y__ -> x__ {_SuperType'symbol = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message SuperType where
+  messageName _ = Data.Text.pack "scip.SuperType"
+  packedMessageDescriptor _
+    = "\n\
+      \\tSuperType\DC2\"\n\
+      \\ACKprefix\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ACKprefix\DC2\SYN\n\
+      \\ACKsymbol\CAN\STX \SOH(\tR\ACKsymbol"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        prefix__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "prefix"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'prefix")) ::
+              Data.ProtoLens.FieldDescriptor SuperType
+        symbol__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "symbol"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.StringField ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"symbol")) ::
+              Data.ProtoLens.FieldDescriptor SuperType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, prefix__field_descriptor),
+           (Data.ProtoLens.Tag 2, symbol__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _SuperType'_unknownFields
+        (\ x__ y__ -> x__ {_SuperType'_unknownFields = y__})
+  defMessage
+    = SuperType'_constructor
+        {_SuperType'prefix = Prelude.Nothing,
+         _SuperType'symbol = Data.ProtoLens.fieldDefault,
+         _SuperType'_unknownFields = []}
+  parseMessage
+    = let
+        loop :: SuperType -> Data.ProtoLens.Encoding.Bytes.Parser SuperType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "prefix"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"prefix") y x)
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do value <- do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                       Data.ProtoLens.Encoding.Bytes.getBytes
+                                                         (Prelude.fromIntegral len)
+                                           Data.ProtoLens.Encoding.Bytes.runEither
+                                             (case Data.Text.Encoding.decodeUtf8' value of
+                                                (Prelude.Left err)
+                                                  -> Prelude.Left (Prelude.show err)
+                                                (Prelude.Right r) -> Prelude.Right r))
+                                       "symbol"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"symbol") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "SuperType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'prefix") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (let
+                   _v = Lens.Family2.view (Data.ProtoLens.Field.field @"symbol") _x
+                 in
+                   if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                       Data.Monoid.mempty
+                   else
+                       (Data.Monoid.<>)
+                         (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                         ((Prelude..)
+                            (\ bs
+                               -> (Data.Monoid.<>)
+                                    (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                       (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                    (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                            Data.Text.Encoding.encodeUtf8 _v))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData SuperType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_SuperType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_SuperType'prefix x__)
+                (Control.DeepSeq.deepseq (_SuperType'symbol x__) ()))
 {- | Fields :
      
          * 'Proto.Scip_Fields.scheme' @:: Lens' Symbol Data.Text.Text@
@@ -4105,7 +9148,9 @@ instance Control.DeepSeq.NFData Symbol where
          * 'Proto.Scip_Fields.displayName' @:: Lens' SymbolInformation Data.Text.Text@
          * 'Proto.Scip_Fields.signatureDocumentation' @:: Lens' SymbolInformation Document@
          * 'Proto.Scip_Fields.maybe'signatureDocumentation' @:: Lens' SymbolInformation (Prelude.Maybe Document)@
-         * 'Proto.Scip_Fields.enclosingSymbol' @:: Lens' SymbolInformation Data.Text.Text@ -}
+         * 'Proto.Scip_Fields.enclosingSymbol' @:: Lens' SymbolInformation Data.Text.Text@
+         * 'Proto.Scip_Fields.signature' @:: Lens' SymbolInformation Signature@
+         * 'Proto.Scip_Fields.maybe'signature' @:: Lens' SymbolInformation (Prelude.Maybe Signature)@ -}
 data SymbolInformation
   = SymbolInformation'_constructor {_SymbolInformation'symbol :: !Data.Text.Text,
                                     _SymbolInformation'documentation :: !(Data.Vector.Vector Data.Text.Text),
@@ -4114,6 +9159,7 @@ data SymbolInformation
                                     _SymbolInformation'displayName :: !Data.Text.Text,
                                     _SymbolInformation'signatureDocumentation :: !(Prelude.Maybe Document),
                                     _SymbolInformation'enclosingSymbol :: !Data.Text.Text,
+                                    _SymbolInformation'signature :: !(Prelude.Maybe Signature),
                                     _SymbolInformation'_unknownFields :: !Data.ProtoLens.FieldSet}
   deriving stock (Prelude.Eq, Prelude.Ord)
 instance Prelude.Show SymbolInformation where
@@ -4198,6 +9244,20 @@ instance Data.ProtoLens.Field.HasField SymbolInformation "enclosingSymbol" Data.
            _SymbolInformation'enclosingSymbol
            (\ x__ y__ -> x__ {_SymbolInformation'enclosingSymbol = y__}))
         Prelude.id
+instance Data.ProtoLens.Field.HasField SymbolInformation "signature" Signature where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _SymbolInformation'signature
+           (\ x__ y__ -> x__ {_SymbolInformation'signature = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField SymbolInformation "maybe'signature" (Prelude.Maybe Signature) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _SymbolInformation'signature
+           (\ x__ y__ -> x__ {_SymbolInformation'signature = y__}))
+        Prelude.id
 instance Data.ProtoLens.Message SymbolInformation where
   messageName _ = Data.Text.pack "scip.SymbolInformation"
   packedMessageDescriptor _
@@ -4209,7 +9269,8 @@ instance Data.ProtoLens.Message SymbolInformation where
       \\EOTkind\CAN\ENQ \SOH(\SO2\FS.scip.SymbolInformation.KindR\EOTkind\DC2!\n\
       \\fdisplay_name\CAN\ACK \SOH(\tR\vdisplayName\DC2G\n\
       \\ETBsignature_documentation\CAN\a \SOH(\v2\SO.scip.DocumentR\SYNsignatureDocumentation\DC2)\n\
-      \\DLEenclosing_symbol\CAN\b \SOH(\tR\SIenclosingSymbol\"\212\t\n\
+      \\DLEenclosing_symbol\CAN\b \SOH(\tR\SIenclosingSymbol\DC2-\n\
+      \\tsignature\CAN\t \SOH(\v2\SI.scip.SignatureR\tsignature\"\212\t\n\
       \\EOTKind\DC2\DC3\n\
       \\SIUnspecifiedKind\DLE\NUL\DC2\DC2\n\
       \\SOAbstractMethod\DLEB\DC2\f\n\
@@ -4370,6 +9431,14 @@ instance Data.ProtoLens.Message SymbolInformation where
                  Data.ProtoLens.Optional
                  (Data.ProtoLens.Field.field @"enclosingSymbol")) ::
               Data.ProtoLens.FieldDescriptor SymbolInformation
+        signature__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "signature"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Signature)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'signature")) ::
+              Data.ProtoLens.FieldDescriptor SymbolInformation
       in
         Data.Map.fromList
           [(Data.ProtoLens.Tag 1, symbol__field_descriptor),
@@ -4378,7 +9447,8 @@ instance Data.ProtoLens.Message SymbolInformation where
            (Data.ProtoLens.Tag 5, kind__field_descriptor),
            (Data.ProtoLens.Tag 6, displayName__field_descriptor),
            (Data.ProtoLens.Tag 7, signatureDocumentation__field_descriptor),
-           (Data.ProtoLens.Tag 8, enclosingSymbol__field_descriptor)]
+           (Data.ProtoLens.Tag 8, enclosingSymbol__field_descriptor),
+           (Data.ProtoLens.Tag 9, signature__field_descriptor)]
   unknownFields
     = Lens.Family2.Unchecked.lens
         _SymbolInformation'_unknownFields
@@ -4392,6 +9462,7 @@ instance Data.ProtoLens.Message SymbolInformation where
          _SymbolInformation'displayName = Data.ProtoLens.fieldDefault,
          _SymbolInformation'signatureDocumentation = Prelude.Nothing,
          _SymbolInformation'enclosingSymbol = Data.ProtoLens.fieldDefault,
+         _SymbolInformation'signature = Prelude.Nothing,
          _SymbolInformation'_unknownFields = []}
   parseMessage
     = let
@@ -4519,6 +9590,15 @@ instance Data.ProtoLens.Message SymbolInformation where
                                 loop
                                   (Lens.Family2.set
                                      (Data.ProtoLens.Field.field @"enclosingSymbol") y x)
+                                  mutable'documentation mutable'relationships
+                        74
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "signature"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"signature") y x)
                                   mutable'documentation mutable'relationships
                         wire
                           -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
@@ -4648,8 +9728,25 @@ instance Data.ProtoLens.Message SymbolInformation where
                                                          (Data.ByteString.length bs)))
                                                    (Data.ProtoLens.Encoding.Bytes.putBytes bs))
                                            Data.Text.Encoding.encodeUtf8 _v))
-                               (Data.ProtoLens.Encoding.Wire.buildFieldSet
-                                  (Lens.Family2.view Data.ProtoLens.unknownFields _x))))))))
+                               ((Data.Monoid.<>)
+                                  (case
+                                       Lens.Family2.view
+                                         (Data.ProtoLens.Field.field @"maybe'signature") _x
+                                   of
+                                     Prelude.Nothing -> Data.Monoid.mempty
+                                     (Prelude.Just _v)
+                                       -> (Data.Monoid.<>)
+                                            (Data.ProtoLens.Encoding.Bytes.putVarInt 74)
+                                            ((Prelude..)
+                                               (\ bs
+                                                  -> (Data.Monoid.<>)
+                                                       (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                                          (Prelude.fromIntegral
+                                                             (Data.ByteString.length bs)))
+                                                       (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                                               Data.ProtoLens.encodeMessage _v))
+                                  (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                                     (Lens.Family2.view Data.ProtoLens.unknownFields _x)))))))))
 instance Control.DeepSeq.NFData SymbolInformation where
   rnf
     = \ x__
@@ -4668,7 +9765,9 @@ instance Control.DeepSeq.NFData SymbolInformation where
                             (Control.DeepSeq.deepseq
                                (_SymbolInformation'signatureDocumentation x__)
                                (Control.DeepSeq.deepseq
-                                  (_SymbolInformation'enclosingSymbol x__) ())))))))
+                                  (_SymbolInformation'enclosingSymbol x__)
+                                  (Control.DeepSeq.deepseq
+                                     (_SymbolInformation'signature x__) ()))))))))
 newtype SymbolInformation'Kind'UnrecognizedValue
   = SymbolInformation'Kind'UnrecognizedValue Data.Int.Int32
   deriving stock (Prelude.Eq, Prelude.Ord, Prelude.Show)
@@ -5876,6 +10975,121 @@ instance Control.DeepSeq.NFData TextEncoding where
   rnf x__ = Prelude.seq x__ ()
 {- | Fields :
      
+         * 'Proto.Scip_Fields.symbol' @:: Lens' ThisType Data.Text.Text@ -}
+data ThisType
+  = ThisType'_constructor {_ThisType'symbol :: !Data.Text.Text,
+                           _ThisType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show ThisType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField ThisType "symbol" Data.Text.Text where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ThisType'symbol (\ x__ y__ -> x__ {_ThisType'symbol = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message ThisType where
+  messageName _ = Data.Text.pack "scip.ThisType"
+  packedMessageDescriptor _
+    = "\n\
+      \\bThisType\DC2\SYN\n\
+      \\ACKsymbol\CAN\SOH \SOH(\tR\ACKsymbol"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        symbol__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "symbol"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.StringField ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"symbol")) ::
+              Data.ProtoLens.FieldDescriptor ThisType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, symbol__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _ThisType'_unknownFields
+        (\ x__ y__ -> x__ {_ThisType'_unknownFields = y__})
+  defMessage
+    = ThisType'_constructor
+        {_ThisType'symbol = Data.ProtoLens.fieldDefault,
+         _ThisType'_unknownFields = []}
+  parseMessage
+    = let
+        loop :: ThisType -> Data.ProtoLens.Encoding.Bytes.Parser ThisType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do value <- do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                       Data.ProtoLens.Encoding.Bytes.getBytes
+                                                         (Prelude.fromIntegral len)
+                                           Data.ProtoLens.Encoding.Bytes.runEither
+                                             (case Data.Text.Encoding.decodeUtf8' value of
+                                                (Prelude.Left err)
+                                                  -> Prelude.Left (Prelude.show err)
+                                                (Prelude.Right r) -> Prelude.Right r))
+                                       "symbol"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"symbol") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "ThisType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (let
+                _v = Lens.Family2.view (Data.ProtoLens.Field.field @"symbol") _x
+              in
+                if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                    Data.Monoid.mempty
+                else
+                    (Data.Monoid.<>)
+                      (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                      ((Prelude..)
+                         (\ bs
+                            -> (Data.Monoid.<>)
+                                 (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                    (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                 (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                         Data.Text.Encoding.encodeUtf8 _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData ThisType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_ThisType'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_ThisType'symbol x__) ())
+{- | Fields :
+     
          * 'Proto.Scip_Fields.name' @:: Lens' ToolInfo Data.Text.Text@
          * 'Proto.Scip_Fields.version' @:: Lens' ToolInfo Data.Text.Text@
          * 'Proto.Scip_Fields.arguments' @:: Lens' ToolInfo [Data.Text.Text]@
@@ -6112,6 +11326,2237 @@ instance Control.DeepSeq.NFData ToolInfo where
                 (Control.DeepSeq.deepseq
                    (_ToolInfo'version x__)
                    (Control.DeepSeq.deepseq (_ToolInfo'arguments x__) ())))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.maybe'sealedValue' @:: Lens' Type (Prelude.Maybe Type'SealedValue)@
+         * 'Proto.Scip_Fields.maybe'typeRef' @:: Lens' Type (Prelude.Maybe TypeRef)@
+         * 'Proto.Scip_Fields.typeRef' @:: Lens' Type TypeRef@
+         * 'Proto.Scip_Fields.maybe'singleType' @:: Lens' Type (Prelude.Maybe SingleType)@
+         * 'Proto.Scip_Fields.singleType' @:: Lens' Type SingleType@
+         * 'Proto.Scip_Fields.maybe'thisType' @:: Lens' Type (Prelude.Maybe ThisType)@
+         * 'Proto.Scip_Fields.thisType' @:: Lens' Type ThisType@
+         * 'Proto.Scip_Fields.maybe'superType' @:: Lens' Type (Prelude.Maybe SuperType)@
+         * 'Proto.Scip_Fields.superType' @:: Lens' Type SuperType@
+         * 'Proto.Scip_Fields.maybe'constantType' @:: Lens' Type (Prelude.Maybe ConstantType)@
+         * 'Proto.Scip_Fields.constantType' @:: Lens' Type ConstantType@
+         * 'Proto.Scip_Fields.maybe'intersectionType' @:: Lens' Type (Prelude.Maybe IntersectionType)@
+         * 'Proto.Scip_Fields.intersectionType' @:: Lens' Type IntersectionType@
+         * 'Proto.Scip_Fields.maybe'unionType' @:: Lens' Type (Prelude.Maybe UnionType)@
+         * 'Proto.Scip_Fields.unionType' @:: Lens' Type UnionType@
+         * 'Proto.Scip_Fields.maybe'withType' @:: Lens' Type (Prelude.Maybe WithType)@
+         * 'Proto.Scip_Fields.withType' @:: Lens' Type WithType@
+         * 'Proto.Scip_Fields.maybe'structuralType' @:: Lens' Type (Prelude.Maybe StructuralType)@
+         * 'Proto.Scip_Fields.structuralType' @:: Lens' Type StructuralType@
+         * 'Proto.Scip_Fields.maybe'annotatedType' @:: Lens' Type (Prelude.Maybe AnnotatedType)@
+         * 'Proto.Scip_Fields.annotatedType' @:: Lens' Type AnnotatedType@
+         * 'Proto.Scip_Fields.maybe'existentialType' @:: Lens' Type (Prelude.Maybe ExistentialType)@
+         * 'Proto.Scip_Fields.existentialType' @:: Lens' Type ExistentialType@
+         * 'Proto.Scip_Fields.maybe'universalType' @:: Lens' Type (Prelude.Maybe UniversalType)@
+         * 'Proto.Scip_Fields.universalType' @:: Lens' Type UniversalType@
+         * 'Proto.Scip_Fields.maybe'byNameType' @:: Lens' Type (Prelude.Maybe ByNameType)@
+         * 'Proto.Scip_Fields.byNameType' @:: Lens' Type ByNameType@
+         * 'Proto.Scip_Fields.maybe'repeatedType' @:: Lens' Type (Prelude.Maybe RepeatedType)@
+         * 'Proto.Scip_Fields.repeatedType' @:: Lens' Type RepeatedType@
+         * 'Proto.Scip_Fields.maybe'matchType' @:: Lens' Type (Prelude.Maybe MatchType)@
+         * 'Proto.Scip_Fields.matchType' @:: Lens' Type MatchType@
+         * 'Proto.Scip_Fields.maybe'lambdaType' @:: Lens' Type (Prelude.Maybe LambdaType)@
+         * 'Proto.Scip_Fields.lambdaType' @:: Lens' Type LambdaType@ -}
+data Type
+  = Type'_constructor {_Type'sealedValue :: !(Prelude.Maybe Type'SealedValue),
+                       _Type'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show Type where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+data Type'SealedValue
+  = Type'TypeRef !TypeRef |
+    Type'SingleType !SingleType |
+    Type'ThisType !ThisType |
+    Type'SuperType !SuperType |
+    Type'ConstantType !ConstantType |
+    Type'IntersectionType !IntersectionType |
+    Type'UnionType !UnionType |
+    Type'WithType !WithType |
+    Type'StructuralType !StructuralType |
+    Type'AnnotatedType !AnnotatedType |
+    Type'ExistentialType !ExistentialType |
+    Type'UniversalType !UniversalType |
+    Type'ByNameType !ByNameType |
+    Type'RepeatedType !RepeatedType |
+    Type'MatchType !MatchType |
+    Type'LambdaType !LambdaType
+  deriving stock (Prelude.Show, Prelude.Eq, Prelude.Ord)
+instance Data.ProtoLens.Field.HasField Type "maybe'sealedValue" (Prelude.Maybe Type'SealedValue) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField Type "maybe'typeRef" (Prelude.Maybe TypeRef) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'TypeRef x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'TypeRef y__))
+instance Data.ProtoLens.Field.HasField Type "typeRef" TypeRef where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'TypeRef x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'TypeRef y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'singleType" (Prelude.Maybe SingleType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'SingleType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'SingleType y__))
+instance Data.ProtoLens.Field.HasField Type "singleType" SingleType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'SingleType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'SingleType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'thisType" (Prelude.Maybe ThisType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'ThisType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'ThisType y__))
+instance Data.ProtoLens.Field.HasField Type "thisType" ThisType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'ThisType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'ThisType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'superType" (Prelude.Maybe SuperType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'SuperType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'SuperType y__))
+instance Data.ProtoLens.Field.HasField Type "superType" SuperType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'SuperType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'SuperType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'constantType" (Prelude.Maybe ConstantType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'ConstantType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'ConstantType y__))
+instance Data.ProtoLens.Field.HasField Type "constantType" ConstantType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'ConstantType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'ConstantType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'intersectionType" (Prelude.Maybe IntersectionType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'IntersectionType x__val))
+                     -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'IntersectionType y__))
+instance Data.ProtoLens.Field.HasField Type "intersectionType" IntersectionType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'IntersectionType x__val))
+                        -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'IntersectionType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'unionType" (Prelude.Maybe UnionType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'UnionType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'UnionType y__))
+instance Data.ProtoLens.Field.HasField Type "unionType" UnionType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'UnionType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'UnionType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'withType" (Prelude.Maybe WithType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'WithType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'WithType y__))
+instance Data.ProtoLens.Field.HasField Type "withType" WithType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'WithType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'WithType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'structuralType" (Prelude.Maybe StructuralType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'StructuralType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'StructuralType y__))
+instance Data.ProtoLens.Field.HasField Type "structuralType" StructuralType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'StructuralType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'StructuralType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'annotatedType" (Prelude.Maybe AnnotatedType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'AnnotatedType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'AnnotatedType y__))
+instance Data.ProtoLens.Field.HasField Type "annotatedType" AnnotatedType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'AnnotatedType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'AnnotatedType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'existentialType" (Prelude.Maybe ExistentialType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'ExistentialType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'ExistentialType y__))
+instance Data.ProtoLens.Field.HasField Type "existentialType" ExistentialType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'ExistentialType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'ExistentialType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'universalType" (Prelude.Maybe UniversalType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'UniversalType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'UniversalType y__))
+instance Data.ProtoLens.Field.HasField Type "universalType" UniversalType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'UniversalType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'UniversalType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'byNameType" (Prelude.Maybe ByNameType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'ByNameType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'ByNameType y__))
+instance Data.ProtoLens.Field.HasField Type "byNameType" ByNameType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'ByNameType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'ByNameType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'repeatedType" (Prelude.Maybe RepeatedType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'RepeatedType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'RepeatedType y__))
+instance Data.ProtoLens.Field.HasField Type "repeatedType" RepeatedType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'RepeatedType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'RepeatedType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'matchType" (Prelude.Maybe MatchType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'MatchType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'MatchType y__))
+instance Data.ProtoLens.Field.HasField Type "matchType" MatchType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'MatchType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'MatchType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Field.HasField Type "maybe'lambdaType" (Prelude.Maybe LambdaType) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        (Lens.Family2.Unchecked.lens
+           (\ x__
+              -> case x__ of
+                   (Prelude.Just (Type'LambdaType x__val)) -> Prelude.Just x__val
+                   _otherwise -> Prelude.Nothing)
+           (\ _ y__ -> Prelude.fmap Type'LambdaType y__))
+instance Data.ProtoLens.Field.HasField Type "lambdaType" LambdaType where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _Type'sealedValue (\ x__ y__ -> x__ {_Type'sealedValue = y__}))
+        ((Prelude..)
+           (Lens.Family2.Unchecked.lens
+              (\ x__
+                 -> case x__ of
+                      (Prelude.Just (Type'LambdaType x__val)) -> Prelude.Just x__val
+                      _otherwise -> Prelude.Nothing)
+              (\ _ y__ -> Prelude.fmap Type'LambdaType y__))
+           (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage))
+instance Data.ProtoLens.Message Type where
+  messageName _ = Data.Text.pack "scip.Type"
+  packedMessageDescriptor _
+    = "\n\
+      \\EOTType\DC2*\n\
+      \\btype_ref\CAN\STX \SOH(\v2\r.scip.TypeRefH\NULR\atypeRef\DC23\n\
+      \\vsingle_type\CAN\DC4 \SOH(\v2\DLE.scip.SingleTypeH\NULR\n\
+      \singleType\DC2-\n\
+      \\tthis_type\CAN\NAK \SOH(\v2\SO.scip.ThisTypeH\NULR\bthisType\DC20\n\
+      \\n\
+      \super_type\CAN\SYN \SOH(\v2\SI.scip.SuperTypeH\NULR\tsuperType\DC29\n\
+      \\rconstant_type\CAN\ETB \SOH(\v2\DC2.scip.ConstantTypeH\NULR\fconstantType\DC2E\n\
+      \\DC1intersection_type\CAN\DC1 \SOH(\v2\SYN.scip.IntersectionTypeH\NULR\DLEintersectionType\DC20\n\
+      \\n\
+      \union_type\CAN\DC2 \SOH(\v2\SI.scip.UnionTypeH\NULR\tunionType\DC2-\n\
+      \\twith_type\CAN\DC3 \SOH(\v2\SO.scip.WithTypeH\NULR\bwithType\DC2?\n\
+      \\SIstructural_type\CAN\a \SOH(\v2\DC4.scip.StructuralTypeH\NULR\SOstructuralType\DC2<\n\
+      \\SOannotated_type\CAN\b \SOH(\v2\DC3.scip.AnnotatedTypeH\NULR\rannotatedType\DC2B\n\
+      \\DLEexistential_type\CAN\t \SOH(\v2\NAK.scip.ExistentialTypeH\NULR\SIexistentialType\DC2<\n\
+      \\SOuniversal_type\CAN\n\
+      \ \SOH(\v2\DC3.scip.UniversalTypeH\NULR\runiversalType\DC24\n\
+      \\fby_name_type\CAN\r \SOH(\v2\DLE.scip.ByNameTypeH\NULR\n\
+      \byNameType\DC29\n\
+      \\rrepeated_type\CAN\SO \SOH(\v2\DC2.scip.RepeatedTypeH\NULR\frepeatedType\DC20\n\
+      \\n\
+      \match_type\CAN\EM \SOH(\v2\SI.scip.MatchTypeH\NULR\tmatchType\DC23\n\
+      \\vlambda_type\CAN\SUB \SOH(\v2\DLE.scip.LambdaTypeH\NULR\n\
+      \lambdaTypeB\SO\n\
+      \\fsealed_valueJ\EOT\b\SOH\DLE\STXJ\EOT\b\ETX\DLE\EOTJ\EOT\b\EOT\DLE\ENQJ\EOT\b\ENQ\DLE\ACKJ\EOT\b\ACK\DLE\aJ\EOT\b\v\DLE\fJ\EOT\b\f\DLE\rJ\EOT\b\SI\DLE\DLEJ\EOT\b\DLE\DLE\DC1"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        typeRef__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "type_ref"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor TypeRef)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'typeRef")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        singleType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "single_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor SingleType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'singleType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        thisType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "this_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor ThisType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'thisType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        superType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "super_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor SuperType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'superType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        constantType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "constant_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor ConstantType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'constantType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        intersectionType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "intersection_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor IntersectionType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'intersectionType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        unionType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "union_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor UnionType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'unionType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        withType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "with_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor WithType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'withType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        structuralType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "structural_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor StructuralType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'structuralType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        annotatedType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "annotated_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor AnnotatedType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'annotatedType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        existentialType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "existential_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor ExistentialType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'existentialType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        universalType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "universal_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor UniversalType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'universalType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        byNameType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "by_name_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor ByNameType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'byNameType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        repeatedType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "repeated_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor RepeatedType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'repeatedType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        matchType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "match_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor MatchType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'matchType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+        lambdaType__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "lambda_type"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor LambdaType)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'lambdaType")) ::
+              Data.ProtoLens.FieldDescriptor Type
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 2, typeRef__field_descriptor),
+           (Data.ProtoLens.Tag 20, singleType__field_descriptor),
+           (Data.ProtoLens.Tag 21, thisType__field_descriptor),
+           (Data.ProtoLens.Tag 22, superType__field_descriptor),
+           (Data.ProtoLens.Tag 23, constantType__field_descriptor),
+           (Data.ProtoLens.Tag 17, intersectionType__field_descriptor),
+           (Data.ProtoLens.Tag 18, unionType__field_descriptor),
+           (Data.ProtoLens.Tag 19, withType__field_descriptor),
+           (Data.ProtoLens.Tag 7, structuralType__field_descriptor),
+           (Data.ProtoLens.Tag 8, annotatedType__field_descriptor),
+           (Data.ProtoLens.Tag 9, existentialType__field_descriptor),
+           (Data.ProtoLens.Tag 10, universalType__field_descriptor),
+           (Data.ProtoLens.Tag 13, byNameType__field_descriptor),
+           (Data.ProtoLens.Tag 14, repeatedType__field_descriptor),
+           (Data.ProtoLens.Tag 25, matchType__field_descriptor),
+           (Data.ProtoLens.Tag 26, lambdaType__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _Type'_unknownFields
+        (\ x__ y__ -> x__ {_Type'_unknownFields = y__})
+  defMessage
+    = Type'_constructor
+        {_Type'sealedValue = Prelude.Nothing, _Type'_unknownFields = []}
+  parseMessage
+    = let
+        loop :: Type -> Data.ProtoLens.Encoding.Bytes.Parser Type
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "type_ref"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"typeRef") y x)
+                        162
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "single_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"singleType") y x)
+                        170
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "this_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"thisType") y x)
+                        178
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "super_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"superType") y x)
+                        186
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "constant_type"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"constantType") y x)
+                        138
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "intersection_type"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"intersectionType") y x)
+                        146
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "union_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"unionType") y x)
+                        154
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "with_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"withType") y x)
+                        58
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "structural_type"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"structuralType") y x)
+                        66
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "annotated_type"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"annotatedType") y x)
+                        74
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "existential_type"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"existentialType") y x)
+                        82
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "universal_type"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"universalType") y x)
+                        106
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "by_name_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"byNameType") y x)
+                        114
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "repeated_type"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"repeatedType") y x)
+                        202
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "match_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"matchType") y x)
+                        210
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "lambda_type"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"lambdaType") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "Type"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'sealedValue") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just (Type'TypeRef v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'SingleType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 162)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'ThisType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 170)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'SuperType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 178)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'ConstantType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 186)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'IntersectionType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 138)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'UnionType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 146)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'WithType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 154)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'StructuralType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 58)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'AnnotatedType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 66)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'ExistentialType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 74)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'UniversalType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 82)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'ByNameType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 106)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'RepeatedType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 114)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'MatchType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 202)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v)
+                (Prelude.Just (Type'LambdaType v))
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 210)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData Type where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_Type'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_Type'sealedValue x__) ())
+instance Control.DeepSeq.NFData Type'SealedValue where
+  rnf (Type'TypeRef x__) = Control.DeepSeq.rnf x__
+  rnf (Type'SingleType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'ThisType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'SuperType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'ConstantType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'IntersectionType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'UnionType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'WithType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'StructuralType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'AnnotatedType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'ExistentialType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'UniversalType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'ByNameType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'RepeatedType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'MatchType x__) = Control.DeepSeq.rnf x__
+  rnf (Type'LambdaType x__) = Control.DeepSeq.rnf x__
+_Type'TypeRef ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue TypeRef
+_Type'TypeRef
+  = Data.ProtoLens.Prism.prism'
+      Type'TypeRef
+      (\ p__
+         -> case p__ of
+              (Type'TypeRef p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'SingleType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue SingleType
+_Type'SingleType
+  = Data.ProtoLens.Prism.prism'
+      Type'SingleType
+      (\ p__
+         -> case p__ of
+              (Type'SingleType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'ThisType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue ThisType
+_Type'ThisType
+  = Data.ProtoLens.Prism.prism'
+      Type'ThisType
+      (\ p__
+         -> case p__ of
+              (Type'ThisType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'SuperType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue SuperType
+_Type'SuperType
+  = Data.ProtoLens.Prism.prism'
+      Type'SuperType
+      (\ p__
+         -> case p__ of
+              (Type'SuperType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'ConstantType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue ConstantType
+_Type'ConstantType
+  = Data.ProtoLens.Prism.prism'
+      Type'ConstantType
+      (\ p__
+         -> case p__ of
+              (Type'ConstantType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'IntersectionType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue IntersectionType
+_Type'IntersectionType
+  = Data.ProtoLens.Prism.prism'
+      Type'IntersectionType
+      (\ p__
+         -> case p__ of
+              (Type'IntersectionType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'UnionType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue UnionType
+_Type'UnionType
+  = Data.ProtoLens.Prism.prism'
+      Type'UnionType
+      (\ p__
+         -> case p__ of
+              (Type'UnionType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'WithType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue WithType
+_Type'WithType
+  = Data.ProtoLens.Prism.prism'
+      Type'WithType
+      (\ p__
+         -> case p__ of
+              (Type'WithType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'StructuralType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue StructuralType
+_Type'StructuralType
+  = Data.ProtoLens.Prism.prism'
+      Type'StructuralType
+      (\ p__
+         -> case p__ of
+              (Type'StructuralType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'AnnotatedType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue AnnotatedType
+_Type'AnnotatedType
+  = Data.ProtoLens.Prism.prism'
+      Type'AnnotatedType
+      (\ p__
+         -> case p__ of
+              (Type'AnnotatedType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'ExistentialType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue ExistentialType
+_Type'ExistentialType
+  = Data.ProtoLens.Prism.prism'
+      Type'ExistentialType
+      (\ p__
+         -> case p__ of
+              (Type'ExistentialType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'UniversalType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue UniversalType
+_Type'UniversalType
+  = Data.ProtoLens.Prism.prism'
+      Type'UniversalType
+      (\ p__
+         -> case p__ of
+              (Type'UniversalType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'ByNameType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue ByNameType
+_Type'ByNameType
+  = Data.ProtoLens.Prism.prism'
+      Type'ByNameType
+      (\ p__
+         -> case p__ of
+              (Type'ByNameType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'RepeatedType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue RepeatedType
+_Type'RepeatedType
+  = Data.ProtoLens.Prism.prism'
+      Type'RepeatedType
+      (\ p__
+         -> case p__ of
+              (Type'RepeatedType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'MatchType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue MatchType
+_Type'MatchType
+  = Data.ProtoLens.Prism.prism'
+      Type'MatchType
+      (\ p__
+         -> case p__ of
+              (Type'MatchType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+_Type'LambdaType ::
+  Data.ProtoLens.Prism.Prism' Type'SealedValue LambdaType
+_Type'LambdaType
+  = Data.ProtoLens.Prism.prism'
+      Type'LambdaType
+      (\ p__
+         -> case p__ of
+              (Type'LambdaType p__val) -> Prelude.Just p__val
+              _otherwise -> Prelude.Nothing)
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.prefix' @:: Lens' TypeRef Type@
+         * 'Proto.Scip_Fields.maybe'prefix' @:: Lens' TypeRef (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.symbol' @:: Lens' TypeRef Data.Text.Text@
+         * 'Proto.Scip_Fields.typeArguments' @:: Lens' TypeRef [Type]@
+         * 'Proto.Scip_Fields.vec'typeArguments' @:: Lens' TypeRef (Data.Vector.Vector Type)@ -}
+data TypeRef
+  = TypeRef'_constructor {_TypeRef'prefix :: !(Prelude.Maybe Type),
+                          _TypeRef'symbol :: !Data.Text.Text,
+                          _TypeRef'typeArguments :: !(Data.Vector.Vector Type),
+                          _TypeRef'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show TypeRef where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField TypeRef "prefix" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeRef'prefix (\ x__ y__ -> x__ {_TypeRef'prefix = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField TypeRef "maybe'prefix" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeRef'prefix (\ x__ y__ -> x__ {_TypeRef'prefix = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField TypeRef "symbol" Data.Text.Text where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeRef'symbol (\ x__ y__ -> x__ {_TypeRef'symbol = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField TypeRef "typeArguments" [Type] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeRef'typeArguments
+           (\ x__ y__ -> x__ {_TypeRef'typeArguments = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField TypeRef "vec'typeArguments" (Data.Vector.Vector Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeRef'typeArguments
+           (\ x__ y__ -> x__ {_TypeRef'typeArguments = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message TypeRef where
+  messageName _ = Data.Text.pack "scip.TypeRef"
+  packedMessageDescriptor _
+    = "\n\
+      \\aTypeRef\DC2\"\n\
+      \\ACKprefix\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ACKprefix\DC2\SYN\n\
+      \\ACKsymbol\CAN\STX \SOH(\tR\ACKsymbol\DC21\n\
+      \\SOtype_arguments\CAN\ETX \ETX(\v2\n\
+      \.scip.TypeR\rtypeArguments"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        prefix__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "prefix"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'prefix")) ::
+              Data.ProtoLens.FieldDescriptor TypeRef
+        symbol__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "symbol"
+              (Data.ProtoLens.ScalarField Data.ProtoLens.StringField ::
+                 Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
+              (Data.ProtoLens.PlainField
+                 Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"symbol")) ::
+              Data.ProtoLens.FieldDescriptor TypeRef
+        typeArguments__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "type_arguments"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked
+                 (Data.ProtoLens.Field.field @"typeArguments")) ::
+              Data.ProtoLens.FieldDescriptor TypeRef
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, prefix__field_descriptor),
+           (Data.ProtoLens.Tag 2, symbol__field_descriptor),
+           (Data.ProtoLens.Tag 3, typeArguments__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _TypeRef'_unknownFields
+        (\ x__ y__ -> x__ {_TypeRef'_unknownFields = y__})
+  defMessage
+    = TypeRef'_constructor
+        {_TypeRef'prefix = Prelude.Nothing,
+         _TypeRef'symbol = Data.ProtoLens.fieldDefault,
+         _TypeRef'typeArguments = Data.Vector.Generic.empty,
+         _TypeRef'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          TypeRef
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Type
+             -> Data.ProtoLens.Encoding.Bytes.Parser TypeRef
+        loop x mutable'typeArguments
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'typeArguments <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                                (Data.ProtoLens.Encoding.Growing.unsafeFreeze
+                                                   mutable'typeArguments)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'typeArguments")
+                              frozen'typeArguments x))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "prefix"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"prefix") y x)
+                                  mutable'typeArguments
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do value <- do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                                       Data.ProtoLens.Encoding.Bytes.getBytes
+                                                         (Prelude.fromIntegral len)
+                                           Data.ProtoLens.Encoding.Bytes.runEither
+                                             (case Data.Text.Encoding.decodeUtf8' value of
+                                                (Prelude.Left err)
+                                                  -> Prelude.Left (Prelude.show err)
+                                                (Prelude.Right r) -> Prelude.Right r))
+                                       "symbol"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"symbol") y x)
+                                  mutable'typeArguments
+                        26
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "type_arguments"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append
+                                          mutable'typeArguments y)
+                                loop x v
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'typeArguments
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'typeArguments <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                         Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'typeArguments)
+          "TypeRef"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'prefix") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (let
+                   _v = Lens.Family2.view (Data.ProtoLens.Field.field @"symbol") _x
+                 in
+                   if (Prelude.==) _v Data.ProtoLens.fieldDefault then
+                       Data.Monoid.mempty
+                   else
+                       (Data.Monoid.<>)
+                         (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                         ((Prelude..)
+                            (\ bs
+                               -> (Data.Monoid.<>)
+                                    (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                       (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                    (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                            Data.Text.Encoding.encodeUtf8 _v))
+                ((Data.Monoid.<>)
+                   (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                      (\ _v
+                         -> (Data.Monoid.<>)
+                              (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                              ((Prelude..)
+                                 (\ bs
+                                    -> (Data.Monoid.<>)
+                                         (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                            (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                         (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                                 Data.ProtoLens.encodeMessage _v))
+                      (Lens.Family2.view
+                         (Data.ProtoLens.Field.field @"vec'typeArguments") _x))
+                   (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                      (Lens.Family2.view Data.ProtoLens.unknownFields _x))))
+instance Control.DeepSeq.NFData TypeRef where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_TypeRef'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_TypeRef'prefix x__)
+                (Control.DeepSeq.deepseq
+                   (_TypeRef'symbol x__)
+                   (Control.DeepSeq.deepseq (_TypeRef'typeArguments x__) ())))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.typeParameters' @:: Lens' TypeSignature Scope@
+         * 'Proto.Scip_Fields.maybe'typeParameters' @:: Lens' TypeSignature (Prelude.Maybe Scope)@
+         * 'Proto.Scip_Fields.lowerBound' @:: Lens' TypeSignature Type@
+         * 'Proto.Scip_Fields.maybe'lowerBound' @:: Lens' TypeSignature (Prelude.Maybe Type)@
+         * 'Proto.Scip_Fields.upperBound' @:: Lens' TypeSignature Type@
+         * 'Proto.Scip_Fields.maybe'upperBound' @:: Lens' TypeSignature (Prelude.Maybe Type)@ -}
+data TypeSignature
+  = TypeSignature'_constructor {_TypeSignature'typeParameters :: !(Prelude.Maybe Scope),
+                                _TypeSignature'lowerBound :: !(Prelude.Maybe Type),
+                                _TypeSignature'upperBound :: !(Prelude.Maybe Type),
+                                _TypeSignature'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show TypeSignature where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField TypeSignature "typeParameters" Scope where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeSignature'typeParameters
+           (\ x__ y__ -> x__ {_TypeSignature'typeParameters = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField TypeSignature "maybe'typeParameters" (Prelude.Maybe Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeSignature'typeParameters
+           (\ x__ y__ -> x__ {_TypeSignature'typeParameters = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField TypeSignature "lowerBound" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeSignature'lowerBound
+           (\ x__ y__ -> x__ {_TypeSignature'lowerBound = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField TypeSignature "maybe'lowerBound" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeSignature'lowerBound
+           (\ x__ y__ -> x__ {_TypeSignature'lowerBound = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField TypeSignature "upperBound" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeSignature'upperBound
+           (\ x__ y__ -> x__ {_TypeSignature'upperBound = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField TypeSignature "maybe'upperBound" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _TypeSignature'upperBound
+           (\ x__ y__ -> x__ {_TypeSignature'upperBound = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message TypeSignature where
+  messageName _ = Data.Text.pack "scip.TypeSignature"
+  packedMessageDescriptor _
+    = "\n\
+      \\rTypeSignature\DC24\n\
+      \\SItype_parameters\CAN\SOH \SOH(\v2\v.scip.ScopeR\SOtypeParameters\DC2+\n\
+      \\vlower_bound\CAN\STX \SOH(\v2\n\
+      \.scip.TypeR\n\
+      \lowerBound\DC2+\n\
+      \\vupper_bound\CAN\ETX \SOH(\v2\n\
+      \.scip.TypeR\n\
+      \upperBound"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        typeParameters__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "type_parameters"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'typeParameters")) ::
+              Data.ProtoLens.FieldDescriptor TypeSignature
+        lowerBound__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "lower_bound"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'lowerBound")) ::
+              Data.ProtoLens.FieldDescriptor TypeSignature
+        upperBound__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "upper_bound"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'upperBound")) ::
+              Data.ProtoLens.FieldDescriptor TypeSignature
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 1, typeParameters__field_descriptor),
+           (Data.ProtoLens.Tag 2, lowerBound__field_descriptor),
+           (Data.ProtoLens.Tag 3, upperBound__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _TypeSignature'_unknownFields
+        (\ x__ y__ -> x__ {_TypeSignature'_unknownFields = y__})
+  defMessage
+    = TypeSignature'_constructor
+        {_TypeSignature'typeParameters = Prelude.Nothing,
+         _TypeSignature'lowerBound = Prelude.Nothing,
+         _TypeSignature'upperBound = Prelude.Nothing,
+         _TypeSignature'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          TypeSignature -> Data.ProtoLens.Encoding.Bytes.Parser TypeSignature
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "type_parameters"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"typeParameters") y x)
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "lower_bound"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"lowerBound") y x)
+                        26
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "upper_bound"
+                                loop
+                                  (Lens.Family2.set (Data.ProtoLens.Field.field @"upperBound") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "TypeSignature"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'typeParameters") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (case
+                     Lens.Family2.view
+                       (Data.ProtoLens.Field.field @"maybe'lowerBound") _x
+                 of
+                   Prelude.Nothing -> Data.Monoid.mempty
+                   (Prelude.Just _v)
+                     -> (Data.Monoid.<>)
+                          (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                          ((Prelude..)
+                             (\ bs
+                                -> (Data.Monoid.<>)
+                                     (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                        (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                     (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                             Data.ProtoLens.encodeMessage _v))
+                ((Data.Monoid.<>)
+                   (case
+                        Lens.Family2.view
+                          (Data.ProtoLens.Field.field @"maybe'upperBound") _x
+                    of
+                      Prelude.Nothing -> Data.Monoid.mempty
+                      (Prelude.Just _v)
+                        -> (Data.Monoid.<>)
+                             (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                             ((Prelude..)
+                                (\ bs
+                                   -> (Data.Monoid.<>)
+                                        (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                           (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                        (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                                Data.ProtoLens.encodeMessage _v))
+                   (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                      (Lens.Family2.view Data.ProtoLens.unknownFields _x))))
+instance Control.DeepSeq.NFData TypeSignature where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_TypeSignature'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_TypeSignature'typeParameters x__)
+                (Control.DeepSeq.deepseq
+                   (_TypeSignature'lowerBound x__)
+                   (Control.DeepSeq.deepseq (_TypeSignature'upperBound x__) ())))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.types' @:: Lens' UnionType [Type]@
+         * 'Proto.Scip_Fields.vec'types' @:: Lens' UnionType (Data.Vector.Vector Type)@ -}
+data UnionType
+  = UnionType'_constructor {_UnionType'types :: !(Data.Vector.Vector Type),
+                            _UnionType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show UnionType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField UnionType "types" [Type] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _UnionType'types (\ x__ y__ -> x__ {_UnionType'types = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField UnionType "vec'types" (Data.Vector.Vector Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _UnionType'types (\ x__ y__ -> x__ {_UnionType'types = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message UnionType where
+  messageName _ = Data.Text.pack "scip.UnionType"
+  packedMessageDescriptor _
+    = "\n\
+      \\tUnionType\DC2 \n\
+      \\ENQtypes\CAN\SOH \ETX(\v2\n\
+      \.scip.TypeR\ENQtypes"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        types__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "types"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked (Data.ProtoLens.Field.field @"types")) ::
+              Data.ProtoLens.FieldDescriptor UnionType
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, types__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _UnionType'_unknownFields
+        (\ x__ y__ -> x__ {_UnionType'_unknownFields = y__})
+  defMessage
+    = UnionType'_constructor
+        {_UnionType'types = Data.Vector.Generic.empty,
+         _UnionType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          UnionType
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Type
+             -> Data.ProtoLens.Encoding.Bytes.Parser UnionType
+        loop x mutable'types
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'types <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                        (Data.ProtoLens.Encoding.Growing.unsafeFreeze mutable'types)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'types") frozen'types x))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "types"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append mutable'types y)
+                                loop x v
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'types
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'types <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                 Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'types)
+          "UnionType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                (\ _v
+                   -> (Data.Monoid.<>)
+                        (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                        ((Prelude..)
+                           (\ bs
+                              -> (Data.Monoid.<>)
+                                   (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                      (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                   (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                           Data.ProtoLens.encodeMessage _v))
+                (Lens.Family2.view (Data.ProtoLens.Field.field @"vec'types") _x))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData UnionType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_UnionType'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_UnionType'types x__) ())
+{- | Fields :
+      -}
+data UnitConstant
+  = UnitConstant'_constructor {_UnitConstant'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show UnitConstant where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Message UnitConstant where
+  messageName _ = Data.Text.pack "scip.UnitConstant"
+  packedMessageDescriptor _
+    = "\n\
+      \\fUnitConstant"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag = let in Data.Map.fromList []
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _UnitConstant'_unknownFields
+        (\ x__ y__ -> x__ {_UnitConstant'_unknownFields = y__})
+  defMessage
+    = UnitConstant'_constructor {_UnitConstant'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          UnitConstant -> Data.ProtoLens.Encoding.Bytes.Parser UnitConstant
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of {
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x) }
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "UnitConstant"
+  buildMessage
+    = \ _x
+        -> Data.ProtoLens.Encoding.Wire.buildFieldSet
+             (Lens.Family2.view Data.ProtoLens.unknownFields _x)
+instance Control.DeepSeq.NFData UnitConstant where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq (_UnitConstant'_unknownFields x__) ()
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.typeParameters' @:: Lens' UniversalType Scope@
+         * 'Proto.Scip_Fields.maybe'typeParameters' @:: Lens' UniversalType (Prelude.Maybe Scope)@
+         * 'Proto.Scip_Fields.tpe' @:: Lens' UniversalType Type@
+         * 'Proto.Scip_Fields.maybe'tpe' @:: Lens' UniversalType (Prelude.Maybe Type)@ -}
+data UniversalType
+  = UniversalType'_constructor {_UniversalType'typeParameters :: !(Prelude.Maybe Scope),
+                                _UniversalType'tpe :: !(Prelude.Maybe Type),
+                                _UniversalType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show UniversalType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField UniversalType "typeParameters" Scope where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _UniversalType'typeParameters
+           (\ x__ y__ -> x__ {_UniversalType'typeParameters = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField UniversalType "maybe'typeParameters" (Prelude.Maybe Scope) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _UniversalType'typeParameters
+           (\ x__ y__ -> x__ {_UniversalType'typeParameters = y__}))
+        Prelude.id
+instance Data.ProtoLens.Field.HasField UniversalType "tpe" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _UniversalType'tpe (\ x__ y__ -> x__ {_UniversalType'tpe = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField UniversalType "maybe'tpe" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _UniversalType'tpe (\ x__ y__ -> x__ {_UniversalType'tpe = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message UniversalType where
+  messageName _ = Data.Text.pack "scip.UniversalType"
+  packedMessageDescriptor _
+    = "\n\
+      \\rUniversalType\DC24\n\
+      \\SItype_parameters\CAN\ETX \SOH(\v2\v.scip.ScopeR\SOtypeParameters\DC2\FS\n\
+      \\ETXtpe\CAN\STX \SOH(\v2\n\
+      \.scip.TypeR\ETXtpeJ\EOT\b\SOH\DLE\STX"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        typeParameters__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "type_parameters"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Scope)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'typeParameters")) ::
+              Data.ProtoLens.FieldDescriptor UniversalType
+        tpe__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "tpe"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'tpe")) ::
+              Data.ProtoLens.FieldDescriptor UniversalType
+      in
+        Data.Map.fromList
+          [(Data.ProtoLens.Tag 3, typeParameters__field_descriptor),
+           (Data.ProtoLens.Tag 2, tpe__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _UniversalType'_unknownFields
+        (\ x__ y__ -> x__ {_UniversalType'_unknownFields = y__})
+  defMessage
+    = UniversalType'_constructor
+        {_UniversalType'typeParameters = Prelude.Nothing,
+         _UniversalType'tpe = Prelude.Nothing,
+         _UniversalType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          UniversalType -> Data.ProtoLens.Encoding.Bytes.Parser UniversalType
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        26
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "type_parameters"
+                                loop
+                                  (Lens.Family2.set
+                                     (Data.ProtoLens.Field.field @"typeParameters") y x)
+                        18
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "tpe"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"tpe") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "UniversalType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view
+                    (Data.ProtoLens.Field.field @"maybe'typeParameters") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 26)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             ((Data.Monoid.<>)
+                (case
+                     Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'tpe") _x
+                 of
+                   Prelude.Nothing -> Data.Monoid.mempty
+                   (Prelude.Just _v)
+                     -> (Data.Monoid.<>)
+                          (Data.ProtoLens.Encoding.Bytes.putVarInt 18)
+                          ((Prelude..)
+                             (\ bs
+                                -> (Data.Monoid.<>)
+                                     (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                        (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                     (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                             Data.ProtoLens.encodeMessage _v))
+                (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                   (Lens.Family2.view Data.ProtoLens.unknownFields _x)))
+instance Control.DeepSeq.NFData UniversalType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_UniversalType'_unknownFields x__)
+             (Control.DeepSeq.deepseq
+                (_UniversalType'typeParameters x__)
+                (Control.DeepSeq.deepseq (_UniversalType'tpe x__) ()))
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.tpe' @:: Lens' ValueSignature Type@
+         * 'Proto.Scip_Fields.maybe'tpe' @:: Lens' ValueSignature (Prelude.Maybe Type)@ -}
+data ValueSignature
+  = ValueSignature'_constructor {_ValueSignature'tpe :: !(Prelude.Maybe Type),
+                                 _ValueSignature'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show ValueSignature where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField ValueSignature "tpe" Type where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ValueSignature'tpe (\ x__ y__ -> x__ {_ValueSignature'tpe = y__}))
+        (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
+instance Data.ProtoLens.Field.HasField ValueSignature "maybe'tpe" (Prelude.Maybe Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _ValueSignature'tpe (\ x__ y__ -> x__ {_ValueSignature'tpe = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message ValueSignature where
+  messageName _ = Data.Text.pack "scip.ValueSignature"
+  packedMessageDescriptor _
+    = "\n\
+      \\SOValueSignature\DC2\FS\n\
+      \\ETXtpe\CAN\SOH \SOH(\v2\n\
+      \.scip.TypeR\ETXtpe"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        tpe__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "tpe"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.OptionalField
+                 (Data.ProtoLens.Field.field @"maybe'tpe")) ::
+              Data.ProtoLens.FieldDescriptor ValueSignature
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, tpe__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _ValueSignature'_unknownFields
+        (\ x__ y__ -> x__ {_ValueSignature'_unknownFields = y__})
+  defMessage
+    = ValueSignature'_constructor
+        {_ValueSignature'tpe = Prelude.Nothing,
+         _ValueSignature'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          ValueSignature
+          -> Data.ProtoLens.Encoding.Bytes.Parser ValueSignature
+        loop x
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t) x)
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                       (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                           Data.ProtoLens.Encoding.Bytes.isolate
+                                             (Prelude.fromIntegral len) Data.ProtoLens.parseMessage)
+                                       "tpe"
+                                loop (Lens.Family2.set (Data.ProtoLens.Field.field @"tpe") y x)
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do loop Data.ProtoLens.defMessage) "ValueSignature"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (case
+                  Lens.Family2.view (Data.ProtoLens.Field.field @"maybe'tpe") _x
+              of
+                Prelude.Nothing -> Data.Monoid.mempty
+                (Prelude.Just _v)
+                  -> (Data.Monoid.<>)
+                       (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                       ((Prelude..)
+                          (\ bs
+                             -> (Data.Monoid.<>)
+                                  (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                     (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                  (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                          Data.ProtoLens.encodeMessage _v))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData ValueSignature where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_ValueSignature'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_ValueSignature'tpe x__) ())
+{- | Fields :
+     
+         * 'Proto.Scip_Fields.types' @:: Lens' WithType [Type]@
+         * 'Proto.Scip_Fields.vec'types' @:: Lens' WithType (Data.Vector.Vector Type)@ -}
+data WithType
+  = WithType'_constructor {_WithType'types :: !(Data.Vector.Vector Type),
+                           _WithType'_unknownFields :: !Data.ProtoLens.FieldSet}
+  deriving stock (Prelude.Eq, Prelude.Ord)
+instance Prelude.Show WithType where
+  showsPrec _ __x __s
+    = Prelude.showChar
+        '{'
+        (Prelude.showString
+           (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
+instance Data.ProtoLens.Field.HasField WithType "types" [Type] where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _WithType'types (\ x__ y__ -> x__ {_WithType'types = y__}))
+        (Lens.Family2.Unchecked.lens
+           Data.Vector.Generic.toList
+           (\ _ y__ -> Data.Vector.Generic.fromList y__))
+instance Data.ProtoLens.Field.HasField WithType "vec'types" (Data.Vector.Vector Type) where
+  fieldOf _
+    = (Prelude..)
+        (Lens.Family2.Unchecked.lens
+           _WithType'types (\ x__ y__ -> x__ {_WithType'types = y__}))
+        Prelude.id
+instance Data.ProtoLens.Message WithType where
+  messageName _ = Data.Text.pack "scip.WithType"
+  packedMessageDescriptor _
+    = "\n\
+      \\bWithType\DC2 \n\
+      \\ENQtypes\CAN\SOH \ETX(\v2\n\
+      \.scip.TypeR\ENQtypes"
+  packedFileDescriptor _ = packedFileDescriptor
+  fieldsByTag
+    = let
+        types__field_descriptor
+          = Data.ProtoLens.FieldDescriptor
+              "types"
+              (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
+                 Data.ProtoLens.FieldTypeDescriptor Type)
+              (Data.ProtoLens.RepeatedField
+                 Data.ProtoLens.Unpacked (Data.ProtoLens.Field.field @"types")) ::
+              Data.ProtoLens.FieldDescriptor WithType
+      in
+        Data.Map.fromList [(Data.ProtoLens.Tag 1, types__field_descriptor)]
+  unknownFields
+    = Lens.Family2.Unchecked.lens
+        _WithType'_unknownFields
+        (\ x__ y__ -> x__ {_WithType'_unknownFields = y__})
+  defMessage
+    = WithType'_constructor
+        {_WithType'types = Data.Vector.Generic.empty,
+         _WithType'_unknownFields = []}
+  parseMessage
+    = let
+        loop ::
+          WithType
+          -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Type
+             -> Data.ProtoLens.Encoding.Bytes.Parser WithType
+        loop x mutable'types
+          = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
+               if end then
+                   do frozen'types <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                        (Data.ProtoLens.Encoding.Growing.unsafeFreeze mutable'types)
+                      (let missing = []
+                       in
+                         if Prelude.null missing then
+                             Prelude.return ()
+                         else
+                             Prelude.fail
+                               ((Prelude.++)
+                                  "Missing required fields: "
+                                  (Prelude.show (missing :: [Prelude.String]))))
+                      Prelude.return
+                        (Lens.Family2.over
+                           Data.ProtoLens.unknownFields (\ !t -> Prelude.reverse t)
+                           (Lens.Family2.set
+                              (Data.ProtoLens.Field.field @"vec'types") frozen'types x))
+               else
+                   do tag <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                      case tag of
+                        10
+                          -> do !y <- (Data.ProtoLens.Encoding.Bytes.<?>)
+                                        (do len <- Data.ProtoLens.Encoding.Bytes.getVarInt
+                                            Data.ProtoLens.Encoding.Bytes.isolate
+                                              (Prelude.fromIntegral len)
+                                              Data.ProtoLens.parseMessage)
+                                        "types"
+                                v <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                       (Data.ProtoLens.Encoding.Growing.append mutable'types y)
+                                loop x v
+                        wire
+                          -> do !y <- Data.ProtoLens.Encoding.Wire.parseTaggedValueFromWire
+                                        wire
+                                loop
+                                  (Lens.Family2.over
+                                     Data.ProtoLens.unknownFields (\ !t -> (:) y t) x)
+                                  mutable'types
+      in
+        (Data.ProtoLens.Encoding.Bytes.<?>)
+          (do mutable'types <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
+                                 Data.ProtoLens.Encoding.Growing.new
+              loop Data.ProtoLens.defMessage mutable'types)
+          "WithType"
+  buildMessage
+    = \ _x
+        -> (Data.Monoid.<>)
+             (Data.ProtoLens.Encoding.Bytes.foldMapBuilder
+                (\ _v
+                   -> (Data.Monoid.<>)
+                        (Data.ProtoLens.Encoding.Bytes.putVarInt 10)
+                        ((Prelude..)
+                           (\ bs
+                              -> (Data.Monoid.<>)
+                                   (Data.ProtoLens.Encoding.Bytes.putVarInt
+                                      (Prelude.fromIntegral (Data.ByteString.length bs)))
+                                   (Data.ProtoLens.Encoding.Bytes.putBytes bs))
+                           Data.ProtoLens.encodeMessage _v))
+                (Lens.Family2.view (Data.ProtoLens.Field.field @"vec'types") _x))
+             (Data.ProtoLens.Encoding.Wire.buildFieldSet
+                (Lens.Family2.view Data.ProtoLens.unknownFields _x))
+instance Control.DeepSeq.NFData WithType where
+  rnf
+    = \ x__
+        -> Control.DeepSeq.deepseq
+             (_WithType'_unknownFields x__)
+             (Control.DeepSeq.deepseq (_WithType'types x__) ())
 packedFileDescriptor :: Data.ByteString.ByteString
 packedFileDescriptor
   = "\n\
@@ -6162,7 +13607,7 @@ packedFileDescriptor
     \\tParameter\DLE\ACK\DC2\b\n\
     \\EOTMeta\DLE\a\DC2\t\n\
     \\ENQLocal\DLE\b\DC2\t\n\
-    \\ENQMacro\DLE\t\SUB\STX\DLE\SOH\"\171\f\n\
+    \\ENQMacro\DLE\t\SUB\STX\DLE\SOH\"\218\f\n\
     \\DC1SymbolInformation\DC2\SYN\n\
     \\ACKsymbol\CAN\SOH \SOH(\tR\ACKsymbol\DC2$\n\
     \\rdocumentation\CAN\ETX \ETX(\tR\rdocumentation\DC28\n\
@@ -6170,7 +13615,8 @@ packedFileDescriptor
     \\EOTkind\CAN\ENQ \SOH(\SO2\FS.scip.SymbolInformation.KindR\EOTkind\DC2!\n\
     \\fdisplay_name\CAN\ACK \SOH(\tR\vdisplayName\DC2G\n\
     \\ETBsignature_documentation\CAN\a \SOH(\v2\SO.scip.DocumentR\SYNsignatureDocumentation\DC2)\n\
-    \\DLEenclosing_symbol\CAN\b \SOH(\tR\SIenclosingSymbol\"\212\t\n\
+    \\DLEenclosing_symbol\CAN\b \SOH(\tR\SIenclosingSymbol\DC2-\n\
+    \\tsignature\CAN\t \SOH(\v2\SI.scip.SignatureR\tsignature\"\212\t\n\
     \\EOTKind\DC2\DC3\n\
     \\SIUnspecifiedKind\DLE\NUL\DC2\DC2\n\
     \\SOAbstractMethod\DLEB\DC2\f\n\
@@ -6290,7 +13736,171 @@ packedFileDescriptor
     \\EOTcode\CAN\STX \SOH(\tR\EOTcode\DC2\CAN\n\
     \\amessage\CAN\ETX \SOH(\tR\amessage\DC2\SYN\n\
     \\ACKsource\CAN\EOT \SOH(\tR\ACKsource\DC2'\n\
-    \\EOTtags\CAN\ENQ \ETX(\SO2\DC3.scip.DiagnosticTagR\EOTtags*1\n\
+    \\EOTtags\CAN\ENQ \ETX(\SO2\DC3.scip.DiagnosticTagR\EOTtags\"*\n\
+    \\n\
+    \Annotation\DC2\FS\n\
+    \\ETXtpe\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ETXtpe\"Z\n\
+    \\ENQScope\DC2\SUB\n\
+    \\bsymlinks\CAN\SOH \ETX(\tR\bsymlinks\DC25\n\
+    \\thardlinks\CAN\STX \ETX(\v2\ETB.scip.SymbolInformationR\thardlinks\"\202\a\n\
+    \\EOTType\DC2*\n\
+    \\btype_ref\CAN\STX \SOH(\v2\r.scip.TypeRefH\NULR\atypeRef\DC23\n\
+    \\vsingle_type\CAN\DC4 \SOH(\v2\DLE.scip.SingleTypeH\NULR\n\
+    \singleType\DC2-\n\
+    \\tthis_type\CAN\NAK \SOH(\v2\SO.scip.ThisTypeH\NULR\bthisType\DC20\n\
+    \\n\
+    \super_type\CAN\SYN \SOH(\v2\SI.scip.SuperTypeH\NULR\tsuperType\DC29\n\
+    \\rconstant_type\CAN\ETB \SOH(\v2\DC2.scip.ConstantTypeH\NULR\fconstantType\DC2E\n\
+    \\DC1intersection_type\CAN\DC1 \SOH(\v2\SYN.scip.IntersectionTypeH\NULR\DLEintersectionType\DC20\n\
+    \\n\
+    \union_type\CAN\DC2 \SOH(\v2\SI.scip.UnionTypeH\NULR\tunionType\DC2-\n\
+    \\twith_type\CAN\DC3 \SOH(\v2\SO.scip.WithTypeH\NULR\bwithType\DC2?\n\
+    \\SIstructural_type\CAN\a \SOH(\v2\DC4.scip.StructuralTypeH\NULR\SOstructuralType\DC2<\n\
+    \\SOannotated_type\CAN\b \SOH(\v2\DC3.scip.AnnotatedTypeH\NULR\rannotatedType\DC2B\n\
+    \\DLEexistential_type\CAN\t \SOH(\v2\NAK.scip.ExistentialTypeH\NULR\SIexistentialType\DC2<\n\
+    \\SOuniversal_type\CAN\n\
+    \ \SOH(\v2\DC3.scip.UniversalTypeH\NULR\runiversalType\DC24\n\
+    \\fby_name_type\CAN\r \SOH(\v2\DLE.scip.ByNameTypeH\NULR\n\
+    \byNameType\DC29\n\
+    \\rrepeated_type\CAN\SO \SOH(\v2\DC2.scip.RepeatedTypeH\NULR\frepeatedType\DC20\n\
+    \\n\
+    \match_type\CAN\EM \SOH(\v2\SI.scip.MatchTypeH\NULR\tmatchType\DC23\n\
+    \\vlambda_type\CAN\SUB \SOH(\v2\DLE.scip.LambdaTypeH\NULR\n\
+    \lambdaTypeB\SO\n\
+    \\fsealed_valueJ\EOT\b\SOH\DLE\STXJ\EOT\b\ETX\DLE\EOTJ\EOT\b\EOT\DLE\ENQJ\EOT\b\ENQ\DLE\ACKJ\EOT\b\ACK\DLE\aJ\EOT\b\v\DLE\fJ\EOT\b\f\DLE\rJ\EOT\b\SI\DLE\DLEJ\EOT\b\DLE\DLE\DC1\"f\n\
+    \\n\
+    \LambdaType\DC2+\n\
+    \\n\
+    \parameters\CAN\SOH \SOH(\v2\v.scip.ScopeR\n\
+    \parameters\DC2+\n\
+    \\vreturn_type\CAN\STX \SOH(\v2\n\
+    \.scip.TypeR\n\
+    \returnType\"x\n\
+    \\aTypeRef\DC2\"\n\
+    \\ACKprefix\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ACKprefix\DC2\SYN\n\
+    \\ACKsymbol\CAN\STX \SOH(\tR\ACKsymbol\DC21\n\
+    \\SOtype_arguments\CAN\ETX \ETX(\v2\n\
+    \.scip.TypeR\rtypeArguments\"H\n\
+    \\n\
+    \SingleType\DC2\"\n\
+    \\ACKprefix\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ACKprefix\DC2\SYN\n\
+    \\ACKsymbol\CAN\STX \SOH(\tR\ACKsymbol\"\"\n\
+    \\bThisType\DC2\SYN\n\
+    \\ACKsymbol\CAN\SOH \SOH(\tR\ACKsymbol\"G\n\
+    \\tSuperType\DC2\"\n\
+    \\ACKprefix\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ACKprefix\DC2\SYN\n\
+    \\ACKsymbol\CAN\STX \SOH(\tR\ACKsymbol\":\n\
+    \\fConstantType\DC2*\n\
+    \\bconstant\CAN\SOH \SOH(\v2\SO.scip.ConstantR\bconstant\"4\n\
+    \\DLEIntersectionType\DC2 \n\
+    \\ENQtypes\CAN\SOH \ETX(\v2\n\
+    \.scip.TypeR\ENQtypes\"-\n\
+    \\tUnionType\DC2 \n\
+    \\ENQtypes\CAN\SOH \ETX(\v2\n\
+    \.scip.TypeR\ENQtypes\",\n\
+    \\bWithType\DC2 \n\
+    \\ENQtypes\CAN\SOH \ETX(\v2\n\
+    \.scip.TypeR\ENQtypes\"q\n\
+    \\SOStructuralType\DC2\FS\n\
+    \\ETXtpe\CAN\EOT \SOH(\v2\n\
+    \.scip.TypeR\ETXtpe\DC2/\n\
+    \\fdeclarations\CAN\ENQ \SOH(\v2\v.scip.ScopeR\fdeclarationsJ\EOT\b\SOH\DLE\STXJ\EOT\b\STX\DLE\ETXJ\EOT\b\ETX\DLE\EOT\"g\n\
+    \\rAnnotatedType\DC22\n\
+    \\vannotations\CAN\ETX \ETX(\v2\DLE.scip.AnnotationR\vannotations\DC2\FS\n\
+    \\ETXtpe\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ETXtpeJ\EOT\b\STX\DLE\ETX\"f\n\
+    \\SIExistentialType\DC2\FS\n\
+    \\ETXtpe\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ETXtpe\DC2/\n\
+    \\fdeclarations\CAN\ETX \SOH(\v2\v.scip.ScopeR\fdeclarationsJ\EOT\b\STX\DLE\ETX\"i\n\
+    \\rUniversalType\DC24\n\
+    \\SItype_parameters\CAN\ETX \SOH(\v2\v.scip.ScopeR\SOtypeParameters\DC2\FS\n\
+    \\ETXtpe\CAN\STX \SOH(\v2\n\
+    \.scip.TypeR\ETXtpeJ\EOT\b\SOH\DLE\STX\"*\n\
+    \\n\
+    \ByNameType\DC2\FS\n\
+    \\ETXtpe\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ETXtpe\",\n\
+    \\fRepeatedType\DC2\FS\n\
+    \\ETXtpe\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ETXtpe\"\175\SOH\n\
+    \\tMatchType\DC2(\n\
+    \\tscrutinee\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\tscrutinee\DC2.\n\
+    \\ENQcases\CAN\STX \ETX(\v2\CAN.scip.MatchType.CaseTypeR\ENQcases\SUBH\n\
+    \\bCaseType\DC2\FS\n\
+    \\ETXkey\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ETXkey\DC2\RS\n\
+    \\EOTbody\CAN\STX \SOH(\v2\n\
+    \.scip.TypeR\EOTbody\"\187\ENQ\n\
+    \\bConstant\DC29\n\
+    \\runit_constant\CAN\SOH \SOH(\v2\DC2.scip.UnitConstantH\NULR\funitConstant\DC2B\n\
+    \\DLEboolean_constant\CAN\STX \SOH(\v2\NAK.scip.BooleanConstantH\NULR\SIbooleanConstant\DC29\n\
+    \\rbyte_constant\CAN\ETX \SOH(\v2\DC2.scip.ByteConstantH\NULR\fbyteConstant\DC2<\n\
+    \\SOshort_constant\CAN\EOT \SOH(\v2\DC3.scip.ShortConstantH\NULR\rshortConstant\DC29\n\
+    \\rchar_constant\CAN\ENQ \SOH(\v2\DC2.scip.CharConstantH\NULR\fcharConstant\DC26\n\
+    \\fint_constant\CAN\ACK \SOH(\v2\DC1.scip.IntConstantH\NULR\vintConstant\DC29\n\
+    \\rlong_constant\CAN\a \SOH(\v2\DC2.scip.LongConstantH\NULR\flongConstant\DC2<\n\
+    \\SOfloat_constant\CAN\b \SOH(\v2\DC3.scip.FloatConstantH\NULR\rfloatConstant\DC2?\n\
+    \\SIdouble_constant\CAN\t \SOH(\v2\DC4.scip.DoubleConstantH\NULR\SOdoubleConstant\DC2?\n\
+    \\SIstring_constant\CAN\n\
+    \ \SOH(\v2\DC4.scip.StringConstantH\NULR\SOstringConstant\DC29\n\
+    \\rnull_constant\CAN\v \SOH(\v2\DC2.scip.NullConstantH\NULR\fnullConstantB\SO\n\
+    \\fsealed_value\"\SO\n\
+    \\fUnitConstant\"'\n\
+    \\SIBooleanConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\bR\ENQvalue\"$\n\
+    \\fByteConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\ENQR\ENQvalue\"%\n\
+    \\rShortConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\ENQR\ENQvalue\"$\n\
+    \\fCharConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\ENQR\ENQvalue\"#\n\
+    \\vIntConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\ENQR\ENQvalue\"$\n\
+    \\fLongConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\ETXR\ENQvalue\"%\n\
+    \\rFloatConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\STXR\ENQvalue\"&\n\
+    \\SODoubleConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\SOHR\ENQvalue\"&\n\
+    \\SOStringConstant\DC2\DC4\n\
+    \\ENQvalue\CAN\SOH \SOH(\tR\ENQvalue\"\SO\n\
+    \\fNullConstant\"\159\STX\n\
+    \\tSignature\DC2?\n\
+    \\SIclass_signature\CAN\SOH \SOH(\v2\DC4.scip.ClassSignatureH\NULR\SOclassSignature\DC2B\n\
+    \\DLEmethod_signature\CAN\STX \SOH(\v2\NAK.scip.MethodSignatureH\NULR\SImethodSignature\DC2<\n\
+    \\SOtype_signature\CAN\ETX \SOH(\v2\DC3.scip.TypeSignatureH\NULR\rtypeSignature\DC2?\n\
+    \\SIvalue_signature\CAN\EOT \SOH(\v2\DC4.scip.ValueSignatureH\NULR\SOvalueSignatureB\SO\n\
+    \\fsealed_value\"\189\SOH\n\
+    \\SOClassSignature\DC24\n\
+    \\SItype_parameters\CAN\SOH \SOH(\v2\v.scip.ScopeR\SOtypeParameters\DC2$\n\
+    \\aparents\CAN\STX \ETX(\v2\n\
+    \.scip.TypeR\aparents\DC2\RS\n\
+    \\EOTself\CAN\ETX \SOH(\v2\n\
+    \.scip.TypeR\EOTself\DC2/\n\
+    \\fdeclarations\CAN\EOT \SOH(\v2\v.scip.ScopeR\fdeclarations\"\170\SOH\n\
+    \\SIMethodSignature\DC24\n\
+    \\SItype_parameters\CAN\SOH \SOH(\v2\v.scip.ScopeR\SOtypeParameters\DC24\n\
+    \\SIparameter_lists\CAN\STX \ETX(\v2\v.scip.ScopeR\SOparameterLists\DC2+\n\
+    \\vreturn_type\CAN\ETX \SOH(\v2\n\
+    \.scip.TypeR\n\
+    \returnType\"\159\SOH\n\
+    \\rTypeSignature\DC24\n\
+    \\SItype_parameters\CAN\SOH \SOH(\v2\v.scip.ScopeR\SOtypeParameters\DC2+\n\
+    \\vlower_bound\CAN\STX \SOH(\v2\n\
+    \.scip.TypeR\n\
+    \lowerBound\DC2+\n\
+    \\vupper_bound\CAN\ETX \SOH(\v2\n\
+    \.scip.TypeR\n\
+    \upperBound\".\n\
+    \\SOValueSignature\DC2\FS\n\
+    \\ETXtpe\CAN\SOH \SOH(\v2\n\
+    \.scip.TypeR\ETXtpe*1\n\
     \\SIProtocolVersion\DC2\RS\n\
     \\SUBUnspecifiedProtocolVersion\DLE\NUL*@\n\
     \\fTextEncoding\DC2\ESC\n\
@@ -6508,9 +14118,9 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\228\180\STX\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\134\235\STX\n\
     \\a\DC2\ENQ\n\
-    \\NUL\233\ACK\SOH\n\
+    \\NUL\184\b\SOH\n\
     \\130\EOT\n\
     \\SOH\f\DC2\ETX\n\
     \\NUL\DC22\247\ETX An index contains one or more pieces of information about a given piece of\n\
@@ -7066,7 +14676,7 @@ packedFileDescriptor
     \\r\n\
     \\ENQ\EOT\ACK\STX\STX\ETX\DC2\EOT\224\SOH\DC2\DC3\n\
     \\131\SOH\n\
-    \\STX\EOT\a\DC2\ACK\229\SOH\NUL\177\ETX\SOH\SUBu SymbolInformation defines metadata about a symbol, such as the symbol's\n\
+    \\STX\EOT\a\DC2\ACK\229\SOH\NUL\180\ETX\SOH\SUBu SymbolInformation defines metadata about a symbol, such as the symbol's\n\
     \ docstring or what package it's defined it.\n\
     \\n\
     \\v\n\
@@ -7763,20 +15373,29 @@ packedFileDescriptor
     \\ENQ\EOT\a\STX\ACK\SOH\DC2\EOT\176\ETX\t\EM\n\
     \\r\n\
     \\ENQ\EOT\a\STX\ACK\ETX\DC2\EOT\176\ETX\FS\GS\n\
+    \J\n\
+    \\EOT\EOT\a\STX\a\DC2\EOT\179\ETX\STX\SUB\SUB< (optional) Experimental support for structured signatures.\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\a\STX\a\ACK\DC2\EOT\179\ETX\STX\v\n\
+    \\r\n\
+    \\ENQ\EOT\a\STX\a\SOH\DC2\EOT\179\ETX\f\NAK\n\
+    \\r\n\
+    \\ENQ\EOT\a\STX\a\ETX\DC2\EOT\179\ETX\CAN\EM\n\
     \\f\n\
-    \\STX\EOT\b\DC2\ACK\180\ETX\NUL\236\ETX\SOH\n\
+    \\STX\EOT\b\DC2\ACK\183\ETX\NUL\239\ETX\SOH\n\
     \\v\n\
-    \\ETX\EOT\b\SOH\DC2\EOT\180\ETX\b\DC4\n\
+    \\ETX\EOT\b\SOH\DC2\EOT\183\ETX\b\DC4\n\
     \\f\n\
-    \\EOT\EOT\b\STX\NUL\DC2\EOT\181\ETX\STX\DC4\n\
+    \\EOT\EOT\b\STX\NUL\DC2\EOT\184\ETX\STX\DC4\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\NUL\ENQ\DC2\EOT\181\ETX\STX\b\n\
+    \\ENQ\EOT\b\STX\NUL\ENQ\DC2\EOT\184\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\NUL\SOH\DC2\EOT\181\ETX\t\SI\n\
+    \\ENQ\EOT\b\STX\NUL\SOH\DC2\EOT\184\ETX\t\SI\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\NUL\ETX\DC2\EOT\181\ETX\DC2\DC3\n\
+    \\ENQ\EOT\b\STX\NUL\ETX\DC2\EOT\184\ETX\DC2\DC3\n\
     \\222\b\n\
-    \\EOT\EOT\b\STX\SOH\DC2\EOT\206\ETX\STX\CAN\SUB\207\b When resolving \"Find references\", this field documents what other symbols\n\
+    \\EOT\EOT\b\STX\SOH\DC2\EOT\209\ETX\STX\CAN\SUB\207\b When resolving \"Find references\", this field documents what other symbols\n\
     \ should be included together with this symbol. For example, consider the\n\
     \ following TypeScript code that defines two symbols `Animal#sound()` and\n\
     \ `Dog#sound()`:\n\
@@ -7802,13 +15421,13 @@ packedFileDescriptor
     \ `Animal#sound()` method as well.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\SOH\ENQ\DC2\EOT\206\ETX\STX\ACK\n\
+    \\ENQ\EOT\b\STX\SOH\ENQ\DC2\EOT\209\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\SOH\SOH\DC2\EOT\206\ETX\a\DC3\n\
+    \\ENQ\EOT\b\STX\SOH\SOH\DC2\EOT\209\ETX\a\DC3\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\SOH\ETX\DC2\EOT\206\ETX\SYN\ETB\n\
+    \\ENQ\EOT\b\STX\SOH\ETX\DC2\EOT\209\ETX\SYN\ETB\n\
     \\238\ETX\n\
-    \\EOT\EOT\b\STX\STX\DC2\EOT\215\ETX\STX\GS\SUB\223\ETX Similar to `is_reference` but for \"Find implementations\".\n\
+    \\EOT\EOT\b\STX\STX\DC2\EOT\218\ETX\STX\GS\SUB\223\ETX Similar to `is_reference` but for \"Find implementations\".\n\
     \ It's common for `is_implementation` and `is_reference` to both be true but\n\
     \ it's not always the case.\n\
     \ In the TypeScript example above, observe that `Dog#` has an\n\
@@ -7818,22 +15437,22 @@ packedFileDescriptor
     \ implementations\" on the \"Animal#\" symbol.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\STX\ENQ\DC2\EOT\215\ETX\STX\ACK\n\
+    \\ENQ\EOT\b\STX\STX\ENQ\DC2\EOT\218\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\STX\SOH\DC2\EOT\215\ETX\a\CAN\n\
+    \\ENQ\EOT\b\STX\STX\SOH\DC2\EOT\218\ETX\a\CAN\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\STX\ETX\DC2\EOT\215\ETX\ESC\FS\n\
+    \\ENQ\EOT\b\STX\STX\ETX\DC2\EOT\218\ETX\ESC\FS\n\
     \P\n\
-    \\EOT\EOT\b\STX\ETX\DC2\EOT\217\ETX\STX\RS\SUBB Similar to `references_symbols` but for \"Go to type definition\".\n\
+    \\EOT\EOT\b\STX\ETX\DC2\EOT\220\ETX\STX\RS\SUBB Similar to `references_symbols` but for \"Go to type definition\".\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\ETX\ENQ\DC2\EOT\217\ETX\STX\ACK\n\
+    \\ENQ\EOT\b\STX\ETX\ENQ\DC2\EOT\220\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\ETX\SOH\DC2\EOT\217\ETX\a\EM\n\
+    \\ENQ\EOT\b\STX\ETX\SOH\DC2\EOT\220\ETX\a\EM\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\ETX\ETX\DC2\EOT\217\ETX\FS\GS\n\
+    \\ENQ\EOT\b\STX\ETX\ETX\DC2\EOT\220\ETX\FS\GS\n\
     \\167\a\n\
-    \\EOT\EOT\b\STX\EOT\DC2\EOT\234\ETX\STX\EM\SUB\213\ACK Allows overriding the behavior of \"Go to definition\" and \"Find references\"\n\
+    \\EOT\EOT\b\STX\EOT\DC2\EOT\237\ETX\STX\EM\SUB\213\ACK Allows overriding the behavior of \"Go to definition\" and \"Find references\"\n\
     \ for symbols which do not have a definition of their own or could\n\
     \ potentially have multiple definitions.\n\
     \\n\
@@ -7852,387 +15471,387 @@ packedFileDescriptor
     \\"A Update registerInverseRelationships on adding a new field here.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\EOT\ENQ\DC2\EOT\234\ETX\STX\ACK\n\
+    \\ENQ\EOT\b\STX\EOT\ENQ\DC2\EOT\237\ETX\STX\ACK\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\EOT\SOH\DC2\EOT\234\ETX\a\DC4\n\
+    \\ENQ\EOT\b\STX\EOT\SOH\DC2\EOT\237\ETX\a\DC4\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\EOT\ETX\DC2\EOT\234\ETX\ETB\CAN\n\
+    \\ENQ\EOT\b\STX\EOT\ETX\DC2\EOT\237\ETX\ETB\CAN\n\
     \\136\ETX\n\
-    \\STX\ENQ\ETX\DC2\ACK\243\ETX\NUL\137\EOT\SOH\SUB\249\STX SymbolRole declares what \"role\" a symbol has in an occurrence. A role is\n\
+    \\STX\ENQ\ETX\DC2\ACK\246\ETX\NUL\140\EOT\SOH\SUB\249\STX SymbolRole declares what \"role\" a symbol has in an occurrence. A role is\n\
     \ encoded as a bitset where each bit represents a different role. For example,\n\
     \ to determine if the `Import` role is set, test whether the second bit of the\n\
     \ enum value is defined. In pseudocode, this can be implemented with the\n\
     \ logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.\n\
     \\n\
     \\v\n\
-    \\ETX\ENQ\ETX\SOH\DC2\EOT\243\ETX\ENQ\SI\n\
+    \\ETX\ENQ\ETX\SOH\DC2\EOT\246\ETX\ENQ\SI\n\
     \v\n\
-    \\EOT\ENQ\ETX\STX\NUL\DC2\EOT\246\ETX\STX\FS\SUBh This case is not meant to be used; it only exists to avoid an error\n\
+    \\EOT\ENQ\ETX\STX\NUL\DC2\EOT\249\ETX\STX\FS\SUBh This case is not meant to be used; it only exists to avoid an error\n\
     \ from the Protobuf code generator.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\NUL\SOH\DC2\EOT\246\ETX\STX\ETB\n\
+    \\ENQ\ENQ\ETX\STX\NUL\SOH\DC2\EOT\249\ETX\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\NUL\STX\DC2\EOT\246\ETX\SUB\ESC\n\
+    \\ENQ\ENQ\ETX\STX\NUL\STX\DC2\EOT\249\ETX\SUB\ESC\n\
     \T\n\
-    \\EOT\ENQ\ETX\STX\SOH\DC2\EOT\248\ETX\STX\DC3\SUBF Is the symbol defined here? If not, then this is a symbol reference.\n\
+    \\EOT\ENQ\ETX\STX\SOH\DC2\EOT\251\ETX\STX\DC3\SUBF Is the symbol defined here? If not, then this is a symbol reference.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SOH\SOH\DC2\EOT\248\ETX\STX\f\n\
+    \\ENQ\ENQ\ETX\STX\SOH\SOH\DC2\EOT\251\ETX\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\SOH\STX\DC2\EOT\248\ETX\SI\DC2\n\
+    \\ENQ\ENQ\ETX\STX\SOH\STX\DC2\EOT\251\ETX\SI\DC2\n\
     \,\n\
-    \\EOT\ENQ\ETX\STX\STX\DC2\EOT\250\ETX\STX\SI\SUB\RS Is the symbol imported here?\n\
+    \\EOT\ENQ\ETX\STX\STX\DC2\EOT\253\ETX\STX\SI\SUB\RS Is the symbol imported here?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\STX\SOH\DC2\EOT\250\ETX\STX\b\n\
+    \\ENQ\ENQ\ETX\STX\STX\SOH\DC2\EOT\253\ETX\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\STX\STX\DC2\EOT\250\ETX\v\SO\n\
+    \\ENQ\ENQ\ETX\STX\STX\STX\DC2\EOT\253\ETX\v\SO\n\
     \+\n\
-    \\EOT\ENQ\ETX\STX\ETX\DC2\EOT\252\ETX\STX\DC4\SUB\GS Is the symbol written here?\n\
+    \\EOT\ENQ\ETX\STX\ETX\DC2\EOT\255\ETX\STX\DC4\SUB\GS Is the symbol written here?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ETX\SOH\DC2\EOT\252\ETX\STX\r\n\
+    \\ENQ\ENQ\ETX\STX\ETX\SOH\DC2\EOT\255\ETX\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ETX\STX\DC2\EOT\252\ETX\DLE\DC3\n\
+    \\ENQ\ENQ\ETX\STX\ETX\STX\DC2\EOT\255\ETX\DLE\DC3\n\
     \(\n\
-    \\EOT\ENQ\ETX\STX\EOT\DC2\EOT\254\ETX\STX\DC3\SUB\SUB Is the symbol read here?\n\
+    \\EOT\ENQ\ETX\STX\EOT\DC2\EOT\129\EOT\STX\DC3\SUB\SUB Is the symbol read here?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\EOT\SOH\DC2\EOT\254\ETX\STX\f\n\
+    \\ENQ\ENQ\ETX\STX\EOT\SOH\DC2\EOT\129\EOT\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\EOT\STX\DC2\EOT\254\ETX\SI\DC2\n\
+    \\ENQ\ENQ\ETX\STX\EOT\STX\DC2\EOT\129\EOT\SI\DC2\n\
     \0\n\
-    \\EOT\ENQ\ETX\STX\ENQ\DC2\EOT\128\EOT\STX\DC3\SUB\" Is the symbol in generated code?\n\
+    \\EOT\ENQ\ETX\STX\ENQ\DC2\EOT\131\EOT\STX\DC3\SUB\" Is the symbol in generated code?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ENQ\SOH\DC2\EOT\128\EOT\STX\v\n\
+    \\ENQ\ENQ\ETX\STX\ENQ\SOH\DC2\EOT\131\EOT\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ENQ\STX\DC2\EOT\128\EOT\SO\DC2\n\
+    \\ENQ\ENQ\ETX\STX\ENQ\STX\DC2\EOT\131\EOT\SO\DC2\n\
     \+\n\
-    \\EOT\ENQ\ETX\STX\ACK\DC2\EOT\130\EOT\STX\SO\SUB\GS Is the symbol in test code?\n\
+    \\EOT\ENQ\ETX\STX\ACK\DC2\EOT\133\EOT\STX\SO\SUB\GS Is the symbol in test code?\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ACK\SOH\DC2\EOT\130\EOT\STX\ACK\n\
+    \\ENQ\ENQ\ETX\STX\ACK\SOH\DC2\EOT\133\EOT\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\ACK\STX\DC2\EOT\130\EOT\t\r\n\
+    \\ENQ\ENQ\ETX\STX\ACK\STX\DC2\EOT\133\EOT\t\r\n\
     \\237\SOH\n\
-    \\EOT\ENQ\ETX\STX\a\DC2\EOT\136\EOT\STX\ESC\SUB\222\SOH Is this a signature for a symbol that is defined elsewhere?\n\
+    \\EOT\ENQ\ETX\STX\a\DC2\EOT\139\EOT\STX\ESC\SUB\222\SOH Is this a signature for a symbol that is defined elsewhere?\n\
     \\n\
     \ Applies to forward declarations for languages like C, C++\n\
     \ and Objective-C, as well as `val` declarations in interface\n\
     \ files in languages like SML and OCaml.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\a\SOH\DC2\EOT\136\EOT\STX\DC3\n\
+    \\ENQ\ENQ\ETX\STX\a\SOH\DC2\EOT\139\EOT\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\ETX\STX\a\STX\DC2\EOT\136\EOT\SYN\SUB\n\
+    \\ENQ\ENQ\ETX\STX\a\STX\DC2\EOT\139\EOT\SYN\SUB\n\
     \\f\n\
-    \\STX\ENQ\EOT\DC2\ACK\139\EOT\NUL\232\EOT\SOH\n\
+    \\STX\ENQ\EOT\DC2\ACK\142\EOT\NUL\235\EOT\SOH\n\
     \\v\n\
-    \\ETX\ENQ\EOT\SOH\DC2\EOT\139\EOT\ENQ\SI\n\
+    \\ETX\ENQ\EOT\SOH\DC2\EOT\142\EOT\ENQ\SI\n\
     \\v\n\
-    \\ETX\ENQ\EOT\ETX\DC2\EOT\140\EOT\STX\FS\n\
+    \\ETX\ENQ\EOT\ETX\DC2\EOT\143\EOT\STX\FS\n\
     \\f\n\
-    \\EOT\ENQ\EOT\ETX\STX\DC2\EOT\140\EOT\STX\FS\n\
+    \\EOT\ENQ\EOT\ETX\STX\DC2\EOT\143\EOT\STX\FS\n\
     \\f\n\
-    \\EOT\ENQ\EOT\STX\NUL\DC2\EOT\142\EOT\STX\FS\n\
+    \\EOT\ENQ\EOT\STX\NUL\DC2\EOT\145\EOT\STX\FS\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\NUL\SOH\DC2\EOT\142\EOT\STX\ETB\n\
+    \\ENQ\ENQ\EOT\STX\NUL\SOH\DC2\EOT\145\EOT\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\NUL\STX\DC2\EOT\142\EOT\SUB\ESC\n\
+    \\ENQ\ENQ\EOT\STX\NUL\STX\DC2\EOT\145\EOT\SUB\ESC\n\
     \;\n\
-    \\EOT\ENQ\EOT\STX\SOH\DC2\EOT\145\EOT\STX\SO\SUB- Comment, including comment markers and text\n\
+    \\EOT\ENQ\EOT\STX\SOH\DC2\EOT\148\EOT\STX\SO\SUB- Comment, including comment markers and text\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SOH\SOH\DC2\EOT\145\EOT\STX\t\n\
+    \\ENQ\ENQ\EOT\STX\SOH\SOH\DC2\EOT\148\EOT\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SOH\STX\DC2\EOT\145\EOT\f\r\n\
+    \\ENQ\ENQ\EOT\STX\SOH\STX\DC2\EOT\148\EOT\f\r\n\
     \\ESC\n\
-    \\EOT\ENQ\EOT\STX\STX\DC2\EOT\148\EOT\STX\ESC\SUB\r `;` `.` `,`\n\
+    \\EOT\ENQ\EOT\STX\STX\DC2\EOT\151\EOT\STX\ESC\SUB\r `;` `.` `,`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\STX\SOH\DC2\EOT\148\EOT\STX\SYN\n\
+    \\ENQ\ENQ\EOT\STX\STX\SOH\DC2\EOT\151\EOT\STX\SYN\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\STX\STX\DC2\EOT\148\EOT\EM\SUB\n\
+    \\ENQ\ENQ\EOT\STX\STX\STX\DC2\EOT\151\EOT\EM\SUB\n\
     \2\n\
-    \\EOT\ENQ\EOT\STX\ETX\DC2\EOT\150\EOT\STX\EM\SUB$ (), {}, [] when used syntactically\n\
+    \\EOT\ENQ\EOT\STX\ETX\DC2\EOT\153\EOT\STX\EM\SUB$ (), {}, [] when used syntactically\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ETX\SOH\DC2\EOT\150\EOT\STX\DC4\n\
+    \\ENQ\ENQ\EOT\STX\ETX\SOH\DC2\EOT\153\EOT\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ETX\STX\DC2\EOT\150\EOT\ETB\CAN\n\
+    \\ENQ\ENQ\EOT\STX\ETX\STX\DC2\EOT\153\EOT\ETB\CAN\n\
     \5\n\
-    \\EOT\ENQ\EOT\STX\EOT\DC2\EOT\153\EOT\STX\SO\SUB' `if`, `else`, `return`, `class`, etc.\n\
+    \\EOT\ENQ\EOT\STX\EOT\DC2\EOT\156\EOT\STX\SO\SUB' `if`, `else`, `return`, `class`, etc.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\EOT\SOH\DC2\EOT\153\EOT\STX\t\n\
+    \\ENQ\ENQ\EOT\STX\EOT\SOH\DC2\EOT\156\EOT\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\EOT\STX\DC2\EOT\153\EOT\f\r\n\
+    \\ENQ\ENQ\EOT\STX\EOT\STX\DC2\EOT\156\EOT\f\r\n\
     \\f\n\
-    \\EOT\ENQ\EOT\STX\ENQ\DC2\EOT\154\EOT\STX*\n\
+    \\EOT\ENQ\EOT\STX\ENQ\DC2\EOT\157\EOT\STX*\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ENQ\SOH\DC2\EOT\154\EOT\STX\DC3\n\
+    \\ENQ\ENQ\EOT\STX\ENQ\SOH\DC2\EOT\157\EOT\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ENQ\STX\DC2\EOT\154\EOT\SYN\ETB\n\
+    \\ENQ\ENQ\EOT\STX\ENQ\STX\DC2\EOT\157\EOT\SYN\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ENQ\ETX\DC2\EOT\154\EOT\CAN)\n\
+    \\ENQ\ENQ\EOT\STX\ENQ\ETX\DC2\EOT\157\EOT\CAN)\n\
     \\SO\n\
-    \\ACK\ENQ\EOT\STX\ENQ\ETX\SOH\DC2\EOT\154\EOT\EM(\n\
+    \\ACK\ENQ\EOT\STX\ENQ\ETX\SOH\DC2\EOT\157\EOT\EM(\n\
     \\RS\n\
-    \\EOT\ENQ\EOT\STX\ACK\DC2\EOT\157\EOT\STX\EM\SUB\DLE `+`, `*`, etc.\n\
+    \\EOT\ENQ\EOT\STX\ACK\DC2\EOT\160\EOT\STX\EM\SUB\DLE `+`, `*`, etc.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ACK\SOH\DC2\EOT\157\EOT\STX\DC4\n\
+    \\ENQ\ENQ\EOT\STX\ACK\SOH\DC2\EOT\160\EOT\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ACK\STX\DC2\EOT\157\EOT\ETB\CAN\n\
+    \\ENQ\ENQ\EOT\STX\ACK\STX\DC2\EOT\160\EOT\ETB\CAN\n\
     \X\n\
-    \\EOT\ENQ\EOT\STX\a\DC2\EOT\160\EOT\STX\DC1\SUBJ non-specific catch-all for any identifier not better described elsewhere\n\
+    \\EOT\ENQ\EOT\STX\a\DC2\EOT\163\EOT\STX\DC1\SUBJ non-specific catch-all for any identifier not better described elsewhere\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\a\SOH\DC2\EOT\160\EOT\STX\f\n\
+    \\ENQ\ENQ\EOT\STX\a\SOH\DC2\EOT\163\EOT\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\a\STX\DC2\EOT\160\EOT\SI\DLE\n\
+    \\ENQ\ENQ\EOT\STX\a\STX\DC2\EOT\163\EOT\SI\DLE\n\
     \N\n\
-    \\EOT\ENQ\EOT\STX\b\DC2\EOT\162\EOT\STX\CAN\SUB@ Identifiers builtin to the language: `min`, `print` in Python.\n\
+    \\EOT\ENQ\EOT\STX\b\DC2\EOT\165\EOT\STX\CAN\SUB@ Identifiers builtin to the language: `min`, `print` in Python.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\b\SOH\DC2\EOT\162\EOT\STX\DC3\n\
+    \\ENQ\ENQ\EOT\STX\b\SOH\DC2\EOT\165\EOT\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\b\STX\DC2\EOT\162\EOT\SYN\ETB\n\
+    \\ENQ\ENQ\EOT\STX\b\STX\DC2\EOT\165\EOT\SYN\ETB\n\
     \[\n\
-    \\EOT\ENQ\EOT\STX\t\DC2\EOT\164\EOT\STX\NAK\SUBM Identifiers representing `null`-like values: `None` in Python, `nil` in Go.\n\
+    \\EOT\ENQ\EOT\STX\t\DC2\EOT\167\EOT\STX\NAK\SUBM Identifiers representing `null`-like values: `None` in Python, `nil` in Go.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\t\SOH\DC2\EOT\164\EOT\STX\DLE\n\
+    \\ENQ\ENQ\EOT\STX\t\SOH\DC2\EOT\167\EOT\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\t\STX\DC2\EOT\164\EOT\DC3\DC4\n\
+    \\ENQ\ENQ\EOT\STX\t\STX\DC2\EOT\167\EOT\DC3\DC4\n\
     \.\n\
     \\EOT\ENQ\EOT\STX\n\
-    \\DC2\EOT\166\EOT\STX\EM\SUB  `xyz` in `const xyz = \"hello\"`\n\
+    \\DC2\EOT\169\EOT\STX\EM\SUB  `xyz` in `const xyz = \"hello\"`\n\
     \\n\
     \\r\n\
     \\ENQ\ENQ\EOT\STX\n\
-    \\SOH\DC2\EOT\166\EOT\STX\DC4\n\
+    \\SOH\DC2\EOT\169\EOT\STX\DC4\n\
     \\r\n\
     \\ENQ\ENQ\EOT\STX\n\
-    \\STX\DC2\EOT\166\EOT\ETB\CAN\n\
+    \\STX\DC2\EOT\169\EOT\ETB\CAN\n\
     \'\n\
-    \\EOT\ENQ\EOT\STX\v\DC2\EOT\168\EOT\STX\US\SUB\EM `var X = \"hello\"` in Go\n\
+    \\EOT\ENQ\EOT\STX\v\DC2\EOT\171\EOT\STX\US\SUB\EM `var X = \"hello\"` in Go\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\v\SOH\DC2\EOT\168\EOT\STX\EM\n\
+    \\ENQ\ENQ\EOT\STX\v\SOH\DC2\EOT\171\EOT\STX\EM\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\v\STX\DC2\EOT\168\EOT\FS\RS\n\
+    \\ENQ\ENQ\EOT\STX\v\STX\DC2\EOT\171\EOT\FS\RS\n\
     \3\n\
-    \\EOT\ENQ\EOT\STX\f\DC2\EOT\170\EOT\STX\ESC\SUB% Parameter definition and references\n\
+    \\EOT\ENQ\EOT\STX\f\DC2\EOT\173\EOT\STX\ESC\SUB% Parameter definition and references\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\f\SOH\DC2\EOT\170\EOT\STX\NAK\n\
+    \\ENQ\ENQ\EOT\STX\f\SOH\DC2\EOT\173\EOT\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\f\STX\DC2\EOT\170\EOT\CAN\SUB\n\
+    \\ENQ\ENQ\EOT\STX\f\STX\DC2\EOT\173\EOT\CAN\SUB\n\
     \X\n\
-    \\EOT\ENQ\EOT\STX\r\DC2\EOT\172\EOT\STX\ETB\SUBJ Identifiers for variable definitions and references within a local scope\n\
+    \\EOT\ENQ\EOT\STX\r\DC2\EOT\175\EOT\STX\ETB\SUBJ Identifiers for variable definitions and references within a local scope\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\r\SOH\DC2\EOT\172\EOT\STX\DC1\n\
+    \\ENQ\ENQ\EOT\STX\r\SOH\DC2\EOT\175\EOT\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\r\STX\DC2\EOT\172\EOT\DC4\SYN\n\
+    \\ENQ\ENQ\EOT\STX\r\STX\DC2\EOT\175\EOT\DC4\SYN\n\
     \K\n\
-    \\EOT\ENQ\EOT\STX\SO\DC2\EOT\174\EOT\STX\SUB\SUB= Identifiers that shadow other identifiers in an outer scope\n\
+    \\EOT\ENQ\EOT\STX\SO\DC2\EOT\177\EOT\STX\SUB\SUB= Identifiers that shadow other identifiers in an outer scope\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SO\SOH\DC2\EOT\174\EOT\STX\DC4\n\
+    \\ENQ\ENQ\EOT\STX\SO\SOH\DC2\EOT\177\EOT\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SO\STX\DC2\EOT\174\EOT\ETB\EM\n\
+    \\ENQ\ENQ\EOT\STX\SO\STX\DC2\EOT\177\EOT\ETB\EM\n\
     \\205\SOH\n\
-    \\EOT\ENQ\EOT\STX\SI\DC2\EOT\179\EOT\STX\ESC\SUB\190\SOH Identifier representing a unit of code abstraction and/or namespacing.\n\
+    \\EOT\ENQ\EOT\STX\SI\DC2\EOT\182\EOT\STX\ESC\SUB\190\SOH Identifier representing a unit of code abstraction and/or namespacing.\n\
     \\n\
     \ NOTE: This corresponds to a package in Go and JVM languages,\n\
     \ and a module in languages like Python and JavaScript.\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SI\SOH\DC2\EOT\179\EOT\STX\NAK\n\
+    \\ENQ\ENQ\EOT\STX\SI\SOH\DC2\EOT\182\EOT\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SI\STX\DC2\EOT\179\EOT\CAN\SUB\n\
+    \\ENQ\ENQ\EOT\STX\SI\STX\DC2\EOT\182\EOT\CAN\SUB\n\
     \\f\n\
-    \\EOT\ENQ\EOT\STX\DLE\DC2\EOT\180\EOT\STX*\n\
+    \\EOT\ENQ\EOT\STX\DLE\DC2\EOT\183\EOT\STX*\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DLE\SOH\DC2\EOT\180\EOT\STX\DC2\n\
+    \\ENQ\ENQ\EOT\STX\DLE\SOH\DC2\EOT\183\EOT\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DLE\STX\DC2\EOT\180\EOT\NAK\ETB\n\
+    \\ENQ\ENQ\EOT\STX\DLE\STX\DC2\EOT\183\EOT\NAK\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DLE\ETX\DC2\EOT\180\EOT\CAN)\n\
+    \\ENQ\ENQ\EOT\STX\DLE\ETX\DC2\EOT\183\EOT\CAN)\n\
     \\SO\n\
-    \\ACK\ENQ\EOT\STX\DLE\ETX\SOH\DC2\EOT\180\EOT\EM(\n\
+    \\ACK\ENQ\EOT\STX\DLE\ETX\SOH\DC2\EOT\183\EOT\EM(\n\
     \4\n\
-    \\EOT\ENQ\EOT\STX\DC1\DC2\EOT\183\EOT\STX\SUB\SUB& Function references, including calls\n\
+    \\EOT\ENQ\EOT\STX\DC1\DC2\EOT\186\EOT\STX\SUB\SUB& Function references, including calls\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DC1\SOH\DC2\EOT\183\EOT\STX\DC4\n\
+    \\ENQ\ENQ\EOT\STX\DC1\SOH\DC2\EOT\186\EOT\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DC1\STX\DC2\EOT\183\EOT\ETB\EM\n\
+    \\ENQ\ENQ\EOT\STX\DC1\STX\DC2\EOT\186\EOT\ETB\EM\n\
     \(\n\
-    \\EOT\ENQ\EOT\STX\DC2\DC2\EOT\185\EOT\STX$\SUB\SUB Function definition only\n\
+    \\EOT\ENQ\EOT\STX\DC2\DC2\EOT\188\EOT\STX$\SUB\SUB Function definition only\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DC2\SOH\DC2\EOT\185\EOT\STX\RS\n\
+    \\ENQ\ENQ\EOT\STX\DC2\SOH\DC2\EOT\188\EOT\STX\RS\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DC2\STX\DC2\EOT\185\EOT!#\n\
+    \\ENQ\ENQ\EOT\STX\DC2\STX\DC2\EOT\188\EOT!#\n\
     \7\n\
-    \\EOT\ENQ\EOT\STX\DC3\DC2\EOT\188\EOT\STX\ETB\SUB) Macro references, including invocations\n\
+    \\EOT\ENQ\EOT\STX\DC3\DC2\EOT\191\EOT\STX\ETB\SUB) Macro references, including invocations\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DC3\SOH\DC2\EOT\188\EOT\STX\DC1\n\
+    \\ENQ\ENQ\EOT\STX\DC3\SOH\DC2\EOT\191\EOT\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DC3\STX\DC2\EOT\188\EOT\DC4\SYN\n\
+    \\ENQ\ENQ\EOT\STX\DC3\STX\DC2\EOT\191\EOT\DC4\SYN\n\
     \%\n\
-    \\EOT\ENQ\EOT\STX\DC4\DC2\EOT\190\EOT\STX!\SUB\ETB Macro definition only\n\
+    \\EOT\ENQ\EOT\STX\DC4\DC2\EOT\193\EOT\STX!\SUB\ETB Macro definition only\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DC4\SOH\DC2\EOT\190\EOT\STX\ESC\n\
+    \\ENQ\ENQ\EOT\STX\DC4\SOH\DC2\EOT\193\EOT\STX\ESC\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\DC4\STX\DC2\EOT\190\EOT\RS \n\
+    \\ENQ\ENQ\EOT\STX\DC4\STX\DC2\EOT\193\EOT\RS \n\
     \!\n\
-    \\EOT\ENQ\EOT\STX\NAK\DC2\EOT\193\EOT\STX\SYN\SUB\DC3 non-builtin types\n\
+    \\EOT\ENQ\EOT\STX\NAK\DC2\EOT\196\EOT\STX\SYN\SUB\DC3 non-builtin types\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\NAK\SOH\DC2\EOT\193\EOT\STX\DLE\n\
+    \\ENQ\ENQ\EOT\STX\NAK\SOH\DC2\EOT\196\EOT\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\NAK\STX\DC2\EOT\193\EOT\DC3\NAK\n\
+    \\ENQ\ENQ\EOT\STX\NAK\STX\DC2\EOT\196\EOT\DC3\NAK\n\
     \K\n\
-    \\EOT\ENQ\EOT\STX\SYN\DC2\EOT\195\EOT\STX\GS\SUB= builtin types only, such as `str` for Python or `int` in Go\n\
+    \\EOT\ENQ\EOT\STX\SYN\DC2\EOT\198\EOT\STX\GS\SUB= builtin types only, such as `str` for Python or `int` in Go\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SYN\SOH\DC2\EOT\195\EOT\STX\ETB\n\
+    \\ENQ\ENQ\EOT\STX\SYN\SOH\DC2\EOT\198\EOT\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SYN\STX\DC2\EOT\195\EOT\SUB\FS\n\
+    \\ENQ\ENQ\EOT\STX\SYN\STX\DC2\EOT\198\EOT\SUB\FS\n\
     \7\n\
-    \\EOT\ENQ\EOT\STX\ETB\DC2\EOT\198\EOT\STX\ESC\SUB) Python decorators, c-like __attribute__\n\
+    \\EOT\ENQ\EOT\STX\ETB\DC2\EOT\201\EOT\STX\ESC\SUB) Python decorators, c-like __attribute__\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ETB\SOH\DC2\EOT\198\EOT\STX\NAK\n\
+    \\ENQ\ENQ\EOT\STX\ETB\SOH\DC2\EOT\201\EOT\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ETB\STX\DC2\EOT\198\EOT\CAN\SUB\n\
+    \\ENQ\ENQ\EOT\STX\ETB\STX\DC2\EOT\201\EOT\CAN\SUB\n\
     \\DC4\n\
-    \\EOT\ENQ\EOT\STX\CAN\DC2\EOT\201\EOT\STX\DC3\SUB\ACK `\\b`\n\
+    \\EOT\ENQ\EOT\STX\CAN\DC2\EOT\204\EOT\STX\DC3\SUB\ACK `\\b`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\CAN\SOH\DC2\EOT\201\EOT\STX\r\n\
+    \\ENQ\ENQ\EOT\STX\CAN\SOH\DC2\EOT\204\EOT\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\CAN\STX\DC2\EOT\201\EOT\DLE\DC2\n\
+    \\ENQ\ENQ\EOT\STX\CAN\STX\DC2\EOT\204\EOT\DLE\DC2\n\
     \\CAN\n\
-    \\EOT\ENQ\EOT\STX\EM\DC2\EOT\203\EOT\STX\NAK\SUB\n\
+    \\EOT\ENQ\EOT\STX\EM\DC2\EOT\206\EOT\STX\NAK\SUB\n\
     \ `*`, `+`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\EM\SOH\DC2\EOT\203\EOT\STX\SI\n\
+    \\ENQ\ENQ\EOT\STX\EM\SOH\DC2\EOT\206\EOT\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\EM\STX\DC2\EOT\203\EOT\DC2\DC4\n\
+    \\ENQ\ENQ\EOT\STX\EM\STX\DC2\EOT\206\EOT\DC2\DC4\n\
     \\DC3\n\
-    \\EOT\ENQ\EOT\STX\SUB\DC2\EOT\205\EOT\STX\NAK\SUB\ENQ `.`\n\
+    \\EOT\ENQ\EOT\STX\SUB\DC2\EOT\208\EOT\STX\NAK\SUB\ENQ `.`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SUB\SOH\DC2\EOT\205\EOT\STX\SI\n\
+    \\ENQ\ENQ\EOT\STX\SUB\SOH\DC2\EOT\208\EOT\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\SUB\STX\DC2\EOT\205\EOT\DC2\DC4\n\
+    \\ENQ\ENQ\EOT\STX\SUB\STX\DC2\EOT\208\EOT\DC2\DC4\n\
     \\"\n\
-    \\EOT\ENQ\EOT\STX\ESC\DC2\EOT\207\EOT\STX\SYN\SUB\DC4 `(`, `)`, `[`, `]`\n\
+    \\EOT\ENQ\EOT\STX\ESC\DC2\EOT\210\EOT\STX\SYN\SUB\DC4 `(`, `)`, `[`, `]`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ESC\SOH\DC2\EOT\207\EOT\STX\DLE\n\
+    \\ENQ\ENQ\EOT\STX\ESC\SOH\DC2\EOT\210\EOT\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\ESC\STX\DC2\EOT\207\EOT\DC3\NAK\n\
+    \\ENQ\ENQ\EOT\STX\ESC\STX\DC2\EOT\210\EOT\DC3\NAK\n\
     \\CAN\n\
-    \\EOT\ENQ\EOT\STX\FS\DC2\EOT\209\EOT\STX\DC1\SUB\n\
+    \\EOT\ENQ\EOT\STX\FS\DC2\EOT\212\EOT\STX\DC1\SUB\n\
     \ `|`, `-`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\FS\SOH\DC2\EOT\209\EOT\STX\v\n\
+    \\ENQ\ENQ\EOT\STX\FS\SOH\DC2\EOT\212\EOT\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\FS\STX\DC2\EOT\209\EOT\SO\DLE\n\
+    \\ENQ\ENQ\EOT\STX\FS\STX\DC2\EOT\212\EOT\SO\DLE\n\
     \0\n\
-    \\EOT\ENQ\EOT\STX\GS\DC2\EOT\212\EOT\STX\NAK\SUB\" Literal strings: \"Hello, world!\"\n\
+    \\EOT\ENQ\EOT\STX\GS\DC2\EOT\215\EOT\STX\NAK\SUB\" Literal strings: \"Hello, world!\"\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\GS\SOH\DC2\EOT\212\EOT\STX\SI\n\
+    \\ENQ\ENQ\EOT\STX\GS\SOH\DC2\EOT\215\EOT\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\GS\STX\DC2\EOT\212\EOT\DC2\DC4\n\
+    \\ENQ\ENQ\EOT\STX\GS\STX\DC2\EOT\215\EOT\DC2\DC4\n\
     \-\n\
-    \\EOT\ENQ\EOT\STX\RS\DC2\EOT\214\EOT\STX\ESC\SUB\US non-regex escapes: \"\\t\", \"\\n\"\n\
+    \\EOT\ENQ\EOT\STX\RS\DC2\EOT\217\EOT\STX\ESC\SUB\US non-regex escapes: \"\\t\", \"\\n\"\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\RS\SOH\DC2\EOT\214\EOT\STX\NAK\n\
+    \\ENQ\ENQ\EOT\STX\RS\SOH\DC2\EOT\217\EOT\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\RS\STX\DC2\EOT\214\EOT\CAN\SUB\n\
+    \\ENQ\ENQ\EOT\STX\RS\STX\DC2\EOT\217\EOT\CAN\SUB\n\
     \_\n\
-    \\EOT\ENQ\EOT\STX\US\DC2\EOT\216\EOT\STX\FS\SUBQ datetimes within strings, special words within a string, `{}` in format strings\n\
+    \\EOT\ENQ\EOT\STX\US\DC2\EOT\219\EOT\STX\FS\SUBQ datetimes within strings, special words within a string, `{}` in format strings\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\US\SOH\DC2\EOT\216\EOT\STX\SYN\n\
+    \\ENQ\ENQ\EOT\STX\US\SOH\DC2\EOT\219\EOT\STX\SYN\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\US\STX\DC2\EOT\216\EOT\EM\ESC\n\
+    \\ENQ\ENQ\EOT\STX\US\STX\DC2\EOT\219\EOT\EM\ESC\n\
     \G\n\
-    \\EOT\ENQ\EOT\STX \DC2\EOT\218\EOT\STX\CAN\SUB9 \"key\" in { \"key\": \"value\" }, useful for example in JSON\n\
+    \\EOT\ENQ\EOT\STX \DC2\EOT\221\EOT\STX\CAN\SUB9 \"key\" in { \"key\": \"value\" }, useful for example in JSON\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX \SOH\DC2\EOT\218\EOT\STX\DC2\n\
+    \\ENQ\ENQ\EOT\STX \SOH\DC2\EOT\221\EOT\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX \STX\DC2\EOT\218\EOT\NAK\ETB\n\
+    \\ENQ\ENQ\EOT\STX \STX\DC2\EOT\221\EOT\NAK\ETB\n\
     \V\n\
-    \\EOT\ENQ\EOT\STX!\DC2\EOT\220\EOT\STX\CAN\SUBH 'c' or similar, in languages that differentiate strings and characters\n\
+    \\EOT\ENQ\EOT\STX!\DC2\EOT\223\EOT\STX\CAN\SUBH 'c' or similar, in languages that differentiate strings and characters\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX!\SOH\DC2\EOT\220\EOT\STX\DC2\n\
+    \\ENQ\ENQ\EOT\STX!\SOH\DC2\EOT\223\EOT\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX!\STX\DC2\EOT\220\EOT\NAK\ETB\n\
+    \\ENQ\ENQ\EOT\STX!\STX\DC2\EOT\223\EOT\NAK\ETB\n\
     \9\n\
-    \\EOT\ENQ\EOT\STX\"\DC2\EOT\222\EOT\STX\SYN\SUB+ Literal numbers, both floats and integers\n\
+    \\EOT\ENQ\EOT\STX\"\DC2\EOT\225\EOT\STX\SYN\SUB+ Literal numbers, both floats and integers\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\"\SOH\DC2\EOT\222\EOT\STX\DLE\n\
+    \\ENQ\ENQ\EOT\STX\"\SOH\DC2\EOT\225\EOT\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX\"\STX\DC2\EOT\222\EOT\DC3\NAK\n\
+    \\ENQ\ENQ\EOT\STX\"\STX\DC2\EOT\225\EOT\DC3\NAK\n\
     \\US\n\
-    \\EOT\ENQ\EOT\STX#\DC2\EOT\224\EOT\STX\SYN\SUB\DC1 `true`, `false`\n\
+    \\EOT\ENQ\EOT\STX#\DC2\EOT\227\EOT\STX\SYN\SUB\DC1 `true`, `false`\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX#\SOH\DC2\EOT\224\EOT\STX\DLE\n\
+    \\ENQ\ENQ\EOT\STX#\SOH\DC2\EOT\227\EOT\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX#\STX\DC2\EOT\224\EOT\DC3\NAK\n\
+    \\ENQ\ENQ\EOT\STX#\STX\DC2\EOT\227\EOT\DC3\NAK\n\
     \&\n\
-    \\EOT\ENQ\EOT\STX$\DC2\EOT\227\EOT\STX\v\SUB\CAN Used for XML-like tags\n\
+    \\EOT\ENQ\EOT\STX$\DC2\EOT\230\EOT\STX\v\SUB\CAN Used for XML-like tags\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX$\SOH\DC2\EOT\227\EOT\STX\ENQ\n\
+    \\ENQ\ENQ\EOT\STX$\SOH\DC2\EOT\230\EOT\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX$\STX\DC2\EOT\227\EOT\b\n\
+    \\ENQ\ENQ\EOT\STX$\STX\DC2\EOT\230\EOT\b\n\
     \\n\
     \/\n\
-    \\EOT\ENQ\EOT\STX%\DC2\EOT\229\EOT\STX\DC4\SUB! Attribute name in XML-like tags\n\
+    \\EOT\ENQ\EOT\STX%\DC2\EOT\232\EOT\STX\DC4\SUB! Attribute name in XML-like tags\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX%\SOH\DC2\EOT\229\EOT\STX\SO\n\
+    \\ENQ\ENQ\EOT\STX%\SOH\DC2\EOT\232\EOT\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX%\STX\DC2\EOT\229\EOT\DC1\DC3\n\
+    \\ENQ\ENQ\EOT\STX%\STX\DC2\EOT\232\EOT\DC1\DC3\n\
     \,\n\
-    \\EOT\ENQ\EOT\STX&\DC2\EOT\231\EOT\STX\DC4\SUB\RS Delimiters for XML-like tags\n\
+    \\EOT\ENQ\EOT\STX&\DC2\EOT\234\EOT\STX\DC4\SUB\RS Delimiters for XML-like tags\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX&\SOH\DC2\EOT\231\EOT\STX\SO\n\
+    \\ENQ\ENQ\EOT\STX&\SOH\DC2\EOT\234\EOT\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\EOT\STX&\STX\DC2\EOT\231\EOT\DC1\DC3\n\
+    \\ENQ\ENQ\EOT\STX&\STX\DC2\EOT\234\EOT\DC1\DC3\n\
     \\249\SOH\n\
-    \\STX\EOT\t\DC2\ACK\239\EOT\NUL\206\ENQ\SOH\SUB\234\SOH Occurrence associates a source position with a symbol and/or highlighting\n\
+    \\STX\EOT\t\DC2\ACK\242\EOT\NUL\209\ENQ\SOH\SUB\234\SOH Occurrence associates a source position with a symbol and/or highlighting\n\
     \ information.\n\
     \\n\
     \ If possible, indexers should try to bundle logically related information\n\
     \ across occurrences into a single occurrence to reduce payload sizes.\n\
     \\n\
     \\v\n\
-    \\ETX\EOT\t\SOH\DC2\EOT\239\EOT\b\DC2\n\
+    \\ETX\EOT\t\SOH\DC2\EOT\242\EOT\b\DC2\n\
     \\158\b\n\
-    \\EOT\EOT\t\STX\NUL\DC2\EOT\133\ENQ\STX\ESC\SUB\143\b Source position of this occurrence. Must be exactly three or four\n\
+    \\EOT\EOT\t\STX\NUL\DC2\EOT\136\ENQ\STX\ESC\SUB\143\b Source position of this occurrence. Must be exactly three or four\n\
     \ elements:\n\
     \\n\
     \ - Four elements: `[startLine, startCharacter, endLine, endCharacter]`\n\
@@ -8255,36 +15874,36 @@ packedFileDescriptor
     \ improvements make up for it.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\NUL\EOT\DC2\EOT\133\ENQ\STX\n\
+    \\ENQ\EOT\t\STX\NUL\EOT\DC2\EOT\136\ENQ\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\NUL\ENQ\DC2\EOT\133\ENQ\v\DLE\n\
+    \\ENQ\EOT\t\STX\NUL\ENQ\DC2\EOT\136\ENQ\v\DLE\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\NUL\SOH\DC2\EOT\133\ENQ\DC1\SYN\n\
+    \\ENQ\EOT\t\STX\NUL\SOH\DC2\EOT\136\ENQ\DC1\SYN\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\NUL\ETX\DC2\EOT\133\ENQ\EM\SUB\n\
+    \\ENQ\EOT\t\STX\NUL\ETX\DC2\EOT\136\ENQ\EM\SUB\n\
     \\138\SOH\n\
-    \\EOT\EOT\t\STX\SOH\DC2\EOT\136\ENQ\STX\DC4\SUB| (optional) The symbol that appears at this position. See\n\
+    \\EOT\EOT\t\STX\SOH\DC2\EOT\139\ENQ\STX\DC4\SUB| (optional) The symbol that appears at this position. See\n\
     \ `SymbolInformation.symbol` for how to format symbols as strings.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\SOH\ENQ\DC2\EOT\136\ENQ\STX\b\n\
+    \\ENQ\EOT\t\STX\SOH\ENQ\DC2\EOT\139\ENQ\STX\b\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\SOH\SOH\DC2\EOT\136\ENQ\t\SI\n\
+    \\ENQ\EOT\t\STX\SOH\SOH\DC2\EOT\139\ENQ\t\SI\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\SOH\ETX\DC2\EOT\136\ENQ\DC2\DC3\n\
+    \\ENQ\EOT\t\STX\SOH\ETX\DC2\EOT\139\ENQ\DC2\DC3\n\
     \\151\SOH\n\
-    \\EOT\EOT\t\STX\STX\DC2\EOT\139\ENQ\STX\EM\SUB\136\SOH (optional) Bitset containing `SymbolRole`s in this occurrence.\n\
+    \\EOT\EOT\t\STX\STX\DC2\EOT\142\ENQ\STX\EM\SUB\136\SOH (optional) Bitset containing `SymbolRole`s in this occurrence.\n\
     \ See `SymbolRole`'s documentation for how to read and write this field.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\STX\ENQ\DC2\EOT\139\ENQ\STX\a\n\
+    \\ENQ\EOT\t\STX\STX\ENQ\DC2\EOT\142\ENQ\STX\a\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\STX\SOH\DC2\EOT\139\ENQ\b\DC4\n\
+    \\ENQ\EOT\t\STX\STX\SOH\DC2\EOT\142\ENQ\b\DC4\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\STX\ETX\DC2\EOT\139\ENQ\ETB\CAN\n\
+    \\ENQ\EOT\t\STX\STX\ETX\DC2\EOT\142\ENQ\ETB\CAN\n\
     \\241\ETX\n\
-    \\EOT\EOT\t\STX\ETX\DC2\EOT\148\ENQ\STX-\SUB\226\ETX (optional) CommonMark-formatted documentation for this specific range. If\n\
+    \\EOT\EOT\t\STX\ETX\DC2\EOT\151\ENQ\STX-\SUB\226\ETX (optional) CommonMark-formatted documentation for this specific range. If\n\
     \ empty, the `Symbol.documentation` field is used instead. One example\n\
     \ where this field might be useful is when the symbol represents a generic\n\
     \ function (with abstract type parameters such as `List<T>`) and at this\n\
@@ -8294,37 +15913,37 @@ packedFileDescriptor
     \ which commonly allow for type-changing assignment.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ETX\EOT\DC2\EOT\148\ENQ\STX\n\
+    \\ENQ\EOT\t\STX\ETX\EOT\DC2\EOT\151\ENQ\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ETX\ENQ\DC2\EOT\148\ENQ\v\DC1\n\
+    \\ENQ\EOT\t\STX\ETX\ENQ\DC2\EOT\151\ENQ\v\DC1\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ETX\SOH\DC2\EOT\148\ENQ\DC2(\n\
+    \\ENQ\EOT\t\STX\ETX\SOH\DC2\EOT\151\ENQ\DC2(\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ETX\ETX\DC2\EOT\148\ENQ+,\n\
+    \\ENQ\EOT\t\STX\ETX\ETX\DC2\EOT\151\ENQ+,\n\
     \X\n\
-    \\EOT\EOT\t\STX\EOT\DC2\EOT\150\ENQ\STX\GS\SUBJ (optional) What syntax highlighting class should be used for this range?\n\
+    \\EOT\EOT\t\STX\EOT\DC2\EOT\153\ENQ\STX\GS\SUBJ (optional) What syntax highlighting class should be used for this range?\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\EOT\ACK\DC2\EOT\150\ENQ\STX\f\n\
+    \\ENQ\EOT\t\STX\EOT\ACK\DC2\EOT\153\ENQ\STX\f\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\EOT\SOH\DC2\EOT\150\ENQ\r\CAN\n\
+    \\ENQ\EOT\t\STX\EOT\SOH\DC2\EOT\153\ENQ\r\CAN\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\EOT\ETX\DC2\EOT\150\ENQ\ESC\FS\n\
+    \\ENQ\EOT\t\STX\EOT\ETX\DC2\EOT\153\ENQ\ESC\FS\n\
     \W\n\
-    \\EOT\EOT\t\STX\ENQ\DC2\EOT\152\ENQ\STX&\SUBI (optional) Diagnostics that have been reported for this specific range.\n\
+    \\EOT\EOT\t\STX\ENQ\DC2\EOT\155\ENQ\STX&\SUBI (optional) Diagnostics that have been reported for this specific range.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ENQ\EOT\DC2\EOT\152\ENQ\STX\n\
+    \\ENQ\EOT\t\STX\ENQ\EOT\DC2\EOT\155\ENQ\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ENQ\ACK\DC2\EOT\152\ENQ\v\NAK\n\
+    \\ENQ\EOT\t\STX\ENQ\ACK\DC2\EOT\155\ENQ\v\NAK\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ENQ\SOH\DC2\EOT\152\ENQ\SYN!\n\
+    \\ENQ\EOT\t\STX\ENQ\SOH\DC2\EOT\155\ENQ\SYN!\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ENQ\ETX\DC2\EOT\152\ENQ$%\n\
+    \\ENQ\EOT\t\STX\ENQ\ETX\DC2\EOT\155\ENQ$%\n\
     \\177\SO\n\
-    \\EOT\EOT\t\STX\ACK\DC2\EOT\205\ENQ\STX%\SUB\162\SO (optional) Using the same encoding as the sibling `range` field, source\n\
+    \\EOT\EOT\t\STX\ACK\DC2\EOT\208\ENQ\STX%\SUB\162\SO (optional) Using the same encoding as the sibling `range` field, source\n\
     \ position of the nearest non-trivial enclosing AST node. This range must\n\
     \ enclose the `range` field. Example applications that make use of the\n\
     \ enclosing_range field:\n\
@@ -8378,152 +15997,152 @@ packedFileDescriptor
     \ ```\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ACK\EOT\DC2\EOT\205\ENQ\STX\n\
+    \\ENQ\EOT\t\STX\ACK\EOT\DC2\EOT\208\ENQ\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ACK\ENQ\DC2\EOT\205\ENQ\v\DLE\n\
+    \\ENQ\EOT\t\STX\ACK\ENQ\DC2\EOT\208\ENQ\v\DLE\n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ACK\SOH\DC2\EOT\205\ENQ\DC1 \n\
+    \\ENQ\EOT\t\STX\ACK\SOH\DC2\EOT\208\ENQ\DC1 \n\
     \\r\n\
-    \\ENQ\EOT\t\STX\ACK\ETX\DC2\EOT\205\ENQ#$\n\
+    \\ENQ\EOT\t\STX\ACK\ETX\DC2\EOT\208\ENQ#$\n\
     \w\n\
     \\STX\EOT\n\
-    \\DC2\ACK\210\ENQ\NUL\221\ENQ\SOH\SUBi Represents a diagnostic, such as a compiler error or warning, which should be\n\
+    \\DC2\ACK\213\ENQ\NUL\224\ENQ\SOH\SUBi Represents a diagnostic, such as a compiler error or warning, which should be\n\
     \ reported for a document.\n\
     \\n\
     \\v\n\
     \\ETX\EOT\n\
-    \\SOH\DC2\EOT\210\ENQ\b\DC2\n\
+    \\SOH\DC2\EOT\213\ENQ\b\DC2\n\
     \W\n\
     \\EOT\EOT\n\
-    \\STX\NUL\DC2\EOT\212\ENQ\STX\CAN\SUBI Should this diagnostic be reported as an error, warning, info, or hint?\n\
+    \\STX\NUL\DC2\EOT\215\ENQ\STX\CAN\SUBI Should this diagnostic be reported as an error, warning, info, or hint?\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\NUL\ACK\DC2\EOT\212\ENQ\STX\n\
+    \\STX\NUL\ACK\DC2\EOT\215\ENQ\STX\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\NUL\SOH\DC2\EOT\212\ENQ\v\DC3\n\
+    \\STX\NUL\SOH\DC2\EOT\215\ENQ\v\DC3\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\NUL\ETX\DC2\EOT\212\ENQ\SYN\ETB\n\
+    \\STX\NUL\ETX\DC2\EOT\215\ENQ\SYN\ETB\n\
     \]\n\
     \\EOT\EOT\n\
-    \\STX\SOH\DC2\EOT\214\ENQ\STX\DC2\SUBO (optional) Code of this diagnostic, which might appear in the user interface.\n\
+    \\STX\SOH\DC2\EOT\217\ENQ\STX\DC2\SUBO (optional) Code of this diagnostic, which might appear in the user interface.\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\SOH\ENQ\DC2\EOT\214\ENQ\STX\b\n\
+    \\STX\SOH\ENQ\DC2\EOT\217\ENQ\STX\b\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\SOH\SOH\DC2\EOT\214\ENQ\t\r\n\
+    \\STX\SOH\SOH\DC2\EOT\217\ENQ\t\r\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\SOH\ETX\DC2\EOT\214\ENQ\DLE\DC1\n\
+    \\STX\SOH\ETX\DC2\EOT\217\ENQ\DLE\DC1\n\
     \+\n\
     \\EOT\EOT\n\
-    \\STX\STX\DC2\EOT\216\ENQ\STX\NAK\SUB\GS Message of this diagnostic.\n\
+    \\STX\STX\DC2\EOT\219\ENQ\STX\NAK\SUB\GS Message of this diagnostic.\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\STX\ENQ\DC2\EOT\216\ENQ\STX\b\n\
+    \\STX\STX\ENQ\DC2\EOT\219\ENQ\STX\b\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\STX\SOH\DC2\EOT\216\ENQ\t\DLE\n\
+    \\STX\STX\SOH\DC2\EOT\219\ENQ\t\DLE\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\STX\ETX\DC2\EOT\216\ENQ\DC3\DC4\n\
+    \\STX\STX\ETX\DC2\EOT\219\ENQ\DC3\DC4\n\
     \~\n\
     \\EOT\EOT\n\
-    \\STX\ETX\DC2\EOT\219\ENQ\STX\DC4\SUBp (optional) Human-readable string describing the source of this diagnostic, e.g.\n\
+    \\STX\ETX\DC2\EOT\222\ENQ\STX\DC4\SUBp (optional) Human-readable string describing the source of this diagnostic, e.g.\n\
     \ 'typescript' or 'super lint'.\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\ETX\ENQ\DC2\EOT\219\ENQ\STX\b\n\
+    \\STX\ETX\ENQ\DC2\EOT\222\ENQ\STX\b\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\ETX\SOH\DC2\EOT\219\ENQ\t\SI\n\
+    \\STX\ETX\SOH\DC2\EOT\222\ENQ\t\SI\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\ETX\ETX\DC2\EOT\219\ENQ\DC2\DC3\n\
+    \\STX\ETX\ETX\DC2\EOT\222\ENQ\DC2\DC3\n\
     \\f\n\
     \\EOT\EOT\n\
-    \\STX\EOT\DC2\EOT\220\ENQ\STX\"\n\
+    \\STX\EOT\DC2\EOT\223\ENQ\STX\"\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\EOT\EOT\DC2\EOT\220\ENQ\STX\n\
+    \\STX\EOT\EOT\DC2\EOT\223\ENQ\STX\n\
     \\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\EOT\ACK\DC2\EOT\220\ENQ\v\CAN\n\
+    \\STX\EOT\ACK\DC2\EOT\223\ENQ\v\CAN\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\EOT\SOH\DC2\EOT\220\ENQ\EM\GS\n\
+    \\STX\EOT\SOH\DC2\EOT\223\ENQ\EM\GS\n\
     \\r\n\
     \\ENQ\EOT\n\
-    \\STX\EOT\ETX\DC2\EOT\220\ENQ !\n\
+    \\STX\EOT\ETX\DC2\EOT\223\ENQ !\n\
     \\f\n\
-    \\STX\ENQ\ENQ\DC2\ACK\223\ENQ\NUL\229\ENQ\SOH\n\
+    \\STX\ENQ\ENQ\DC2\ACK\226\ENQ\NUL\232\ENQ\SOH\n\
     \\v\n\
-    \\ETX\ENQ\ENQ\SOH\DC2\EOT\223\ENQ\ENQ\r\n\
+    \\ETX\ENQ\ENQ\SOH\DC2\EOT\226\ENQ\ENQ\r\n\
     \\f\n\
-    \\EOT\ENQ\ENQ\STX\NUL\DC2\EOT\224\ENQ\STX\SUB\n\
+    \\EOT\ENQ\ENQ\STX\NUL\DC2\EOT\227\ENQ\STX\SUB\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\NUL\SOH\DC2\EOT\224\ENQ\STX\NAK\n\
+    \\ENQ\ENQ\ENQ\STX\NUL\SOH\DC2\EOT\227\ENQ\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\NUL\STX\DC2\EOT\224\ENQ\CAN\EM\n\
+    \\ENQ\ENQ\ENQ\STX\NUL\STX\DC2\EOT\227\ENQ\CAN\EM\n\
     \\f\n\
-    \\EOT\ENQ\ENQ\STX\SOH\DC2\EOT\225\ENQ\STX\f\n\
+    \\EOT\ENQ\ENQ\STX\SOH\DC2\EOT\228\ENQ\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\SOH\SOH\DC2\EOT\225\ENQ\STX\a\n\
+    \\ENQ\ENQ\ENQ\STX\SOH\SOH\DC2\EOT\228\ENQ\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\SOH\STX\DC2\EOT\225\ENQ\n\
+    \\ENQ\ENQ\ENQ\STX\SOH\STX\DC2\EOT\228\ENQ\n\
     \\v\n\
     \\f\n\
-    \\EOT\ENQ\ENQ\STX\STX\DC2\EOT\226\ENQ\STX\SO\n\
+    \\EOT\ENQ\ENQ\STX\STX\DC2\EOT\229\ENQ\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\STX\SOH\DC2\EOT\226\ENQ\STX\t\n\
+    \\ENQ\ENQ\ENQ\STX\STX\SOH\DC2\EOT\229\ENQ\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\STX\STX\DC2\EOT\226\ENQ\f\r\n\
+    \\ENQ\ENQ\ENQ\STX\STX\STX\DC2\EOT\229\ENQ\f\r\n\
     \\f\n\
-    \\EOT\ENQ\ENQ\STX\ETX\DC2\EOT\227\ENQ\STX\DC2\n\
+    \\EOT\ENQ\ENQ\STX\ETX\DC2\EOT\230\ENQ\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\ETX\SOH\DC2\EOT\227\ENQ\STX\r\n\
+    \\ENQ\ENQ\ENQ\STX\ETX\SOH\DC2\EOT\230\ENQ\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\ETX\STX\DC2\EOT\227\ENQ\DLE\DC1\n\
+    \\ENQ\ENQ\ENQ\STX\ETX\STX\DC2\EOT\230\ENQ\DLE\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ENQ\STX\EOT\DC2\EOT\228\ENQ\STX\v\n\
+    \\EOT\ENQ\ENQ\STX\EOT\DC2\EOT\231\ENQ\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\EOT\SOH\DC2\EOT\228\ENQ\STX\ACK\n\
+    \\ENQ\ENQ\ENQ\STX\EOT\SOH\DC2\EOT\231\ENQ\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\ENQ\STX\EOT\STX\DC2\EOT\228\ENQ\t\n\
+    \\ENQ\ENQ\ENQ\STX\EOT\STX\DC2\EOT\231\ENQ\t\n\
     \\n\
     \\f\n\
-    \\STX\ENQ\ACK\DC2\ACK\231\ENQ\NUL\235\ENQ\SOH\n\
+    \\STX\ENQ\ACK\DC2\ACK\234\ENQ\NUL\238\ENQ\SOH\n\
     \\v\n\
-    \\ETX\ENQ\ACK\SOH\DC2\EOT\231\ENQ\ENQ\DC2\n\
+    \\ETX\ENQ\ACK\SOH\DC2\EOT\234\ENQ\ENQ\DC2\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\NUL\DC2\EOT\232\ENQ\STX\US\n\
+    \\EOT\ENQ\ACK\STX\NUL\DC2\EOT\235\ENQ\STX\US\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\NUL\SOH\DC2\EOT\232\ENQ\STX\SUB\n\
+    \\ENQ\ENQ\ACK\STX\NUL\SOH\DC2\EOT\235\ENQ\STX\SUB\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\NUL\STX\DC2\EOT\232\ENQ\GS\RS\n\
+    \\ENQ\ENQ\ACK\STX\NUL\STX\DC2\EOT\235\ENQ\GS\RS\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\SOH\DC2\EOT\233\ENQ\STX\DC2\n\
+    \\EOT\ENQ\ACK\STX\SOH\DC2\EOT\236\ENQ\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SOH\SOH\DC2\EOT\233\ENQ\STX\r\n\
+    \\ENQ\ENQ\ACK\STX\SOH\SOH\DC2\EOT\236\ENQ\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\SOH\STX\DC2\EOT\233\ENQ\DLE\DC1\n\
+    \\ENQ\ENQ\ACK\STX\SOH\STX\DC2\EOT\236\ENQ\DLE\DC1\n\
     \\f\n\
-    \\EOT\ENQ\ACK\STX\STX\DC2\EOT\234\ENQ\STX\DC1\n\
+    \\EOT\ENQ\ACK\STX\STX\DC2\EOT\237\ENQ\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\STX\SOH\DC2\EOT\234\ENQ\STX\f\n\
+    \\ENQ\ENQ\ACK\STX\STX\SOH\DC2\EOT\237\ENQ\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\ACK\STX\STX\STX\DC2\EOT\234\ENQ\SI\DLE\n\
+    \\ENQ\ENQ\ACK\STX\STX\STX\DC2\EOT\237\ENQ\SI\DLE\n\
     \\208\ETX\n\
-    \\STX\ENQ\a\DC2\ACK\243\ENQ\NUL\233\ACK\SOH\SUB\193\ETX Language standardises names of common programming languages that can be used\n\
+    \\STX\ENQ\a\DC2\ACK\246\ENQ\NUL\236\ACK\SOH\SUB\193\ETX Language standardises names of common programming languages that can be used\n\
     \ for the `Document.language` field. The primary purpose of this enum is to\n\
     \ prevent a situation where we have a single programming language ends up with\n\
     \ multiple string representations. For example, the C++ language uses the name\n\
@@ -8531,708 +16150,708 @@ packedFileDescriptor
     \ Feel free to send a pull-request to add missing programming languages.\n\
     \\n\
     \\v\n\
-    \\ETX\ENQ\a\SOH\DC2\EOT\243\ENQ\ENQ\r\n\
+    \\ETX\ENQ\a\SOH\DC2\EOT\246\ENQ\ENQ\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\NUL\DC2\EOT\244\ENQ\STX\SUB\n\
+    \\EOT\ENQ\a\STX\NUL\DC2\EOT\247\ENQ\STX\SUB\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\NUL\SOH\DC2\EOT\244\ENQ\STX\NAK\n\
+    \\ENQ\ENQ\a\STX\NUL\SOH\DC2\EOT\247\ENQ\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\NUL\STX\DC2\EOT\244\ENQ\CAN\EM\n\
+    \\ENQ\ENQ\a\STX\NUL\STX\DC2\EOT\247\ENQ\CAN\EM\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\SOH\DC2\EOT\245\ENQ\STX\f\n\
+    \\EOT\ENQ\a\STX\SOH\DC2\EOT\248\ENQ\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SOH\SOH\DC2\EOT\245\ENQ\STX\ACK\n\
+    \\ENQ\ENQ\a\STX\SOH\SOH\DC2\EOT\248\ENQ\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SOH\STX\DC2\EOT\245\ENQ\t\v\n\
+    \\ENQ\ENQ\a\STX\SOH\STX\DC2\EOT\248\ENQ\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\STX\DC2\EOT\246\ENQ\STX\f\n\
+    \\EOT\ENQ\a\STX\STX\DC2\EOT\249\ENQ\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\STX\SOH\DC2\EOT\246\ENQ\STX\ACK\n\
+    \\ENQ\ENQ\a\STX\STX\SOH\DC2\EOT\249\ENQ\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\STX\STX\DC2\EOT\246\ENQ\t\v\n\
+    \\ENQ\ENQ\a\STX\STX\STX\DC2\EOT\249\ENQ\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\ETX\DC2\EOT\247\ENQ\STX\v\n\
+    \\EOT\ENQ\a\STX\ETX\DC2\EOT\250\ENQ\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ETX\SOH\DC2\EOT\247\ENQ\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX\ETX\SOH\DC2\EOT\250\ENQ\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ETX\STX\DC2\EOT\247\ENQ\b\n\
+    \\ENQ\ENQ\a\STX\ETX\STX\DC2\EOT\250\ENQ\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\EOT\DC2\EOT\248\ENQ\STX\v\n\
+    \\EOT\ENQ\a\STX\EOT\DC2\EOT\251\ENQ\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\EOT\SOH\DC2\EOT\248\ENQ\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX\EOT\SOH\DC2\EOT\251\ENQ\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\EOT\STX\DC2\EOT\248\ENQ\b\n\
+    \\ENQ\ENQ\a\STX\EOT\STX\DC2\EOT\251\ENQ\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\ENQ\DC2\EOT\249\ENQ\STX\f\n\
+    \\EOT\ENQ\a\STX\ENQ\DC2\EOT\252\ENQ\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ENQ\SOH\DC2\EOT\249\ENQ\STX\ACK\n\
+    \\ENQ\ENQ\a\STX\ENQ\SOH\DC2\EOT\252\ENQ\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ENQ\STX\DC2\EOT\249\ENQ\t\v\n\
+    \\ENQ\ENQ\a\STX\ENQ\STX\DC2\EOT\252\ENQ\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\ACK\DC2\EOT\250\ENQ\STX\DLE\n\
+    \\EOT\ENQ\a\STX\ACK\DC2\EOT\253\ENQ\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ACK\SOH\DC2\EOT\250\ENQ\STX\n\
+    \\ENQ\ENQ\a\STX\ACK\SOH\DC2\EOT\253\ENQ\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ACK\STX\DC2\EOT\250\ENQ\r\SI\n\
+    \\ENQ\ENQ\a\STX\ACK\STX\DC2\EOT\253\ENQ\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\a\DC2\EOT\251\ENQ\STX\DLE\n\
+    \\EOT\ENQ\a\STX\a\DC2\EOT\254\ENQ\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\a\SOH\DC2\EOT\251\ENQ\STX\n\
+    \\ENQ\ENQ\a\STX\a\SOH\DC2\EOT\254\ENQ\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\a\STX\DC2\EOT\251\ENQ\r\SI\n\
+    \\ENQ\ENQ\a\STX\a\STX\DC2\EOT\254\ENQ\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\b\DC2\EOT\252\ENQ\STX\v\n\
+    \\EOT\ENQ\a\STX\b\DC2\EOT\255\ENQ\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\b\SOH\DC2\EOT\252\ENQ\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX\b\SOH\DC2\EOT\255\ENQ\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\b\STX\DC2\EOT\252\ENQ\b\n\
+    \\ENQ\ENQ\a\STX\b\STX\DC2\EOT\255\ENQ\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\t\DC2\EOT\253\ENQ\STX\v\n\
+    \\EOT\ENQ\a\STX\t\DC2\EOT\128\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\t\SOH\DC2\EOT\253\ENQ\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX\t\SOH\DC2\EOT\128\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\t\STX\DC2\EOT\253\ENQ\b\n\
+    \\ENQ\ENQ\a\STX\t\STX\DC2\EOT\128\ACK\b\n\
     \\n\
     \\f\n\
     \\EOT\ENQ\a\STX\n\
-    \\DC2\EOT\254\ENQ\STX\SO\n\
+    \\DC2\EOT\129\ACK\STX\SO\n\
     \\r\n\
     \\ENQ\ENQ\a\STX\n\
-    \\SOH\DC2\EOT\254\ENQ\STX\b\n\
+    \\SOH\DC2\EOT\129\ACK\STX\b\n\
     \\r\n\
     \\ENQ\ENQ\a\STX\n\
-    \\STX\DC2\EOT\254\ENQ\v\r\n\
+    \\STX\DC2\EOT\129\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\v\DC2\EOT\255\ENQ\STX\t\n\
+    \\EOT\ENQ\a\STX\v\DC2\EOT\130\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\v\SOH\DC2\EOT\255\ENQ\STX\ETX\n\
+    \\ENQ\ENQ\a\STX\v\SOH\DC2\EOT\130\ACK\STX\ETX\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\v\STX\DC2\EOT\255\ENQ\ACK\b\n\
+    \\ENQ\ENQ\a\STX\v\STX\DC2\EOT\130\ACK\ACK\b\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\f\DC2\EOT\128\ACK\STX\r\n\
+    \\EOT\ENQ\a\STX\f\DC2\EOT\131\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\f\SOH\DC2\EOT\128\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STX\f\SOH\DC2\EOT\131\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\f\STX\DC2\EOT\128\ACK\n\
+    \\ENQ\ENQ\a\STX\f\STX\DC2\EOT\131\ACK\n\
     \\f\n\
     \H\n\
-    \\EOT\ENQ\a\STX\r\DC2\EOT\129\ACK\STX\v\": C++ (the name \"CPP\" was chosen for consistency with LSP)\n\
+    \\EOT\ENQ\a\STX\r\DC2\EOT\132\ACK\STX\v\": C++ (the name \"CPP\" was chosen for consistency with LSP)\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\r\SOH\DC2\EOT\129\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX\r\SOH\DC2\EOT\132\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\r\STX\DC2\EOT\129\ACK\b\n\
+    \\ENQ\ENQ\a\STX\r\STX\DC2\EOT\132\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\SO\DC2\EOT\130\ACK\STX\v\n\
+    \\EOT\ENQ\a\STX\SO\DC2\EOT\133\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SO\SOH\DC2\EOT\130\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX\SO\SOH\DC2\EOT\133\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SO\STX\DC2\EOT\130\ACK\b\n\
+    \\ENQ\ENQ\a\STX\SO\STX\DC2\EOT\133\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\SI\DC2\EOT\131\ACK\STX\r\n\
+    \\EOT\ENQ\a\STX\SI\DC2\EOT\134\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SI\SOH\DC2\EOT\131\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX\SI\SOH\DC2\EOT\134\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SI\STX\DC2\EOT\131\ACK\v\f\n\
+    \\ENQ\ENQ\a\STX\SI\STX\DC2\EOT\134\ACK\v\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\DLE\DC2\EOT\132\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX\DLE\DC2\EOT\135\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DLE\SOH\DC2\EOT\132\ACK\STX\t\n\
+    \\ENQ\ENQ\a\STX\DLE\SOH\DC2\EOT\135\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DLE\STX\DC2\EOT\132\ACK\f\r\n\
+    \\ENQ\ENQ\a\STX\DLE\STX\DC2\EOT\135\ACK\f\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\DC1\DC2\EOT\133\ACK\STX\DC4\n\
+    \\EOT\ENQ\a\STX\DC1\DC2\EOT\136\ACK\STX\DC4\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DC1\SOH\DC2\EOT\133\ACK\STX\SO\n\
+    \\ENQ\ENQ\a\STX\DC1\SOH\DC2\EOT\136\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DC1\STX\DC2\EOT\133\ACK\DC1\DC3\n\
+    \\ENQ\ENQ\a\STX\DC1\STX\DC2\EOT\136\ACK\DC1\DC3\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\DC2\DC2\EOT\134\ACK\STX\DC1\n\
+    \\EOT\ENQ\a\STX\DC2\DC2\EOT\137\ACK\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DC2\SOH\DC2\EOT\134\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STX\DC2\SOH\DC2\EOT\137\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DC2\STX\DC2\EOT\134\ACK\SI\DLE\n\
+    \\ENQ\ENQ\a\STX\DC2\STX\DC2\EOT\137\ACK\SI\DLE\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\DC3\DC2\EOT\135\ACK\STX\v\n\
+    \\EOT\ENQ\a\STX\DC3\DC2\EOT\138\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DC3\SOH\DC2\EOT\135\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX\DC3\SOH\DC2\EOT\138\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DC3\STX\DC2\EOT\135\ACK\b\n\
+    \\ENQ\ENQ\a\STX\DC3\STX\DC2\EOT\138\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\DC4\DC2\EOT\136\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX\DC4\DC2\EOT\139\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DC4\SOH\DC2\EOT\136\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX\DC4\SOH\DC2\EOT\139\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\DC4\STX\DC2\EOT\136\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX\DC4\STX\DC2\EOT\139\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\NAK\DC2\EOT\137\ACK\STX\v\n\
+    \\EOT\ENQ\a\STX\NAK\DC2\EOT\140\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\NAK\SOH\DC2\EOT\137\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX\NAK\SOH\DC2\EOT\140\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\NAK\STX\DC2\EOT\137\ACK\t\n\
+    \\ENQ\ENQ\a\STX\NAK\STX\DC2\EOT\140\ACK\t\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\SYN\DC2\EOT\138\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX\SYN\DC2\EOT\141\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SYN\SOH\DC2\EOT\138\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX\SYN\SOH\DC2\EOT\141\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SYN\STX\DC2\EOT\138\ACK\v\r\n\
+    \\ENQ\ENQ\a\STX\SYN\STX\DC2\EOT\141\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\ETB\DC2\EOT\139\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX\ETB\DC2\EOT\142\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ETB\SOH\DC2\EOT\139\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX\ETB\SOH\DC2\EOT\142\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ETB\STX\DC2\EOT\139\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX\ETB\STX\DC2\EOT\142\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\CAN\DC2\EOT\140\ACK\STX\DC2\n\
+    \\EOT\ENQ\a\STX\CAN\DC2\EOT\143\ACK\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\CAN\SOH\DC2\EOT\140\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STX\CAN\SOH\DC2\EOT\143\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\CAN\STX\DC2\EOT\140\ACK\SI\DC1\n\
+    \\ENQ\ENQ\a\STX\CAN\STX\DC2\EOT\143\ACK\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\EM\DC2\EOT\141\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX\EM\DC2\EOT\144\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\EM\SOH\DC2\EOT\141\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX\EM\SOH\DC2\EOT\144\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\EM\STX\DC2\EOT\141\ACK\v\r\n\
+    \\ENQ\ENQ\a\STX\EM\STX\DC2\EOT\144\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\SUB\DC2\EOT\142\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX\SUB\DC2\EOT\145\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SUB\SOH\DC2\EOT\142\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX\SUB\SOH\DC2\EOT\145\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\SUB\STX\DC2\EOT\142\ACK\v\r\n\
+    \\ENQ\ENQ\a\STX\SUB\STX\DC2\EOT\145\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\ESC\DC2\EOT\143\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX\ESC\DC2\EOT\146\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ESC\SOH\DC2\EOT\143\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX\ESC\SOH\DC2\EOT\146\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\ESC\STX\DC2\EOT\143\ACK\v\r\n\
+    \\ENQ\ENQ\a\STX\ESC\STX\DC2\EOT\146\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\FS\DC2\EOT\144\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX\FS\DC2\EOT\147\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\FS\SOH\DC2\EOT\144\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX\FS\SOH\DC2\EOT\147\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\FS\STX\DC2\EOT\144\ACK\v\r\n\
+    \\ENQ\ENQ\a\STX\FS\STX\DC2\EOT\147\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\GS\DC2\EOT\145\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX\GS\DC2\EOT\148\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\GS\SOH\DC2\EOT\145\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX\GS\SOH\DC2\EOT\148\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\GS\STX\DC2\EOT\145\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX\GS\STX\DC2\EOT\148\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\RS\DC2\EOT\146\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX\RS\DC2\EOT\149\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\RS\SOH\DC2\EOT\146\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX\RS\SOH\DC2\EOT\149\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\RS\STX\DC2\EOT\146\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX\RS\STX\DC2\EOT\149\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\US\DC2\EOT\147\ACK\STX\SI\n\
+    \\EOT\ENQ\a\STX\US\DC2\EOT\150\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\US\SOH\DC2\EOT\147\ACK\STX\t\n\
+    \\ENQ\ENQ\a\STX\US\SOH\DC2\EOT\150\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\US\STX\DC2\EOT\147\ACK\f\SO\n\
+    \\ENQ\ENQ\a\STX\US\STX\DC2\EOT\150\ACK\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STX \DC2\EOT\148\ACK\STX\DC2\n\
+    \\EOT\ENQ\a\STX \DC2\EOT\151\ACK\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX \SOH\DC2\EOT\148\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STX \SOH\DC2\EOT\151\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX \STX\DC2\EOT\148\ACK\SI\DC1\n\
+    \\ENQ\ENQ\a\STX \STX\DC2\EOT\151\ACK\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\a\STX!\DC2\EOT\149\ACK\STX\DC2\n\
+    \\EOT\ENQ\a\STX!\DC2\EOT\152\ACK\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX!\SOH\DC2\EOT\149\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STX!\SOH\DC2\EOT\152\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX!\STX\DC2\EOT\149\ACK\SI\DC1\n\
+    \\ENQ\ENQ\a\STX!\STX\DC2\EOT\152\ACK\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\"\DC2\EOT\150\ACK\STX\DC2\n\
+    \\EOT\ENQ\a\STX\"\DC2\EOT\153\ACK\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\"\SOH\DC2\EOT\150\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STX\"\SOH\DC2\EOT\153\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\"\STX\DC2\EOT\150\ACK\SI\DC1\n\
+    \\ENQ\ENQ\a\STX\"\STX\DC2\EOT\153\ACK\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\a\STX#\DC2\EOT\151\ACK\STX\n\
+    \\EOT\ENQ\a\STX#\DC2\EOT\154\ACK\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX#\SOH\DC2\EOT\151\ACK\STX\EOT\n\
+    \\ENQ\ENQ\a\STX#\SOH\DC2\EOT\154\ACK\STX\EOT\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX#\STX\DC2\EOT\151\ACK\a\t\n\
+    \\ENQ\ENQ\a\STX#\STX\DC2\EOT\154\ACK\a\t\n\
     \\f\n\
-    \\EOT\ENQ\a\STX$\DC2\EOT\152\ACK\STX\SI\n\
+    \\EOT\ENQ\a\STX$\DC2\EOT\155\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX$\SOH\DC2\EOT\152\ACK\STX\t\n\
+    \\ENQ\ENQ\a\STX$\SOH\DC2\EOT\155\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX$\STX\DC2\EOT\152\ACK\f\SO\n\
+    \\ENQ\ENQ\a\STX$\STX\DC2\EOT\155\ACK\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STX%\DC2\EOT\153\ACK\STX\r\n\
+    \\EOT\ENQ\a\STX%\DC2\EOT\156\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX%\SOH\DC2\EOT\153\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX%\SOH\DC2\EOT\156\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX%\STX\DC2\EOT\153\ACK\v\f\n\
+    \\ENQ\ENQ\a\STX%\STX\DC2\EOT\156\ACK\v\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STX&\DC2\EOT\154\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX&\DC2\EOT\157\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX&\SOH\DC2\EOT\154\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX&\SOH\DC2\EOT\157\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX&\STX\DC2\EOT\154\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX&\STX\DC2\EOT\157\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX'\DC2\EOT\155\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX'\DC2\EOT\158\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX'\SOH\DC2\EOT\155\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX'\SOH\DC2\EOT\158\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX'\STX\DC2\EOT\155\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX'\STX\DC2\EOT\158\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX(\DC2\EOT\156\ACK\STX\DC2\n\
+    \\EOT\ENQ\a\STX(\DC2\EOT\159\ACK\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX(\SOH\DC2\EOT\156\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STX(\SOH\DC2\EOT\159\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX(\STX\DC2\EOT\156\ACK\SI\DC1\n\
+    \\ENQ\ENQ\a\STX(\STX\DC2\EOT\159\ACK\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\a\STX)\DC2\EOT\157\ACK\STX\SI\n\
+    \\EOT\ENQ\a\STX)\DC2\EOT\160\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX)\SOH\DC2\EOT\157\ACK\STX\t\n\
+    \\ENQ\ENQ\a\STX)\SOH\DC2\EOT\160\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX)\STX\DC2\EOT\157\ACK\f\SO\n\
+    \\ENQ\ENQ\a\STX)\STX\DC2\EOT\160\ACK\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STX*\DC2\EOT\158\ACK\STX\r\n\
+    \\EOT\ENQ\a\STX*\DC2\EOT\161\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX*\SOH\DC2\EOT\158\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STX*\SOH\DC2\EOT\161\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX*\STX\DC2\EOT\158\ACK\n\
+    \\ENQ\ENQ\a\STX*\STX\DC2\EOT\161\ACK\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STX+\DC2\EOT\159\ACK\STX\v\n\
+    \\EOT\ENQ\a\STX+\DC2\EOT\162\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX+\SOH\DC2\EOT\159\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX+\SOH\DC2\EOT\162\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX+\STX\DC2\EOT\159\ACK\b\n\
+    \\ENQ\ENQ\a\STX+\STX\DC2\EOT\162\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX,\DC2\EOT\160\ACK\STX\t\n\
+    \\EOT\ENQ\a\STX,\DC2\EOT\163\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX,\SOH\DC2\EOT\160\ACK\STX\ETX\n\
+    \\ENQ\ENQ\a\STX,\SOH\DC2\EOT\163\ACK\STX\ETX\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX,\STX\DC2\EOT\160\ACK\ACK\b\n\
+    \\ENQ\ENQ\a\STX,\STX\DC2\EOT\163\ACK\ACK\b\n\
     \\f\n\
-    \\EOT\ENQ\a\STX-\DC2\EOT\161\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX-\DC2\EOT\164\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX-\SOH\DC2\EOT\161\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX-\SOH\DC2\EOT\164\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX-\STX\DC2\EOT\161\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX-\STX\DC2\EOT\164\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX.\DC2\EOT\162\ACK\STX\v\n\
+    \\EOT\ENQ\a\STX.\DC2\EOT\165\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX.\SOH\DC2\EOT\162\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX.\SOH\DC2\EOT\165\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX.\STX\DC2\EOT\162\ACK\t\n\
+    \\ENQ\ENQ\a\STX.\STX\DC2\EOT\165\ACK\t\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX/\DC2\EOT\163\ACK\STX\DC2\n\
+    \\EOT\ENQ\a\STX/\DC2\EOT\166\ACK\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX/\SOH\DC2\EOT\163\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STX/\SOH\DC2\EOT\166\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX/\STX\DC2\EOT\163\ACK\SI\DC1\n\
+    \\ENQ\ENQ\a\STX/\STX\DC2\EOT\166\ACK\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\a\STX0\DC2\EOT\164\ACK\STX\ETB\n\
+    \\EOT\ENQ\a\STX0\DC2\EOT\167\ACK\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX0\SOH\DC2\EOT\164\ACK\STX\DC1\n\
+    \\ENQ\ENQ\a\STX0\SOH\DC2\EOT\167\ACK\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX0\STX\DC2\EOT\164\ACK\DC4\SYN\n\
+    \\ENQ\ENQ\a\STX0\STX\DC2\EOT\167\ACK\DC4\SYN\n\
     \\f\n\
-    \\EOT\ENQ\a\STX1\DC2\EOT\165\ACK\STX\SI\n\
+    \\EOT\ENQ\a\STX1\DC2\EOT\168\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX1\SOH\DC2\EOT\165\ACK\STX\t\n\
+    \\ENQ\ENQ\a\STX1\SOH\DC2\EOT\168\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX1\STX\DC2\EOT\165\ACK\f\SO\n\
+    \\ENQ\ENQ\a\STX1\STX\DC2\EOT\168\ACK\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STX2\DC2\EOT\166\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX2\DC2\EOT\169\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX2\SOH\DC2\EOT\166\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STX2\SOH\DC2\EOT\169\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX2\STX\DC2\EOT\166\ACK\v\r\n\
+    \\ENQ\ENQ\a\STX2\STX\DC2\EOT\169\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX3\DC2\EOT\167\ACK\STX\DC1\n\
+    \\EOT\ENQ\a\STX3\DC2\EOT\170\ACK\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX3\SOH\DC2\EOT\167\ACK\STX\n\
+    \\ENQ\ENQ\a\STX3\SOH\DC2\EOT\170\ACK\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX3\STX\DC2\EOT\167\ACK\r\DLE\n\
+    \\ENQ\ENQ\a\STX3\STX\DC2\EOT\170\ACK\r\DLE\n\
     \\f\n\
-    \\EOT\ENQ\a\STX4\DC2\EOT\168\ACK\STX\r\n\
+    \\EOT\ENQ\a\STX4\DC2\EOT\171\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX4\SOH\DC2\EOT\168\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX4\SOH\DC2\EOT\171\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX4\STX\DC2\EOT\168\ACK\v\f\n\
+    \\ENQ\ENQ\a\STX4\STX\DC2\EOT\171\ACK\v\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STX5\DC2\EOT\169\ACK\STX\r\n\
+    \\EOT\ENQ\a\STX5\DC2\EOT\172\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX5\SOH\DC2\EOT\169\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STX5\SOH\DC2\EOT\172\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX5\STX\DC2\EOT\169\ACK\n\
+    \\ENQ\ENQ\a\STX5\STX\DC2\EOT\172\ACK\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STX6\DC2\EOT\170\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX6\DC2\EOT\173\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX6\SOH\DC2\EOT\170\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX6\SOH\DC2\EOT\173\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX6\STX\DC2\EOT\170\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX6\STX\DC2\EOT\173\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX7\DC2\EOT\171\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX7\DC2\EOT\174\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX7\SOH\DC2\EOT\171\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX7\SOH\DC2\EOT\174\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX7\STX\DC2\EOT\171\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX7\STX\DC2\EOT\174\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX8\DC2\EOT\172\ACK\STX\v\n\
+    \\EOT\ENQ\a\STX8\DC2\EOT\175\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX8\SOH\DC2\EOT\172\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX8\SOH\DC2\EOT\175\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX8\STX\DC2\EOT\172\ACK\b\n\
+    \\ENQ\ENQ\a\STX8\STX\DC2\EOT\175\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX9\DC2\EOT\173\ACK\STX\r\n\
+    \\EOT\ENQ\a\STX9\DC2\EOT\176\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX9\SOH\DC2\EOT\173\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX9\SOH\DC2\EOT\176\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX9\STX\DC2\EOT\173\ACK\t\f\n\
+    \\ENQ\ENQ\a\STX9\STX\DC2\EOT\176\ACK\t\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STX:\DC2\EOT\174\ACK\STX\DLE\n\
+    \\EOT\ENQ\a\STX:\DC2\EOT\177\ACK\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX:\SOH\DC2\EOT\174\ACK\STX\n\
+    \\ENQ\ENQ\a\STX:\SOH\DC2\EOT\177\ACK\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX:\STX\DC2\EOT\174\ACK\r\SI\n\
+    \\ENQ\ENQ\a\STX:\STX\DC2\EOT\177\ACK\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\a\STX;\DC2\EOT\175\ACK\STX\DLE\n\
+    \\EOT\ENQ\a\STX;\DC2\EOT\178\ACK\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX;\SOH\DC2\EOT\175\ACK\STX\n\
+    \\ENQ\ENQ\a\STX;\SOH\DC2\EOT\178\ACK\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX;\STX\DC2\EOT\175\ACK\r\SI\n\
+    \\ENQ\ENQ\a\STX;\STX\DC2\EOT\178\ACK\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\a\STX<\DC2\EOT\176\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX<\DC2\EOT\179\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX<\SOH\DC2\EOT\176\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX<\SOH\DC2\EOT\179\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX<\STX\DC2\EOT\176\ACK\v\r\n\
+    \\ENQ\ENQ\a\STX<\STX\DC2\EOT\179\ACK\v\r\n\
     \(\n\
-    \\EOT\ENQ\a\STX=\DC2\EOT\177\ACK\STX\SI\"\SUB https://nickel-lang.org/\n\
+    \\EOT\ENQ\a\STX=\DC2\EOT\180\ACK\STX\SI\"\SUB https://nickel-lang.org/\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX=\SOH\DC2\EOT\177\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX=\SOH\DC2\EOT\180\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX=\STX\DC2\EOT\177\ACK\v\SO\n\
+    \\ENQ\ENQ\a\STX=\STX\DC2\EOT\180\ACK\v\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STX>\DC2\EOT\178\ACK\STX\v\n\
+    \\EOT\ENQ\a\STX>\DC2\EOT\181\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX>\SOH\DC2\EOT\178\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX>\SOH\DC2\EOT\181\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX>\STX\DC2\EOT\178\ACK\b\n\
+    \\ENQ\ENQ\a\STX>\STX\DC2\EOT\181\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STX?\DC2\EOT\179\ACK\STX\r\n\
+    \\EOT\ENQ\a\STX?\DC2\EOT\182\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX?\SOH\DC2\EOT\179\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STX?\SOH\DC2\EOT\182\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX?\STX\DC2\EOT\179\ACK\n\
+    \\ENQ\ENQ\a\STX?\STX\DC2\EOT\182\ACK\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STX@\DC2\EOT\180\ACK\STX\DC3\n\
+    \\EOT\ENQ\a\STX@\DC2\EOT\183\ACK\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX@\SOH\DC2\EOT\180\ACK\STX\r\n\
+    \\ENQ\ENQ\a\STX@\SOH\DC2\EOT\183\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX@\STX\DC2\EOT\180\ACK\DLE\DC2\n\
+    \\ENQ\ENQ\a\STX@\STX\DC2\EOT\183\ACK\DLE\DC2\n\
     \\f\n\
-    \\EOT\ENQ\a\STXA\DC2\EOT\181\ACK\STX\NAK\n\
+    \\EOT\ENQ\a\STXA\DC2\EOT\184\ACK\STX\NAK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXA\SOH\DC2\EOT\181\ACK\STX\SI\n\
+    \\ENQ\ENQ\a\STXA\SOH\DC2\EOT\184\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXA\STX\DC2\EOT\181\ACK\DC2\DC4\n\
+    \\ENQ\ENQ\a\STXA\STX\DC2\EOT\184\ACK\DC2\DC4\n\
     \\f\n\
-    \\EOT\ENQ\a\STXB\DC2\EOT\182\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STXB\DC2\EOT\185\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXB\SOH\DC2\EOT\182\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STXB\SOH\DC2\EOT\185\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXB\STX\DC2\EOT\182\ACK\v\r\n\
+    \\ENQ\ENQ\a\STXB\STX\DC2\EOT\185\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STXC\DC2\EOT\183\ACK\STX\v\n\
+    \\EOT\ENQ\a\STXC\DC2\EOT\186\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXC\SOH\DC2\EOT\183\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXC\SOH\DC2\EOT\186\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXC\STX\DC2\EOT\183\ACK\b\n\
+    \\ENQ\ENQ\a\STXC\STX\DC2\EOT\186\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STXD\DC2\EOT\184\ACK\STX\r\n\
+    \\EOT\ENQ\a\STXD\DC2\EOT\187\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXD\SOH\DC2\EOT\184\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STXD\SOH\DC2\EOT\187\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXD\STX\DC2\EOT\184\ACK\n\
+    \\ENQ\ENQ\a\STXD\STX\DC2\EOT\187\ACK\n\
     \\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STXE\DC2\EOT\185\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXE\DC2\EOT\188\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXE\SOH\DC2\EOT\185\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXE\SOH\DC2\EOT\188\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXE\STX\DC2\EOT\185\ACK\t\v\n\
+    \\ENQ\ENQ\a\STXE\STX\DC2\EOT\188\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXF\DC2\EOT\186\ACK\STX\DC2\n\
+    \\EOT\ENQ\a\STXF\DC2\EOT\189\ACK\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXF\SOH\DC2\EOT\186\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STXF\SOH\DC2\EOT\189\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXF\STX\DC2\EOT\186\ACK\SI\DC1\n\
+    \\ENQ\ENQ\a\STXF\STX\DC2\EOT\189\ACK\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\a\STXG\DC2\EOT\187\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STXG\DC2\EOT\190\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXG\SOH\DC2\EOT\187\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STXG\SOH\DC2\EOT\190\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXG\STX\DC2\EOT\187\ACK\v\r\n\
+    \\ENQ\ENQ\a\STXG\STX\DC2\EOT\190\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STXH\DC2\EOT\188\ACK\STX\DC1\n\
+    \\EOT\ENQ\a\STXH\DC2\EOT\191\ACK\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXH\SOH\DC2\EOT\188\ACK\STX\n\
+    \\ENQ\ENQ\a\STXH\SOH\DC2\EOT\191\ACK\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXH\STX\DC2\EOT\188\ACK\r\DLE\n\
+    \\ENQ\ENQ\a\STXH\STX\DC2\EOT\191\ACK\r\DLE\n\
     \\f\n\
-    \\EOT\ENQ\a\STXI\DC2\EOT\189\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STXI\DC2\EOT\192\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXI\SOH\DC2\EOT\189\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STXI\SOH\DC2\EOT\192\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXI\STX\DC2\EOT\189\ACK\v\r\n\
+    \\ENQ\ENQ\a\STXI\STX\DC2\EOT\192\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STXJ\DC2\EOT\190\ACK\STX\t\n\
+    \\EOT\ENQ\a\STXJ\DC2\EOT\193\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXJ\SOH\DC2\EOT\190\ACK\STX\ETX\n\
+    \\ENQ\ENQ\a\STXJ\SOH\DC2\EOT\193\ACK\STX\ETX\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXJ\STX\DC2\EOT\190\ACK\ACK\b\n\
+    \\ENQ\ENQ\a\STXJ\STX\DC2\EOT\193\ACK\ACK\b\n\
     \\f\n\
-    \\EOT\ENQ\a\STXK\DC2\EOT\191\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STXK\DC2\EOT\194\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXK\SOH\DC2\EOT\191\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STXK\SOH\DC2\EOT\194\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXK\STX\DC2\EOT\191\ACK\v\r\n\
+    \\ENQ\ENQ\a\STXK\STX\DC2\EOT\194\ACK\v\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STXL\DC2\EOT\192\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXL\DC2\EOT\195\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXL\SOH\DC2\EOT\192\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXL\SOH\DC2\EOT\195\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXL\STX\DC2\EOT\192\ACK\t\v\n\
+    \\ENQ\ENQ\a\STXL\STX\DC2\EOT\195\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXM\DC2\EOT\193\ACK\STX\r\n\
+    \\EOT\ENQ\a\STXM\DC2\EOT\196\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXM\SOH\DC2\EOT\193\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STXM\SOH\DC2\EOT\196\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXM\STX\DC2\EOT\193\ACK\n\
+    \\ENQ\ENQ\a\STXM\STX\DC2\EOT\196\ACK\n\
     \\f\n\
     \2\n\
-    \\EOT\ENQ\a\STXN\DC2\EOT\194\ACK\STX\SO\"$ Internal language for testing SCIP\n\
+    \\EOT\ENQ\a\STXN\DC2\EOT\197\ACK\STX\SO\"$ Internal language for testing SCIP\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXN\SOH\DC2\EOT\194\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STXN\SOH\DC2\EOT\197\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXN\STX\DC2\EOT\194\ACK\n\
+    \\ENQ\ENQ\a\STXN\STX\DC2\EOT\197\ACK\n\
     \\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STXO\DC2\EOT\195\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXO\DC2\EOT\198\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXO\SOH\DC2\EOT\195\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXO\SOH\DC2\EOT\198\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXO\STX\DC2\EOT\195\ACK\t\v\n\
+    \\ENQ\ENQ\a\STXO\STX\DC2\EOT\198\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXP\DC2\EOT\196\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXP\DC2\EOT\199\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXP\SOH\DC2\EOT\196\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXP\SOH\DC2\EOT\199\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXP\STX\DC2\EOT\196\ACK\t\v\n\
+    \\ENQ\ENQ\a\STXP\STX\DC2\EOT\199\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXQ\DC2\EOT\197\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXQ\DC2\EOT\200\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXQ\SOH\DC2\EOT\197\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXQ\SOH\DC2\EOT\200\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXQ\STX\DC2\EOT\197\ACK\t\v\n\
+    \\ENQ\ENQ\a\STXQ\STX\DC2\EOT\200\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXR\DC2\EOT\198\ACK\STX\v\n\
+    \\EOT\ENQ\a\STXR\DC2\EOT\201\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXR\SOH\DC2\EOT\198\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXR\SOH\DC2\EOT\201\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXR\STX\DC2\EOT\198\ACK\b\n\
+    \\ENQ\ENQ\a\STXR\STX\DC2\EOT\201\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STXS\DC2\EOT\199\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXS\DC2\EOT\202\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXS\SOH\DC2\EOT\199\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXS\SOH\DC2\EOT\202\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXS\STX\DC2\EOT\199\ACK\t\v\n\
+    \\ENQ\ENQ\a\STXS\STX\DC2\EOT\202\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXT\DC2\EOT\200\ACK\STX\v\n\
+    \\EOT\ENQ\a\STXT\DC2\EOT\203\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXT\SOH\DC2\EOT\200\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXT\SOH\DC2\EOT\203\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXT\STX\DC2\EOT\200\ACK\b\n\
+    \\ENQ\ENQ\a\STXT\STX\DC2\EOT\203\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STXU\DC2\EOT\201\ACK\STX\v\n\
+    \\EOT\ENQ\a\STXU\DC2\EOT\204\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXU\SOH\DC2\EOT\201\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXU\SOH\DC2\EOT\204\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXU\STX\DC2\EOT\201\ACK\b\n\
+    \\ENQ\ENQ\a\STXU\STX\DC2\EOT\204\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STXV\DC2\EOT\202\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXV\DC2\EOT\205\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXV\SOH\DC2\EOT\202\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXV\SOH\DC2\EOT\205\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXV\STX\DC2\EOT\202\ACK\t\v\n\
+    \\ENQ\ENQ\a\STXV\STX\DC2\EOT\205\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXW\DC2\EOT\203\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXW\DC2\EOT\206\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXW\SOH\DC2\EOT\203\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STXW\SOH\DC2\EOT\206\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXW\STX\DC2\EOT\203\ACK\n\
+    \\ENQ\ENQ\a\STXW\STX\DC2\EOT\206\ACK\n\
     \\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXX\DC2\EOT\204\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STXX\DC2\EOT\207\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXX\SOH\DC2\EOT\204\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STXX\SOH\DC2\EOT\207\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXX\STX\DC2\EOT\204\ACK\v\r\n\
+    \\ENQ\ENQ\a\STXX\STX\DC2\EOT\207\ACK\v\r\n\
     \\DC4\n\
-    \\EOT\ENQ\a\STXY\DC2\EOT\205\ACK\STX\DC3\"\ACK Bash\n\
+    \\EOT\ENQ\a\STXY\DC2\EOT\208\ACK\STX\DC3\"\ACK Bash\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXY\SOH\DC2\EOT\205\ACK\STX\r\n\
+    \\ENQ\ENQ\a\STXY\SOH\DC2\EOT\208\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXY\STX\DC2\EOT\205\ACK\DLE\DC2\n\
+    \\ENQ\ENQ\a\STXY\STX\DC2\EOT\208\ACK\DLE\DC2\n\
     \\f\n\
-    \\EOT\ENQ\a\STXZ\DC2\EOT\206\ACK\STX\SI\n\
+    \\EOT\ENQ\a\STXZ\DC2\EOT\209\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXZ\SOH\DC2\EOT\206\ACK\STX\t\n\
+    \\ENQ\ENQ\a\STXZ\SOH\DC2\EOT\209\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXZ\STX\DC2\EOT\206\ACK\f\SO\n\
+    \\ENQ\ENQ\a\STXZ\STX\DC2\EOT\209\ACK\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STX[\DC2\EOT\207\ACK\STX\SO\n\
+    \\EOT\ENQ\a\STX[\DC2\EOT\210\ACK\STX\SO\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX[\SOH\DC2\EOT\207\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STX[\SOH\DC2\EOT\210\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX[\STX\DC2\EOT\207\ACK\n\
+    \\ENQ\ENQ\a\STX[\STX\DC2\EOT\210\ACK\n\
     \\r\n\
     \\f\n\
-    \\EOT\ENQ\a\STX\\\DC2\EOT\208\ACK\STX\DLE\n\
+    \\EOT\ENQ\a\STX\\\DC2\EOT\211\ACK\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\\\SOH\DC2\EOT\208\ACK\STX\n\
+    \\ENQ\ENQ\a\STX\\\SOH\DC2\EOT\211\ACK\STX\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX\\\STX\DC2\EOT\208\ACK\r\SI\n\
+    \\ENQ\ENQ\a\STX\\\STX\DC2\EOT\211\ACK\r\SI\n\
     \\f\n\
-    \\EOT\ENQ\a\STX]\DC2\EOT\209\ACK\STX\SI\n\
+    \\EOT\ENQ\a\STX]\DC2\EOT\212\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX]\SOH\DC2\EOT\209\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STX]\SOH\DC2\EOT\212\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX]\STX\DC2\EOT\209\ACK\v\SO\n\
+    \\ENQ\ENQ\a\STX]\STX\DC2\EOT\212\ACK\v\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STX^\DC2\EOT\210\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX^\DC2\EOT\213\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX^\SOH\DC2\EOT\210\ACK\STX\a\n\
+    \\ENQ\ENQ\a\STX^\SOH\DC2\EOT\213\ACK\STX\a\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX^\STX\DC2\EOT\210\ACK\n\
+    \\ENQ\ENQ\a\STX^\STX\DC2\EOT\213\ACK\n\
     \\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX_\DC2\EOT\211\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX_\DC2\EOT\214\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX_\SOH\DC2\EOT\211\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STX_\SOH\DC2\EOT\214\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX_\STX\DC2\EOT\211\ACK\b\v\n\
+    \\ENQ\ENQ\a\STX_\STX\DC2\EOT\214\ACK\b\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STX`\DC2\EOT\212\ACK\STX\f\n\
+    \\EOT\ENQ\a\STX`\DC2\EOT\215\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX`\SOH\DC2\EOT\212\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STX`\SOH\DC2\EOT\215\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STX`\STX\DC2\EOT\212\ACK\t\v\n\
+    \\ENQ\ENQ\a\STX`\STX\DC2\EOT\215\ACK\t\v\n\
     \\f\n\
-    \\EOT\ENQ\a\STXa\DC2\EOT\213\ACK\STX\v\n\
+    \\EOT\ENQ\a\STXa\DC2\EOT\216\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXa\SOH\DC2\EOT\213\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXa\SOH\DC2\EOT\216\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXa\STX\DC2\EOT\213\ACK\b\n\
+    \\ENQ\ENQ\a\STXa\STX\DC2\EOT\216\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STXb\DC2\EOT\214\ACK\STX\SI\n\
+    \\EOT\ENQ\a\STXb\DC2\EOT\217\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXb\SOH\DC2\EOT\214\ACK\STX\b\n\
+    \\ENQ\ENQ\a\STXb\SOH\DC2\EOT\217\ACK\STX\b\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXb\STX\DC2\EOT\214\ACK\v\SO\n\
+    \\ENQ\ENQ\a\STXb\STX\DC2\EOT\217\ACK\v\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STXc\DC2\EOT\215\ACK\STX\DC2\n\
+    \\EOT\ENQ\a\STXc\DC2\EOT\218\ACK\STX\DC2\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXc\SOH\DC2\EOT\215\ACK\STX\f\n\
+    \\ENQ\ENQ\a\STXc\SOH\DC2\EOT\218\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXc\STX\DC2\EOT\215\ACK\SI\DC1\n\
+    \\ENQ\ENQ\a\STXc\STX\DC2\EOT\218\ACK\SI\DC1\n\
     \\f\n\
-    \\EOT\ENQ\a\STXd\DC2\EOT\216\ACK\STX\ETB\n\
+    \\EOT\ENQ\a\STXd\DC2\EOT\219\ACK\STX\ETB\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXd\SOH\DC2\EOT\216\ACK\STX\DC1\n\
+    \\ENQ\ENQ\a\STXd\SOH\DC2\EOT\219\ACK\STX\DC1\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXd\STX\DC2\EOT\216\ACK\DC4\SYN\n\
+    \\ENQ\ENQ\a\STXd\STX\DC2\EOT\219\ACK\DC4\SYN\n\
     \\f\n\
-    \\EOT\ENQ\a\STXe\DC2\EOT\217\ACK\STX\DLE\n\
+    \\EOT\ENQ\a\STXe\DC2\EOT\220\ACK\STX\DLE\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXe\SOH\DC2\EOT\217\ACK\STX\t\n\
+    \\ENQ\ENQ\a\STXe\SOH\DC2\EOT\220\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXe\STX\DC2\EOT\217\ACK\f\SI\n\
+    \\ENQ\ENQ\a\STXe\STX\DC2\EOT\220\ACK\f\SI\n\
     \\f\n\
-    \\EOT\ENQ\a\STXf\DC2\EOT\218\ACK\STX\r\n\
+    \\EOT\ENQ\a\STXf\DC2\EOT\221\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXf\SOH\DC2\EOT\218\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXf\SOH\DC2\EOT\221\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXf\STX\DC2\EOT\218\ACK\t\f\n\
+    \\ENQ\ENQ\a\STXf\STX\DC2\EOT\221\ACK\t\f\n\
     \\f\n\
-    \\EOT\ENQ\a\STXg\DC2\EOT\219\ACK\STX\DC3\n\
+    \\EOT\ENQ\a\STXg\DC2\EOT\222\ACK\STX\DC3\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXg\SOH\DC2\EOT\219\ACK\STX\r\n\
+    \\ENQ\ENQ\a\STXg\SOH\DC2\EOT\222\ACK\STX\r\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXg\STX\DC2\EOT\219\ACK\DLE\DC2\n\
+    \\ENQ\ENQ\a\STXg\STX\DC2\EOT\222\ACK\DLE\DC2\n\
     \\f\n\
-    \\EOT\ENQ\a\STXh\DC2\EOT\220\ACK\STX\v\n\
+    \\EOT\ENQ\a\STXh\DC2\EOT\223\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXh\SOH\DC2\EOT\220\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXh\SOH\DC2\EOT\223\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXh\STX\DC2\EOT\220\ACK\b\n\
+    \\ENQ\ENQ\a\STXh\STX\DC2\EOT\223\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STXi\DC2\EOT\221\ACK\STX\SI\n\
+    \\EOT\ENQ\a\STXi\DC2\EOT\224\ACK\STX\SI\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXi\SOH\DC2\EOT\221\ACK\STX\t\n\
+    \\ENQ\ENQ\a\STXi\SOH\DC2\EOT\224\ACK\STX\t\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXi\STX\DC2\EOT\221\ACK\f\SO\n\
+    \\ENQ\ENQ\a\STXi\STX\DC2\EOT\224\ACK\f\SO\n\
     \\f\n\
-    \\EOT\ENQ\a\STXj\DC2\EOT\222\ACK\STX\v\n\
+    \\EOT\ENQ\a\STXj\DC2\EOT\225\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXj\SOH\DC2\EOT\222\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXj\SOH\DC2\EOT\225\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXj\STX\DC2\EOT\222\ACK\b\n\
+    \\ENQ\ENQ\a\STXj\STX\DC2\EOT\225\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STXk\DC2\EOT\223\ACK\STX\v\n\
+    \\EOT\ENQ\a\STXk\DC2\EOT\226\ACK\STX\v\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXk\SOH\DC2\EOT\223\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXk\SOH\DC2\EOT\226\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXk\STX\DC2\EOT\223\ACK\b\n\
+    \\ENQ\ENQ\a\STXk\STX\DC2\EOT\226\ACK\b\n\
     \\n\
     \\f\n\
-    \\EOT\ENQ\a\STXl\DC2\EOT\224\ACK\STX\f\n\
+    \\EOT\ENQ\a\STXl\DC2\EOT\227\ACK\STX\f\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXl\SOH\DC2\EOT\224\ACK\STX\ACK\n\
+    \\ENQ\ENQ\a\STXl\SOH\DC2\EOT\227\ACK\STX\ACK\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXl\STX\DC2\EOT\224\ACK\t\v\n\
+    \\ENQ\ENQ\a\STXl\STX\DC2\EOT\227\ACK\t\v\n\
     \\147\ETX\n\
-    \\EOT\ENQ\a\STXm\DC2\EOT\225\ACK\STX\v\"\132\ETX NextLanguage = 111;\n\
+    \\EOT\ENQ\a\STXm\DC2\EOT\228\ACK\STX\v\"\132\ETX NextLanguage = 111;\n\
     \ Steps add a new language:\n\
     \ 1. Copy-paste the \"NextLanguage = N\" line above\n\
     \ 2. Increment \"NextLanguage = N\" to \"NextLanguage = N+1\"\n\
@@ -9241,7 +16860,971 @@ packedFileDescriptor
     \ 5. (optional) Add a brief comment behind the language if the name is not self-explanatory\n\
     \\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXm\SOH\DC2\EOT\225\ACK\STX\ENQ\n\
+    \\ENQ\ENQ\a\STXm\SOH\DC2\EOT\228\ACK\STX\ENQ\n\
     \\r\n\
-    \\ENQ\ENQ\a\STXm\STX\DC2\EOT\225\ACK\b\n\
-    \b\ACKproto3"
+    \\ENQ\ENQ\a\STXm\STX\DC2\EOT\228\ACK\b\n\
+    \\n\
+    \\f\n\
+    \\STX\EOT\v\DC2\ACK\239\ACK\NUL\241\ACK\SOH\n\
+    \\v\n\
+    \\ETX\EOT\v\SOH\DC2\EOT\239\ACK\b\DC2\n\
+    \\f\n\
+    \\EOT\EOT\v\STX\NUL\DC2\EOT\240\ACK\STX\SI\n\
+    \\r\n\
+    \\ENQ\EOT\v\STX\NUL\ACK\DC2\EOT\240\ACK\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\v\STX\NUL\SOH\DC2\EOT\240\ACK\a\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\v\STX\NUL\ETX\DC2\EOT\240\ACK\r\SO\n\
+    \\f\n\
+    \\STX\EOT\f\DC2\ACK\243\ACK\NUL\246\ACK\SOH\n\
+    \\v\n\
+    \\ETX\EOT\f\SOH\DC2\EOT\243\ACK\b\r\n\
+    \\f\n\
+    \\EOT\EOT\f\STX\NUL\DC2\EOT\244\ACK\STX\US\n\
+    \\r\n\
+    \\ENQ\EOT\f\STX\NUL\EOT\DC2\EOT\244\ACK\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\f\STX\NUL\ENQ\DC2\EOT\244\ACK\v\DC1\n\
+    \\r\n\
+    \\ENQ\EOT\f\STX\NUL\SOH\DC2\EOT\244\ACK\DC2\SUB\n\
+    \\r\n\
+    \\ENQ\EOT\f\STX\NUL\ETX\DC2\EOT\244\ACK\GS\RS\n\
+    \\f\n\
+    \\EOT\EOT\f\STX\SOH\DC2\EOT\245\ACK\STX+\n\
+    \\r\n\
+    \\ENQ\EOT\f\STX\SOH\EOT\DC2\EOT\245\ACK\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\f\STX\SOH\ACK\DC2\EOT\245\ACK\v\FS\n\
+    \\r\n\
+    \\ENQ\EOT\f\STX\SOH\SOH\DC2\EOT\245\ACK\GS&\n\
+    \\r\n\
+    \\ENQ\EOT\f\STX\SOH\ETX\DC2\EOT\245\ACK)*\n\
+    \\f\n\
+    \\STX\EOT\r\DC2\ACK\248\ACK\NUL\140\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\r\SOH\DC2\EOT\248\ACK\b\f\n\
+    \\v\n\
+    \\ETX\EOT\r\t\DC2\EOT\249\ACK\STX)\n\
+    \\f\n\
+    \\EOT\EOT\r\t\NUL\DC2\EOT\249\ACK\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\NUL\SOH\DC2\EOT\249\ACK\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\NUL\STX\DC2\EOT\249\ACK\v\f\n\
+    \\f\n\
+    \\EOT\EOT\r\t\SOH\DC2\EOT\249\ACK\SO\SI\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\SOH\SOH\DC2\EOT\249\ACK\SO\SI\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\SOH\STX\DC2\EOT\249\ACK\SO\SI\n\
+    \\f\n\
+    \\EOT\EOT\r\t\STX\DC2\EOT\249\ACK\DC1\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\STX\SOH\DC2\EOT\249\ACK\DC1\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\STX\STX\DC2\EOT\249\ACK\DC1\DC2\n\
+    \\f\n\
+    \\EOT\EOT\r\t\ETX\DC2\EOT\249\ACK\DC4\NAK\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\ETX\SOH\DC2\EOT\249\ACK\DC4\NAK\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\ETX\STX\DC2\EOT\249\ACK\DC4\NAK\n\
+    \\f\n\
+    \\EOT\EOT\r\t\EOT\DC2\EOT\249\ACK\ETB\CAN\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\EOT\SOH\DC2\EOT\249\ACK\ETB\CAN\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\EOT\STX\DC2\EOT\249\ACK\ETB\CAN\n\
+    \\f\n\
+    \\EOT\EOT\r\t\ENQ\DC2\EOT\249\ACK\SUB\FS\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\ENQ\SOH\DC2\EOT\249\ACK\SUB\FS\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\ENQ\STX\DC2\EOT\249\ACK\SUB\FS\n\
+    \\f\n\
+    \\EOT\EOT\r\t\ACK\DC2\EOT\249\ACK\RS \n\
+    \\r\n\
+    \\ENQ\EOT\r\t\ACK\SOH\DC2\EOT\249\ACK\RS \n\
+    \\r\n\
+    \\ENQ\EOT\r\t\ACK\STX\DC2\EOT\249\ACK\RS \n\
+    \\f\n\
+    \\EOT\EOT\r\t\a\DC2\EOT\249\ACK\"$\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\a\SOH\DC2\EOT\249\ACK\"$\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\a\STX\DC2\EOT\249\ACK\"$\n\
+    \\f\n\
+    \\EOT\EOT\r\t\b\DC2\EOT\249\ACK&(\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\b\SOH\DC2\EOT\249\ACK&(\n\
+    \\r\n\
+    \\ENQ\EOT\r\t\b\STX\DC2\EOT\249\ACK&(\n\
+    \\SO\n\
+    \\EOT\EOT\r\b\NUL\DC2\ACK\250\ACK\STX\139\a\ETX\n\
+    \\r\n\
+    \\ENQ\EOT\r\b\NUL\SOH\DC2\EOT\250\ACK\b\DC4\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\NUL\DC2\EOT\251\ACK\EOT\EM\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\NUL\ACK\DC2\EOT\251\ACK\EOT\v\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\NUL\SOH\DC2\EOT\251\ACK\f\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\NUL\ETX\DC2\EOT\251\ACK\ETB\CAN\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\SOH\DC2\EOT\252\ACK\EOT \n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SOH\ACK\DC2\EOT\252\ACK\EOT\SO\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SOH\SOH\DC2\EOT\252\ACK\SI\SUB\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SOH\ETX\DC2\EOT\252\ACK\GS\US\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\STX\DC2\EOT\253\ACK\EOT\FS\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\STX\ACK\DC2\EOT\253\ACK\EOT\f\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\STX\SOH\DC2\EOT\253\ACK\r\SYN\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\STX\ETX\DC2\EOT\253\ACK\EM\ESC\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\ETX\DC2\EOT\254\ACK\EOT\RS\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ETX\ACK\DC2\EOT\254\ACK\EOT\r\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ETX\SOH\DC2\EOT\254\ACK\SO\CAN\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ETX\ETX\DC2\EOT\254\ACK\ESC\GS\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\EOT\DC2\EOT\255\ACK\EOT$\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\EOT\ACK\DC2\EOT\255\ACK\EOT\DLE\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\EOT\SOH\DC2\EOT\255\ACK\DC1\RS\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\EOT\ETX\DC2\EOT\255\ACK!#\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\ENQ\DC2\EOT\128\a\EOT,\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ENQ\ACK\DC2\EOT\128\a\EOT\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ENQ\SOH\DC2\EOT\128\a\NAK&\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ENQ\ETX\DC2\EOT\128\a)+\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\ACK\DC2\EOT\129\a\EOT\RS\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ACK\ACK\DC2\EOT\129\a\EOT\r\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ACK\SOH\DC2\EOT\129\a\SO\CAN\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\ACK\ETX\DC2\EOT\129\a\ESC\GS\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\a\DC2\EOT\130\a\EOT\FS\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\a\ACK\DC2\EOT\130\a\EOT\f\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\a\SOH\DC2\EOT\130\a\r\SYN\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\a\ETX\DC2\EOT\130\a\EM\ESC\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\b\DC2\EOT\131\a\EOT'\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\b\ACK\DC2\EOT\131\a\EOT\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\b\SOH\DC2\EOT\131\a\DC3\"\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\b\ETX\DC2\EOT\131\a%&\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\t\DC2\EOT\132\a\EOT%\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\t\ACK\DC2\EOT\132\a\EOT\DC1\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\t\SOH\DC2\EOT\132\a\DC2 \n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\t\ETX\DC2\EOT\132\a#$\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\n\
+    \\DC2\EOT\133\a\EOT)\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\n\
+    \\ACK\DC2\EOT\133\a\EOT\DC3\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\n\
+    \\SOH\DC2\EOT\133\a\DC4$\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\n\
+    \\ETX\DC2\EOT\133\a'(\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\v\DC2\EOT\134\a\EOT&\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\v\ACK\DC2\EOT\134\a\EOT\DC1\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\v\SOH\DC2\EOT\134\a\DC2 \n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\v\ETX\DC2\EOT\134\a#%\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\f\DC2\EOT\135\a\EOT!\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\f\ACK\DC2\EOT\135\a\EOT\SO\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\f\SOH\DC2\EOT\135\a\SI\ESC\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\f\ETX\DC2\EOT\135\a\RS \n\
+    \\f\n\
+    \\EOT\EOT\r\STX\r\DC2\EOT\136\a\EOT$\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\r\ACK\DC2\EOT\136\a\EOT\DLE\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\r\SOH\DC2\EOT\136\a\DC1\RS\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\r\ETX\DC2\EOT\136\a!#\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\SO\DC2\EOT\137\a\EOT\RS\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SO\ACK\DC2\EOT\137\a\EOT\r\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SO\SOH\DC2\EOT\137\a\SO\CAN\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SO\ETX\DC2\EOT\137\a\ESC\GS\n\
+    \\f\n\
+    \\EOT\EOT\r\STX\SI\DC2\EOT\138\a\EOT \n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SI\ACK\DC2\EOT\138\a\EOT\SO\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SI\SOH\DC2\EOT\138\a\SI\SUB\n\
+    \\r\n\
+    \\ENQ\EOT\r\STX\SI\ETX\DC2\EOT\138\a\GS\US\n\
+    \\f\n\
+    \\STX\EOT\SO\DC2\ACK\142\a\NUL\145\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\SO\SOH\DC2\EOT\142\a\b\DC2\n\
+    \\f\n\
+    \\EOT\EOT\SO\STX\NUL\DC2\EOT\143\a\STX\ETB\n\
+    \\r\n\
+    \\ENQ\EOT\SO\STX\NUL\ACK\DC2\EOT\143\a\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT\SO\STX\NUL\SOH\DC2\EOT\143\a\b\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\SO\STX\NUL\ETX\DC2\EOT\143\a\NAK\SYN\n\
+    \\f\n\
+    \\EOT\EOT\SO\STX\SOH\DC2\EOT\144\a\STX\ETB\n\
+    \\r\n\
+    \\ENQ\EOT\SO\STX\SOH\ACK\DC2\EOT\144\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\SO\STX\SOH\SOH\DC2\EOT\144\a\a\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\SO\STX\SOH\ETX\DC2\EOT\144\a\NAK\SYN\n\
+    \\f\n\
+    \\STX\EOT\SI\DC2\ACK\147\a\NUL\151\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\SI\SOH\DC2\EOT\147\a\b\SI\n\
+    \\f\n\
+    \\EOT\EOT\SI\STX\NUL\DC2\EOT\148\a\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\NUL\ACK\DC2\EOT\148\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\NUL\SOH\DC2\EOT\148\a\a\r\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\NUL\ETX\DC2\EOT\148\a\DLE\DC1\n\
+    \\f\n\
+    \\EOT\EOT\SI\STX\SOH\DC2\EOT\149\a\STX\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\SOH\ENQ\DC2\EOT\149\a\STX\b\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\SOH\SOH\DC2\EOT\149\a\t\SI\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\SOH\ETX\DC2\EOT\149\a\DC2\DC3\n\
+    \\f\n\
+    \\EOT\EOT\SI\STX\STX\DC2\EOT\150\a\STX#\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\STX\EOT\DC2\EOT\150\a\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\STX\ACK\DC2\EOT\150\a\v\SI\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\STX\SOH\DC2\EOT\150\a\DLE\RS\n\
+    \\r\n\
+    \\ENQ\EOT\SI\STX\STX\ETX\DC2\EOT\150\a!\"\n\
+    \\f\n\
+    \\STX\EOT\DLE\DC2\ACK\153\a\NUL\156\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\DLE\SOH\DC2\EOT\153\a\b\DC2\n\
+    \\f\n\
+    \\EOT\EOT\DLE\STX\NUL\DC2\EOT\154\a\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\DLE\STX\NUL\ACK\DC2\EOT\154\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\DLE\STX\NUL\SOH\DC2\EOT\154\a\a\r\n\
+    \\r\n\
+    \\ENQ\EOT\DLE\STX\NUL\ETX\DC2\EOT\154\a\DLE\DC1\n\
+    \\f\n\
+    \\EOT\EOT\DLE\STX\SOH\DC2\EOT\155\a\STX\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\DLE\STX\SOH\ENQ\DC2\EOT\155\a\STX\b\n\
+    \\r\n\
+    \\ENQ\EOT\DLE\STX\SOH\SOH\DC2\EOT\155\a\t\SI\n\
+    \\r\n\
+    \\ENQ\EOT\DLE\STX\SOH\ETX\DC2\EOT\155\a\DC2\DC3\n\
+    \\f\n\
+    \\STX\EOT\DC1\DC2\ACK\158\a\NUL\160\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\DC1\SOH\DC2\EOT\158\a\b\DLE\n\
+    \\f\n\
+    \\EOT\EOT\DC1\STX\NUL\DC2\EOT\159\a\STX\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\DC1\STX\NUL\ENQ\DC2\EOT\159\a\STX\b\n\
+    \\r\n\
+    \\ENQ\EOT\DC1\STX\NUL\SOH\DC2\EOT\159\a\t\SI\n\
+    \\r\n\
+    \\ENQ\EOT\DC1\STX\NUL\ETX\DC2\EOT\159\a\DC2\DC3\n\
+    \\f\n\
+    \\STX\EOT\DC2\DC2\ACK\162\a\NUL\165\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\DC2\SOH\DC2\EOT\162\a\b\DC1\n\
+    \\f\n\
+    \\EOT\EOT\DC2\STX\NUL\DC2\EOT\163\a\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\DC2\STX\NUL\ACK\DC2\EOT\163\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\DC2\STX\NUL\SOH\DC2\EOT\163\a\a\r\n\
+    \\r\n\
+    \\ENQ\EOT\DC2\STX\NUL\ETX\DC2\EOT\163\a\DLE\DC1\n\
+    \\f\n\
+    \\EOT\EOT\DC2\STX\SOH\DC2\EOT\164\a\STX\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\DC2\STX\SOH\ENQ\DC2\EOT\164\a\STX\b\n\
+    \\r\n\
+    \\ENQ\EOT\DC2\STX\SOH\SOH\DC2\EOT\164\a\t\SI\n\
+    \\r\n\
+    \\ENQ\EOT\DC2\STX\SOH\ETX\DC2\EOT\164\a\DC2\DC3\n\
+    \\f\n\
+    \\STX\EOT\DC3\DC2\ACK\167\a\NUL\169\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\DC3\SOH\DC2\EOT\167\a\b\DC4\n\
+    \\f\n\
+    \\EOT\EOT\DC3\STX\NUL\DC2\EOT\168\a\STX\CAN\n\
+    \\r\n\
+    \\ENQ\EOT\DC3\STX\NUL\ACK\DC2\EOT\168\a\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\DC3\STX\NUL\SOH\DC2\EOT\168\a\v\DC3\n\
+    \\r\n\
+    \\ENQ\EOT\DC3\STX\NUL\ETX\DC2\EOT\168\a\SYN\ETB\n\
+    \\f\n\
+    \\STX\EOT\DC4\DC2\ACK\171\a\NUL\173\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\DC4\SOH\DC2\EOT\171\a\b\CAN\n\
+    \\f\n\
+    \\EOT\EOT\DC4\STX\NUL\DC2\EOT\172\a\STX\SUB\n\
+    \\r\n\
+    \\ENQ\EOT\DC4\STX\NUL\EOT\DC2\EOT\172\a\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\DC4\STX\NUL\ACK\DC2\EOT\172\a\v\SI\n\
+    \\r\n\
+    \\ENQ\EOT\DC4\STX\NUL\SOH\DC2\EOT\172\a\DLE\NAK\n\
+    \\r\n\
+    \\ENQ\EOT\DC4\STX\NUL\ETX\DC2\EOT\172\a\CAN\EM\n\
+    \\f\n\
+    \\STX\EOT\NAK\DC2\ACK\175\a\NUL\177\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\NAK\SOH\DC2\EOT\175\a\b\DC1\n\
+    \\f\n\
+    \\EOT\EOT\NAK\STX\NUL\DC2\EOT\176\a\STX\SUB\n\
+    \\r\n\
+    \\ENQ\EOT\NAK\STX\NUL\EOT\DC2\EOT\176\a\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\NAK\STX\NUL\ACK\DC2\EOT\176\a\v\SI\n\
+    \\r\n\
+    \\ENQ\EOT\NAK\STX\NUL\SOH\DC2\EOT\176\a\DLE\NAK\n\
+    \\r\n\
+    \\ENQ\EOT\NAK\STX\NUL\ETX\DC2\EOT\176\a\CAN\EM\n\
+    \\f\n\
+    \\STX\EOT\SYN\DC2\ACK\179\a\NUL\181\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\SYN\SOH\DC2\EOT\179\a\b\DLE\n\
+    \\f\n\
+    \\EOT\EOT\SYN\STX\NUL\DC2\EOT\180\a\STX\SUB\n\
+    \\r\n\
+    \\ENQ\EOT\SYN\STX\NUL\EOT\DC2\EOT\180\a\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\SYN\STX\NUL\ACK\DC2\EOT\180\a\v\SI\n\
+    \\r\n\
+    \\ENQ\EOT\SYN\STX\NUL\SOH\DC2\EOT\180\a\DLE\NAK\n\
+    \\r\n\
+    \\ENQ\EOT\SYN\STX\NUL\ETX\DC2\EOT\180\a\CAN\EM\n\
+    \\f\n\
+    \\STX\EOT\ETB\DC2\ACK\183\a\NUL\187\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\ETB\SOH\DC2\EOT\183\a\b\SYN\n\
+    \\v\n\
+    \\ETX\EOT\ETB\t\DC2\EOT\184\a\STX\DC3\n\
+    \\f\n\
+    \\EOT\EOT\ETB\t\NUL\DC2\EOT\184\a\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\t\NUL\SOH\DC2\EOT\184\a\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\t\NUL\STX\DC2\EOT\184\a\v\f\n\
+    \\f\n\
+    \\EOT\EOT\ETB\t\SOH\DC2\EOT\184\a\SO\SI\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\t\SOH\SOH\DC2\EOT\184\a\SO\SI\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\t\SOH\STX\DC2\EOT\184\a\SO\SI\n\
+    \\f\n\
+    \\EOT\EOT\ETB\t\STX\DC2\EOT\184\a\DC1\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\t\STX\SOH\DC2\EOT\184\a\DC1\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\t\STX\STX\DC2\EOT\184\a\DC1\DC2\n\
+    \\f\n\
+    \\EOT\EOT\ETB\STX\NUL\DC2\EOT\185\a\STX\SI\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\STX\NUL\ACK\DC2\EOT\185\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\STX\NUL\SOH\DC2\EOT\185\a\a\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\STX\NUL\ETX\DC2\EOT\185\a\r\SO\n\
+    \\f\n\
+    \\EOT\EOT\ETB\STX\SOH\DC2\EOT\186\a\STX\EM\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\STX\SOH\ACK\DC2\EOT\186\a\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\STX\SOH\SOH\DC2\EOT\186\a\b\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\ETB\STX\SOH\ETX\DC2\EOT\186\a\ETB\CAN\n\
+    \\f\n\
+    \\STX\EOT\CAN\DC2\ACK\189\a\NUL\193\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\CAN\SOH\DC2\EOT\189\a\b\NAK\n\
+    \\v\n\
+    \\ETX\EOT\CAN\t\DC2\EOT\190\a\STX\r\n\
+    \\f\n\
+    \\EOT\EOT\CAN\t\NUL\DC2\EOT\190\a\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\t\NUL\SOH\DC2\EOT\190\a\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\t\NUL\STX\DC2\EOT\190\a\v\f\n\
+    \\f\n\
+    \\EOT\EOT\CAN\STX\NUL\DC2\EOT\191\a\STX&\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\STX\NUL\EOT\DC2\EOT\191\a\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\STX\NUL\ACK\DC2\EOT\191\a\v\NAK\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\STX\NUL\SOH\DC2\EOT\191\a\SYN!\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\STX\NUL\ETX\DC2\EOT\191\a$%\n\
+    \\f\n\
+    \\EOT\EOT\CAN\STX\SOH\DC2\EOT\192\a\STX\SI\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\STX\SOH\ACK\DC2\EOT\192\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\STX\SOH\SOH\DC2\EOT\192\a\a\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\CAN\STX\SOH\ETX\DC2\EOT\192\a\r\SO\n\
+    \\f\n\
+    \\STX\EOT\EM\DC2\ACK\195\a\NUL\199\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\EM\SOH\DC2\EOT\195\a\b\ETB\n\
+    \\v\n\
+    \\ETX\EOT\EM\t\DC2\EOT\196\a\STX\r\n\
+    \\f\n\
+    \\EOT\EOT\EM\t\NUL\DC2\EOT\196\a\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\EM\t\NUL\SOH\DC2\EOT\196\a\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\EM\t\NUL\STX\DC2\EOT\196\a\v\f\n\
+    \\f\n\
+    \\EOT\EOT\EM\STX\NUL\DC2\EOT\197\a\STX\SI\n\
+    \\r\n\
+    \\ENQ\EOT\EM\STX\NUL\ACK\DC2\EOT\197\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\EM\STX\NUL\SOH\DC2\EOT\197\a\a\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\EM\STX\NUL\ETX\DC2\EOT\197\a\r\SO\n\
+    \\f\n\
+    \\EOT\EOT\EM\STX\SOH\DC2\EOT\198\a\STX\EM\n\
+    \\r\n\
+    \\ENQ\EOT\EM\STX\SOH\ACK\DC2\EOT\198\a\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT\EM\STX\SOH\SOH\DC2\EOT\198\a\b\DC4\n\
+    \\r\n\
+    \\ENQ\EOT\EM\STX\SOH\ETX\DC2\EOT\198\a\ETB\CAN\n\
+    \\f\n\
+    \\STX\EOT\SUB\DC2\ACK\201\a\NUL\205\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\SUB\SOH\DC2\EOT\201\a\b\NAK\n\
+    \\v\n\
+    \\ETX\EOT\SUB\t\DC2\EOT\202\a\STX\r\n\
+    \\f\n\
+    \\EOT\EOT\SUB\t\NUL\DC2\EOT\202\a\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\SUB\t\NUL\SOH\DC2\EOT\202\a\v\f\n\
+    \\r\n\
+    \\ENQ\EOT\SUB\t\NUL\STX\DC2\EOT\202\a\v\f\n\
+    \\f\n\
+    \\EOT\EOT\SUB\STX\NUL\DC2\EOT\203\a\STX\FS\n\
+    \\r\n\
+    \\ENQ\EOT\SUB\STX\NUL\ACK\DC2\EOT\203\a\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT\SUB\STX\NUL\SOH\DC2\EOT\203\a\b\ETB\n\
+    \\r\n\
+    \\ENQ\EOT\SUB\STX\NUL\ETX\DC2\EOT\203\a\SUB\ESC\n\
+    \\f\n\
+    \\EOT\EOT\SUB\STX\SOH\DC2\EOT\204\a\STX\SI\n\
+    \\r\n\
+    \\ENQ\EOT\SUB\STX\SOH\ACK\DC2\EOT\204\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\SUB\STX\SOH\SOH\DC2\EOT\204\a\a\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\SUB\STX\SOH\ETX\DC2\EOT\204\a\r\SO\n\
+    \\f\n\
+    \\STX\EOT\ESC\DC2\ACK\207\a\NUL\209\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\ESC\SOH\DC2\EOT\207\a\b\DC2\n\
+    \\f\n\
+    \\EOT\EOT\ESC\STX\NUL\DC2\EOT\208\a\STX\SI\n\
+    \\r\n\
+    \\ENQ\EOT\ESC\STX\NUL\ACK\DC2\EOT\208\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\ESC\STX\NUL\SOH\DC2\EOT\208\a\a\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\ESC\STX\NUL\ETX\DC2\EOT\208\a\r\SO\n\
+    \\f\n\
+    \\STX\EOT\FS\DC2\ACK\211\a\NUL\213\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\FS\SOH\DC2\EOT\211\a\b\DC4\n\
+    \\f\n\
+    \\EOT\EOT\FS\STX\NUL\DC2\EOT\212\a\STX\SI\n\
+    \\r\n\
+    \\ENQ\EOT\FS\STX\NUL\ACK\DC2\EOT\212\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\FS\STX\NUL\SOH\DC2\EOT\212\a\a\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\FS\STX\NUL\ETX\DC2\EOT\212\a\r\SO\n\
+    \\f\n\
+    \\STX\EOT\GS\DC2\ACK\215\a\NUL\222\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\GS\SOH\DC2\EOT\215\a\b\DC1\n\
+    \\SO\n\
+    \\EOT\EOT\GS\ETX\NUL\DC2\ACK\216\a\STX\219\a\ETX\n\
+    \\r\n\
+    \\ENQ\EOT\GS\ETX\NUL\SOH\DC2\EOT\216\a\n\
+    \\DC2\n\
+    \\SO\n\
+    \\ACK\EOT\GS\ETX\NUL\STX\NUL\DC2\EOT\217\a\EOT\DC1\n\
+    \\SI\n\
+    \\a\EOT\GS\ETX\NUL\STX\NUL\ACK\DC2\EOT\217\a\EOT\b\n\
+    \\SI\n\
+    \\a\EOT\GS\ETX\NUL\STX\NUL\SOH\DC2\EOT\217\a\t\f\n\
+    \\SI\n\
+    \\a\EOT\GS\ETX\NUL\STX\NUL\ETX\DC2\EOT\217\a\SI\DLE\n\
+    \\SO\n\
+    \\ACK\EOT\GS\ETX\NUL\STX\SOH\DC2\EOT\218\a\EOT\DC2\n\
+    \\SI\n\
+    \\a\EOT\GS\ETX\NUL\STX\SOH\ACK\DC2\EOT\218\a\EOT\b\n\
+    \\SI\n\
+    \\a\EOT\GS\ETX\NUL\STX\SOH\SOH\DC2\EOT\218\a\t\r\n\
+    \\SI\n\
+    \\a\EOT\GS\ETX\NUL\STX\SOH\ETX\DC2\EOT\218\a\DLE\DC1\n\
+    \\f\n\
+    \\EOT\EOT\GS\STX\NUL\DC2\EOT\220\a\STX\NAK\n\
+    \\r\n\
+    \\ENQ\EOT\GS\STX\NUL\ACK\DC2\EOT\220\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT\GS\STX\NUL\SOH\DC2\EOT\220\a\a\DLE\n\
+    \\r\n\
+    \\ENQ\EOT\GS\STX\NUL\ETX\DC2\EOT\220\a\DC3\DC4\n\
+    \\f\n\
+    \\EOT\EOT\GS\STX\SOH\DC2\EOT\221\a\STX\RS\n\
+    \\r\n\
+    \\ENQ\EOT\GS\STX\SOH\EOT\DC2\EOT\221\a\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT\GS\STX\SOH\ACK\DC2\EOT\221\a\v\DC3\n\
+    \\r\n\
+    \\ENQ\EOT\GS\STX\SOH\SOH\DC2\EOT\221\a\DC4\EM\n\
+    \\r\n\
+    \\ENQ\EOT\GS\STX\SOH\ETX\DC2\EOT\221\a\FS\GS\n\
+    \\f\n\
+    \\STX\EOT\RS\DC2\ACK\224\a\NUL\238\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\RS\SOH\DC2\EOT\224\a\b\DLE\n\
+    \\SO\n\
+    \\EOT\EOT\RS\b\NUL\DC2\ACK\225\a\STX\237\a\ETX\n\
+    \\r\n\
+    \\ENQ\EOT\RS\b\NUL\SOH\DC2\EOT\225\a\b\DC4\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\NUL\DC2\EOT\226\a\EOT#\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\NUL\ACK\DC2\EOT\226\a\EOT\DLE\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\NUL\SOH\DC2\EOT\226\a\DC1\RS\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\NUL\ETX\DC2\EOT\226\a!\"\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\SOH\DC2\EOT\227\a\EOT)\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\SOH\ACK\DC2\EOT\227\a\EOT\DC3\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\SOH\SOH\DC2\EOT\227\a\DC4$\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\SOH\ETX\DC2\EOT\227\a'(\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\STX\DC2\EOT\228\a\EOT#\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\STX\ACK\DC2\EOT\228\a\EOT\DLE\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\STX\SOH\DC2\EOT\228\a\DC1\RS\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\STX\ETX\DC2\EOT\228\a!\"\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\ETX\DC2\EOT\229\a\EOT%\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ETX\ACK\DC2\EOT\229\a\EOT\DC1\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ETX\SOH\DC2\EOT\229\a\DC2 \n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ETX\ETX\DC2\EOT\229\a#$\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\EOT\DC2\EOT\230\a\EOT#\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\EOT\ACK\DC2\EOT\230\a\EOT\DLE\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\EOT\SOH\DC2\EOT\230\a\DC1\RS\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\EOT\ETX\DC2\EOT\230\a!\"\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\ENQ\DC2\EOT\231\a\EOT!\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ENQ\ACK\DC2\EOT\231\a\EOT\SI\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ENQ\SOH\DC2\EOT\231\a\DLE\FS\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ENQ\ETX\DC2\EOT\231\a\US \n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\ACK\DC2\EOT\232\a\EOT#\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ACK\ACK\DC2\EOT\232\a\EOT\DLE\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ACK\SOH\DC2\EOT\232\a\DC1\RS\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\ACK\ETX\DC2\EOT\232\a!\"\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\a\DC2\EOT\233\a\EOT%\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\a\ACK\DC2\EOT\233\a\EOT\DC1\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\a\SOH\DC2\EOT\233\a\DC2 \n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\a\ETX\DC2\EOT\233\a#$\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\b\DC2\EOT\234\a\EOT'\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\b\ACK\DC2\EOT\234\a\EOT\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\b\SOH\DC2\EOT\234\a\DC3\"\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\b\ETX\DC2\EOT\234\a%&\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\t\DC2\EOT\235\a\EOT(\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\t\ACK\DC2\EOT\235\a\EOT\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\t\SOH\DC2\EOT\235\a\DC3\"\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\t\ETX\DC2\EOT\235\a%'\n\
+    \\f\n\
+    \\EOT\EOT\RS\STX\n\
+    \\DC2\EOT\236\a\EOT$\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\n\
+    \\ACK\DC2\EOT\236\a\EOT\DLE\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\n\
+    \\SOH\DC2\EOT\236\a\DC1\RS\n\
+    \\r\n\
+    \\ENQ\EOT\RS\STX\n\
+    \\ETX\DC2\EOT\236\a!#\n\
+    \\f\n\
+    \\STX\EOT\US\DC2\ACK\240\a\NUL\241\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\US\SOH\DC2\EOT\240\a\b\DC4\n\
+    \\f\n\
+    \\STX\EOT \DC2\ACK\243\a\NUL\245\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT \SOH\DC2\EOT\243\a\b\ETB\n\
+    \\f\n\
+    \\EOT\EOT \STX\NUL\DC2\EOT\244\a\STX\DC1\n\
+    \\r\n\
+    \\ENQ\EOT \STX\NUL\ENQ\DC2\EOT\244\a\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT \STX\NUL\SOH\DC2\EOT\244\a\a\f\n\
+    \\r\n\
+    \\ENQ\EOT \STX\NUL\ETX\DC2\EOT\244\a\SI\DLE\n\
+    \\f\n\
+    \\STX\EOT!\DC2\ACK\247\a\NUL\249\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT!\SOH\DC2\EOT\247\a\b\DC4\n\
+    \\f\n\
+    \\EOT\EOT!\STX\NUL\DC2\EOT\248\a\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT!\STX\NUL\ENQ\DC2\EOT\248\a\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT!\STX\NUL\SOH\DC2\EOT\248\a\b\r\n\
+    \\r\n\
+    \\ENQ\EOT!\STX\NUL\ETX\DC2\EOT\248\a\DLE\DC1\n\
+    \\f\n\
+    \\STX\EOT\"\DC2\ACK\251\a\NUL\253\a\SOH\n\
+    \\v\n\
+    \\ETX\EOT\"\SOH\DC2\EOT\251\a\b\NAK\n\
+    \\f\n\
+    \\EOT\EOT\"\STX\NUL\DC2\EOT\252\a\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT\"\STX\NUL\ENQ\DC2\EOT\252\a\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT\"\STX\NUL\SOH\DC2\EOT\252\a\b\r\n\
+    \\r\n\
+    \\ENQ\EOT\"\STX\NUL\ETX\DC2\EOT\252\a\DLE\DC1\n\
+    \\f\n\
+    \\STX\EOT#\DC2\ACK\255\a\NUL\129\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT#\SOH\DC2\EOT\255\a\b\DC4\n\
+    \\f\n\
+    \\EOT\EOT#\STX\NUL\DC2\EOT\128\b\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT#\STX\NUL\ENQ\DC2\EOT\128\b\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT#\STX\NUL\SOH\DC2\EOT\128\b\b\r\n\
+    \\r\n\
+    \\ENQ\EOT#\STX\NUL\ETX\DC2\EOT\128\b\DLE\DC1\n\
+    \\f\n\
+    \\STX\EOT$\DC2\ACK\131\b\NUL\133\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT$\SOH\DC2\EOT\131\b\b\DC3\n\
+    \\f\n\
+    \\EOT\EOT$\STX\NUL\DC2\EOT\132\b\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT$\STX\NUL\ENQ\DC2\EOT\132\b\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT$\STX\NUL\SOH\DC2\EOT\132\b\b\r\n\
+    \\r\n\
+    \\ENQ\EOT$\STX\NUL\ETX\DC2\EOT\132\b\DLE\DC1\n\
+    \\f\n\
+    \\STX\EOT%\DC2\ACK\135\b\NUL\137\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT%\SOH\DC2\EOT\135\b\b\DC4\n\
+    \\f\n\
+    \\EOT\EOT%\STX\NUL\DC2\EOT\136\b\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT%\STX\NUL\ENQ\DC2\EOT\136\b\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT%\STX\NUL\SOH\DC2\EOT\136\b\b\r\n\
+    \\r\n\
+    \\ENQ\EOT%\STX\NUL\ETX\DC2\EOT\136\b\DLE\DC1\n\
+    \\f\n\
+    \\STX\EOT&\DC2\ACK\139\b\NUL\141\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT&\SOH\DC2\EOT\139\b\b\NAK\n\
+    \\f\n\
+    \\EOT\EOT&\STX\NUL\DC2\EOT\140\b\STX\DC2\n\
+    \\r\n\
+    \\ENQ\EOT&\STX\NUL\ENQ\DC2\EOT\140\b\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT&\STX\NUL\SOH\DC2\EOT\140\b\b\r\n\
+    \\r\n\
+    \\ENQ\EOT&\STX\NUL\ETX\DC2\EOT\140\b\DLE\DC1\n\
+    \\f\n\
+    \\STX\EOT'\DC2\ACK\143\b\NUL\145\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT'\SOH\DC2\EOT\143\b\b\SYN\n\
+    \\f\n\
+    \\EOT\EOT'\STX\NUL\DC2\EOT\144\b\STX\DC3\n\
+    \\r\n\
+    \\ENQ\EOT'\STX\NUL\ENQ\DC2\EOT\144\b\STX\b\n\
+    \\r\n\
+    \\ENQ\EOT'\STX\NUL\SOH\DC2\EOT\144\b\t\SO\n\
+    \\r\n\
+    \\ENQ\EOT'\STX\NUL\ETX\DC2\EOT\144\b\DC1\DC2\n\
+    \\f\n\
+    \\STX\EOT(\DC2\ACK\147\b\NUL\149\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT(\SOH\DC2\EOT\147\b\b\SYN\n\
+    \\f\n\
+    \\EOT\EOT(\STX\NUL\DC2\EOT\148\b\STX\DC3\n\
+    \\r\n\
+    \\ENQ\EOT(\STX\NUL\ENQ\DC2\EOT\148\b\STX\b\n\
+    \\r\n\
+    \\ENQ\EOT(\STX\NUL\SOH\DC2\EOT\148\b\t\SO\n\
+    \\r\n\
+    \\ENQ\EOT(\STX\NUL\ETX\DC2\EOT\148\b\DC1\DC2\n\
+    \\f\n\
+    \\STX\EOT)\DC2\ACK\151\b\NUL\152\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT)\SOH\DC2\EOT\151\b\b\DC4\n\
+    \\f\n\
+    \\STX\EOT*\DC2\ACK\154\b\NUL\161\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT*\SOH\DC2\EOT\154\b\b\DC1\n\
+    \\SO\n\
+    \\EOT\EOT*\b\NUL\DC2\ACK\155\b\STX\160\b\ETX\n\
+    \\r\n\
+    \\ENQ\EOT*\b\NUL\SOH\DC2\EOT\155\b\b\DC4\n\
+    \\f\n\
+    \\EOT\EOT*\STX\NUL\DC2\EOT\156\b\EOT'\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\NUL\ACK\DC2\EOT\156\b\EOT\DC2\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\NUL\SOH\DC2\EOT\156\b\DC3\"\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\NUL\ETX\DC2\EOT\156\b%&\n\
+    \\f\n\
+    \\EOT\EOT*\STX\SOH\DC2\EOT\157\b\EOT)\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\SOH\ACK\DC2\EOT\157\b\EOT\DC3\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\SOH\SOH\DC2\EOT\157\b\DC4$\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\SOH\ETX\DC2\EOT\157\b'(\n\
+    \\f\n\
+    \\EOT\EOT*\STX\STX\DC2\EOT\158\b\EOT%\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\STX\ACK\DC2\EOT\158\b\EOT\DC1\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\STX\SOH\DC2\EOT\158\b\DC2 \n\
+    \\r\n\
+    \\ENQ\EOT*\STX\STX\ETX\DC2\EOT\158\b#$\n\
+    \\f\n\
+    \\EOT\EOT*\STX\ETX\DC2\EOT\159\b\EOT'\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\ETX\ACK\DC2\EOT\159\b\EOT\DC2\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\ETX\SOH\DC2\EOT\159\b\DC3\"\n\
+    \\r\n\
+    \\ENQ\EOT*\STX\ETX\ETX\DC2\EOT\159\b%&\n\
+    \\f\n\
+    \\STX\EOT+\DC2\ACK\163\b\NUL\168\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT+\SOH\DC2\EOT\163\b\b\SYN\n\
+    \\f\n\
+    \\EOT\EOT+\STX\NUL\DC2\EOT\164\b\STX\FS\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\NUL\ACK\DC2\EOT\164\b\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\NUL\SOH\DC2\EOT\164\b\b\ETB\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\NUL\ETX\DC2\EOT\164\b\SUB\ESC\n\
+    \\f\n\
+    \\EOT\EOT+\STX\SOH\DC2\EOT\165\b\STX\FS\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\SOH\EOT\DC2\EOT\165\b\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\SOH\ACK\DC2\EOT\165\b\v\SI\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\SOH\SOH\DC2\EOT\165\b\DLE\ETB\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\SOH\ETX\DC2\EOT\165\b\SUB\ESC\n\
+    \\f\n\
+    \\EOT\EOT+\STX\STX\DC2\EOT\166\b\STX\DLE\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\STX\ACK\DC2\EOT\166\b\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\STX\SOH\DC2\EOT\166\b\a\v\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\STX\ETX\DC2\EOT\166\b\SO\SI\n\
+    \\f\n\
+    \\EOT\EOT+\STX\ETX\DC2\EOT\167\b\STX\EM\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\ETX\ACK\DC2\EOT\167\b\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\ETX\SOH\DC2\EOT\167\b\b\DC4\n\
+    \\r\n\
+    \\ENQ\EOT+\STX\ETX\ETX\DC2\EOT\167\b\ETB\CAN\n\
+    \\f\n\
+    \\STX\EOT,\DC2\ACK\170\b\NUL\174\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT,\SOH\DC2\EOT\170\b\b\ETB\n\
+    \\f\n\
+    \\EOT\EOT,\STX\NUL\DC2\EOT\171\b\STX\FS\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\NUL\ACK\DC2\EOT\171\b\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\NUL\SOH\DC2\EOT\171\b\b\ETB\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\NUL\ETX\DC2\EOT\171\b\SUB\ESC\n\
+    \\f\n\
+    \\EOT\EOT,\STX\SOH\DC2\EOT\172\b\STX%\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\SOH\EOT\DC2\EOT\172\b\STX\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\SOH\ACK\DC2\EOT\172\b\v\DLE\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\SOH\SOH\DC2\EOT\172\b\DC1 \n\
+    \\r\n\
+    \\ENQ\EOT,\STX\SOH\ETX\DC2\EOT\172\b#$\n\
+    \\f\n\
+    \\EOT\EOT,\STX\STX\DC2\EOT\173\b\STX\ETB\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\STX\ACK\DC2\EOT\173\b\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\STX\SOH\DC2\EOT\173\b\a\DC2\n\
+    \\r\n\
+    \\ENQ\EOT,\STX\STX\ETX\DC2\EOT\173\b\NAK\SYN\n\
+    \\f\n\
+    \\STX\EOT-\DC2\ACK\176\b\NUL\180\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT-\SOH\DC2\EOT\176\b\b\NAK\n\
+    \\f\n\
+    \\EOT\EOT-\STX\NUL\DC2\EOT\177\b\STX\FS\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\NUL\ACK\DC2\EOT\177\b\STX\a\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\NUL\SOH\DC2\EOT\177\b\b\ETB\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\NUL\ETX\DC2\EOT\177\b\SUB\ESC\n\
+    \\f\n\
+    \\EOT\EOT-\STX\SOH\DC2\EOT\178\b\STX\ETB\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\SOH\ACK\DC2\EOT\178\b\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\SOH\SOH\DC2\EOT\178\b\a\DC2\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\SOH\ETX\DC2\EOT\178\b\NAK\SYN\n\
+    \\f\n\
+    \\EOT\EOT-\STX\STX\DC2\EOT\179\b\STX\ETB\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\STX\ACK\DC2\EOT\179\b\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\STX\SOH\DC2\EOT\179\b\a\DC2\n\
+    \\r\n\
+    \\ENQ\EOT-\STX\STX\ETX\DC2\EOT\179\b\NAK\SYN\n\
+    \\f\n\
+    \\STX\EOT.\DC2\ACK\182\b\NUL\184\b\SOH\n\
+    \\v\n\
+    \\ETX\EOT.\SOH\DC2\EOT\182\b\b\SYN\n\
+    \\f\n\
+    \\EOT\EOT.\STX\NUL\DC2\EOT\183\b\STX\SI\n\
+    \\r\n\
+    \\ENQ\EOT.\STX\NUL\ACK\DC2\EOT\183\b\STX\ACK\n\
+    \\r\n\
+    \\ENQ\EOT.\STX\NUL\SOH\DC2\EOT\183\b\a\n\
+    \\n\
+    \\r\n\
+    \\ENQ\EOT.\STX\NUL\ETX\DC2\EOT\183\b\r\SOb\ACKproto3"

@@ -3,6 +3,74 @@
 
 # Semantic Code Intelligence Protocol (SCIP) reference
 
+### AnnotatedType
+
+| Name                     | Type       | Description |
+| ------------------------ | ---------- | ----------- |
+| repeated **annotations** | Annotation |
+| **tpe**                  | Type       |
+
+### Annotation
+
+| Name    | Type | Description |
+| ------- | ---- | ----------- |
+| **tpe** | Type |
+
+### BooleanConstant
+
+| Name      | Type | Description |
+| --------- | ---- | ----------- |
+| **value** | bool |
+
+### ByNameType
+
+| Name    | Type | Description |
+| ------- | ---- | ----------- |
+| **tpe** | Type |
+
+### ByteConstant
+
+| Name      | Type  | Description |
+| --------- | ----- | ----------- |
+| **value** | int32 |
+
+### CharConstant
+
+| Name      | Type  | Description |
+| --------- | ----- | ----------- |
+| **value** | int32 |
+
+### ClassSignature
+
+| Name                 | Type  | Description |
+| -------------------- | ----- | ----------- |
+| **type_parameters**  | Scope |
+| repeated **parents** | Type  |
+| **self**             | Type  |
+| **declarations**     | Scope |
+
+### Constant
+
+| Name                 | Type            | Description |
+| -------------------- | --------------- | ----------- |
+| **unit_constant**    | UnitConstant    |
+| **boolean_constant** | BooleanConstant |
+| **byte_constant**    | ByteConstant    |
+| **short_constant**   | ShortConstant   |
+| **char_constant**    | CharConstant    |
+| **int_constant**     | IntConstant     |
+| **long_constant**    | LongConstant    |
+| **float_constant**   | FloatConstant   |
+| **double_constant**  | DoubleConstant  |
+| **string_constant**  | StringConstant  |
+| **null_constant**    | NullConstant    |
+
+### ConstantType
+
+| Name         | Type     | Description |
+| ------------ | -------- | ----------- |
+| **constant** | Constant |
+
 ### Descriptor
 
 | Name              | Type   | Description |
@@ -93,6 +161,25 @@ in the indexer's implementation language in O(1) time.
 - For an indexer implemented in Go, Rust or C++,
   use UTF8ByteOffsetFromLineStart.
 
+### DoubleConstant
+
+| Name      | Type   | Description |
+| --------- | ------ | ----------- |
+| **value** | double |
+
+### ExistentialType
+
+| Name             | Type  | Description |
+| ---------------- | ----- | ----------- |
+| **tpe**          | Type  |
+| **declarations** | Scope |
+
+### FloatConstant
+
+| Name      | Type  | Description |
+| --------- | ----- | ----------- |
+| **value** | float |
+
 ### Index
 
 Index represents a complete SCIP index for a workspace this is rooted at a
@@ -119,6 +206,45 @@ field to provide hover documentation for those external symbols.
 IMPORTANT: When adding a new field to `Index` here, add a matching
 function in `IndexVisitor` and update `ParseStreaming`.
 
+### IntConstant
+
+| Name      | Type  | Description |
+| --------- | ----- | ----------- |
+| **value** | int32 |
+
+### IntersectionType
+
+| Name               | Type | Description |
+| ------------------ | ---- | ----------- |
+| repeated **types** | Type |
+
+### LambdaType
+
+| Name            | Type  | Description |
+| --------------- | ----- | ----------- |
+| **parameters**  | Scope |
+| **return_type** | Type  |
+
+### LongConstant
+
+| Name      | Type  | Description |
+| --------- | ----- | ----------- |
+| **value** | int64 |
+
+### MatchType
+
+| Name               | Type     | Description |
+| ------------------ | -------- | ----------- |
+| **scrutinee**      | Type     |
+| repeated **cases** | CaseType |
+
+#### CaseType
+
+| Name     | Type | Description |
+| -------- | ---- | ----------- |
+| **key**  | Type |
+| **body** | Type |
+
 ### Metadata
 
 | Name                       | Type            | Description                                                                                                                                                                                                    |
@@ -127,6 +253,19 @@ function in `IndexVisitor` and update `ParseStreaming`.
 | **tool_info**              | ToolInfo        | Information about the tool that produced this index.                                                                                                                                                           |
 | **project_root**           | string          | URI-encoded absolute path to the root directory of this index. All documents in this index must appear in a subdirectory of this root directory.                                                               |
 | **text_document_encoding** | TextEncoding    | Text encoding of the source files on disk that are referenced from `Document.relative_path`. This value is unrelated to the `Document.text` field, which is a Protobuf string and hence must be UTF-8 encoded. |
+
+### MethodSignature
+
+| Name                         | Type  | Description |
+| ---------------------------- | ----- | ----------- |
+| **type_parameters**          | Scope |
+| repeated **parameter_lists** | Scope |
+| **return_type**              | Type  |
+
+### NullConstant
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 
 ### Occurrence
 
@@ -281,6 +420,61 @@ The relationship may not get recorded if either symbol is local.
 
 Update registerInverseRelationships on adding a new field here.
 
+### RepeatedType
+
+| Name    | Type | Description |
+| ------- | ---- | ----------- |
+| **tpe** | Type |
+
+### Scope
+
+| Name                   | Type              | Description |
+| ---------------------- | ----------------- | ----------- |
+| repeated **symlinks**  | string            |
+| repeated **hardlinks** | SymbolInformation |
+
+### ShortConstant
+
+| Name      | Type  | Description |
+| --------- | ----- | ----------- |
+| **value** | int32 |
+
+### Signature
+
+| Name                 | Type            | Description |
+| -------------------- | --------------- | ----------- |
+| **class_signature**  | ClassSignature  |
+| **method_signature** | MethodSignature |
+| **type_signature**   | TypeSignature   |
+| **value_signature**  | ValueSignature  |
+
+### SingleType
+
+| Name       | Type   | Description |
+| ---------- | ------ | ----------- |
+| **prefix** | Type   |
+| **symbol** | string |
+
+### StringConstant
+
+| Name      | Type   | Description |
+| --------- | ------ | ----------- |
+| **value** | string |
+
+### StructuralType
+
+| Name             | Type  | Description |
+| ---------------- | ----- | ----------- |
+| **tpe**          | Type  |
+| **declarations** | Scope |
+
+### SuperType
+
+| Name       | Type   | Description |
+| ---------- | ------ | ----------- |
+| **prefix** | Type   |
+| **symbol** | string |
+
 ### Symbol
 
 Symbol is similar to a URI, it identifies a class, method, or a local
@@ -346,6 +540,7 @@ docstring or what package it's defined it.
 | **display_name**            | string       | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:                                                                                                                                                                        |
 | **signature_documentation** | Document     | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers this would have `Document.language = "java"` and `Document.text = "void add(int a, int b)". The `language`and`text`fields are required while other fields such as`Documentation.occurrences` can be optionally included to support hyperlinking referenced symbols in the signature. |
 | **enclosing_symbol**        | string       | (optional) The enclosing symbol if this is a local symbol. For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.                                                                                                                                                                                                                                                            |
+| **signature**               | Signature    | (optional) Experimental support for structured signatures.                                                                                                                                                                                                                                                                                                                                                                                 |
 
 Additional notes on **display_name**:
 
@@ -484,6 +679,12 @@ Since Kind is more fine-grained than Suffix:
 | 60     | Value               |
 | 61     | Variable            | Next = 83; Feel free to open a PR proposing new language-specific kinds.                                                         |
 
+### ThisType
+
+| Name       | Type   | Description |
+| ---------- | ------ | ----------- |
+| **symbol** | string |
+
 ### ToolInfo
 
 | Name                   | Type   | Description                                                   |
@@ -491,6 +692,73 @@ Since Kind is more fine-grained than Suffix:
 | **name**               | string | Name of the indexer that produced this index.                 |
 | **version**            | string | Version of the indexer that produced this index.              |
 | repeated **arguments** | string | Command-line arguments that were used to invoke this indexer. |
+
+### Type
+
+| Name                  | Type             | Description |
+| --------------------- | ---------------- | ----------- |
+| **type_ref**          | TypeRef          |
+| **single_type**       | SingleType       |
+| **this_type**         | ThisType         |
+| **super_type**        | SuperType        |
+| **constant_type**     | ConstantType     |
+| **intersection_type** | IntersectionType |
+| **union_type**        | UnionType        |
+| **with_type**         | WithType         |
+| **structural_type**   | StructuralType   |
+| **annotated_type**    | AnnotatedType    |
+| **existential_type**  | ExistentialType  |
+| **universal_type**    | UniversalType    |
+| **by_name_type**      | ByNameType       |
+| **repeated_type**     | RepeatedType     |
+| **match_type**        | MatchType        |
+| **lambda_type**       | LambdaType       |
+
+### TypeRef
+
+| Name                        | Type   | Description |
+| --------------------------- | ------ | ----------- |
+| **prefix**                  | Type   |
+| **symbol**                  | string |
+| repeated **type_arguments** | Type   |
+
+### TypeSignature
+
+| Name                | Type  | Description |
+| ------------------- | ----- | ----------- |
+| **type_parameters** | Scope |
+| **lower_bound**     | Type  |
+| **upper_bound**     | Type  |
+
+### UnionType
+
+| Name               | Type | Description |
+| ------------------ | ---- | ----------- |
+| repeated **types** | Type |
+
+### UnitConstant
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+
+### UniversalType
+
+| Name                | Type  | Description |
+| ------------------- | ----- | ----------- |
+| **type_parameters** | Scope |
+| **tpe**             | Type  |
+
+### ValueSignature
+
+| Name    | Type | Description |
+| ------- | ---- | ----------- |
+| **tpe** | Type |
+
+### WithType
+
+| Name               | Type | Description |
+| ------------------ | ---- | ----------- |
+| repeated **types** | Type |
 
 ### DiagnosticTag
 

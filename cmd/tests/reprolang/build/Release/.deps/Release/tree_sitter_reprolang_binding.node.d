@@ -1,0 +1,1 @@
+cmd_Release/tree_sitter_reprolang_binding.node := c++ -bundle -undefined dynamic_lookup -Wl,-search_paths_first -mmacosx-version-min=10.13 -arch arm64 -L./Release -stdlib=libc++  -o Release/tree_sitter_reprolang_binding.node Release/obj.target/tree_sitter_reprolang_binding/bindings/node/binding.o Release/obj.target/tree_sitter_reprolang_binding/src/parser.o 

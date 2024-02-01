@@ -1500,6 +1500,9 @@ pub struct SymbolInformation {
     ///  symbol.
     // @@protoc_insertion_point(field:scip.SymbolInformation.enclosing_symbol)
     pub enclosing_symbol: ::std::string::String,
+    ///  (optional) Experimental support for structured signatures.
+    // @@protoc_insertion_point(field:scip.SymbolInformation.signature)
+    pub signature: ::protobuf::MessageField<Signature>,
     // special fields
     // @@protoc_insertion_point(special_field:scip.SymbolInformation.special_fields)
     pub special_fields: ::protobuf::SpecialFields,
@@ -1517,7 +1520,7 @@ impl SymbolInformation {
     }
 
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
-        let mut fields = ::std::vec::Vec::with_capacity(7);
+        let mut fields = ::std::vec::Vec::with_capacity(8);
         let mut oneofs = ::std::vec::Vec::with_capacity(0);
         fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
             "symbol",
@@ -1553,6 +1556,11 @@ impl SymbolInformation {
             "enclosing_symbol",
             |m: &SymbolInformation| { &m.enclosing_symbol },
             |m: &mut SymbolInformation| { &mut m.enclosing_symbol },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Signature>(
+            "signature",
+            |m: &SymbolInformation| { &m.signature },
+            |m: &mut SymbolInformation| { &mut m.signature },
         ));
         ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<SymbolInformation>(
             "SymbolInformation",
@@ -1593,6 +1601,9 @@ impl ::protobuf::Message for SymbolInformation {
                 66 => {
                     self.enclosing_symbol = is.read_string()?;
                 },
+                74 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.signature)?;
+                },
                 tag => {
                     ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
                 },
@@ -1628,6 +1639,10 @@ impl ::protobuf::Message for SymbolInformation {
         if !self.enclosing_symbol.is_empty() {
             my_size += ::protobuf::rt::string_size(8, &self.enclosing_symbol);
         }
+        if let Some(v) = self.signature.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
         self.special_fields.cached_size().set(my_size as u32);
         my_size
@@ -1655,6 +1670,9 @@ impl ::protobuf::Message for SymbolInformation {
         if !self.enclosing_symbol.is_empty() {
             os.write_string(8, &self.enclosing_symbol)?;
         }
+        if let Some(v) = self.signature.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(9, v, os)?;
+        }
         os.write_unknown_fields(self.special_fields.unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -1679,6 +1697,7 @@ impl ::protobuf::Message for SymbolInformation {
         self.display_name.clear();
         self.signature_documentation.clear();
         self.enclosing_symbol.clear();
+        self.signature.clear();
         self.special_fields.clear();
     }
 
@@ -1691,6 +1710,7 @@ impl ::protobuf::Message for SymbolInformation {
             display_name: ::std::string::String::new(),
             signature_documentation: ::protobuf::MessageField::none(),
             enclosing_symbol: ::std::string::String::new(),
+            signature: ::protobuf::MessageField::none(),
             special_fields: ::protobuf::SpecialFields::new(),
         };
         &instance
@@ -2890,6 +2910,7060 @@ impl ::std::fmt::Display for Diagnostic {
 }
 
 impl ::protobuf::reflect::ProtobufValue for Diagnostic {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.Annotation)
+pub struct Annotation {
+    // message fields
+    // @@protoc_insertion_point(field:scip.Annotation.tpe)
+    pub tpe: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.Annotation.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a Annotation {
+    fn default() -> &'a Annotation {
+        <Annotation as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Annotation {
+    pub fn new() -> Annotation {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "tpe",
+            |m: &Annotation| { &m.tpe },
+            |m: &mut Annotation| { &mut m.tpe },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<Annotation>(
+            "Annotation",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for Annotation {
+    const NAME: &'static str = "Annotation";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.tpe)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.tpe.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.tpe.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> Annotation {
+        Annotation::new()
+    }
+
+    fn clear(&mut self) {
+        self.tpe.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static Annotation {
+        static instance: Annotation = Annotation {
+            tpe: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for Annotation {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("Annotation").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for Annotation {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Annotation {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.Scope)
+pub struct Scope {
+    // message fields
+    // @@protoc_insertion_point(field:scip.Scope.symlinks)
+    pub symlinks: ::std::vec::Vec<::std::string::String>,
+    // @@protoc_insertion_point(field:scip.Scope.hardlinks)
+    pub hardlinks: ::std::vec::Vec<SymbolInformation>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.Scope.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a Scope {
+    fn default() -> &'a Scope {
+        <Scope as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Scope {
+    pub fn new() -> Scope {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "symlinks",
+            |m: &Scope| { &m.symlinks },
+            |m: &mut Scope| { &mut m.symlinks },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "hardlinks",
+            |m: &Scope| { &m.hardlinks },
+            |m: &mut Scope| { &mut m.hardlinks },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<Scope>(
+            "Scope",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for Scope {
+    const NAME: &'static str = "Scope";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.symlinks.push(is.read_string()?);
+                },
+                18 => {
+                    self.hardlinks.push(is.read_message()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        for value in &self.symlinks {
+            my_size += ::protobuf::rt::string_size(1, &value);
+        };
+        for value in &self.hardlinks {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        for v in &self.symlinks {
+            os.write_string(1, &v)?;
+        };
+        for v in &self.hardlinks {
+            ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+        };
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> Scope {
+        Scope::new()
+    }
+
+    fn clear(&mut self) {
+        self.symlinks.clear();
+        self.hardlinks.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static Scope {
+        static instance: Scope = Scope {
+            symlinks: ::std::vec::Vec::new(),
+            hardlinks: ::std::vec::Vec::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for Scope {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("Scope").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for Scope {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Scope {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.Type)
+pub struct Type {
+    // message oneof groups
+    pub sealed_value: ::std::option::Option<type_::Sealed_value>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.Type.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a Type {
+    fn default() -> &'a Type {
+        <Type as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Type {
+    pub fn new() -> Type {
+        ::std::default::Default::default()
+    }
+
+    // .scip.TypeRef type_ref = 2;
+
+    pub fn type_ref(&self) -> &TypeRef {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::TypeRef(ref v)) => v,
+            _ => <TypeRef as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_type_ref(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_type_ref(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::TypeRef(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_type_ref(&mut self, v: TypeRef) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::TypeRef(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_type_ref(&mut self) -> &mut TypeRef {
+        if let ::std::option::Option::Some(type_::Sealed_value::TypeRef(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::TypeRef(TypeRef::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::TypeRef(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_type_ref(&mut self) -> TypeRef {
+        if self.has_type_ref() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::TypeRef(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            TypeRef::new()
+        }
+    }
+
+    // .scip.SingleType single_type = 20;
+
+    pub fn single_type(&self) -> &SingleType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::SingleType(ref v)) => v,
+            _ => <SingleType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_single_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_single_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::SingleType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_single_type(&mut self, v: SingleType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::SingleType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_single_type(&mut self) -> &mut SingleType {
+        if let ::std::option::Option::Some(type_::Sealed_value::SingleType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::SingleType(SingleType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::SingleType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_single_type(&mut self) -> SingleType {
+        if self.has_single_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::SingleType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            SingleType::new()
+        }
+    }
+
+    // .scip.ThisType this_type = 21;
+
+    pub fn this_type(&self) -> &ThisType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ThisType(ref v)) => v,
+            _ => <ThisType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_this_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_this_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ThisType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_this_type(&mut self, v: ThisType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ThisType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_this_type(&mut self) -> &mut ThisType {
+        if let ::std::option::Option::Some(type_::Sealed_value::ThisType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ThisType(ThisType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ThisType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_this_type(&mut self) -> ThisType {
+        if self.has_this_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::ThisType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ThisType::new()
+        }
+    }
+
+    // .scip.SuperType super_type = 22;
+
+    pub fn super_type(&self) -> &SuperType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::SuperType(ref v)) => v,
+            _ => <SuperType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_super_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_super_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::SuperType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_super_type(&mut self, v: SuperType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::SuperType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_super_type(&mut self) -> &mut SuperType {
+        if let ::std::option::Option::Some(type_::Sealed_value::SuperType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::SuperType(SuperType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::SuperType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_super_type(&mut self) -> SuperType {
+        if self.has_super_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::SuperType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            SuperType::new()
+        }
+    }
+
+    // .scip.ConstantType constant_type = 23;
+
+    pub fn constant_type(&self) -> &ConstantType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ConstantType(ref v)) => v,
+            _ => <ConstantType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_constant_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_constant_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ConstantType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_constant_type(&mut self, v: ConstantType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ConstantType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_constant_type(&mut self) -> &mut ConstantType {
+        if let ::std::option::Option::Some(type_::Sealed_value::ConstantType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ConstantType(ConstantType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ConstantType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_constant_type(&mut self) -> ConstantType {
+        if self.has_constant_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::ConstantType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ConstantType::new()
+        }
+    }
+
+    // .scip.IntersectionType intersection_type = 17;
+
+    pub fn intersection_type(&self) -> &IntersectionType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::IntersectionType(ref v)) => v,
+            _ => <IntersectionType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_intersection_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_intersection_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::IntersectionType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_intersection_type(&mut self, v: IntersectionType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::IntersectionType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_intersection_type(&mut self) -> &mut IntersectionType {
+        if let ::std::option::Option::Some(type_::Sealed_value::IntersectionType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::IntersectionType(IntersectionType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::IntersectionType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_intersection_type(&mut self) -> IntersectionType {
+        if self.has_intersection_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::IntersectionType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            IntersectionType::new()
+        }
+    }
+
+    // .scip.UnionType union_type = 18;
+
+    pub fn union_type(&self) -> &UnionType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::UnionType(ref v)) => v,
+            _ => <UnionType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_union_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_union_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::UnionType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_union_type(&mut self, v: UnionType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::UnionType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_union_type(&mut self) -> &mut UnionType {
+        if let ::std::option::Option::Some(type_::Sealed_value::UnionType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::UnionType(UnionType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::UnionType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_union_type(&mut self) -> UnionType {
+        if self.has_union_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::UnionType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            UnionType::new()
+        }
+    }
+
+    // .scip.WithType with_type = 19;
+
+    pub fn with_type(&self) -> &WithType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::WithType(ref v)) => v,
+            _ => <WithType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_with_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_with_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::WithType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_with_type(&mut self, v: WithType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::WithType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_with_type(&mut self) -> &mut WithType {
+        if let ::std::option::Option::Some(type_::Sealed_value::WithType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::WithType(WithType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::WithType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_with_type(&mut self) -> WithType {
+        if self.has_with_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::WithType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            WithType::new()
+        }
+    }
+
+    // .scip.StructuralType structural_type = 7;
+
+    pub fn structural_type(&self) -> &StructuralType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::StructuralType(ref v)) => v,
+            _ => <StructuralType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_structural_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_structural_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::StructuralType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_structural_type(&mut self, v: StructuralType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::StructuralType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_structural_type(&mut self) -> &mut StructuralType {
+        if let ::std::option::Option::Some(type_::Sealed_value::StructuralType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::StructuralType(StructuralType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::StructuralType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_structural_type(&mut self) -> StructuralType {
+        if self.has_structural_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::StructuralType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            StructuralType::new()
+        }
+    }
+
+    // .scip.AnnotatedType annotated_type = 8;
+
+    pub fn annotated_type(&self) -> &AnnotatedType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::AnnotatedType(ref v)) => v,
+            _ => <AnnotatedType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_annotated_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_annotated_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::AnnotatedType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_annotated_type(&mut self, v: AnnotatedType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::AnnotatedType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_annotated_type(&mut self) -> &mut AnnotatedType {
+        if let ::std::option::Option::Some(type_::Sealed_value::AnnotatedType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::AnnotatedType(AnnotatedType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::AnnotatedType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_annotated_type(&mut self) -> AnnotatedType {
+        if self.has_annotated_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::AnnotatedType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            AnnotatedType::new()
+        }
+    }
+
+    // .scip.ExistentialType existential_type = 9;
+
+    pub fn existential_type(&self) -> &ExistentialType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ExistentialType(ref v)) => v,
+            _ => <ExistentialType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_existential_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_existential_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ExistentialType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_existential_type(&mut self, v: ExistentialType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ExistentialType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_existential_type(&mut self) -> &mut ExistentialType {
+        if let ::std::option::Option::Some(type_::Sealed_value::ExistentialType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ExistentialType(ExistentialType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ExistentialType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_existential_type(&mut self) -> ExistentialType {
+        if self.has_existential_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::ExistentialType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ExistentialType::new()
+        }
+    }
+
+    // .scip.UniversalType universal_type = 10;
+
+    pub fn universal_type(&self) -> &UniversalType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::UniversalType(ref v)) => v,
+            _ => <UniversalType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_universal_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_universal_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::UniversalType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_universal_type(&mut self, v: UniversalType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::UniversalType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_universal_type(&mut self) -> &mut UniversalType {
+        if let ::std::option::Option::Some(type_::Sealed_value::UniversalType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::UniversalType(UniversalType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::UniversalType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_universal_type(&mut self) -> UniversalType {
+        if self.has_universal_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::UniversalType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            UniversalType::new()
+        }
+    }
+
+    // .scip.ByNameType by_name_type = 13;
+
+    pub fn by_name_type(&self) -> &ByNameType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ByNameType(ref v)) => v,
+            _ => <ByNameType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_by_name_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_by_name_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ByNameType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_by_name_type(&mut self, v: ByNameType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ByNameType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_by_name_type(&mut self) -> &mut ByNameType {
+        if let ::std::option::Option::Some(type_::Sealed_value::ByNameType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ByNameType(ByNameType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::ByNameType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_by_name_type(&mut self) -> ByNameType {
+        if self.has_by_name_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::ByNameType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ByNameType::new()
+        }
+    }
+
+    // .scip.RepeatedType repeated_type = 14;
+
+    pub fn repeated_type(&self) -> &RepeatedType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::RepeatedType(ref v)) => v,
+            _ => <RepeatedType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_repeated_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_repeated_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::RepeatedType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_repeated_type(&mut self, v: RepeatedType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::RepeatedType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_repeated_type(&mut self) -> &mut RepeatedType {
+        if let ::std::option::Option::Some(type_::Sealed_value::RepeatedType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::RepeatedType(RepeatedType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::RepeatedType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_repeated_type(&mut self) -> RepeatedType {
+        if self.has_repeated_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::RepeatedType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            RepeatedType::new()
+        }
+    }
+
+    // .scip.MatchType match_type = 25;
+
+    pub fn match_type(&self) -> &MatchType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::MatchType(ref v)) => v,
+            _ => <MatchType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_match_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_match_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::MatchType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_match_type(&mut self, v: MatchType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::MatchType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_match_type(&mut self) -> &mut MatchType {
+        if let ::std::option::Option::Some(type_::Sealed_value::MatchType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::MatchType(MatchType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::MatchType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_match_type(&mut self) -> MatchType {
+        if self.has_match_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::MatchType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            MatchType::new()
+        }
+    }
+
+    // .scip.LambdaType lambda_type = 26;
+
+    pub fn lambda_type(&self) -> &LambdaType {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::LambdaType(ref v)) => v,
+            _ => <LambdaType as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_lambda_type(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_lambda_type(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::LambdaType(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_lambda_type(&mut self, v: LambdaType) {
+        self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::LambdaType(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_lambda_type(&mut self) -> &mut LambdaType {
+        if let ::std::option::Option::Some(type_::Sealed_value::LambdaType(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::LambdaType(LambdaType::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(type_::Sealed_value::LambdaType(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_lambda_type(&mut self) -> LambdaType {
+        if self.has_lambda_type() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(type_::Sealed_value::LambdaType(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            LambdaType::new()
+        }
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(16);
+        let mut oneofs = ::std::vec::Vec::with_capacity(1);
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, TypeRef>(
+            "type_ref",
+            Type::has_type_ref,
+            Type::type_ref,
+            Type::mut_type_ref,
+            Type::set_type_ref,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, SingleType>(
+            "single_type",
+            Type::has_single_type,
+            Type::single_type,
+            Type::mut_single_type,
+            Type::set_single_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, ThisType>(
+            "this_type",
+            Type::has_this_type,
+            Type::this_type,
+            Type::mut_this_type,
+            Type::set_this_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, SuperType>(
+            "super_type",
+            Type::has_super_type,
+            Type::super_type,
+            Type::mut_super_type,
+            Type::set_super_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, ConstantType>(
+            "constant_type",
+            Type::has_constant_type,
+            Type::constant_type,
+            Type::mut_constant_type,
+            Type::set_constant_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, IntersectionType>(
+            "intersection_type",
+            Type::has_intersection_type,
+            Type::intersection_type,
+            Type::mut_intersection_type,
+            Type::set_intersection_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, UnionType>(
+            "union_type",
+            Type::has_union_type,
+            Type::union_type,
+            Type::mut_union_type,
+            Type::set_union_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, WithType>(
+            "with_type",
+            Type::has_with_type,
+            Type::with_type,
+            Type::mut_with_type,
+            Type::set_with_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, StructuralType>(
+            "structural_type",
+            Type::has_structural_type,
+            Type::structural_type,
+            Type::mut_structural_type,
+            Type::set_structural_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, AnnotatedType>(
+            "annotated_type",
+            Type::has_annotated_type,
+            Type::annotated_type,
+            Type::mut_annotated_type,
+            Type::set_annotated_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, ExistentialType>(
+            "existential_type",
+            Type::has_existential_type,
+            Type::existential_type,
+            Type::mut_existential_type,
+            Type::set_existential_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, UniversalType>(
+            "universal_type",
+            Type::has_universal_type,
+            Type::universal_type,
+            Type::mut_universal_type,
+            Type::set_universal_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, ByNameType>(
+            "by_name_type",
+            Type::has_by_name_type,
+            Type::by_name_type,
+            Type::mut_by_name_type,
+            Type::set_by_name_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, RepeatedType>(
+            "repeated_type",
+            Type::has_repeated_type,
+            Type::repeated_type,
+            Type::mut_repeated_type,
+            Type::set_repeated_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, MatchType>(
+            "match_type",
+            Type::has_match_type,
+            Type::match_type,
+            Type::mut_match_type,
+            Type::set_match_type,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, LambdaType>(
+            "lambda_type",
+            Type::has_lambda_type,
+            Type::lambda_type,
+            Type::mut_lambda_type,
+            Type::set_lambda_type,
+        ));
+        oneofs.push(type_::Sealed_value::generated_oneof_descriptor_data());
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<Type>(
+            "Type",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for Type {
+    const NAME: &'static str = "Type";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                18 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::TypeRef(is.read_message()?));
+                },
+                162 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::SingleType(is.read_message()?));
+                },
+                170 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ThisType(is.read_message()?));
+                },
+                178 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::SuperType(is.read_message()?));
+                },
+                186 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ConstantType(is.read_message()?));
+                },
+                138 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::IntersectionType(is.read_message()?));
+                },
+                146 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::UnionType(is.read_message()?));
+                },
+                154 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::WithType(is.read_message()?));
+                },
+                58 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::StructuralType(is.read_message()?));
+                },
+                66 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::AnnotatedType(is.read_message()?));
+                },
+                74 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ExistentialType(is.read_message()?));
+                },
+                82 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::UniversalType(is.read_message()?));
+                },
+                106 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::ByNameType(is.read_message()?));
+                },
+                114 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::RepeatedType(is.read_message()?));
+                },
+                202 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::MatchType(is.read_message()?));
+                },
+                210 => {
+                    self.sealed_value = ::std::option::Option::Some(type_::Sealed_value::LambdaType(is.read_message()?));
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let ::std::option::Option::Some(ref v) = self.sealed_value {
+            match v {
+                &type_::Sealed_value::TypeRef(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::SingleType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::ThisType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::SuperType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::ConstantType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::IntersectionType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::UnionType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::WithType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::StructuralType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::AnnotatedType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::ExistentialType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::UniversalType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::ByNameType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::RepeatedType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::MatchType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &type_::Sealed_value::LambdaType(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 2 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+            };
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let ::std::option::Option::Some(ref v) = self.sealed_value {
+            match v {
+                &type_::Sealed_value::TypeRef(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+                },
+                &type_::Sealed_value::SingleType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(20, v, os)?;
+                },
+                &type_::Sealed_value::ThisType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(21, v, os)?;
+                },
+                &type_::Sealed_value::SuperType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(22, v, os)?;
+                },
+                &type_::Sealed_value::ConstantType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(23, v, os)?;
+                },
+                &type_::Sealed_value::IntersectionType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(17, v, os)?;
+                },
+                &type_::Sealed_value::UnionType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(18, v, os)?;
+                },
+                &type_::Sealed_value::WithType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(19, v, os)?;
+                },
+                &type_::Sealed_value::StructuralType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(7, v, os)?;
+                },
+                &type_::Sealed_value::AnnotatedType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(8, v, os)?;
+                },
+                &type_::Sealed_value::ExistentialType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(9, v, os)?;
+                },
+                &type_::Sealed_value::UniversalType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(10, v, os)?;
+                },
+                &type_::Sealed_value::ByNameType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(13, v, os)?;
+                },
+                &type_::Sealed_value::RepeatedType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(14, v, os)?;
+                },
+                &type_::Sealed_value::MatchType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(25, v, os)?;
+                },
+                &type_::Sealed_value::LambdaType(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(26, v, os)?;
+                },
+            };
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> Type {
+        Type::new()
+    }
+
+    fn clear(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static Type {
+        static instance: Type = Type {
+            sealed_value: ::std::option::Option::None,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for Type {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("Type").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for Type {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Type {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+/// Nested message and enums of message `Type`
+pub mod type_ {
+
+    #[derive(Clone,PartialEq,Debug)]
+    #[non_exhaustive]
+    // @@protoc_insertion_point(oneof:scip.Type.sealed_value)
+    pub enum Sealed_value {
+        // @@protoc_insertion_point(oneof_field:scip.Type.type_ref)
+        TypeRef(super::TypeRef),
+        // @@protoc_insertion_point(oneof_field:scip.Type.single_type)
+        SingleType(super::SingleType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.this_type)
+        ThisType(super::ThisType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.super_type)
+        SuperType(super::SuperType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.constant_type)
+        ConstantType(super::ConstantType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.intersection_type)
+        IntersectionType(super::IntersectionType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.union_type)
+        UnionType(super::UnionType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.with_type)
+        WithType(super::WithType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.structural_type)
+        StructuralType(super::StructuralType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.annotated_type)
+        AnnotatedType(super::AnnotatedType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.existential_type)
+        ExistentialType(super::ExistentialType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.universal_type)
+        UniversalType(super::UniversalType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.by_name_type)
+        ByNameType(super::ByNameType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.repeated_type)
+        RepeatedType(super::RepeatedType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.match_type)
+        MatchType(super::MatchType),
+        // @@protoc_insertion_point(oneof_field:scip.Type.lambda_type)
+        LambdaType(super::LambdaType),
+    }
+
+    impl ::protobuf::Oneof for Sealed_value {
+    }
+
+    impl ::protobuf::OneofFull for Sealed_value {
+        fn descriptor() -> ::protobuf::reflect::OneofDescriptor {
+            static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::OneofDescriptor> = ::protobuf::rt::Lazy::new();
+            descriptor.get(|| <super::Type as ::protobuf::MessageFull>::descriptor().oneof_by_name("sealed_value").unwrap()).clone()
+        }
+    }
+
+    impl Sealed_value {
+        pub(in super) fn generated_oneof_descriptor_data() -> ::protobuf::reflect::GeneratedOneofDescriptorData {
+            ::protobuf::reflect::GeneratedOneofDescriptorData::new::<Sealed_value>("sealed_value")
+        }
+    }
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.LambdaType)
+pub struct LambdaType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.LambdaType.parameters)
+    pub parameters: ::protobuf::MessageField<Scope>,
+    // @@protoc_insertion_point(field:scip.LambdaType.return_type)
+    pub return_type: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.LambdaType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a LambdaType {
+    fn default() -> &'a LambdaType {
+        <LambdaType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl LambdaType {
+    pub fn new() -> LambdaType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Scope>(
+            "parameters",
+            |m: &LambdaType| { &m.parameters },
+            |m: &mut LambdaType| { &mut m.parameters },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "return_type",
+            |m: &LambdaType| { &m.return_type },
+            |m: &mut LambdaType| { &mut m.return_type },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<LambdaType>(
+            "LambdaType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for LambdaType {
+    const NAME: &'static str = "LambdaType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.parameters)?;
+                },
+                18 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.return_type)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.parameters.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if let Some(v) = self.return_type.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.parameters.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        if let Some(v) = self.return_type.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> LambdaType {
+        LambdaType::new()
+    }
+
+    fn clear(&mut self) {
+        self.parameters.clear();
+        self.return_type.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static LambdaType {
+        static instance: LambdaType = LambdaType {
+            parameters: ::protobuf::MessageField::none(),
+            return_type: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for LambdaType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("LambdaType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for LambdaType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for LambdaType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.TypeRef)
+pub struct TypeRef {
+    // message fields
+    // @@protoc_insertion_point(field:scip.TypeRef.prefix)
+    pub prefix: ::protobuf::MessageField<Type>,
+    // @@protoc_insertion_point(field:scip.TypeRef.symbol)
+    pub symbol: ::std::string::String,
+    // @@protoc_insertion_point(field:scip.TypeRef.type_arguments)
+    pub type_arguments: ::std::vec::Vec<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.TypeRef.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a TypeRef {
+    fn default() -> &'a TypeRef {
+        <TypeRef as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl TypeRef {
+    pub fn new() -> TypeRef {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(3);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "prefix",
+            |m: &TypeRef| { &m.prefix },
+            |m: &mut TypeRef| { &mut m.prefix },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "symbol",
+            |m: &TypeRef| { &m.symbol },
+            |m: &mut TypeRef| { &mut m.symbol },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "type_arguments",
+            |m: &TypeRef| { &m.type_arguments },
+            |m: &mut TypeRef| { &mut m.type_arguments },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<TypeRef>(
+            "TypeRef",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for TypeRef {
+    const NAME: &'static str = "TypeRef";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.prefix)?;
+                },
+                18 => {
+                    self.symbol = is.read_string()?;
+                },
+                26 => {
+                    self.type_arguments.push(is.read_message()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.prefix.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if !self.symbol.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.symbol);
+        }
+        for value in &self.type_arguments {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.prefix.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        if !self.symbol.is_empty() {
+            os.write_string(2, &self.symbol)?;
+        }
+        for v in &self.type_arguments {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        };
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> TypeRef {
+        TypeRef::new()
+    }
+
+    fn clear(&mut self) {
+        self.prefix.clear();
+        self.symbol.clear();
+        self.type_arguments.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static TypeRef {
+        static instance: TypeRef = TypeRef {
+            prefix: ::protobuf::MessageField::none(),
+            symbol: ::std::string::String::new(),
+            type_arguments: ::std::vec::Vec::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for TypeRef {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("TypeRef").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for TypeRef {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for TypeRef {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.SingleType)
+pub struct SingleType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.SingleType.prefix)
+    pub prefix: ::protobuf::MessageField<Type>,
+    // @@protoc_insertion_point(field:scip.SingleType.symbol)
+    pub symbol: ::std::string::String,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.SingleType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a SingleType {
+    fn default() -> &'a SingleType {
+        <SingleType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl SingleType {
+    pub fn new() -> SingleType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "prefix",
+            |m: &SingleType| { &m.prefix },
+            |m: &mut SingleType| { &mut m.prefix },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "symbol",
+            |m: &SingleType| { &m.symbol },
+            |m: &mut SingleType| { &mut m.symbol },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<SingleType>(
+            "SingleType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for SingleType {
+    const NAME: &'static str = "SingleType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.prefix)?;
+                },
+                18 => {
+                    self.symbol = is.read_string()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.prefix.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if !self.symbol.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.symbol);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.prefix.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        if !self.symbol.is_empty() {
+            os.write_string(2, &self.symbol)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> SingleType {
+        SingleType::new()
+    }
+
+    fn clear(&mut self) {
+        self.prefix.clear();
+        self.symbol.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static SingleType {
+        static instance: SingleType = SingleType {
+            prefix: ::protobuf::MessageField::none(),
+            symbol: ::std::string::String::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for SingleType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("SingleType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for SingleType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for SingleType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.ThisType)
+pub struct ThisType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.ThisType.symbol)
+    pub symbol: ::std::string::String,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.ThisType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ThisType {
+    fn default() -> &'a ThisType {
+        <ThisType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ThisType {
+    pub fn new() -> ThisType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "symbol",
+            |m: &ThisType| { &m.symbol },
+            |m: &mut ThisType| { &mut m.symbol },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ThisType>(
+            "ThisType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ThisType {
+    const NAME: &'static str = "ThisType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.symbol = is.read_string()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if !self.symbol.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.symbol);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if !self.symbol.is_empty() {
+            os.write_string(1, &self.symbol)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ThisType {
+        ThisType::new()
+    }
+
+    fn clear(&mut self) {
+        self.symbol.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ThisType {
+        static instance: ThisType = ThisType {
+            symbol: ::std::string::String::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ThisType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ThisType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ThisType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ThisType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.SuperType)
+pub struct SuperType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.SuperType.prefix)
+    pub prefix: ::protobuf::MessageField<Type>,
+    // @@protoc_insertion_point(field:scip.SuperType.symbol)
+    pub symbol: ::std::string::String,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.SuperType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a SuperType {
+    fn default() -> &'a SuperType {
+        <SuperType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl SuperType {
+    pub fn new() -> SuperType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "prefix",
+            |m: &SuperType| { &m.prefix },
+            |m: &mut SuperType| { &mut m.prefix },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "symbol",
+            |m: &SuperType| { &m.symbol },
+            |m: &mut SuperType| { &mut m.symbol },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<SuperType>(
+            "SuperType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for SuperType {
+    const NAME: &'static str = "SuperType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.prefix)?;
+                },
+                18 => {
+                    self.symbol = is.read_string()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.prefix.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if !self.symbol.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.symbol);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.prefix.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        if !self.symbol.is_empty() {
+            os.write_string(2, &self.symbol)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> SuperType {
+        SuperType::new()
+    }
+
+    fn clear(&mut self) {
+        self.prefix.clear();
+        self.symbol.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static SuperType {
+        static instance: SuperType = SuperType {
+            prefix: ::protobuf::MessageField::none(),
+            symbol: ::std::string::String::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for SuperType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("SuperType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for SuperType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for SuperType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.ConstantType)
+pub struct ConstantType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.ConstantType.constant)
+    pub constant: ::protobuf::MessageField<Constant>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.ConstantType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ConstantType {
+    fn default() -> &'a ConstantType {
+        <ConstantType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ConstantType {
+    pub fn new() -> ConstantType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Constant>(
+            "constant",
+            |m: &ConstantType| { &m.constant },
+            |m: &mut ConstantType| { &mut m.constant },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ConstantType>(
+            "ConstantType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ConstantType {
+    const NAME: &'static str = "ConstantType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.constant)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.constant.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.constant.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ConstantType {
+        ConstantType::new()
+    }
+
+    fn clear(&mut self) {
+        self.constant.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ConstantType {
+        static instance: ConstantType = ConstantType {
+            constant: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ConstantType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ConstantType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ConstantType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ConstantType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.IntersectionType)
+pub struct IntersectionType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.IntersectionType.types)
+    pub types: ::std::vec::Vec<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.IntersectionType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a IntersectionType {
+    fn default() -> &'a IntersectionType {
+        <IntersectionType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl IntersectionType {
+    pub fn new() -> IntersectionType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "types",
+            |m: &IntersectionType| { &m.types },
+            |m: &mut IntersectionType| { &mut m.types },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<IntersectionType>(
+            "IntersectionType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for IntersectionType {
+    const NAME: &'static str = "IntersectionType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.types.push(is.read_message()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        for value in &self.types {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        for v in &self.types {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        };
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> IntersectionType {
+        IntersectionType::new()
+    }
+
+    fn clear(&mut self) {
+        self.types.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static IntersectionType {
+        static instance: IntersectionType = IntersectionType {
+            types: ::std::vec::Vec::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for IntersectionType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("IntersectionType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for IntersectionType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for IntersectionType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.UnionType)
+pub struct UnionType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.UnionType.types)
+    pub types: ::std::vec::Vec<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.UnionType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a UnionType {
+    fn default() -> &'a UnionType {
+        <UnionType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl UnionType {
+    pub fn new() -> UnionType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "types",
+            |m: &UnionType| { &m.types },
+            |m: &mut UnionType| { &mut m.types },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<UnionType>(
+            "UnionType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for UnionType {
+    const NAME: &'static str = "UnionType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.types.push(is.read_message()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        for value in &self.types {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        for v in &self.types {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        };
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> UnionType {
+        UnionType::new()
+    }
+
+    fn clear(&mut self) {
+        self.types.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static UnionType {
+        static instance: UnionType = UnionType {
+            types: ::std::vec::Vec::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for UnionType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("UnionType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for UnionType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for UnionType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.WithType)
+pub struct WithType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.WithType.types)
+    pub types: ::std::vec::Vec<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.WithType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a WithType {
+    fn default() -> &'a WithType {
+        <WithType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl WithType {
+    pub fn new() -> WithType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "types",
+            |m: &WithType| { &m.types },
+            |m: &mut WithType| { &mut m.types },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<WithType>(
+            "WithType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for WithType {
+    const NAME: &'static str = "WithType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.types.push(is.read_message()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        for value in &self.types {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        for v in &self.types {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        };
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> WithType {
+        WithType::new()
+    }
+
+    fn clear(&mut self) {
+        self.types.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static WithType {
+        static instance: WithType = WithType {
+            types: ::std::vec::Vec::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for WithType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("WithType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for WithType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for WithType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.StructuralType)
+pub struct StructuralType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.StructuralType.tpe)
+    pub tpe: ::protobuf::MessageField<Type>,
+    // @@protoc_insertion_point(field:scip.StructuralType.declarations)
+    pub declarations: ::protobuf::MessageField<Scope>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.StructuralType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a StructuralType {
+    fn default() -> &'a StructuralType {
+        <StructuralType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl StructuralType {
+    pub fn new() -> StructuralType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "tpe",
+            |m: &StructuralType| { &m.tpe },
+            |m: &mut StructuralType| { &mut m.tpe },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Scope>(
+            "declarations",
+            |m: &StructuralType| { &m.declarations },
+            |m: &mut StructuralType| { &mut m.declarations },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<StructuralType>(
+            "StructuralType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for StructuralType {
+    const NAME: &'static str = "StructuralType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                34 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.tpe)?;
+                },
+                42 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.declarations)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.tpe.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if let Some(v) = self.declarations.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.tpe.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
+        }
+        if let Some(v) = self.declarations.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(5, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> StructuralType {
+        StructuralType::new()
+    }
+
+    fn clear(&mut self) {
+        self.tpe.clear();
+        self.declarations.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static StructuralType {
+        static instance: StructuralType = StructuralType {
+            tpe: ::protobuf::MessageField::none(),
+            declarations: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for StructuralType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("StructuralType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for StructuralType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for StructuralType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.AnnotatedType)
+pub struct AnnotatedType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.AnnotatedType.annotations)
+    pub annotations: ::std::vec::Vec<Annotation>,
+    // @@protoc_insertion_point(field:scip.AnnotatedType.tpe)
+    pub tpe: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.AnnotatedType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a AnnotatedType {
+    fn default() -> &'a AnnotatedType {
+        <AnnotatedType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl AnnotatedType {
+    pub fn new() -> AnnotatedType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "annotations",
+            |m: &AnnotatedType| { &m.annotations },
+            |m: &mut AnnotatedType| { &mut m.annotations },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "tpe",
+            |m: &AnnotatedType| { &m.tpe },
+            |m: &mut AnnotatedType| { &mut m.tpe },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<AnnotatedType>(
+            "AnnotatedType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for AnnotatedType {
+    const NAME: &'static str = "AnnotatedType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                26 => {
+                    self.annotations.push(is.read_message()?);
+                },
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.tpe)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        for value in &self.annotations {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        if let Some(v) = self.tpe.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        for v in &self.annotations {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        };
+        if let Some(v) = self.tpe.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> AnnotatedType {
+        AnnotatedType::new()
+    }
+
+    fn clear(&mut self) {
+        self.annotations.clear();
+        self.tpe.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static AnnotatedType {
+        static instance: AnnotatedType = AnnotatedType {
+            annotations: ::std::vec::Vec::new(),
+            tpe: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for AnnotatedType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("AnnotatedType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for AnnotatedType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for AnnotatedType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.ExistentialType)
+pub struct ExistentialType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.ExistentialType.tpe)
+    pub tpe: ::protobuf::MessageField<Type>,
+    // @@protoc_insertion_point(field:scip.ExistentialType.declarations)
+    pub declarations: ::protobuf::MessageField<Scope>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.ExistentialType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ExistentialType {
+    fn default() -> &'a ExistentialType {
+        <ExistentialType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ExistentialType {
+    pub fn new() -> ExistentialType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "tpe",
+            |m: &ExistentialType| { &m.tpe },
+            |m: &mut ExistentialType| { &mut m.tpe },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Scope>(
+            "declarations",
+            |m: &ExistentialType| { &m.declarations },
+            |m: &mut ExistentialType| { &mut m.declarations },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ExistentialType>(
+            "ExistentialType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ExistentialType {
+    const NAME: &'static str = "ExistentialType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.tpe)?;
+                },
+                26 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.declarations)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.tpe.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if let Some(v) = self.declarations.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.tpe.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        if let Some(v) = self.declarations.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ExistentialType {
+        ExistentialType::new()
+    }
+
+    fn clear(&mut self) {
+        self.tpe.clear();
+        self.declarations.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ExistentialType {
+        static instance: ExistentialType = ExistentialType {
+            tpe: ::protobuf::MessageField::none(),
+            declarations: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ExistentialType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ExistentialType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ExistentialType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ExistentialType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.UniversalType)
+pub struct UniversalType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.UniversalType.type_parameters)
+    pub type_parameters: ::protobuf::MessageField<Scope>,
+    // @@protoc_insertion_point(field:scip.UniversalType.tpe)
+    pub tpe: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.UniversalType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a UniversalType {
+    fn default() -> &'a UniversalType {
+        <UniversalType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl UniversalType {
+    pub fn new() -> UniversalType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Scope>(
+            "type_parameters",
+            |m: &UniversalType| { &m.type_parameters },
+            |m: &mut UniversalType| { &mut m.type_parameters },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "tpe",
+            |m: &UniversalType| { &m.tpe },
+            |m: &mut UniversalType| { &mut m.tpe },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<UniversalType>(
+            "UniversalType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for UniversalType {
+    const NAME: &'static str = "UniversalType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                26 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.type_parameters)?;
+                },
+                18 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.tpe)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.type_parameters.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if let Some(v) = self.tpe.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.type_parameters.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        }
+        if let Some(v) = self.tpe.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> UniversalType {
+        UniversalType::new()
+    }
+
+    fn clear(&mut self) {
+        self.type_parameters.clear();
+        self.tpe.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static UniversalType {
+        static instance: UniversalType = UniversalType {
+            type_parameters: ::protobuf::MessageField::none(),
+            tpe: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for UniversalType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("UniversalType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for UniversalType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for UniversalType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.ByNameType)
+pub struct ByNameType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.ByNameType.tpe)
+    pub tpe: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.ByNameType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ByNameType {
+    fn default() -> &'a ByNameType {
+        <ByNameType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ByNameType {
+    pub fn new() -> ByNameType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "tpe",
+            |m: &ByNameType| { &m.tpe },
+            |m: &mut ByNameType| { &mut m.tpe },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ByNameType>(
+            "ByNameType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ByNameType {
+    const NAME: &'static str = "ByNameType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.tpe)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.tpe.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.tpe.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ByNameType {
+        ByNameType::new()
+    }
+
+    fn clear(&mut self) {
+        self.tpe.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ByNameType {
+        static instance: ByNameType = ByNameType {
+            tpe: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ByNameType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ByNameType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ByNameType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ByNameType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.RepeatedType)
+pub struct RepeatedType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.RepeatedType.tpe)
+    pub tpe: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.RepeatedType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a RepeatedType {
+    fn default() -> &'a RepeatedType {
+        <RepeatedType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl RepeatedType {
+    pub fn new() -> RepeatedType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "tpe",
+            |m: &RepeatedType| { &m.tpe },
+            |m: &mut RepeatedType| { &mut m.tpe },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<RepeatedType>(
+            "RepeatedType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for RepeatedType {
+    const NAME: &'static str = "RepeatedType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.tpe)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.tpe.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.tpe.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> RepeatedType {
+        RepeatedType::new()
+    }
+
+    fn clear(&mut self) {
+        self.tpe.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static RepeatedType {
+        static instance: RepeatedType = RepeatedType {
+            tpe: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for RepeatedType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("RepeatedType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for RepeatedType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for RepeatedType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.MatchType)
+pub struct MatchType {
+    // message fields
+    // @@protoc_insertion_point(field:scip.MatchType.scrutinee)
+    pub scrutinee: ::protobuf::MessageField<Type>,
+    // @@protoc_insertion_point(field:scip.MatchType.cases)
+    pub cases: ::std::vec::Vec<match_type::CaseType>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.MatchType.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a MatchType {
+    fn default() -> &'a MatchType {
+        <MatchType as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl MatchType {
+    pub fn new() -> MatchType {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "scrutinee",
+            |m: &MatchType| { &m.scrutinee },
+            |m: &mut MatchType| { &mut m.scrutinee },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "cases",
+            |m: &MatchType| { &m.cases },
+            |m: &mut MatchType| { &mut m.cases },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<MatchType>(
+            "MatchType",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for MatchType {
+    const NAME: &'static str = "MatchType";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.scrutinee)?;
+                },
+                18 => {
+                    self.cases.push(is.read_message()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.scrutinee.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        for value in &self.cases {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.scrutinee.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        for v in &self.cases {
+            ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+        };
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> MatchType {
+        MatchType::new()
+    }
+
+    fn clear(&mut self) {
+        self.scrutinee.clear();
+        self.cases.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static MatchType {
+        static instance: MatchType = MatchType {
+            scrutinee: ::protobuf::MessageField::none(),
+            cases: ::std::vec::Vec::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for MatchType {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("MatchType").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for MatchType {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for MatchType {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+/// Nested message and enums of message `MatchType`
+pub mod match_type {
+    #[derive(PartialEq,Clone,Default,Debug)]
+    // @@protoc_insertion_point(message:scip.MatchType.CaseType)
+    pub struct CaseType {
+        // message fields
+        // @@protoc_insertion_point(field:scip.MatchType.CaseType.key)
+        pub key: ::protobuf::MessageField<super::Type>,
+        // @@protoc_insertion_point(field:scip.MatchType.CaseType.body)
+        pub body: ::protobuf::MessageField<super::Type>,
+        // special fields
+        // @@protoc_insertion_point(special_field:scip.MatchType.CaseType.special_fields)
+        pub special_fields: ::protobuf::SpecialFields,
+    }
+
+    impl<'a> ::std::default::Default for &'a CaseType {
+        fn default() -> &'a CaseType {
+            <CaseType as ::protobuf::Message>::default_instance()
+        }
+    }
+
+    impl CaseType {
+        pub fn new() -> CaseType {
+            ::std::default::Default::default()
+        }
+
+        pub(in super) fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+            let mut fields = ::std::vec::Vec::with_capacity(2);
+            let mut oneofs = ::std::vec::Vec::with_capacity(0);
+            fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, super::Type>(
+                "key",
+                |m: &CaseType| { &m.key },
+                |m: &mut CaseType| { &mut m.key },
+            ));
+            fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, super::Type>(
+                "body",
+                |m: &CaseType| { &m.body },
+                |m: &mut CaseType| { &mut m.body },
+            ));
+            ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<CaseType>(
+                "MatchType.CaseType",
+                fields,
+                oneofs,
+            )
+        }
+    }
+
+    impl ::protobuf::Message for CaseType {
+        const NAME: &'static str = "CaseType";
+
+        fn is_initialized(&self) -> bool {
+            true
+        }
+
+        fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+            while let Some(tag) = is.read_raw_tag_or_eof()? {
+                match tag {
+                    10 => {
+                        ::protobuf::rt::read_singular_message_into_field(is, &mut self.key)?;
+                    },
+                    18 => {
+                        ::protobuf::rt::read_singular_message_into_field(is, &mut self.body)?;
+                    },
+                    tag => {
+                        ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                    },
+                };
+            }
+            ::std::result::Result::Ok(())
+        }
+
+        // Compute sizes of nested messages
+        #[allow(unused_variables)]
+        fn compute_size(&self) -> u64 {
+            let mut my_size = 0;
+            if let Some(v) = self.key.as_ref() {
+                let len = v.compute_size();
+                my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+            }
+            if let Some(v) = self.body.as_ref() {
+                let len = v.compute_size();
+                my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+            }
+            my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+            self.special_fields.cached_size().set(my_size as u32);
+            my_size
+        }
+
+        fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+            if let Some(v) = self.key.as_ref() {
+                ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+            }
+            if let Some(v) = self.body.as_ref() {
+                ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+            }
+            os.write_unknown_fields(self.special_fields.unknown_fields())?;
+            ::std::result::Result::Ok(())
+        }
+
+        fn special_fields(&self) -> &::protobuf::SpecialFields {
+            &self.special_fields
+        }
+
+        fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+            &mut self.special_fields
+        }
+
+        fn new() -> CaseType {
+            CaseType::new()
+        }
+
+        fn clear(&mut self) {
+            self.key.clear();
+            self.body.clear();
+            self.special_fields.clear();
+        }
+
+        fn default_instance() -> &'static CaseType {
+            static instance: CaseType = CaseType {
+                key: ::protobuf::MessageField::none(),
+                body: ::protobuf::MessageField::none(),
+                special_fields: ::protobuf::SpecialFields::new(),
+            };
+            &instance
+        }
+    }
+
+    impl ::protobuf::MessageFull for CaseType {
+        fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+            static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+            descriptor.get(|| super::file_descriptor().message_by_package_relative_name("MatchType.CaseType").unwrap()).clone()
+        }
+    }
+
+    impl ::std::fmt::Display for CaseType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            ::protobuf::text_format::fmt(self, f)
+        }
+    }
+
+    impl ::protobuf::reflect::ProtobufValue for CaseType {
+        type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+    }
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.Constant)
+pub struct Constant {
+    // message oneof groups
+    pub sealed_value: ::std::option::Option<constant::Sealed_value>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.Constant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a Constant {
+    fn default() -> &'a Constant {
+        <Constant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Constant {
+    pub fn new() -> Constant {
+        ::std::default::Default::default()
+    }
+
+    // .scip.UnitConstant unit_constant = 1;
+
+    pub fn unit_constant(&self) -> &UnitConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::UnitConstant(ref v)) => v,
+            _ => <UnitConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_unit_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_unit_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::UnitConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_unit_constant(&mut self, v: UnitConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::UnitConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_unit_constant(&mut self) -> &mut UnitConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::UnitConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::UnitConstant(UnitConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::UnitConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_unit_constant(&mut self) -> UnitConstant {
+        if self.has_unit_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::UnitConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            UnitConstant::new()
+        }
+    }
+
+    // .scip.BooleanConstant boolean_constant = 2;
+
+    pub fn boolean_constant(&self) -> &BooleanConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::BooleanConstant(ref v)) => v,
+            _ => <BooleanConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_boolean_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_boolean_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::BooleanConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_boolean_constant(&mut self, v: BooleanConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::BooleanConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_boolean_constant(&mut self) -> &mut BooleanConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::BooleanConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::BooleanConstant(BooleanConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::BooleanConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_boolean_constant(&mut self) -> BooleanConstant {
+        if self.has_boolean_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::BooleanConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            BooleanConstant::new()
+        }
+    }
+
+    // .scip.ByteConstant byte_constant = 3;
+
+    pub fn byte_constant(&self) -> &ByteConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::ByteConstant(ref v)) => v,
+            _ => <ByteConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_byte_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_byte_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::ByteConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_byte_constant(&mut self, v: ByteConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::ByteConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_byte_constant(&mut self) -> &mut ByteConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::ByteConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::ByteConstant(ByteConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::ByteConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_byte_constant(&mut self) -> ByteConstant {
+        if self.has_byte_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::ByteConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ByteConstant::new()
+        }
+    }
+
+    // .scip.ShortConstant short_constant = 4;
+
+    pub fn short_constant(&self) -> &ShortConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::ShortConstant(ref v)) => v,
+            _ => <ShortConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_short_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_short_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::ShortConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_short_constant(&mut self, v: ShortConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::ShortConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_short_constant(&mut self) -> &mut ShortConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::ShortConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::ShortConstant(ShortConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::ShortConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_short_constant(&mut self) -> ShortConstant {
+        if self.has_short_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::ShortConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ShortConstant::new()
+        }
+    }
+
+    // .scip.CharConstant char_constant = 5;
+
+    pub fn char_constant(&self) -> &CharConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::CharConstant(ref v)) => v,
+            _ => <CharConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_char_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_char_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::CharConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_char_constant(&mut self, v: CharConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::CharConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_char_constant(&mut self) -> &mut CharConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::CharConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::CharConstant(CharConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::CharConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_char_constant(&mut self) -> CharConstant {
+        if self.has_char_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::CharConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            CharConstant::new()
+        }
+    }
+
+    // .scip.IntConstant int_constant = 6;
+
+    pub fn int_constant(&self) -> &IntConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::IntConstant(ref v)) => v,
+            _ => <IntConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_int_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_int_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::IntConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_int_constant(&mut self, v: IntConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::IntConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_int_constant(&mut self) -> &mut IntConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::IntConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::IntConstant(IntConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::IntConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_int_constant(&mut self) -> IntConstant {
+        if self.has_int_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::IntConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            IntConstant::new()
+        }
+    }
+
+    // .scip.LongConstant long_constant = 7;
+
+    pub fn long_constant(&self) -> &LongConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::LongConstant(ref v)) => v,
+            _ => <LongConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_long_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_long_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::LongConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_long_constant(&mut self, v: LongConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::LongConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_long_constant(&mut self) -> &mut LongConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::LongConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::LongConstant(LongConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::LongConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_long_constant(&mut self) -> LongConstant {
+        if self.has_long_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::LongConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            LongConstant::new()
+        }
+    }
+
+    // .scip.FloatConstant float_constant = 8;
+
+    pub fn float_constant(&self) -> &FloatConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::FloatConstant(ref v)) => v,
+            _ => <FloatConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_float_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_float_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::FloatConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_float_constant(&mut self, v: FloatConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::FloatConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_float_constant(&mut self) -> &mut FloatConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::FloatConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::FloatConstant(FloatConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::FloatConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_float_constant(&mut self) -> FloatConstant {
+        if self.has_float_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::FloatConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            FloatConstant::new()
+        }
+    }
+
+    // .scip.DoubleConstant double_constant = 9;
+
+    pub fn double_constant(&self) -> &DoubleConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::DoubleConstant(ref v)) => v,
+            _ => <DoubleConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_double_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_double_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::DoubleConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_double_constant(&mut self, v: DoubleConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::DoubleConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_double_constant(&mut self) -> &mut DoubleConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::DoubleConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::DoubleConstant(DoubleConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::DoubleConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_double_constant(&mut self) -> DoubleConstant {
+        if self.has_double_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::DoubleConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            DoubleConstant::new()
+        }
+    }
+
+    // .scip.StringConstant string_constant = 10;
+
+    pub fn string_constant(&self) -> &StringConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::StringConstant(ref v)) => v,
+            _ => <StringConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_string_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_string_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::StringConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_string_constant(&mut self, v: StringConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::StringConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_string_constant(&mut self) -> &mut StringConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::StringConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::StringConstant(StringConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::StringConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_string_constant(&mut self) -> StringConstant {
+        if self.has_string_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::StringConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            StringConstant::new()
+        }
+    }
+
+    // .scip.NullConstant null_constant = 11;
+
+    pub fn null_constant(&self) -> &NullConstant {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::NullConstant(ref v)) => v,
+            _ => <NullConstant as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_null_constant(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_null_constant(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::NullConstant(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_null_constant(&mut self, v: NullConstant) {
+        self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::NullConstant(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_null_constant(&mut self) -> &mut NullConstant {
+        if let ::std::option::Option::Some(constant::Sealed_value::NullConstant(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::NullConstant(NullConstant::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(constant::Sealed_value::NullConstant(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_null_constant(&mut self) -> NullConstant {
+        if self.has_null_constant() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(constant::Sealed_value::NullConstant(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            NullConstant::new()
+        }
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(11);
+        let mut oneofs = ::std::vec::Vec::with_capacity(1);
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, UnitConstant>(
+            "unit_constant",
+            Constant::has_unit_constant,
+            Constant::unit_constant,
+            Constant::mut_unit_constant,
+            Constant::set_unit_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, BooleanConstant>(
+            "boolean_constant",
+            Constant::has_boolean_constant,
+            Constant::boolean_constant,
+            Constant::mut_boolean_constant,
+            Constant::set_boolean_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, ByteConstant>(
+            "byte_constant",
+            Constant::has_byte_constant,
+            Constant::byte_constant,
+            Constant::mut_byte_constant,
+            Constant::set_byte_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, ShortConstant>(
+            "short_constant",
+            Constant::has_short_constant,
+            Constant::short_constant,
+            Constant::mut_short_constant,
+            Constant::set_short_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, CharConstant>(
+            "char_constant",
+            Constant::has_char_constant,
+            Constant::char_constant,
+            Constant::mut_char_constant,
+            Constant::set_char_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, IntConstant>(
+            "int_constant",
+            Constant::has_int_constant,
+            Constant::int_constant,
+            Constant::mut_int_constant,
+            Constant::set_int_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, LongConstant>(
+            "long_constant",
+            Constant::has_long_constant,
+            Constant::long_constant,
+            Constant::mut_long_constant,
+            Constant::set_long_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, FloatConstant>(
+            "float_constant",
+            Constant::has_float_constant,
+            Constant::float_constant,
+            Constant::mut_float_constant,
+            Constant::set_float_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, DoubleConstant>(
+            "double_constant",
+            Constant::has_double_constant,
+            Constant::double_constant,
+            Constant::mut_double_constant,
+            Constant::set_double_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, StringConstant>(
+            "string_constant",
+            Constant::has_string_constant,
+            Constant::string_constant,
+            Constant::mut_string_constant,
+            Constant::set_string_constant,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, NullConstant>(
+            "null_constant",
+            Constant::has_null_constant,
+            Constant::null_constant,
+            Constant::mut_null_constant,
+            Constant::set_null_constant,
+        ));
+        oneofs.push(constant::Sealed_value::generated_oneof_descriptor_data());
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<Constant>(
+            "Constant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for Constant {
+    const NAME: &'static str = "Constant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::UnitConstant(is.read_message()?));
+                },
+                18 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::BooleanConstant(is.read_message()?));
+                },
+                26 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::ByteConstant(is.read_message()?));
+                },
+                34 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::ShortConstant(is.read_message()?));
+                },
+                42 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::CharConstant(is.read_message()?));
+                },
+                50 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::IntConstant(is.read_message()?));
+                },
+                58 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::LongConstant(is.read_message()?));
+                },
+                66 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::FloatConstant(is.read_message()?));
+                },
+                74 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::DoubleConstant(is.read_message()?));
+                },
+                82 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::StringConstant(is.read_message()?));
+                },
+                90 => {
+                    self.sealed_value = ::std::option::Option::Some(constant::Sealed_value::NullConstant(is.read_message()?));
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let ::std::option::Option::Some(ref v) = self.sealed_value {
+            match v {
+                &constant::Sealed_value::UnitConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::BooleanConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::ByteConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::ShortConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::CharConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::IntConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::LongConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::FloatConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::DoubleConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::StringConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &constant::Sealed_value::NullConstant(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+            };
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let ::std::option::Option::Some(ref v) = self.sealed_value {
+            match v {
+                &constant::Sealed_value::UnitConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+                },
+                &constant::Sealed_value::BooleanConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+                },
+                &constant::Sealed_value::ByteConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+                },
+                &constant::Sealed_value::ShortConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
+                },
+                &constant::Sealed_value::CharConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(5, v, os)?;
+                },
+                &constant::Sealed_value::IntConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(6, v, os)?;
+                },
+                &constant::Sealed_value::LongConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(7, v, os)?;
+                },
+                &constant::Sealed_value::FloatConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(8, v, os)?;
+                },
+                &constant::Sealed_value::DoubleConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(9, v, os)?;
+                },
+                &constant::Sealed_value::StringConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(10, v, os)?;
+                },
+                &constant::Sealed_value::NullConstant(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(11, v, os)?;
+                },
+            };
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> Constant {
+        Constant::new()
+    }
+
+    fn clear(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static Constant {
+        static instance: Constant = Constant {
+            sealed_value: ::std::option::Option::None,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for Constant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("Constant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for Constant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Constant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+/// Nested message and enums of message `Constant`
+pub mod constant {
+
+    #[derive(Clone,PartialEq,Debug)]
+    #[non_exhaustive]
+    // @@protoc_insertion_point(oneof:scip.Constant.sealed_value)
+    pub enum Sealed_value {
+        // @@protoc_insertion_point(oneof_field:scip.Constant.unit_constant)
+        UnitConstant(super::UnitConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.boolean_constant)
+        BooleanConstant(super::BooleanConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.byte_constant)
+        ByteConstant(super::ByteConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.short_constant)
+        ShortConstant(super::ShortConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.char_constant)
+        CharConstant(super::CharConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.int_constant)
+        IntConstant(super::IntConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.long_constant)
+        LongConstant(super::LongConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.float_constant)
+        FloatConstant(super::FloatConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.double_constant)
+        DoubleConstant(super::DoubleConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.string_constant)
+        StringConstant(super::StringConstant),
+        // @@protoc_insertion_point(oneof_field:scip.Constant.null_constant)
+        NullConstant(super::NullConstant),
+    }
+
+    impl ::protobuf::Oneof for Sealed_value {
+    }
+
+    impl ::protobuf::OneofFull for Sealed_value {
+        fn descriptor() -> ::protobuf::reflect::OneofDescriptor {
+            static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::OneofDescriptor> = ::protobuf::rt::Lazy::new();
+            descriptor.get(|| <super::Constant as ::protobuf::MessageFull>::descriptor().oneof_by_name("sealed_value").unwrap()).clone()
+        }
+    }
+
+    impl Sealed_value {
+        pub(in super) fn generated_oneof_descriptor_data() -> ::protobuf::reflect::GeneratedOneofDescriptorData {
+            ::protobuf::reflect::GeneratedOneofDescriptorData::new::<Sealed_value>("sealed_value")
+        }
+    }
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.UnitConstant)
+pub struct UnitConstant {
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.UnitConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a UnitConstant {
+    fn default() -> &'a UnitConstant {
+        <UnitConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl UnitConstant {
+    pub fn new() -> UnitConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(0);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<UnitConstant>(
+            "UnitConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for UnitConstant {
+    const NAME: &'static str = "UnitConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> UnitConstant {
+        UnitConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static UnitConstant {
+        static instance: UnitConstant = UnitConstant {
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for UnitConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("UnitConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for UnitConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for UnitConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.BooleanConstant)
+pub struct BooleanConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.BooleanConstant.value)
+    pub value: bool,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.BooleanConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a BooleanConstant {
+    fn default() -> &'a BooleanConstant {
+        <BooleanConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl BooleanConstant {
+    pub fn new() -> BooleanConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &BooleanConstant| { &m.value },
+            |m: &mut BooleanConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<BooleanConstant>(
+            "BooleanConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for BooleanConstant {
+    const NAME: &'static str = "BooleanConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                8 => {
+                    self.value = is.read_bool()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.value != false {
+            my_size += 1 + 1;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.value != false {
+            os.write_bool(1, self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> BooleanConstant {
+        BooleanConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value = false;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static BooleanConstant {
+        static instance: BooleanConstant = BooleanConstant {
+            value: false,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for BooleanConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("BooleanConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for BooleanConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for BooleanConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.ByteConstant)
+pub struct ByteConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.ByteConstant.value)
+    pub value: i32,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.ByteConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ByteConstant {
+    fn default() -> &'a ByteConstant {
+        <ByteConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ByteConstant {
+    pub fn new() -> ByteConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &ByteConstant| { &m.value },
+            |m: &mut ByteConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ByteConstant>(
+            "ByteConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ByteConstant {
+    const NAME: &'static str = "ByteConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                8 => {
+                    self.value = is.read_int32()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.value != 0 {
+            my_size += ::protobuf::rt::int32_size(1, self.value);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.value != 0 {
+            os.write_int32(1, self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ByteConstant {
+        ByteConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value = 0;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ByteConstant {
+        static instance: ByteConstant = ByteConstant {
+            value: 0,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ByteConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ByteConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ByteConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ByteConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.ShortConstant)
+pub struct ShortConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.ShortConstant.value)
+    pub value: i32,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.ShortConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ShortConstant {
+    fn default() -> &'a ShortConstant {
+        <ShortConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ShortConstant {
+    pub fn new() -> ShortConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &ShortConstant| { &m.value },
+            |m: &mut ShortConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ShortConstant>(
+            "ShortConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ShortConstant {
+    const NAME: &'static str = "ShortConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                8 => {
+                    self.value = is.read_int32()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.value != 0 {
+            my_size += ::protobuf::rt::int32_size(1, self.value);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.value != 0 {
+            os.write_int32(1, self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ShortConstant {
+        ShortConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value = 0;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ShortConstant {
+        static instance: ShortConstant = ShortConstant {
+            value: 0,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ShortConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ShortConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ShortConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ShortConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.CharConstant)
+pub struct CharConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.CharConstant.value)
+    pub value: i32,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.CharConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a CharConstant {
+    fn default() -> &'a CharConstant {
+        <CharConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl CharConstant {
+    pub fn new() -> CharConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &CharConstant| { &m.value },
+            |m: &mut CharConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<CharConstant>(
+            "CharConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for CharConstant {
+    const NAME: &'static str = "CharConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                8 => {
+                    self.value = is.read_int32()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.value != 0 {
+            my_size += ::protobuf::rt::int32_size(1, self.value);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.value != 0 {
+            os.write_int32(1, self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> CharConstant {
+        CharConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value = 0;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static CharConstant {
+        static instance: CharConstant = CharConstant {
+            value: 0,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for CharConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("CharConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for CharConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for CharConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.IntConstant)
+pub struct IntConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.IntConstant.value)
+    pub value: i32,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.IntConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a IntConstant {
+    fn default() -> &'a IntConstant {
+        <IntConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl IntConstant {
+    pub fn new() -> IntConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &IntConstant| { &m.value },
+            |m: &mut IntConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<IntConstant>(
+            "IntConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for IntConstant {
+    const NAME: &'static str = "IntConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                8 => {
+                    self.value = is.read_int32()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.value != 0 {
+            my_size += ::protobuf::rt::int32_size(1, self.value);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.value != 0 {
+            os.write_int32(1, self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> IntConstant {
+        IntConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value = 0;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static IntConstant {
+        static instance: IntConstant = IntConstant {
+            value: 0,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for IntConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("IntConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for IntConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for IntConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.LongConstant)
+pub struct LongConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.LongConstant.value)
+    pub value: i64,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.LongConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a LongConstant {
+    fn default() -> &'a LongConstant {
+        <LongConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl LongConstant {
+    pub fn new() -> LongConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &LongConstant| { &m.value },
+            |m: &mut LongConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<LongConstant>(
+            "LongConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for LongConstant {
+    const NAME: &'static str = "LongConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                8 => {
+                    self.value = is.read_int64()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.value != 0 {
+            my_size += ::protobuf::rt::int64_size(1, self.value);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.value != 0 {
+            os.write_int64(1, self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> LongConstant {
+        LongConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value = 0;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static LongConstant {
+        static instance: LongConstant = LongConstant {
+            value: 0,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for LongConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("LongConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for LongConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for LongConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.FloatConstant)
+pub struct FloatConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.FloatConstant.value)
+    pub value: f32,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.FloatConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a FloatConstant {
+    fn default() -> &'a FloatConstant {
+        <FloatConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl FloatConstant {
+    pub fn new() -> FloatConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &FloatConstant| { &m.value },
+            |m: &mut FloatConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<FloatConstant>(
+            "FloatConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for FloatConstant {
+    const NAME: &'static str = "FloatConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                13 => {
+                    self.value = is.read_float()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.value != 0. {
+            my_size += 1 + 4;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.value != 0. {
+            os.write_float(1, self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> FloatConstant {
+        FloatConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value = 0.;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static FloatConstant {
+        static instance: FloatConstant = FloatConstant {
+            value: 0.,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for FloatConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("FloatConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for FloatConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for FloatConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.DoubleConstant)
+pub struct DoubleConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.DoubleConstant.value)
+    pub value: f64,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.DoubleConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a DoubleConstant {
+    fn default() -> &'a DoubleConstant {
+        <DoubleConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl DoubleConstant {
+    pub fn new() -> DoubleConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &DoubleConstant| { &m.value },
+            |m: &mut DoubleConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<DoubleConstant>(
+            "DoubleConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for DoubleConstant {
+    const NAME: &'static str = "DoubleConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                9 => {
+                    self.value = is.read_double()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.value != 0. {
+            my_size += 1 + 8;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.value != 0. {
+            os.write_double(1, self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> DoubleConstant {
+        DoubleConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value = 0.;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static DoubleConstant {
+        static instance: DoubleConstant = DoubleConstant {
+            value: 0.,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for DoubleConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("DoubleConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for DoubleConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for DoubleConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.StringConstant)
+pub struct StringConstant {
+    // message fields
+    // @@protoc_insertion_point(field:scip.StringConstant.value)
+    pub value: ::std::string::String,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.StringConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a StringConstant {
+    fn default() -> &'a StringConstant {
+        <StringConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl StringConstant {
+    pub fn new() -> StringConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "value",
+            |m: &StringConstant| { &m.value },
+            |m: &mut StringConstant| { &mut m.value },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<StringConstant>(
+            "StringConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for StringConstant {
+    const NAME: &'static str = "StringConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.value = is.read_string()?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if !self.value.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.value);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if !self.value.is_empty() {
+            os.write_string(1, &self.value)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> StringConstant {
+        StringConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.value.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static StringConstant {
+        static instance: StringConstant = StringConstant {
+            value: ::std::string::String::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for StringConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("StringConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for StringConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for StringConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.NullConstant)
+pub struct NullConstant {
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.NullConstant.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a NullConstant {
+    fn default() -> &'a NullConstant {
+        <NullConstant as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl NullConstant {
+    pub fn new() -> NullConstant {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(0);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<NullConstant>(
+            "NullConstant",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for NullConstant {
+    const NAME: &'static str = "NullConstant";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> NullConstant {
+        NullConstant::new()
+    }
+
+    fn clear(&mut self) {
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static NullConstant {
+        static instance: NullConstant = NullConstant {
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for NullConstant {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("NullConstant").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for NullConstant {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for NullConstant {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.Signature)
+pub struct Signature {
+    // message oneof groups
+    pub sealed_value: ::std::option::Option<signature::Sealed_value>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.Signature.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a Signature {
+    fn default() -> &'a Signature {
+        <Signature as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Signature {
+    pub fn new() -> Signature {
+        ::std::default::Default::default()
+    }
+
+    // .scip.ClassSignature class_signature = 1;
+
+    pub fn class_signature(&self) -> &ClassSignature {
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::ClassSignature(ref v)) => v,
+            _ => <ClassSignature as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_class_signature(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_class_signature(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::ClassSignature(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_class_signature(&mut self, v: ClassSignature) {
+        self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::ClassSignature(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_class_signature(&mut self) -> &mut ClassSignature {
+        if let ::std::option::Option::Some(signature::Sealed_value::ClassSignature(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::ClassSignature(ClassSignature::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::ClassSignature(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_class_signature(&mut self) -> ClassSignature {
+        if self.has_class_signature() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(signature::Sealed_value::ClassSignature(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ClassSignature::new()
+        }
+    }
+
+    // .scip.MethodSignature method_signature = 2;
+
+    pub fn method_signature(&self) -> &MethodSignature {
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::MethodSignature(ref v)) => v,
+            _ => <MethodSignature as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_method_signature(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_method_signature(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::MethodSignature(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_method_signature(&mut self, v: MethodSignature) {
+        self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::MethodSignature(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_method_signature(&mut self) -> &mut MethodSignature {
+        if let ::std::option::Option::Some(signature::Sealed_value::MethodSignature(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::MethodSignature(MethodSignature::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::MethodSignature(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_method_signature(&mut self) -> MethodSignature {
+        if self.has_method_signature() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(signature::Sealed_value::MethodSignature(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            MethodSignature::new()
+        }
+    }
+
+    // .scip.TypeSignature type_signature = 3;
+
+    pub fn type_signature(&self) -> &TypeSignature {
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::TypeSignature(ref v)) => v,
+            _ => <TypeSignature as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_type_signature(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_type_signature(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::TypeSignature(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_type_signature(&mut self, v: TypeSignature) {
+        self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::TypeSignature(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_type_signature(&mut self) -> &mut TypeSignature {
+        if let ::std::option::Option::Some(signature::Sealed_value::TypeSignature(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::TypeSignature(TypeSignature::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::TypeSignature(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_type_signature(&mut self) -> TypeSignature {
+        if self.has_type_signature() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(signature::Sealed_value::TypeSignature(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            TypeSignature::new()
+        }
+    }
+
+    // .scip.ValueSignature value_signature = 4;
+
+    pub fn value_signature(&self) -> &ValueSignature {
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::ValueSignature(ref v)) => v,
+            _ => <ValueSignature as ::protobuf::Message>::default_instance(),
+        }
+    }
+
+    pub fn clear_value_signature(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+    }
+
+    pub fn has_value_signature(&self) -> bool {
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::ValueSignature(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_value_signature(&mut self, v: ValueSignature) {
+        self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::ValueSignature(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_value_signature(&mut self) -> &mut ValueSignature {
+        if let ::std::option::Option::Some(signature::Sealed_value::ValueSignature(_)) = self.sealed_value {
+        } else {
+            self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::ValueSignature(ValueSignature::new()));
+        }
+        match self.sealed_value {
+            ::std::option::Option::Some(signature::Sealed_value::ValueSignature(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_value_signature(&mut self) -> ValueSignature {
+        if self.has_value_signature() {
+            match self.sealed_value.take() {
+                ::std::option::Option::Some(signature::Sealed_value::ValueSignature(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ValueSignature::new()
+        }
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(4);
+        let mut oneofs = ::std::vec::Vec::with_capacity(1);
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, ClassSignature>(
+            "class_signature",
+            Signature::has_class_signature,
+            Signature::class_signature,
+            Signature::mut_class_signature,
+            Signature::set_class_signature,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, MethodSignature>(
+            "method_signature",
+            Signature::has_method_signature,
+            Signature::method_signature,
+            Signature::mut_method_signature,
+            Signature::set_method_signature,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, TypeSignature>(
+            "type_signature",
+            Signature::has_type_signature,
+            Signature::type_signature,
+            Signature::mut_type_signature,
+            Signature::set_type_signature,
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_oneof_message_has_get_mut_set_accessor::<_, ValueSignature>(
+            "value_signature",
+            Signature::has_value_signature,
+            Signature::value_signature,
+            Signature::mut_value_signature,
+            Signature::set_value_signature,
+        ));
+        oneofs.push(signature::Sealed_value::generated_oneof_descriptor_data());
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<Signature>(
+            "Signature",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for Signature {
+    const NAME: &'static str = "Signature";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::ClassSignature(is.read_message()?));
+                },
+                18 => {
+                    self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::MethodSignature(is.read_message()?));
+                },
+                26 => {
+                    self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::TypeSignature(is.read_message()?));
+                },
+                34 => {
+                    self.sealed_value = ::std::option::Option::Some(signature::Sealed_value::ValueSignature(is.read_message()?));
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let ::std::option::Option::Some(ref v) = self.sealed_value {
+            match v {
+                &signature::Sealed_value::ClassSignature(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &signature::Sealed_value::MethodSignature(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &signature::Sealed_value::TypeSignature(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+                &signature::Sealed_value::ValueSignature(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+                },
+            };
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let ::std::option::Option::Some(ref v) = self.sealed_value {
+            match v {
+                &signature::Sealed_value::ClassSignature(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+                },
+                &signature::Sealed_value::MethodSignature(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+                },
+                &signature::Sealed_value::TypeSignature(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+                },
+                &signature::Sealed_value::ValueSignature(ref v) => {
+                    ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
+                },
+            };
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> Signature {
+        Signature::new()
+    }
+
+    fn clear(&mut self) {
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.sealed_value = ::std::option::Option::None;
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static Signature {
+        static instance: Signature = Signature {
+            sealed_value: ::std::option::Option::None,
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for Signature {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("Signature").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for Signature {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Signature {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+/// Nested message and enums of message `Signature`
+pub mod signature {
+
+    #[derive(Clone,PartialEq,Debug)]
+    #[non_exhaustive]
+    // @@protoc_insertion_point(oneof:scip.Signature.sealed_value)
+    pub enum Sealed_value {
+        // @@protoc_insertion_point(oneof_field:scip.Signature.class_signature)
+        ClassSignature(super::ClassSignature),
+        // @@protoc_insertion_point(oneof_field:scip.Signature.method_signature)
+        MethodSignature(super::MethodSignature),
+        // @@protoc_insertion_point(oneof_field:scip.Signature.type_signature)
+        TypeSignature(super::TypeSignature),
+        // @@protoc_insertion_point(oneof_field:scip.Signature.value_signature)
+        ValueSignature(super::ValueSignature),
+    }
+
+    impl ::protobuf::Oneof for Sealed_value {
+    }
+
+    impl ::protobuf::OneofFull for Sealed_value {
+        fn descriptor() -> ::protobuf::reflect::OneofDescriptor {
+            static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::OneofDescriptor> = ::protobuf::rt::Lazy::new();
+            descriptor.get(|| <super::Signature as ::protobuf::MessageFull>::descriptor().oneof_by_name("sealed_value").unwrap()).clone()
+        }
+    }
+
+    impl Sealed_value {
+        pub(in super) fn generated_oneof_descriptor_data() -> ::protobuf::reflect::GeneratedOneofDescriptorData {
+            ::protobuf::reflect::GeneratedOneofDescriptorData::new::<Sealed_value>("sealed_value")
+        }
+    }
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.ClassSignature)
+pub struct ClassSignature {
+    // message fields
+    // @@protoc_insertion_point(field:scip.ClassSignature.type_parameters)
+    pub type_parameters: ::protobuf::MessageField<Scope>,
+    // @@protoc_insertion_point(field:scip.ClassSignature.parents)
+    pub parents: ::std::vec::Vec<Type>,
+    // @@protoc_insertion_point(field:scip.ClassSignature.self)
+    pub self_: ::protobuf::MessageField<Type>,
+    // @@protoc_insertion_point(field:scip.ClassSignature.declarations)
+    pub declarations: ::protobuf::MessageField<Scope>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.ClassSignature.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ClassSignature {
+    fn default() -> &'a ClassSignature {
+        <ClassSignature as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ClassSignature {
+    pub fn new() -> ClassSignature {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(4);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Scope>(
+            "type_parameters",
+            |m: &ClassSignature| { &m.type_parameters },
+            |m: &mut ClassSignature| { &mut m.type_parameters },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "parents",
+            |m: &ClassSignature| { &m.parents },
+            |m: &mut ClassSignature| { &mut m.parents },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "self",
+            |m: &ClassSignature| { &m.self_ },
+            |m: &mut ClassSignature| { &mut m.self_ },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Scope>(
+            "declarations",
+            |m: &ClassSignature| { &m.declarations },
+            |m: &mut ClassSignature| { &mut m.declarations },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ClassSignature>(
+            "ClassSignature",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ClassSignature {
+    const NAME: &'static str = "ClassSignature";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.type_parameters)?;
+                },
+                18 => {
+                    self.parents.push(is.read_message()?);
+                },
+                26 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.self_)?;
+                },
+                34 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.declarations)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.type_parameters.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        for value in &self.parents {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        if let Some(v) = self.self_.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if let Some(v) = self.declarations.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.type_parameters.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        for v in &self.parents {
+            ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+        };
+        if let Some(v) = self.self_.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        }
+        if let Some(v) = self.declarations.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ClassSignature {
+        ClassSignature::new()
+    }
+
+    fn clear(&mut self) {
+        self.type_parameters.clear();
+        self.parents.clear();
+        self.self_.clear();
+        self.declarations.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ClassSignature {
+        static instance: ClassSignature = ClassSignature {
+            type_parameters: ::protobuf::MessageField::none(),
+            parents: ::std::vec::Vec::new(),
+            self_: ::protobuf::MessageField::none(),
+            declarations: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ClassSignature {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ClassSignature").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ClassSignature {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ClassSignature {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.MethodSignature)
+pub struct MethodSignature {
+    // message fields
+    // @@protoc_insertion_point(field:scip.MethodSignature.type_parameters)
+    pub type_parameters: ::protobuf::MessageField<Scope>,
+    // @@protoc_insertion_point(field:scip.MethodSignature.parameter_lists)
+    pub parameter_lists: ::std::vec::Vec<Scope>,
+    // @@protoc_insertion_point(field:scip.MethodSignature.return_type)
+    pub return_type: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.MethodSignature.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a MethodSignature {
+    fn default() -> &'a MethodSignature {
+        <MethodSignature as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl MethodSignature {
+    pub fn new() -> MethodSignature {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(3);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Scope>(
+            "type_parameters",
+            |m: &MethodSignature| { &m.type_parameters },
+            |m: &mut MethodSignature| { &mut m.type_parameters },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "parameter_lists",
+            |m: &MethodSignature| { &m.parameter_lists },
+            |m: &mut MethodSignature| { &mut m.parameter_lists },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "return_type",
+            |m: &MethodSignature| { &m.return_type },
+            |m: &mut MethodSignature| { &mut m.return_type },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<MethodSignature>(
+            "MethodSignature",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for MethodSignature {
+    const NAME: &'static str = "MethodSignature";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.type_parameters)?;
+                },
+                18 => {
+                    self.parameter_lists.push(is.read_message()?);
+                },
+                26 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.return_type)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.type_parameters.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        for value in &self.parameter_lists {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        };
+        if let Some(v) = self.return_type.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.type_parameters.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        for v in &self.parameter_lists {
+            ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+        };
+        if let Some(v) = self.return_type.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> MethodSignature {
+        MethodSignature::new()
+    }
+
+    fn clear(&mut self) {
+        self.type_parameters.clear();
+        self.parameter_lists.clear();
+        self.return_type.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static MethodSignature {
+        static instance: MethodSignature = MethodSignature {
+            type_parameters: ::protobuf::MessageField::none(),
+            parameter_lists: ::std::vec::Vec::new(),
+            return_type: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for MethodSignature {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("MethodSignature").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for MethodSignature {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for MethodSignature {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.TypeSignature)
+pub struct TypeSignature {
+    // message fields
+    // @@protoc_insertion_point(field:scip.TypeSignature.type_parameters)
+    pub type_parameters: ::protobuf::MessageField<Scope>,
+    // @@protoc_insertion_point(field:scip.TypeSignature.lower_bound)
+    pub lower_bound: ::protobuf::MessageField<Type>,
+    // @@protoc_insertion_point(field:scip.TypeSignature.upper_bound)
+    pub upper_bound: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.TypeSignature.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a TypeSignature {
+    fn default() -> &'a TypeSignature {
+        <TypeSignature as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl TypeSignature {
+    pub fn new() -> TypeSignature {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(3);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Scope>(
+            "type_parameters",
+            |m: &TypeSignature| { &m.type_parameters },
+            |m: &mut TypeSignature| { &mut m.type_parameters },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "lower_bound",
+            |m: &TypeSignature| { &m.lower_bound },
+            |m: &mut TypeSignature| { &mut m.lower_bound },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "upper_bound",
+            |m: &TypeSignature| { &m.upper_bound },
+            |m: &mut TypeSignature| { &mut m.upper_bound },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<TypeSignature>(
+            "TypeSignature",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for TypeSignature {
+    const NAME: &'static str = "TypeSignature";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.type_parameters)?;
+                },
+                18 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.lower_bound)?;
+                },
+                26 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.upper_bound)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.type_parameters.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if let Some(v) = self.lower_bound.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        if let Some(v) = self.upper_bound.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.type_parameters.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        if let Some(v) = self.lower_bound.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+        }
+        if let Some(v) = self.upper_bound.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> TypeSignature {
+        TypeSignature::new()
+    }
+
+    fn clear(&mut self) {
+        self.type_parameters.clear();
+        self.lower_bound.clear();
+        self.upper_bound.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static TypeSignature {
+        static instance: TypeSignature = TypeSignature {
+            type_parameters: ::protobuf::MessageField::none(),
+            lower_bound: ::protobuf::MessageField::none(),
+            upper_bound: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for TypeSignature {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("TypeSignature").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for TypeSignature {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for TypeSignature {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+#[derive(PartialEq,Clone,Default,Debug)]
+// @@protoc_insertion_point(message:scip.ValueSignature)
+pub struct ValueSignature {
+    // message fields
+    // @@protoc_insertion_point(field:scip.ValueSignature.tpe)
+    pub tpe: ::protobuf::MessageField<Type>,
+    // special fields
+    // @@protoc_insertion_point(special_field:scip.ValueSignature.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a ValueSignature {
+    fn default() -> &'a ValueSignature {
+        <ValueSignature as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl ValueSignature {
+    pub fn new() -> ValueSignature {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(1);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Type>(
+            "tpe",
+            |m: &ValueSignature| { &m.tpe },
+            |m: &mut ValueSignature| { &mut m.tpe },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<ValueSignature>(
+            "ValueSignature",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for ValueSignature {
+    const NAME: &'static str = "ValueSignature";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                10 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.tpe)?;
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if let Some(v) = self.tpe.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if let Some(v) = self.tpe.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
+        }
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> ValueSignature {
+        ValueSignature::new()
+    }
+
+    fn clear(&mut self) {
+        self.tpe.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static ValueSignature {
+        static instance: ValueSignature = ValueSignature {
+            tpe: ::protobuf::MessageField::none(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for ValueSignature {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("ValueSignature").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for ValueSignature {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for ValueSignature {
     type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
 }
 
@@ -4207,19 +11281,20 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x1a\x02\x08\x01\x12\x08\n\x04Type\x10\x02\x12\x08\n\x04Term\x10\x03\x12\
     \n\n\x06Method\x10\x04\x12\x11\n\rTypeParameter\x10\x05\x12\r\n\tParamet\
     er\x10\x06\x12\x08\n\x04Meta\x10\x07\x12\t\n\x05Local\x10\x08\x12\t\n\
-    \x05Macro\x10\t\x1a\x02\x10\x01\"\xab\x0c\n\x11SymbolInformation\x12\x16\
+    \x05Macro\x10\t\x1a\x02\x10\x01\"\xda\x0c\n\x11SymbolInformation\x12\x16\
     \n\x06symbol\x18\x01\x20\x01(\tR\x06symbol\x12$\n\rdocumentation\x18\x03\
     \x20\x03(\tR\rdocumentation\x128\n\rrelationships\x18\x04\x20\x03(\x0b2\
     \x12.scip.RelationshipR\rrelationships\x120\n\x04kind\x18\x05\x20\x01(\
     \x0e2\x1c.scip.SymbolInformation.KindR\x04kind\x12!\n\x0cdisplay_name\
     \x18\x06\x20\x01(\tR\x0bdisplayName\x12G\n\x17signature_documentation\
     \x18\x07\x20\x01(\x0b2\x0e.scip.DocumentR\x16signatureDocumentation\x12)\
-    \n\x10enclosing_symbol\x18\x08\x20\x01(\tR\x0fenclosingSymbol\"\xd4\t\n\
-    \x04Kind\x12\x13\n\x0fUnspecifiedKind\x10\0\x12\x12\n\x0eAbstractMethod\
-    \x10B\x12\x0c\n\x08Accessor\x10H\x12\t\n\x05Array\x10\x01\x12\r\n\tAsser\
-    tion\x10\x02\x12\x12\n\x0eAssociatedType\x10\x03\x12\r\n\tAttribute\x10\
-    \x04\x12\t\n\x05Axiom\x10\x05\x12\x0b\n\x07Boolean\x10\x06\x12\t\n\x05Cl\
-    ass\x10\x07\x12\x0c\n\x08Constant\x10\x08\x12\x0f\n\x0bConstructor\x10\t\
+    \n\x10enclosing_symbol\x18\x08\x20\x01(\tR\x0fenclosingSymbol\x12-\n\tsi\
+    gnature\x18\t\x20\x01(\x0b2\x0f.scip.SignatureR\tsignature\"\xd4\t\n\x04\
+    Kind\x12\x13\n\x0fUnspecifiedKind\x10\0\x12\x12\n\x0eAbstractMethod\x10B\
+    \x12\x0c\n\x08Accessor\x10H\x12\t\n\x05Array\x10\x01\x12\r\n\tAssertion\
+    \x10\x02\x12\x12\n\x0eAssociatedType\x10\x03\x12\r\n\tAttribute\x10\x04\
+    \x12\t\n\x05Axiom\x10\x05\x12\x0b\n\x07Boolean\x10\x06\x12\t\n\x05Class\
+    \x10\x07\x12\x0c\n\x08Constant\x10\x08\x12\x0f\n\x0bConstructor\x10\t\
     \x12\x0c\n\x08Contract\x10>\x12\x0e\n\nDataFamily\x10\n\x12\x0c\n\x08Del\
     egate\x10I\x12\x08\n\x04Enum\x10\x0b\x12\x0e\n\nEnumMember\x10\x0c\x12\t\
     \n\x05Error\x10?\x12\t\n\x05Event\x10\r\x12\x08\n\x04Fact\x10\x0e\x12\t\
@@ -4263,9 +11338,108 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     scip.SeverityR\x08severity\x12\x12\n\x04code\x18\x02\x20\x01(\tR\x04code\
     \x12\x18\n\x07message\x18\x03\x20\x01(\tR\x07message\x12\x16\n\x06source\
     \x18\x04\x20\x01(\tR\x06source\x12'\n\x04tags\x18\x05\x20\x03(\x0e2\x13.\
-    scip.DiagnosticTagR\x04tags*1\n\x0fProtocolVersion\x12\x1e\n\x1aUnspecif\
-    iedProtocolVersion\x10\0*@\n\x0cTextEncoding\x12\x1b\n\x17UnspecifiedTex\
-    tEncoding\x10\0\x12\x08\n\x04UTF8\x10\x01\x12\t\n\x05UTF16\x10\x02*\xa4\
+    scip.DiagnosticTagR\x04tags\"*\n\nAnnotation\x12\x1c\n\x03tpe\x18\x01\
+    \x20\x01(\x0b2\n.scip.TypeR\x03tpe\"Z\n\x05Scope\x12\x1a\n\x08symlinks\
+    \x18\x01\x20\x03(\tR\x08symlinks\x125\n\thardlinks\x18\x02\x20\x03(\x0b2\
+    \x17.scip.SymbolInformationR\thardlinks\"\xca\x07\n\x04Type\x12*\n\x08ty\
+    pe_ref\x18\x02\x20\x01(\x0b2\r.scip.TypeRefH\0R\x07typeRef\x123\n\x0bsin\
+    gle_type\x18\x14\x20\x01(\x0b2\x10.scip.SingleTypeH\0R\nsingleType\x12-\
+    \n\tthis_type\x18\x15\x20\x01(\x0b2\x0e.scip.ThisTypeH\0R\x08thisType\
+    \x120\n\nsuper_type\x18\x16\x20\x01(\x0b2\x0f.scip.SuperTypeH\0R\tsuperT\
+    ype\x129\n\rconstant_type\x18\x17\x20\x01(\x0b2\x12.scip.ConstantTypeH\0\
+    R\x0cconstantType\x12E\n\x11intersection_type\x18\x11\x20\x01(\x0b2\x16.\
+    scip.IntersectionTypeH\0R\x10intersectionType\x120\n\nunion_type\x18\x12\
+    \x20\x01(\x0b2\x0f.scip.UnionTypeH\0R\tunionType\x12-\n\twith_type\x18\
+    \x13\x20\x01(\x0b2\x0e.scip.WithTypeH\0R\x08withType\x12?\n\x0fstructura\
+    l_type\x18\x07\x20\x01(\x0b2\x14.scip.StructuralTypeH\0R\x0estructuralTy\
+    pe\x12<\n\x0eannotated_type\x18\x08\x20\x01(\x0b2\x13.scip.AnnotatedType\
+    H\0R\rannotatedType\x12B\n\x10existential_type\x18\t\x20\x01(\x0b2\x15.s\
+    cip.ExistentialTypeH\0R\x0fexistentialType\x12<\n\x0euniversal_type\x18\
+    \n\x20\x01(\x0b2\x13.scip.UniversalTypeH\0R\runiversalType\x124\n\x0cby_\
+    name_type\x18\r\x20\x01(\x0b2\x10.scip.ByNameTypeH\0R\nbyNameType\x129\n\
+    \rrepeated_type\x18\x0e\x20\x01(\x0b2\x12.scip.RepeatedTypeH\0R\x0crepea\
+    tedType\x120\n\nmatch_type\x18\x19\x20\x01(\x0b2\x0f.scip.MatchTypeH\0R\
+    \tmatchType\x123\n\x0blambda_type\x18\x1a\x20\x01(\x0b2\x10.scip.LambdaT\
+    ypeH\0R\nlambdaTypeB\x0e\n\x0csealed_valueJ\x04\x08\x01\x10\x02J\x04\x08\
+    \x03\x10\x04J\x04\x08\x04\x10\x05J\x04\x08\x05\x10\x06J\x04\x08\x06\x10\
+    \x07J\x04\x08\x0b\x10\x0cJ\x04\x08\x0c\x10\rJ\x04\x08\x0f\x10\x10J\x04\
+    \x08\x10\x10\x11\"f\n\nLambdaType\x12+\n\nparameters\x18\x01\x20\x01(\
+    \x0b2\x0b.scip.ScopeR\nparameters\x12+\n\x0breturn_type\x18\x02\x20\x01(\
+    \x0b2\n.scip.TypeR\nreturnType\"x\n\x07TypeRef\x12\"\n\x06prefix\x18\x01\
+    \x20\x01(\x0b2\n.scip.TypeR\x06prefix\x12\x16\n\x06symbol\x18\x02\x20\
+    \x01(\tR\x06symbol\x121\n\x0etype_arguments\x18\x03\x20\x03(\x0b2\n.scip\
+    .TypeR\rtypeArguments\"H\n\nSingleType\x12\"\n\x06prefix\x18\x01\x20\x01\
+    (\x0b2\n.scip.TypeR\x06prefix\x12\x16\n\x06symbol\x18\x02\x20\x01(\tR\
+    \x06symbol\"\"\n\x08ThisType\x12\x16\n\x06symbol\x18\x01\x20\x01(\tR\x06\
+    symbol\"G\n\tSuperType\x12\"\n\x06prefix\x18\x01\x20\x01(\x0b2\n.scip.Ty\
+    peR\x06prefix\x12\x16\n\x06symbol\x18\x02\x20\x01(\tR\x06symbol\":\n\x0c\
+    ConstantType\x12*\n\x08constant\x18\x01\x20\x01(\x0b2\x0e.scip.ConstantR\
+    \x08constant\"4\n\x10IntersectionType\x12\x20\n\x05types\x18\x01\x20\x03\
+    (\x0b2\n.scip.TypeR\x05types\"-\n\tUnionType\x12\x20\n\x05types\x18\x01\
+    \x20\x03(\x0b2\n.scip.TypeR\x05types\",\n\x08WithType\x12\x20\n\x05types\
+    \x18\x01\x20\x03(\x0b2\n.scip.TypeR\x05types\"q\n\x0eStructuralType\x12\
+    \x1c\n\x03tpe\x18\x04\x20\x01(\x0b2\n.scip.TypeR\x03tpe\x12/\n\x0cdeclar\
+    ations\x18\x05\x20\x01(\x0b2\x0b.scip.ScopeR\x0cdeclarationsJ\x04\x08\
+    \x01\x10\x02J\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04\"g\n\rAnnotatedTy\
+    pe\x122\n\x0bannotations\x18\x03\x20\x03(\x0b2\x10.scip.AnnotationR\x0ba\
+    nnotations\x12\x1c\n\x03tpe\x18\x01\x20\x01(\x0b2\n.scip.TypeR\x03tpeJ\
+    \x04\x08\x02\x10\x03\"f\n\x0fExistentialType\x12\x1c\n\x03tpe\x18\x01\
+    \x20\x01(\x0b2\n.scip.TypeR\x03tpe\x12/\n\x0cdeclarations\x18\x03\x20\
+    \x01(\x0b2\x0b.scip.ScopeR\x0cdeclarationsJ\x04\x08\x02\x10\x03\"i\n\rUn\
+    iversalType\x124\n\x0ftype_parameters\x18\x03\x20\x01(\x0b2\x0b.scip.Sco\
+    peR\x0etypeParameters\x12\x1c\n\x03tpe\x18\x02\x20\x01(\x0b2\n.scip.Type\
+    R\x03tpeJ\x04\x08\x01\x10\x02\"*\n\nByNameType\x12\x1c\n\x03tpe\x18\x01\
+    \x20\x01(\x0b2\n.scip.TypeR\x03tpe\",\n\x0cRepeatedType\x12\x1c\n\x03tpe\
+    \x18\x01\x20\x01(\x0b2\n.scip.TypeR\x03tpe\"\xaf\x01\n\tMatchType\x12(\n\
+    \tscrutinee\x18\x01\x20\x01(\x0b2\n.scip.TypeR\tscrutinee\x12.\n\x05case\
+    s\x18\x02\x20\x03(\x0b2\x18.scip.MatchType.CaseTypeR\x05cases\x1aH\n\x08\
+    CaseType\x12\x1c\n\x03key\x18\x01\x20\x01(\x0b2\n.scip.TypeR\x03key\x12\
+    \x1e\n\x04body\x18\x02\x20\x01(\x0b2\n.scip.TypeR\x04body\"\xbb\x05\n\
+    \x08Constant\x129\n\runit_constant\x18\x01\x20\x01(\x0b2\x12.scip.UnitCo\
+    nstantH\0R\x0cunitConstant\x12B\n\x10boolean_constant\x18\x02\x20\x01(\
+    \x0b2\x15.scip.BooleanConstantH\0R\x0fbooleanConstant\x129\n\rbyte_const\
+    ant\x18\x03\x20\x01(\x0b2\x12.scip.ByteConstantH\0R\x0cbyteConstant\x12<\
+    \n\x0eshort_constant\x18\x04\x20\x01(\x0b2\x13.scip.ShortConstantH\0R\rs\
+    hortConstant\x129\n\rchar_constant\x18\x05\x20\x01(\x0b2\x12.scip.CharCo\
+    nstantH\0R\x0ccharConstant\x126\n\x0cint_constant\x18\x06\x20\x01(\x0b2\
+    \x11.scip.IntConstantH\0R\x0bintConstant\x129\n\rlong_constant\x18\x07\
+    \x20\x01(\x0b2\x12.scip.LongConstantH\0R\x0clongConstant\x12<\n\x0efloat\
+    _constant\x18\x08\x20\x01(\x0b2\x13.scip.FloatConstantH\0R\rfloatConstan\
+    t\x12?\n\x0fdouble_constant\x18\t\x20\x01(\x0b2\x14.scip.DoubleConstantH\
+    \0R\x0edoubleConstant\x12?\n\x0fstring_constant\x18\n\x20\x01(\x0b2\x14.\
+    scip.StringConstantH\0R\x0estringConstant\x129\n\rnull_constant\x18\x0b\
+    \x20\x01(\x0b2\x12.scip.NullConstantH\0R\x0cnullConstantB\x0e\n\x0cseale\
+    d_value\"\x0e\n\x0cUnitConstant\"'\n\x0fBooleanConstant\x12\x14\n\x05val\
+    ue\x18\x01\x20\x01(\x08R\x05value\"$\n\x0cByteConstant\x12\x14\n\x05valu\
+    e\x18\x01\x20\x01(\x05R\x05value\"%\n\rShortConstant\x12\x14\n\x05value\
+    \x18\x01\x20\x01(\x05R\x05value\"$\n\x0cCharConstant\x12\x14\n\x05value\
+    \x18\x01\x20\x01(\x05R\x05value\"#\n\x0bIntConstant\x12\x14\n\x05value\
+    \x18\x01\x20\x01(\x05R\x05value\"$\n\x0cLongConstant\x12\x14\n\x05value\
+    \x18\x01\x20\x01(\x03R\x05value\"%\n\rFloatConstant\x12\x14\n\x05value\
+    \x18\x01\x20\x01(\x02R\x05value\"&\n\x0eDoubleConstant\x12\x14\n\x05valu\
+    e\x18\x01\x20\x01(\x01R\x05value\"&\n\x0eStringConstant\x12\x14\n\x05val\
+    ue\x18\x01\x20\x01(\tR\x05value\"\x0e\n\x0cNullConstant\"\x9f\x02\n\tSig\
+    nature\x12?\n\x0fclass_signature\x18\x01\x20\x01(\x0b2\x14.scip.ClassSig\
+    natureH\0R\x0eclassSignature\x12B\n\x10method_signature\x18\x02\x20\x01(\
+    \x0b2\x15.scip.MethodSignatureH\0R\x0fmethodSignature\x12<\n\x0etype_sig\
+    nature\x18\x03\x20\x01(\x0b2\x13.scip.TypeSignatureH\0R\rtypeSignature\
+    \x12?\n\x0fvalue_signature\x18\x04\x20\x01(\x0b2\x14.scip.ValueSignature\
+    H\0R\x0evalueSignatureB\x0e\n\x0csealed_value\"\xbd\x01\n\x0eClassSignat\
+    ure\x124\n\x0ftype_parameters\x18\x01\x20\x01(\x0b2\x0b.scip.ScopeR\x0et\
+    ypeParameters\x12$\n\x07parents\x18\x02\x20\x03(\x0b2\n.scip.TypeR\x07pa\
+    rents\x12\x1e\n\x04self\x18\x03\x20\x01(\x0b2\n.scip.TypeR\x04self\x12/\
+    \n\x0cdeclarations\x18\x04\x20\x01(\x0b2\x0b.scip.ScopeR\x0cdeclarations\
+    \"\xaa\x01\n\x0fMethodSignature\x124\n\x0ftype_parameters\x18\x01\x20\
+    \x01(\x0b2\x0b.scip.ScopeR\x0etypeParameters\x124\n\x0fparameter_lists\
+    \x18\x02\x20\x03(\x0b2\x0b.scip.ScopeR\x0eparameterLists\x12+\n\x0bretur\
+    n_type\x18\x03\x20\x01(\x0b2\n.scip.TypeR\nreturnType\"\x9f\x01\n\rTypeS\
+    ignature\x124\n\x0ftype_parameters\x18\x01\x20\x01(\x0b2\x0b.scip.ScopeR\
+    \x0etypeParameters\x12+\n\x0blower_bound\x18\x02\x20\x01(\x0b2\n.scip.Ty\
+    peR\nlowerBound\x12+\n\x0bupper_bound\x18\x03\x20\x01(\x0b2\n.scip.TypeR\
+    \nupperBound\".\n\x0eValueSignature\x12\x1c\n\x03tpe\x18\x01\x20\x01(\
+    \x0b2\n.scip.TypeR\x03tpe*1\n\x0fProtocolVersion\x12\x1e\n\x1aUnspecifie\
+    dProtocolVersion\x10\0*@\n\x0cTextEncoding\x12\x1b\n\x17UnspecifiedTextE\
+    ncoding\x10\0\x12\x08\n\x04UTF8\x10\x01\x12\t\n\x05UTF16\x10\x02*\xa4\
     \x01\n\x10PositionEncoding\x12\x1f\n\x1bUnspecifiedPositionEncoding\x10\
     \0\x12#\n\x1fUTF8CodeUnitOffsetFromLineStart\x10\x01\x12$\n\x20UTF16Code\
     UnitOffsetFromLineStart\x10\x02\x12$\n\x20UTF32CodeUnitOffsetFromLineSta\
@@ -4338,7 +11512,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     sualBasic\x10?\x12\x07\n\x03Vue\x10\x19\x12\x0b\n\x07Wolfram\x105\x12\
     \x07\n\x03XML\x10\x1f\x12\x07\n\x03XSL\x10\x20\x12\x08\n\x04YAML\x10J\
     \x12\x07\n\x03Zig\x10&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\
-    \xe4\xb4\x02\n\x07\x12\x05\n\0\xe9\x06\x01\n\x82\x04\n\x01\x0c\x12\x03\n\
+    \x86\xeb\x02\n\x07\x12\x05\n\0\xb8\x08\x01\n\x82\x04\n\x01\x0c\x12\x03\n\
     \0\x122\xf7\x03\x20An\x20index\x20contains\x20one\x20or\x20more\x20piece\
     s\x20of\x20information\x20about\x20a\x20given\x20piece\x20of\n\x20source\
     \x20code\x20or\x20software\x20artifact.\x20Complementary\x20information\
@@ -4642,7 +11816,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \xdf\x01\x19\x1a\n\x0c\n\x04\x04\x06\x02\x02\x12\x04\xe0\x01\x02\x14\n\r\
     \n\x05\x04\x06\x02\x02\x06\x12\x04\xe0\x01\x02\x08\n\r\n\x05\x04\x06\x02\
     \x02\x01\x12\x04\xe0\x01\t\x0f\n\r\n\x05\x04\x06\x02\x02\x03\x12\x04\xe0\
-    \x01\x12\x13\n\x83\x01\n\x02\x04\x07\x12\x06\xe5\x01\0\xb1\x03\x01\x1au\
+    \x01\x12\x13\n\x83\x01\n\x02\x04\x07\x12\x06\xe5\x01\0\xb4\x03\x01\x1au\
     \x20SymbolInformation\x20defines\x20metadata\x20about\x20a\x20symbol,\
     \x20such\x20as\x20the\x20symbol's\n\x20docstring\x20or\x20what\x20packag\
     e\x20it's\x20defined\x20it.\n\n\x0b\n\x03\x04\x07\x01\x12\x04\xe5\x01\
@@ -4987,653 +12161,658 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     cument,\x20not\x20by\x20the\x20capability\x20to\x20find\x20the\x20enclos\
     ing\n\x20symbol.\n\n\r\n\x05\x04\x07\x02\x06\x05\x12\x04\xb0\x03\x02\x08\
     \n\r\n\x05\x04\x07\x02\x06\x01\x12\x04\xb0\x03\t\x19\n\r\n\x05\x04\x07\
-    \x02\x06\x03\x12\x04\xb0\x03\x1c\x1d\n\x0c\n\x02\x04\x08\x12\x06\xb4\x03\
-    \0\xec\x03\x01\n\x0b\n\x03\x04\x08\x01\x12\x04\xb4\x03\x08\x14\n\x0c\n\
-    \x04\x04\x08\x02\0\x12\x04\xb5\x03\x02\x14\n\r\n\x05\x04\x08\x02\0\x05\
-    \x12\x04\xb5\x03\x02\x08\n\r\n\x05\x04\x08\x02\0\x01\x12\x04\xb5\x03\t\
-    \x0f\n\r\n\x05\x04\x08\x02\0\x03\x12\x04\xb5\x03\x12\x13\n\xde\x08\n\x04\
-    \x04\x08\x02\x01\x12\x04\xce\x03\x02\x18\x1a\xcf\x08\x20When\x20resolvin\
-    g\x20\"Find\x20references\",\x20this\x20field\x20documents\x20what\x20ot\
-    her\x20symbols\n\x20should\x20be\x20included\x20together\x20with\x20this\
-    \x20symbol.\x20For\x20example,\x20consider\x20the\n\x20following\x20Type\
-    Script\x20code\x20that\x20defines\x20two\x20symbols\x20`Animal#sound()`\
-    \x20and\n\x20`Dog#sound()`:\n\x20```ts\n\x20interface\x20Animal\x20{\n\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^^\x20definition\x20Anim\
-    al#\n\x20\x20\x20sound():\x20string\n\x20\x20\x20^^^^^\x20definition\x20\
-    Animal#sound()\n\x20}\n\x20class\x20Dog\x20implements\x20Animal\x20{\n\
-    \x20\x20\x20\x20\x20\x20\x20^^^\x20definition\x20Dog#,\x20relationships\
-    \x20=\x20[{symbol:\x20\"Animal#\",\x20is_implementation:\x20true}]\n\x20\
-    \x20\x20public\x20sound():\x20string\x20{\x20return\x20\"woof\"\x20}\n\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^\x20definition\x20Dog#sound\
-    (),\x20references_symbols\x20=\x20Animal#sound(),\x20relationships\x20=\
-    \x20[{symbol:\x20\"Animal#sound()\",\x20is_implementation:true,\x20is_re\
-    ference:\x20true}]\n\x20}\n\x20const\x20animal:\x20Animal\x20=\x20new\
-    \x20Dog()\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^\
-    ^^^^^\x20reference\x20Animal#\n\x20console.log(animal.sound())\n\x20\x20\
+    \x02\x06\x03\x12\x04\xb0\x03\x1c\x1d\nJ\n\x04\x04\x07\x02\x07\x12\x04\
+    \xb3\x03\x02\x1a\x1a<\x20(optional)\x20Experimental\x20support\x20for\
+    \x20structured\x20signatures.\n\n\r\n\x05\x04\x07\x02\x07\x06\x12\x04\
+    \xb3\x03\x02\x0b\n\r\n\x05\x04\x07\x02\x07\x01\x12\x04\xb3\x03\x0c\x15\n\
+    \r\n\x05\x04\x07\x02\x07\x03\x12\x04\xb3\x03\x18\x19\n\x0c\n\x02\x04\x08\
+    \x12\x06\xb7\x03\0\xef\x03\x01\n\x0b\n\x03\x04\x08\x01\x12\x04\xb7\x03\
+    \x08\x14\n\x0c\n\x04\x04\x08\x02\0\x12\x04\xb8\x03\x02\x14\n\r\n\x05\x04\
+    \x08\x02\0\x05\x12\x04\xb8\x03\x02\x08\n\r\n\x05\x04\x08\x02\0\x01\x12\
+    \x04\xb8\x03\t\x0f\n\r\n\x05\x04\x08\x02\0\x03\x12\x04\xb8\x03\x12\x13\n\
+    \xde\x08\n\x04\x04\x08\x02\x01\x12\x04\xd1\x03\x02\x18\x1a\xcf\x08\x20Wh\
+    en\x20resolving\x20\"Find\x20references\",\x20this\x20field\x20documents\
+    \x20what\x20other\x20symbols\n\x20should\x20be\x20included\x20together\
+    \x20with\x20this\x20symbol.\x20For\x20example,\x20consider\x20the\n\x20f\
+    ollowing\x20TypeScript\x20code\x20that\x20defines\x20two\x20symbols\x20`\
+    Animal#sound()`\x20and\n\x20`Dog#sound()`:\n\x20```ts\n\x20interface\x20\
+    Animal\x20{\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^^\x20defin\
+    ition\x20Animal#\n\x20\x20\x20sound():\x20string\n\x20\x20\x20^^^^^\x20d\
+    efinition\x20Animal#sound()\n\x20}\n\x20class\x20Dog\x20implements\x20An\
+    imal\x20{\n\x20\x20\x20\x20\x20\x20\x20^^^\x20definition\x20Dog#,\x20rel\
+    ationships\x20=\x20[{symbol:\x20\"Animal#\",\x20is_implementation:\x20tr\
+    ue}]\n\x20\x20\x20public\x20sound():\x20string\x20{\x20return\x20\"woof\
+    \"\x20}\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^\x20definition\x20\
+    Dog#sound(),\x20references_symbols\x20=\x20Animal#sound(),\x20relationsh\
+    ips\x20=\x20[{symbol:\x20\"Animal#sound()\",\x20is_implementation:true,\
+    \x20is_reference:\x20true}]\n\x20}\n\x20const\x20animal:\x20Animal\x20=\
+    \x20new\x20Dog()\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+    \x20\x20^^^^^^\x20reference\x20Animal#\n\x20console.log(animal.sound())\
+    \n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+    \x20\x20\x20^^^^^\x20reference\x20Animal#sound()\n\x20```\n\x20Doing\x20\
+    \"Find\x20references\"\x20on\x20the\x20symbol\x20`Animal#sound()`\x20sho\
+    uld\x20return\n\x20references\x20to\x20the\x20`Dog#sound()`\x20method\
+    \x20as\x20well.\x20Vice-versa,\x20doing\x20\"Find\n\x20references\"\x20o\
+    n\x20the\x20`Dog#sound()`\x20method\x20should\x20include\x20references\
+    \x20to\x20the\n\x20`Animal#sound()`\x20method\x20as\x20well.\n\n\r\n\x05\
+    \x04\x08\x02\x01\x05\x12\x04\xd1\x03\x02\x06\n\r\n\x05\x04\x08\x02\x01\
+    \x01\x12\x04\xd1\x03\x07\x13\n\r\n\x05\x04\x08\x02\x01\x03\x12\x04\xd1\
+    \x03\x16\x17\n\xee\x03\n\x04\x04\x08\x02\x02\x12\x04\xda\x03\x02\x1d\x1a\
+    \xdf\x03\x20Similar\x20to\x20`is_reference`\x20but\x20for\x20\"Find\x20i\
+    mplementations\".\n\x20It's\x20common\x20for\x20`is_implementation`\x20a\
+    nd\x20`is_reference`\x20to\x20both\x20be\x20true\x20but\n\x20it's\x20not\
+    \x20always\x20the\x20case.\n\x20In\x20the\x20TypeScript\x20example\x20ab\
+    ove,\x20observe\x20that\x20`Dog#`\x20has\x20an\n\x20`is_implementation`\
+    \x20relationship\x20with\x20`\"Animal#\"`\x20but\x20not\x20`is_reference\
+    `.\n\x20This\x20is\x20because\x20\"Find\x20references\"\x20on\x20the\x20\
+    \"Animal#\"\x20symbol\x20should\x20not\x20return\n\x20\"Dog#\".\x20We\
+    \x20only\x20want\x20\"Dog#\"\x20to\x20return\x20as\x20a\x20result\x20for\
+    \x20\"Find\n\x20implementations\"\x20on\x20the\x20\"Animal#\"\x20symbol.\
+    \n\n\r\n\x05\x04\x08\x02\x02\x05\x12\x04\xda\x03\x02\x06\n\r\n\x05\x04\
+    \x08\x02\x02\x01\x12\x04\xda\x03\x07\x18\n\r\n\x05\x04\x08\x02\x02\x03\
+    \x12\x04\xda\x03\x1b\x1c\nP\n\x04\x04\x08\x02\x03\x12\x04\xdc\x03\x02\
+    \x1e\x1aB\x20Similar\x20to\x20`references_symbols`\x20but\x20for\x20\"Go\
+    \x20to\x20type\x20definition\".\n\n\r\n\x05\x04\x08\x02\x03\x05\x12\x04\
+    \xdc\x03\x02\x06\n\r\n\x05\x04\x08\x02\x03\x01\x12\x04\xdc\x03\x07\x19\n\
+    \r\n\x05\x04\x08\x02\x03\x03\x12\x04\xdc\x03\x1c\x1d\n\xa7\x07\n\x04\x04\
+    \x08\x02\x04\x12\x04\xed\x03\x02\x19\x1a\xd5\x06\x20Allows\x20overriding\
+    \x20the\x20behavior\x20of\x20\"Go\x20to\x20definition\"\x20and\x20\"Find\
+    \x20references\"\n\x20for\x20symbols\x20which\x20do\x20not\x20have\x20a\
+    \x20definition\x20of\x20their\x20own\x20or\x20could\n\x20potentially\x20\
+    have\x20multiple\x20definitions.\n\n\x20For\x20example,\x20in\x20a\x20la\
+    nguage\x20with\x20single\x20inheritance\x20and\x20no\x20field\x20overrid\
+    ing,\n\x20inherited\x20fields\x20can\x20reuse\x20the\x20same\x20symbol\
+    \x20as\x20the\x20ancestor\x20which\x20declares\n\x20the\x20field.\x20In\
+    \x20such\x20a\x20situation,\x20is_definition\x20is\x20not\x20needed.\n\n\
+    \x20On\x20the\x20other\x20hand,\x20in\x20languages\x20with\x20single\x20\
+    inheritance\x20and\x20some\x20form\n\x20of\x20mixins,\x20you\x20can\x20u\
+    se\x20is_definition\x20to\x20relate\x20the\x20symbol\x20to\x20the\n\x20m\
+    atching\x20symbol\x20in\x20ancestor\x20classes,\x20and\x20is_reference\
+    \x20to\x20relate\x20the\n\x20symbol\x20to\x20the\x20matching\x20symbol\
+    \x20in\x20mixins.\n\n\x20NOTE:\x20At\x20the\x20moment,\x20due\x20to\x20l\
+    imitations\x20of\x20the\x20SCIP\x20to\x20LSIF\x20conversion,\n\x20only\
+    \x20global\x20symbols\x20in\x20an\x20index\x20are\x20allowed\x20to\x20us\
+    e\x20is_definition.\n\x20The\x20relationship\x20may\x20not\x20get\x20rec\
+    orded\x20if\x20either\x20symbol\x20is\x20local.\n\"A\x20Update\x20regist\
+    erInverseRelationships\x20on\x20adding\x20a\x20new\x20field\x20here.\n\n\
+    \r\n\x05\x04\x08\x02\x04\x05\x12\x04\xed\x03\x02\x06\n\r\n\x05\x04\x08\
+    \x02\x04\x01\x12\x04\xed\x03\x07\x14\n\r\n\x05\x04\x08\x02\x04\x03\x12\
+    \x04\xed\x03\x17\x18\n\x88\x03\n\x02\x05\x03\x12\x06\xf6\x03\0\x8c\x04\
+    \x01\x1a\xf9\x02\x20SymbolRole\x20declares\x20what\x20\"role\"\x20a\x20s\
+    ymbol\x20has\x20in\x20an\x20occurrence.\x20A\x20role\x20is\n\x20encoded\
+    \x20as\x20a\x20bitset\x20where\x20each\x20bit\x20represents\x20a\x20diff\
+    erent\x20role.\x20For\x20example,\n\x20to\x20determine\x20if\x20the\x20`\
+    Import`\x20role\x20is\x20set,\x20test\x20whether\x20the\x20second\x20bit\
+    \x20of\x20the\n\x20enum\x20value\x20is\x20defined.\x20In\x20pseudocode,\
+    \x20this\x20can\x20be\x20implemented\x20with\x20the\n\x20logic:\x20`cons\
+    t\x20isImportRole\x20=\x20(role.value\x20&\x20SymbolRole.Import.value)\
+    \x20>\x200`.\n\n\x0b\n\x03\x05\x03\x01\x12\x04\xf6\x03\x05\x0f\nv\n\x04\
+    \x05\x03\x02\0\x12\x04\xf9\x03\x02\x1c\x1ah\x20This\x20case\x20is\x20not\
+    \x20meant\x20to\x20be\x20used;\x20it\x20only\x20exists\x20to\x20avoid\
+    \x20an\x20error\n\x20from\x20the\x20Protobuf\x20code\x20generator.\n\n\r\
+    \n\x05\x05\x03\x02\0\x01\x12\x04\xf9\x03\x02\x17\n\r\n\x05\x05\x03\x02\0\
+    \x02\x12\x04\xf9\x03\x1a\x1b\nT\n\x04\x05\x03\x02\x01\x12\x04\xfb\x03\
+    \x02\x13\x1aF\x20Is\x20the\x20symbol\x20defined\x20here?\x20If\x20not,\
+    \x20then\x20this\x20is\x20a\x20symbol\x20reference.\n\n\r\n\x05\x05\x03\
+    \x02\x01\x01\x12\x04\xfb\x03\x02\x0c\n\r\n\x05\x05\x03\x02\x01\x02\x12\
+    \x04\xfb\x03\x0f\x12\n,\n\x04\x05\x03\x02\x02\x12\x04\xfd\x03\x02\x0f\
+    \x1a\x1e\x20Is\x20the\x20symbol\x20imported\x20here?\n\n\r\n\x05\x05\x03\
+    \x02\x02\x01\x12\x04\xfd\x03\x02\x08\n\r\n\x05\x05\x03\x02\x02\x02\x12\
+    \x04\xfd\x03\x0b\x0e\n+\n\x04\x05\x03\x02\x03\x12\x04\xff\x03\x02\x14\
+    \x1a\x1d\x20Is\x20the\x20symbol\x20written\x20here?\n\n\r\n\x05\x05\x03\
+    \x02\x03\x01\x12\x04\xff\x03\x02\r\n\r\n\x05\x05\x03\x02\x03\x02\x12\x04\
+    \xff\x03\x10\x13\n(\n\x04\x05\x03\x02\x04\x12\x04\x81\x04\x02\x13\x1a\
+    \x1a\x20Is\x20the\x20symbol\x20read\x20here?\n\n\r\n\x05\x05\x03\x02\x04\
+    \x01\x12\x04\x81\x04\x02\x0c\n\r\n\x05\x05\x03\x02\x04\x02\x12\x04\x81\
+    \x04\x0f\x12\n0\n\x04\x05\x03\x02\x05\x12\x04\x83\x04\x02\x13\x1a\"\x20I\
+    s\x20the\x20symbol\x20in\x20generated\x20code?\n\n\r\n\x05\x05\x03\x02\
+    \x05\x01\x12\x04\x83\x04\x02\x0b\n\r\n\x05\x05\x03\x02\x05\x02\x12\x04\
+    \x83\x04\x0e\x12\n+\n\x04\x05\x03\x02\x06\x12\x04\x85\x04\x02\x0e\x1a\
+    \x1d\x20Is\x20the\x20symbol\x20in\x20test\x20code?\n\n\r\n\x05\x05\x03\
+    \x02\x06\x01\x12\x04\x85\x04\x02\x06\n\r\n\x05\x05\x03\x02\x06\x02\x12\
+    \x04\x85\x04\t\r\n\xed\x01\n\x04\x05\x03\x02\x07\x12\x04\x8b\x04\x02\x1b\
+    \x1a\xde\x01\x20Is\x20this\x20a\x20signature\x20for\x20a\x20symbol\x20th\
+    at\x20is\x20defined\x20elsewhere?\n\n\x20Applies\x20to\x20forward\x20dec\
+    larations\x20for\x20languages\x20like\x20C,\x20C++\n\x20and\x20Objective\
+    -C,\x20as\x20well\x20as\x20`val`\x20declarations\x20in\x20interface\n\
+    \x20files\x20in\x20languages\x20like\x20SML\x20and\x20OCaml.\n\n\r\n\x05\
+    \x05\x03\x02\x07\x01\x12\x04\x8b\x04\x02\x13\n\r\n\x05\x05\x03\x02\x07\
+    \x02\x12\x04\x8b\x04\x16\x1a\n\x0c\n\x02\x05\x04\x12\x06\x8e\x04\0\xeb\
+    \x04\x01\n\x0b\n\x03\x05\x04\x01\x12\x04\x8e\x04\x05\x0f\n\x0b\n\x03\x05\
+    \x04\x03\x12\x04\x8f\x04\x02\x1c\n\x0c\n\x04\x05\x04\x03\x02\x12\x04\x8f\
+    \x04\x02\x1c\n\x0c\n\x04\x05\x04\x02\0\x12\x04\x91\x04\x02\x1c\n\r\n\x05\
+    \x05\x04\x02\0\x01\x12\x04\x91\x04\x02\x17\n\r\n\x05\x05\x04\x02\0\x02\
+    \x12\x04\x91\x04\x1a\x1b\n;\n\x04\x05\x04\x02\x01\x12\x04\x94\x04\x02\
+    \x0e\x1a-\x20Comment,\x20including\x20comment\x20markers\x20and\x20text\
+    \n\n\r\n\x05\x05\x04\x02\x01\x01\x12\x04\x94\x04\x02\t\n\r\n\x05\x05\x04\
+    \x02\x01\x02\x12\x04\x94\x04\x0c\r\n\x1b\n\x04\x05\x04\x02\x02\x12\x04\
+    \x97\x04\x02\x1b\x1a\r\x20`;`\x20`.`\x20`,`\n\n\r\n\x05\x05\x04\x02\x02\
+    \x01\x12\x04\x97\x04\x02\x16\n\r\n\x05\x05\x04\x02\x02\x02\x12\x04\x97\
+    \x04\x19\x1a\n2\n\x04\x05\x04\x02\x03\x12\x04\x99\x04\x02\x19\x1a$\x20()\
+    ,\x20{},\x20[]\x20when\x20used\x20syntactically\n\n\r\n\x05\x05\x04\x02\
+    \x03\x01\x12\x04\x99\x04\x02\x14\n\r\n\x05\x05\x04\x02\x03\x02\x12\x04\
+    \x99\x04\x17\x18\n5\n\x04\x05\x04\x02\x04\x12\x04\x9c\x04\x02\x0e\x1a'\
+    \x20`if`,\x20`else`,\x20`return`,\x20`class`,\x20etc.\n\n\r\n\x05\x05\
+    \x04\x02\x04\x01\x12\x04\x9c\x04\x02\t\n\r\n\x05\x05\x04\x02\x04\x02\x12\
+    \x04\x9c\x04\x0c\r\n\x0c\n\x04\x05\x04\x02\x05\x12\x04\x9d\x04\x02*\n\r\
+    \n\x05\x05\x04\x02\x05\x01\x12\x04\x9d\x04\x02\x13\n\r\n\x05\x05\x04\x02\
+    \x05\x02\x12\x04\x9d\x04\x16\x17\n\r\n\x05\x05\x04\x02\x05\x03\x12\x04\
+    \x9d\x04\x18)\n\x0e\n\x06\x05\x04\x02\x05\x03\x01\x12\x04\x9d\x04\x19(\n\
+    \x1e\n\x04\x05\x04\x02\x06\x12\x04\xa0\x04\x02\x19\x1a\x10\x20`+`,\x20`*\
+    `,\x20etc.\n\n\r\n\x05\x05\x04\x02\x06\x01\x12\x04\xa0\x04\x02\x14\n\r\n\
+    \x05\x05\x04\x02\x06\x02\x12\x04\xa0\x04\x17\x18\nX\n\x04\x05\x04\x02\
+    \x07\x12\x04\xa3\x04\x02\x11\x1aJ\x20non-specific\x20catch-all\x20for\
+    \x20any\x20identifier\x20not\x20better\x20described\x20elsewhere\n\n\r\n\
+    \x05\x05\x04\x02\x07\x01\x12\x04\xa3\x04\x02\x0c\n\r\n\x05\x05\x04\x02\
+    \x07\x02\x12\x04\xa3\x04\x0f\x10\nN\n\x04\x05\x04\x02\x08\x12\x04\xa5\
+    \x04\x02\x18\x1a@\x20Identifiers\x20builtin\x20to\x20the\x20language:\
+    \x20`min`,\x20`print`\x20in\x20Python.\n\n\r\n\x05\x05\x04\x02\x08\x01\
+    \x12\x04\xa5\x04\x02\x13\n\r\n\x05\x05\x04\x02\x08\x02\x12\x04\xa5\x04\
+    \x16\x17\n[\n\x04\x05\x04\x02\t\x12\x04\xa7\x04\x02\x15\x1aM\x20Identifi\
+    ers\x20representing\x20`null`-like\x20values:\x20`None`\x20in\x20Python,\
+    \x20`nil`\x20in\x20Go.\n\n\r\n\x05\x05\x04\x02\t\x01\x12\x04\xa7\x04\x02\
+    \x10\n\r\n\x05\x05\x04\x02\t\x02\x12\x04\xa7\x04\x13\x14\n.\n\x04\x05\
+    \x04\x02\n\x12\x04\xa9\x04\x02\x19\x1a\x20\x20`xyz`\x20in\x20`const\x20x\
+    yz\x20=\x20\"hello\"`\n\n\r\n\x05\x05\x04\x02\n\x01\x12\x04\xa9\x04\x02\
+    \x14\n\r\n\x05\x05\x04\x02\n\x02\x12\x04\xa9\x04\x17\x18\n'\n\x04\x05\
+    \x04\x02\x0b\x12\x04\xab\x04\x02\x1f\x1a\x19\x20`var\x20X\x20=\x20\"hell\
+    o\"`\x20in\x20Go\n\n\r\n\x05\x05\x04\x02\x0b\x01\x12\x04\xab\x04\x02\x19\
+    \n\r\n\x05\x05\x04\x02\x0b\x02\x12\x04\xab\x04\x1c\x1e\n3\n\x04\x05\x04\
+    \x02\x0c\x12\x04\xad\x04\x02\x1b\x1a%\x20Parameter\x20definition\x20and\
+    \x20references\n\n\r\n\x05\x05\x04\x02\x0c\x01\x12\x04\xad\x04\x02\x15\n\
+    \r\n\x05\x05\x04\x02\x0c\x02\x12\x04\xad\x04\x18\x1a\nX\n\x04\x05\x04\
+    \x02\r\x12\x04\xaf\x04\x02\x17\x1aJ\x20Identifiers\x20for\x20variable\
+    \x20definitions\x20and\x20references\x20within\x20a\x20local\x20scope\n\
+    \n\r\n\x05\x05\x04\x02\r\x01\x12\x04\xaf\x04\x02\x11\n\r\n\x05\x05\x04\
+    \x02\r\x02\x12\x04\xaf\x04\x14\x16\nK\n\x04\x05\x04\x02\x0e\x12\x04\xb1\
+    \x04\x02\x1a\x1a=\x20Identifiers\x20that\x20shadow\x20other\x20identifie\
+    rs\x20in\x20an\x20outer\x20scope\n\n\r\n\x05\x05\x04\x02\x0e\x01\x12\x04\
+    \xb1\x04\x02\x14\n\r\n\x05\x05\x04\x02\x0e\x02\x12\x04\xb1\x04\x17\x19\n\
+    \xcd\x01\n\x04\x05\x04\x02\x0f\x12\x04\xb6\x04\x02\x1b\x1a\xbe\x01\x20Id\
+    entifier\x20representing\x20a\x20unit\x20of\x20code\x20abstraction\x20an\
+    d/or\x20namespacing.\n\n\x20NOTE:\x20This\x20corresponds\x20to\x20a\x20p\
+    ackage\x20in\x20Go\x20and\x20JVM\x20languages,\n\x20and\x20a\x20module\
+    \x20in\x20languages\x20like\x20Python\x20and\x20JavaScript.\n\n\r\n\x05\
+    \x05\x04\x02\x0f\x01\x12\x04\xb6\x04\x02\x15\n\r\n\x05\x05\x04\x02\x0f\
+    \x02\x12\x04\xb6\x04\x18\x1a\n\x0c\n\x04\x05\x04\x02\x10\x12\x04\xb7\x04\
+    \x02*\n\r\n\x05\x05\x04\x02\x10\x01\x12\x04\xb7\x04\x02\x12\n\r\n\x05\
+    \x05\x04\x02\x10\x02\x12\x04\xb7\x04\x15\x17\n\r\n\x05\x05\x04\x02\x10\
+    \x03\x12\x04\xb7\x04\x18)\n\x0e\n\x06\x05\x04\x02\x10\x03\x01\x12\x04\
+    \xb7\x04\x19(\n4\n\x04\x05\x04\x02\x11\x12\x04\xba\x04\x02\x1a\x1a&\x20F\
+    unction\x20references,\x20including\x20calls\n\n\r\n\x05\x05\x04\x02\x11\
+    \x01\x12\x04\xba\x04\x02\x14\n\r\n\x05\x05\x04\x02\x11\x02\x12\x04\xba\
+    \x04\x17\x19\n(\n\x04\x05\x04\x02\x12\x12\x04\xbc\x04\x02$\x1a\x1a\x20Fu\
+    nction\x20definition\x20only\n\n\r\n\x05\x05\x04\x02\x12\x01\x12\x04\xbc\
+    \x04\x02\x1e\n\r\n\x05\x05\x04\x02\x12\x02\x12\x04\xbc\x04!#\n7\n\x04\
+    \x05\x04\x02\x13\x12\x04\xbf\x04\x02\x17\x1a)\x20Macro\x20references,\
+    \x20including\x20invocations\n\n\r\n\x05\x05\x04\x02\x13\x01\x12\x04\xbf\
+    \x04\x02\x11\n\r\n\x05\x05\x04\x02\x13\x02\x12\x04\xbf\x04\x14\x16\n%\n\
+    \x04\x05\x04\x02\x14\x12\x04\xc1\x04\x02!\x1a\x17\x20Macro\x20definition\
+    \x20only\n\n\r\n\x05\x05\x04\x02\x14\x01\x12\x04\xc1\x04\x02\x1b\n\r\n\
+    \x05\x05\x04\x02\x14\x02\x12\x04\xc1\x04\x1e\x20\n!\n\x04\x05\x04\x02\
+    \x15\x12\x04\xc4\x04\x02\x16\x1a\x13\x20non-builtin\x20types\n\n\r\n\x05\
+    \x05\x04\x02\x15\x01\x12\x04\xc4\x04\x02\x10\n\r\n\x05\x05\x04\x02\x15\
+    \x02\x12\x04\xc4\x04\x13\x15\nK\n\x04\x05\x04\x02\x16\x12\x04\xc6\x04\
+    \x02\x1d\x1a=\x20builtin\x20types\x20only,\x20such\x20as\x20`str`\x20for\
+    \x20Python\x20or\x20`int`\x20in\x20Go\n\n\r\n\x05\x05\x04\x02\x16\x01\
+    \x12\x04\xc6\x04\x02\x17\n\r\n\x05\x05\x04\x02\x16\x02\x12\x04\xc6\x04\
+    \x1a\x1c\n7\n\x04\x05\x04\x02\x17\x12\x04\xc9\x04\x02\x1b\x1a)\x20Python\
+    \x20decorators,\x20c-like\x20__attribute__\n\n\r\n\x05\x05\x04\x02\x17\
+    \x01\x12\x04\xc9\x04\x02\x15\n\r\n\x05\x05\x04\x02\x17\x02\x12\x04\xc9\
+    \x04\x18\x1a\n\x14\n\x04\x05\x04\x02\x18\x12\x04\xcc\x04\x02\x13\x1a\x06\
+    \x20`\\b`\n\n\r\n\x05\x05\x04\x02\x18\x01\x12\x04\xcc\x04\x02\r\n\r\n\
+    \x05\x05\x04\x02\x18\x02\x12\x04\xcc\x04\x10\x12\n\x18\n\x04\x05\x04\x02\
+    \x19\x12\x04\xce\x04\x02\x15\x1a\n\x20`*`,\x20`+`\n\n\r\n\x05\x05\x04\
+    \x02\x19\x01\x12\x04\xce\x04\x02\x0f\n\r\n\x05\x05\x04\x02\x19\x02\x12\
+    \x04\xce\x04\x12\x14\n\x13\n\x04\x05\x04\x02\x1a\x12\x04\xd0\x04\x02\x15\
+    \x1a\x05\x20`.`\n\n\r\n\x05\x05\x04\x02\x1a\x01\x12\x04\xd0\x04\x02\x0f\
+    \n\r\n\x05\x05\x04\x02\x1a\x02\x12\x04\xd0\x04\x12\x14\n\"\n\x04\x05\x04\
+    \x02\x1b\x12\x04\xd2\x04\x02\x16\x1a\x14\x20`(`,\x20`)`,\x20`[`,\x20`]`\
+    \n\n\r\n\x05\x05\x04\x02\x1b\x01\x12\x04\xd2\x04\x02\x10\n\r\n\x05\x05\
+    \x04\x02\x1b\x02\x12\x04\xd2\x04\x13\x15\n\x18\n\x04\x05\x04\x02\x1c\x12\
+    \x04\xd4\x04\x02\x11\x1a\n\x20`|`,\x20`-`\n\n\r\n\x05\x05\x04\x02\x1c\
+    \x01\x12\x04\xd4\x04\x02\x0b\n\r\n\x05\x05\x04\x02\x1c\x02\x12\x04\xd4\
+    \x04\x0e\x10\n0\n\x04\x05\x04\x02\x1d\x12\x04\xd7\x04\x02\x15\x1a\"\x20L\
+    iteral\x20strings:\x20\"Hello,\x20world!\"\n\n\r\n\x05\x05\x04\x02\x1d\
+    \x01\x12\x04\xd7\x04\x02\x0f\n\r\n\x05\x05\x04\x02\x1d\x02\x12\x04\xd7\
+    \x04\x12\x14\n-\n\x04\x05\x04\x02\x1e\x12\x04\xd9\x04\x02\x1b\x1a\x1f\
+    \x20non-regex\x20escapes:\x20\"\\t\",\x20\"\\n\"\n\n\r\n\x05\x05\x04\x02\
+    \x1e\x01\x12\x04\xd9\x04\x02\x15\n\r\n\x05\x05\x04\x02\x1e\x02\x12\x04\
+    \xd9\x04\x18\x1a\n_\n\x04\x05\x04\x02\x1f\x12\x04\xdb\x04\x02\x1c\x1aQ\
+    \x20datetimes\x20within\x20strings,\x20special\x20words\x20within\x20a\
+    \x20string,\x20`{}`\x20in\x20format\x20strings\n\n\r\n\x05\x05\x04\x02\
+    \x1f\x01\x12\x04\xdb\x04\x02\x16\n\r\n\x05\x05\x04\x02\x1f\x02\x12\x04\
+    \xdb\x04\x19\x1b\nG\n\x04\x05\x04\x02\x20\x12\x04\xdd\x04\x02\x18\x1a9\
+    \x20\"key\"\x20in\x20{\x20\"key\":\x20\"value\"\x20},\x20useful\x20for\
+    \x20example\x20in\x20JSON\n\n\r\n\x05\x05\x04\x02\x20\x01\x12\x04\xdd\
+    \x04\x02\x12\n\r\n\x05\x05\x04\x02\x20\x02\x12\x04\xdd\x04\x15\x17\nV\n\
+    \x04\x05\x04\x02!\x12\x04\xdf\x04\x02\x18\x1aH\x20'c'\x20or\x20similar,\
+    \x20in\x20languages\x20that\x20differentiate\x20strings\x20and\x20charac\
+    ters\n\n\r\n\x05\x05\x04\x02!\x01\x12\x04\xdf\x04\x02\x12\n\r\n\x05\x05\
+    \x04\x02!\x02\x12\x04\xdf\x04\x15\x17\n9\n\x04\x05\x04\x02\"\x12\x04\xe1\
+    \x04\x02\x16\x1a+\x20Literal\x20numbers,\x20both\x20floats\x20and\x20int\
+    egers\n\n\r\n\x05\x05\x04\x02\"\x01\x12\x04\xe1\x04\x02\x10\n\r\n\x05\
+    \x05\x04\x02\"\x02\x12\x04\xe1\x04\x13\x15\n\x1f\n\x04\x05\x04\x02#\x12\
+    \x04\xe3\x04\x02\x16\x1a\x11\x20`true`,\x20`false`\n\n\r\n\x05\x05\x04\
+    \x02#\x01\x12\x04\xe3\x04\x02\x10\n\r\n\x05\x05\x04\x02#\x02\x12\x04\xe3\
+    \x04\x13\x15\n&\n\x04\x05\x04\x02$\x12\x04\xe6\x04\x02\x0b\x1a\x18\x20Us\
+    ed\x20for\x20XML-like\x20tags\n\n\r\n\x05\x05\x04\x02$\x01\x12\x04\xe6\
+    \x04\x02\x05\n\r\n\x05\x05\x04\x02$\x02\x12\x04\xe6\x04\x08\n\n/\n\x04\
+    \x05\x04\x02%\x12\x04\xe8\x04\x02\x14\x1a!\x20Attribute\x20name\x20in\
+    \x20XML-like\x20tags\n\n\r\n\x05\x05\x04\x02%\x01\x12\x04\xe8\x04\x02\
+    \x0e\n\r\n\x05\x05\x04\x02%\x02\x12\x04\xe8\x04\x11\x13\n,\n\x04\x05\x04\
+    \x02&\x12\x04\xea\x04\x02\x14\x1a\x1e\x20Delimiters\x20for\x20XML-like\
+    \x20tags\n\n\r\n\x05\x05\x04\x02&\x01\x12\x04\xea\x04\x02\x0e\n\r\n\x05\
+    \x05\x04\x02&\x02\x12\x04\xea\x04\x11\x13\n\xf9\x01\n\x02\x04\t\x12\x06\
+    \xf2\x04\0\xd1\x05\x01\x1a\xea\x01\x20Occurrence\x20associates\x20a\x20s\
+    ource\x20position\x20with\x20a\x20symbol\x20and/or\x20highlighting\n\x20\
+    information.\n\n\x20If\x20possible,\x20indexers\x20should\x20try\x20to\
+    \x20bundle\x20logically\x20related\x20information\n\x20across\x20occurre\
+    nces\x20into\x20a\x20single\x20occurrence\x20to\x20reduce\x20payload\x20\
+    sizes.\n\n\x0b\n\x03\x04\t\x01\x12\x04\xf2\x04\x08\x12\n\x9e\x08\n\x04\
+    \x04\t\x02\0\x12\x04\x88\x05\x02\x1b\x1a\x8f\x08\x20Source\x20position\
+    \x20of\x20this\x20occurrence.\x20Must\x20be\x20exactly\x20three\x20or\
+    \x20four\n\x20elements:\n\n\x20-\x20Four\x20elements:\x20`[startLine,\
+    \x20startCharacter,\x20endLine,\x20endCharacter]`\n\x20-\x20Three\x20ele\
+    ments:\x20`[startLine,\x20startCharacter,\x20endCharacter]`.\x20The\x20e\
+    nd\x20line\n\x20\x20\x20is\x20inferred\x20to\x20have\x20the\x20same\x20v\
+    alue\x20as\x20the\x20start\x20line.\n\n\x20Line\x20numbers\x20and\x20cha\
+    racters\x20are\x20always\x200-based.\x20Make\x20sure\x20to\x20increment\
+    \x20the\n\x20line/character\x20values\x20before\x20displaying\x20them\
+    \x20in\x20an\x20editor-like\x20UI\x20because\n\x20editors\x20conventiona\
+    lly\x20use\x201-based\x20numbers.\n\n\x20The\x20'character'\x20value\x20\
+    is\x20interpreted\x20based\x20on\x20the\x20PositionEncoding\x20for\n\x20\
+    the\x20Document.\n\n\x20Historical\x20note:\x20the\x20original\x20draft\
+    \x20of\x20this\x20schema\x20had\x20a\x20`Range`\x20message\n\x20type\x20\
+    with\x20`start`\x20and\x20`end`\x20fields\x20of\x20type\x20`Position`,\
+    \x20mirroring\x20LSP.\n\x20Benchmarks\x20revealed\x20that\x20this\x20enc\
+    oding\x20was\x20inefficient\x20and\x20that\x20we\x20could\n\x20reduce\
+    \x20the\x20total\x20payload\x20size\x20of\x20an\x20index\x20by\x2050%\
+    \x20by\x20using\x20`repeated\x20int32`\n\x20instead.\x20The\x20`repeated\
+    \x20int32`\x20encoding\x20is\x20admittedly\x20more\x20embarrassing\x20to\
+    \n\x20work\x20with\x20in\x20some\x20programming\x20languages\x20but\x20w\
+    e\x20hope\x20the\x20performance\n\x20improvements\x20make\x20up\x20for\
+    \x20it.\n\n\r\n\x05\x04\t\x02\0\x04\x12\x04\x88\x05\x02\n\n\r\n\x05\x04\
+    \t\x02\0\x05\x12\x04\x88\x05\x0b\x10\n\r\n\x05\x04\t\x02\0\x01\x12\x04\
+    \x88\x05\x11\x16\n\r\n\x05\x04\t\x02\0\x03\x12\x04\x88\x05\x19\x1a\n\x8a\
+    \x01\n\x04\x04\t\x02\x01\x12\x04\x8b\x05\x02\x14\x1a|\x20(optional)\x20T\
+    he\x20symbol\x20that\x20appears\x20at\x20this\x20position.\x20See\n\x20`\
+    SymbolInformation.symbol`\x20for\x20how\x20to\x20format\x20symbols\x20as\
+    \x20strings.\n\n\r\n\x05\x04\t\x02\x01\x05\x12\x04\x8b\x05\x02\x08\n\r\n\
+    \x05\x04\t\x02\x01\x01\x12\x04\x8b\x05\t\x0f\n\r\n\x05\x04\t\x02\x01\x03\
+    \x12\x04\x8b\x05\x12\x13\n\x97\x01\n\x04\x04\t\x02\x02\x12\x04\x8e\x05\
+    \x02\x19\x1a\x88\x01\x20(optional)\x20Bitset\x20containing\x20`SymbolRol\
+    e`s\x20in\x20this\x20occurrence.\n\x20See\x20`SymbolRole`'s\x20documenta\
+    tion\x20for\x20how\x20to\x20read\x20and\x20write\x20this\x20field.\n\n\r\
+    \n\x05\x04\t\x02\x02\x05\x12\x04\x8e\x05\x02\x07\n\r\n\x05\x04\t\x02\x02\
+    \x01\x12\x04\x8e\x05\x08\x14\n\r\n\x05\x04\t\x02\x02\x03\x12\x04\x8e\x05\
+    \x17\x18\n\xf1\x03\n\x04\x04\t\x02\x03\x12\x04\x97\x05\x02-\x1a\xe2\x03\
+    \x20(optional)\x20CommonMark-formatted\x20documentation\x20for\x20this\
+    \x20specific\x20range.\x20If\n\x20empty,\x20the\x20`Symbol.documentation\
+    `\x20field\x20is\x20used\x20instead.\x20One\x20example\n\x20where\x20thi\
+    s\x20field\x20might\x20be\x20useful\x20is\x20when\x20the\x20symbol\x20re\
+    presents\x20a\x20generic\n\x20function\x20(with\x20abstract\x20type\x20p\
+    arameters\x20such\x20as\x20`List<T>`)\x20and\x20at\x20this\n\x20occurren\
+    ce\x20we\x20know\x20the\x20exact\x20values\x20(such\x20as\x20`List<Strin\
+    g>`).\n\n\x20This\x20field\x20can\x20also\x20be\x20used\x20for\x20dynami\
+    cally\x20or\x20gradually\x20typed\x20languages,\n\x20which\x20commonly\
+    \x20allow\x20for\x20type-changing\x20assignment.\n\n\r\n\x05\x04\t\x02\
+    \x03\x04\x12\x04\x97\x05\x02\n\n\r\n\x05\x04\t\x02\x03\x05\x12\x04\x97\
+    \x05\x0b\x11\n\r\n\x05\x04\t\x02\x03\x01\x12\x04\x97\x05\x12(\n\r\n\x05\
+    \x04\t\x02\x03\x03\x12\x04\x97\x05+,\nX\n\x04\x04\t\x02\x04\x12\x04\x99\
+    \x05\x02\x1d\x1aJ\x20(optional)\x20What\x20syntax\x20highlighting\x20cla\
+    ss\x20should\x20be\x20used\x20for\x20this\x20range?\n\n\r\n\x05\x04\t\
+    \x02\x04\x06\x12\x04\x99\x05\x02\x0c\n\r\n\x05\x04\t\x02\x04\x01\x12\x04\
+    \x99\x05\r\x18\n\r\n\x05\x04\t\x02\x04\x03\x12\x04\x99\x05\x1b\x1c\nW\n\
+    \x04\x04\t\x02\x05\x12\x04\x9b\x05\x02&\x1aI\x20(optional)\x20Diagnostic\
+    s\x20that\x20have\x20been\x20reported\x20for\x20this\x20specific\x20rang\
+    e.\n\n\r\n\x05\x04\t\x02\x05\x04\x12\x04\x9b\x05\x02\n\n\r\n\x05\x04\t\
+    \x02\x05\x06\x12\x04\x9b\x05\x0b\x15\n\r\n\x05\x04\t\x02\x05\x01\x12\x04\
+    \x9b\x05\x16!\n\r\n\x05\x04\t\x02\x05\x03\x12\x04\x9b\x05$%\n\xb1\x0e\n\
+    \x04\x04\t\x02\x06\x12\x04\xd0\x05\x02%\x1a\xa2\x0e\x20(optional)\x20Usi\
+    ng\x20the\x20same\x20encoding\x20as\x20the\x20sibling\x20`range`\x20fiel\
+    d,\x20source\n\x20position\x20of\x20the\x20nearest\x20non-trivial\x20enc\
+    losing\x20AST\x20node.\x20This\x20range\x20must\n\x20enclose\x20the\x20`\
+    range`\x20field.\x20Example\x20applications\x20that\x20make\x20use\x20of\
+    \x20the\n\x20enclosing_range\x20field:\n\n\x20-\x20Call\x20hierarchies:\
+    \x20to\x20determine\x20what\x20symbols\x20are\x20references\x20from\x20t\
+    he\x20body\n\x20\x20\x20of\x20a\x20function\n\x20-\x20Symbol\x20outline:\
+    \x20to\x20display\x20breadcrumbs\x20from\x20the\x20cursor\x20position\
+    \x20to\x20the\n\x20\x20\x20root\x20of\x20the\x20file\n\x20-\x20Expand\
+    \x20selection:\x20to\x20select\x20the\x20nearest\x20enclosing\x20AST\x20\
+    node.\n\x20-\x20Highlight\x20range:\x20to\x20indicate\x20the\x20AST\x20e\
+    xpression\x20that\x20is\x20associated\x20with\x20a\n\x20\x20\x20hover\
+    \x20popover\n\n\x20For\x20definition\x20occurrences,\x20the\x20enclosing\
+    \x20range\x20should\x20indicate\x20the\n\x20start/end\x20bounds\x20of\
+    \x20the\x20entire\x20definition\x20AST\x20node,\x20including\n\x20docume\
+    ntation.\n\x20```\n\x20const\x20n\x20=\x203\n\x20\x20\x20\x20\x20\x20\
+    \x20^\x20range\n\x20^^^^^^^^^^^\x20enclosing_range\n\n\x20/**\x20Parses\
+    \x20the\x20string\x20into\x20something\x20*/\n\x20^\x20enclosing_range\
+    \x20start\x20--------------------------------------|\n\x20function\x20pa\
+    rse(input\x20string):\x20string\x20{\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|\n\x20\x20\
+    \x20\x20\x20\x20\x20\x20\x20\x20^^^^^\x20range\x20\x20\x20\x20\x20\x20\
     \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    ^^^^^\x20reference\x20Animal#sound()\n\x20```\n\x20Doing\x20\"Find\x20re\
-    ferences\"\x20on\x20the\x20symbol\x20`Animal#sound()`\x20should\x20retur\
-    n\n\x20references\x20to\x20the\x20`Dog#sound()`\x20method\x20as\x20well.\
-    \x20Vice-versa,\x20doing\x20\"Find\n\x20references\"\x20on\x20the\x20`Do\
-    g#sound()`\x20method\x20should\x20include\x20references\x20to\x20the\n\
-    \x20`Animal#sound()`\x20method\x20as\x20well.\n\n\r\n\x05\x04\x08\x02\
-    \x01\x05\x12\x04\xce\x03\x02\x06\n\r\n\x05\x04\x08\x02\x01\x01\x12\x04\
-    \xce\x03\x07\x13\n\r\n\x05\x04\x08\x02\x01\x03\x12\x04\xce\x03\x16\x17\n\
-    \xee\x03\n\x04\x04\x08\x02\x02\x12\x04\xd7\x03\x02\x1d\x1a\xdf\x03\x20Si\
-    milar\x20to\x20`is_reference`\x20but\x20for\x20\"Find\x20implementations\
-    \".\n\x20It's\x20common\x20for\x20`is_implementation`\x20and\x20`is_refe\
-    rence`\x20to\x20both\x20be\x20true\x20but\n\x20it's\x20not\x20always\x20\
-    the\x20case.\n\x20In\x20the\x20TypeScript\x20example\x20above,\x20observ\
-    e\x20that\x20`Dog#`\x20has\x20an\n\x20`is_implementation`\x20relationshi\
-    p\x20with\x20`\"Animal#\"`\x20but\x20not\x20`is_reference`.\n\x20This\
-    \x20is\x20because\x20\"Find\x20references\"\x20on\x20the\x20\"Animal#\"\
-    \x20symbol\x20should\x20not\x20return\n\x20\"Dog#\".\x20We\x20only\x20wa\
-    nt\x20\"Dog#\"\x20to\x20return\x20as\x20a\x20result\x20for\x20\"Find\n\
-    \x20implementations\"\x20on\x20the\x20\"Animal#\"\x20symbol.\n\n\r\n\x05\
-    \x04\x08\x02\x02\x05\x12\x04\xd7\x03\x02\x06\n\r\n\x05\x04\x08\x02\x02\
-    \x01\x12\x04\xd7\x03\x07\x18\n\r\n\x05\x04\x08\x02\x02\x03\x12\x04\xd7\
-    \x03\x1b\x1c\nP\n\x04\x04\x08\x02\x03\x12\x04\xd9\x03\x02\x1e\x1aB\x20Si\
-    milar\x20to\x20`references_symbols`\x20but\x20for\x20\"Go\x20to\x20type\
-    \x20definition\".\n\n\r\n\x05\x04\x08\x02\x03\x05\x12\x04\xd9\x03\x02\
-    \x06\n\r\n\x05\x04\x08\x02\x03\x01\x12\x04\xd9\x03\x07\x19\n\r\n\x05\x04\
-    \x08\x02\x03\x03\x12\x04\xd9\x03\x1c\x1d\n\xa7\x07\n\x04\x04\x08\x02\x04\
-    \x12\x04\xea\x03\x02\x19\x1a\xd5\x06\x20Allows\x20overriding\x20the\x20b\
-    ehavior\x20of\x20\"Go\x20to\x20definition\"\x20and\x20\"Find\x20referenc\
-    es\"\n\x20for\x20symbols\x20which\x20do\x20not\x20have\x20a\x20definitio\
-    n\x20of\x20their\x20own\x20or\x20could\n\x20potentially\x20have\x20multi\
-    ple\x20definitions.\n\n\x20For\x20example,\x20in\x20a\x20language\x20wit\
-    h\x20single\x20inheritance\x20and\x20no\x20field\x20overriding,\n\x20inh\
-    erited\x20fields\x20can\x20reuse\x20the\x20same\x20symbol\x20as\x20the\
-    \x20ancestor\x20which\x20declares\n\x20the\x20field.\x20In\x20such\x20a\
-    \x20situation,\x20is_definition\x20is\x20not\x20needed.\n\n\x20On\x20the\
-    \x20other\x20hand,\x20in\x20languages\x20with\x20single\x20inheritance\
-    \x20and\x20some\x20form\n\x20of\x20mixins,\x20you\x20can\x20use\x20is_de\
-    finition\x20to\x20relate\x20the\x20symbol\x20to\x20the\n\x20matching\x20\
-    symbol\x20in\x20ancestor\x20classes,\x20and\x20is_reference\x20to\x20rel\
-    ate\x20the\n\x20symbol\x20to\x20the\x20matching\x20symbol\x20in\x20mixin\
-    s.\n\n\x20NOTE:\x20At\x20the\x20moment,\x20due\x20to\x20limitations\x20o\
-    f\x20the\x20SCIP\x20to\x20LSIF\x20conversion,\n\x20only\x20global\x20sym\
-    bols\x20in\x20an\x20index\x20are\x20allowed\x20to\x20use\x20is_definitio\
-    n.\n\x20The\x20relationship\x20may\x20not\x20get\x20recorded\x20if\x20ei\
-    ther\x20symbol\x20is\x20local.\n\"A\x20Update\x20registerInverseRelation\
-    ships\x20on\x20adding\x20a\x20new\x20field\x20here.\n\n\r\n\x05\x04\x08\
-    \x02\x04\x05\x12\x04\xea\x03\x02\x06\n\r\n\x05\x04\x08\x02\x04\x01\x12\
-    \x04\xea\x03\x07\x14\n\r\n\x05\x04\x08\x02\x04\x03\x12\x04\xea\x03\x17\
-    \x18\n\x88\x03\n\x02\x05\x03\x12\x06\xf3\x03\0\x89\x04\x01\x1a\xf9\x02\
-    \x20SymbolRole\x20declares\x20what\x20\"role\"\x20a\x20symbol\x20has\x20\
-    in\x20an\x20occurrence.\x20A\x20role\x20is\n\x20encoded\x20as\x20a\x20bi\
-    tset\x20where\x20each\x20bit\x20represents\x20a\x20different\x20role.\
-    \x20For\x20example,\n\x20to\x20determine\x20if\x20the\x20`Import`\x20rol\
-    e\x20is\x20set,\x20test\x20whether\x20the\x20second\x20bit\x20of\x20the\
-    \n\x20enum\x20value\x20is\x20defined.\x20In\x20pseudocode,\x20this\x20ca\
-    n\x20be\x20implemented\x20with\x20the\n\x20logic:\x20`const\x20isImportR\
-    ole\x20=\x20(role.value\x20&\x20SymbolRole.Import.value)\x20>\x200`.\n\n\
-    \x0b\n\x03\x05\x03\x01\x12\x04\xf3\x03\x05\x0f\nv\n\x04\x05\x03\x02\0\
-    \x12\x04\xf6\x03\x02\x1c\x1ah\x20This\x20case\x20is\x20not\x20meant\x20t\
-    o\x20be\x20used;\x20it\x20only\x20exists\x20to\x20avoid\x20an\x20error\n\
-    \x20from\x20the\x20Protobuf\x20code\x20generator.\n\n\r\n\x05\x05\x03\
-    \x02\0\x01\x12\x04\xf6\x03\x02\x17\n\r\n\x05\x05\x03\x02\0\x02\x12\x04\
-    \xf6\x03\x1a\x1b\nT\n\x04\x05\x03\x02\x01\x12\x04\xf8\x03\x02\x13\x1aF\
-    \x20Is\x20the\x20symbol\x20defined\x20here?\x20If\x20not,\x20then\x20thi\
-    s\x20is\x20a\x20symbol\x20reference.\n\n\r\n\x05\x05\x03\x02\x01\x01\x12\
-    \x04\xf8\x03\x02\x0c\n\r\n\x05\x05\x03\x02\x01\x02\x12\x04\xf8\x03\x0f\
-    \x12\n,\n\x04\x05\x03\x02\x02\x12\x04\xfa\x03\x02\x0f\x1a\x1e\x20Is\x20t\
-    he\x20symbol\x20imported\x20here?\n\n\r\n\x05\x05\x03\x02\x02\x01\x12\
-    \x04\xfa\x03\x02\x08\n\r\n\x05\x05\x03\x02\x02\x02\x12\x04\xfa\x03\x0b\
-    \x0e\n+\n\x04\x05\x03\x02\x03\x12\x04\xfc\x03\x02\x14\x1a\x1d\x20Is\x20t\
-    he\x20symbol\x20written\x20here?\n\n\r\n\x05\x05\x03\x02\x03\x01\x12\x04\
-    \xfc\x03\x02\r\n\r\n\x05\x05\x03\x02\x03\x02\x12\x04\xfc\x03\x10\x13\n(\
-    \n\x04\x05\x03\x02\x04\x12\x04\xfe\x03\x02\x13\x1a\x1a\x20Is\x20the\x20s\
-    ymbol\x20read\x20here?\n\n\r\n\x05\x05\x03\x02\x04\x01\x12\x04\xfe\x03\
-    \x02\x0c\n\r\n\x05\x05\x03\x02\x04\x02\x12\x04\xfe\x03\x0f\x12\n0\n\x04\
-    \x05\x03\x02\x05\x12\x04\x80\x04\x02\x13\x1a\"\x20Is\x20the\x20symbol\
-    \x20in\x20generated\x20code?\n\n\r\n\x05\x05\x03\x02\x05\x01\x12\x04\x80\
-    \x04\x02\x0b\n\r\n\x05\x05\x03\x02\x05\x02\x12\x04\x80\x04\x0e\x12\n+\n\
-    \x04\x05\x03\x02\x06\x12\x04\x82\x04\x02\x0e\x1a\x1d\x20Is\x20the\x20sym\
-    bol\x20in\x20test\x20code?\n\n\r\n\x05\x05\x03\x02\x06\x01\x12\x04\x82\
-    \x04\x02\x06\n\r\n\x05\x05\x03\x02\x06\x02\x12\x04\x82\x04\t\r\n\xed\x01\
-    \n\x04\x05\x03\x02\x07\x12\x04\x88\x04\x02\x1b\x1a\xde\x01\x20Is\x20this\
-    \x20a\x20signature\x20for\x20a\x20symbol\x20that\x20is\x20defined\x20els\
-    ewhere?\n\n\x20Applies\x20to\x20forward\x20declarations\x20for\x20langua\
-    ges\x20like\x20C,\x20C++\n\x20and\x20Objective-C,\x20as\x20well\x20as\
-    \x20`val`\x20declarations\x20in\x20interface\n\x20files\x20in\x20languag\
-    es\x20like\x20SML\x20and\x20OCaml.\n\n\r\n\x05\x05\x03\x02\x07\x01\x12\
-    \x04\x88\x04\x02\x13\n\r\n\x05\x05\x03\x02\x07\x02\x12\x04\x88\x04\x16\
-    \x1a\n\x0c\n\x02\x05\x04\x12\x06\x8b\x04\0\xe8\x04\x01\n\x0b\n\x03\x05\
-    \x04\x01\x12\x04\x8b\x04\x05\x0f\n\x0b\n\x03\x05\x04\x03\x12\x04\x8c\x04\
-    \x02\x1c\n\x0c\n\x04\x05\x04\x03\x02\x12\x04\x8c\x04\x02\x1c\n\x0c\n\x04\
-    \x05\x04\x02\0\x12\x04\x8e\x04\x02\x1c\n\r\n\x05\x05\x04\x02\0\x01\x12\
-    \x04\x8e\x04\x02\x17\n\r\n\x05\x05\x04\x02\0\x02\x12\x04\x8e\x04\x1a\x1b\
-    \n;\n\x04\x05\x04\x02\x01\x12\x04\x91\x04\x02\x0e\x1a-\x20Comment,\x20in\
-    cluding\x20comment\x20markers\x20and\x20text\n\n\r\n\x05\x05\x04\x02\x01\
-    \x01\x12\x04\x91\x04\x02\t\n\r\n\x05\x05\x04\x02\x01\x02\x12\x04\x91\x04\
-    \x0c\r\n\x1b\n\x04\x05\x04\x02\x02\x12\x04\x94\x04\x02\x1b\x1a\r\x20`;`\
-    \x20`.`\x20`,`\n\n\r\n\x05\x05\x04\x02\x02\x01\x12\x04\x94\x04\x02\x16\n\
-    \r\n\x05\x05\x04\x02\x02\x02\x12\x04\x94\x04\x19\x1a\n2\n\x04\x05\x04\
-    \x02\x03\x12\x04\x96\x04\x02\x19\x1a$\x20(),\x20{},\x20[]\x20when\x20use\
-    d\x20syntactically\n\n\r\n\x05\x05\x04\x02\x03\x01\x12\x04\x96\x04\x02\
-    \x14\n\r\n\x05\x05\x04\x02\x03\x02\x12\x04\x96\x04\x17\x18\n5\n\x04\x05\
-    \x04\x02\x04\x12\x04\x99\x04\x02\x0e\x1a'\x20`if`,\x20`else`,\x20`return\
-    `,\x20`class`,\x20etc.\n\n\r\n\x05\x05\x04\x02\x04\x01\x12\x04\x99\x04\
-    \x02\t\n\r\n\x05\x05\x04\x02\x04\x02\x12\x04\x99\x04\x0c\r\n\x0c\n\x04\
-    \x05\x04\x02\x05\x12\x04\x9a\x04\x02*\n\r\n\x05\x05\x04\x02\x05\x01\x12\
-    \x04\x9a\x04\x02\x13\n\r\n\x05\x05\x04\x02\x05\x02\x12\x04\x9a\x04\x16\
-    \x17\n\r\n\x05\x05\x04\x02\x05\x03\x12\x04\x9a\x04\x18)\n\x0e\n\x06\x05\
-    \x04\x02\x05\x03\x01\x12\x04\x9a\x04\x19(\n\x1e\n\x04\x05\x04\x02\x06\
-    \x12\x04\x9d\x04\x02\x19\x1a\x10\x20`+`,\x20`*`,\x20etc.\n\n\r\n\x05\x05\
-    \x04\x02\x06\x01\x12\x04\x9d\x04\x02\x14\n\r\n\x05\x05\x04\x02\x06\x02\
-    \x12\x04\x9d\x04\x17\x18\nX\n\x04\x05\x04\x02\x07\x12\x04\xa0\x04\x02\
-    \x11\x1aJ\x20non-specific\x20catch-all\x20for\x20any\x20identifier\x20no\
-    t\x20better\x20described\x20elsewhere\n\n\r\n\x05\x05\x04\x02\x07\x01\
-    \x12\x04\xa0\x04\x02\x0c\n\r\n\x05\x05\x04\x02\x07\x02\x12\x04\xa0\x04\
-    \x0f\x10\nN\n\x04\x05\x04\x02\x08\x12\x04\xa2\x04\x02\x18\x1a@\x20Identi\
-    fiers\x20builtin\x20to\x20the\x20language:\x20`min`,\x20`print`\x20in\
-    \x20Python.\n\n\r\n\x05\x05\x04\x02\x08\x01\x12\x04\xa2\x04\x02\x13\n\r\
-    \n\x05\x05\x04\x02\x08\x02\x12\x04\xa2\x04\x16\x17\n[\n\x04\x05\x04\x02\
-    \t\x12\x04\xa4\x04\x02\x15\x1aM\x20Identifiers\x20representing\x20`null`\
-    -like\x20values:\x20`None`\x20in\x20Python,\x20`nil`\x20in\x20Go.\n\n\r\
-    \n\x05\x05\x04\x02\t\x01\x12\x04\xa4\x04\x02\x10\n\r\n\x05\x05\x04\x02\t\
-    \x02\x12\x04\xa4\x04\x13\x14\n.\n\x04\x05\x04\x02\n\x12\x04\xa6\x04\x02\
-    \x19\x1a\x20\x20`xyz`\x20in\x20`const\x20xyz\x20=\x20\"hello\"`\n\n\r\n\
-    \x05\x05\x04\x02\n\x01\x12\x04\xa6\x04\x02\x14\n\r\n\x05\x05\x04\x02\n\
-    \x02\x12\x04\xa6\x04\x17\x18\n'\n\x04\x05\x04\x02\x0b\x12\x04\xa8\x04\
-    \x02\x1f\x1a\x19\x20`var\x20X\x20=\x20\"hello\"`\x20in\x20Go\n\n\r\n\x05\
-    \x05\x04\x02\x0b\x01\x12\x04\xa8\x04\x02\x19\n\r\n\x05\x05\x04\x02\x0b\
-    \x02\x12\x04\xa8\x04\x1c\x1e\n3\n\x04\x05\x04\x02\x0c\x12\x04\xaa\x04\
-    \x02\x1b\x1a%\x20Parameter\x20definition\x20and\x20references\n\n\r\n\
-    \x05\x05\x04\x02\x0c\x01\x12\x04\xaa\x04\x02\x15\n\r\n\x05\x05\x04\x02\
-    \x0c\x02\x12\x04\xaa\x04\x18\x1a\nX\n\x04\x05\x04\x02\r\x12\x04\xac\x04\
-    \x02\x17\x1aJ\x20Identifiers\x20for\x20variable\x20definitions\x20and\
-    \x20references\x20within\x20a\x20local\x20scope\n\n\r\n\x05\x05\x04\x02\
-    \r\x01\x12\x04\xac\x04\x02\x11\n\r\n\x05\x05\x04\x02\r\x02\x12\x04\xac\
-    \x04\x14\x16\nK\n\x04\x05\x04\x02\x0e\x12\x04\xae\x04\x02\x1a\x1a=\x20Id\
-    entifiers\x20that\x20shadow\x20other\x20identifiers\x20in\x20an\x20outer\
-    \x20scope\n\n\r\n\x05\x05\x04\x02\x0e\x01\x12\x04\xae\x04\x02\x14\n\r\n\
-    \x05\x05\x04\x02\x0e\x02\x12\x04\xae\x04\x17\x19\n\xcd\x01\n\x04\x05\x04\
-    \x02\x0f\x12\x04\xb3\x04\x02\x1b\x1a\xbe\x01\x20Identifier\x20representi\
-    ng\x20a\x20unit\x20of\x20code\x20abstraction\x20and/or\x20namespacing.\n\
-    \n\x20NOTE:\x20This\x20corresponds\x20to\x20a\x20package\x20in\x20Go\x20\
-    and\x20JVM\x20languages,\n\x20and\x20a\x20module\x20in\x20languages\x20l\
-    ike\x20Python\x20and\x20JavaScript.\n\n\r\n\x05\x05\x04\x02\x0f\x01\x12\
-    \x04\xb3\x04\x02\x15\n\r\n\x05\x05\x04\x02\x0f\x02\x12\x04\xb3\x04\x18\
-    \x1a\n\x0c\n\x04\x05\x04\x02\x10\x12\x04\xb4\x04\x02*\n\r\n\x05\x05\x04\
-    \x02\x10\x01\x12\x04\xb4\x04\x02\x12\n\r\n\x05\x05\x04\x02\x10\x02\x12\
-    \x04\xb4\x04\x15\x17\n\r\n\x05\x05\x04\x02\x10\x03\x12\x04\xb4\x04\x18)\
-    \n\x0e\n\x06\x05\x04\x02\x10\x03\x01\x12\x04\xb4\x04\x19(\n4\n\x04\x05\
-    \x04\x02\x11\x12\x04\xb7\x04\x02\x1a\x1a&\x20Function\x20references,\x20\
-    including\x20calls\n\n\r\n\x05\x05\x04\x02\x11\x01\x12\x04\xb7\x04\x02\
-    \x14\n\r\n\x05\x05\x04\x02\x11\x02\x12\x04\xb7\x04\x17\x19\n(\n\x04\x05\
-    \x04\x02\x12\x12\x04\xb9\x04\x02$\x1a\x1a\x20Function\x20definition\x20o\
-    nly\n\n\r\n\x05\x05\x04\x02\x12\x01\x12\x04\xb9\x04\x02\x1e\n\r\n\x05\
-    \x05\x04\x02\x12\x02\x12\x04\xb9\x04!#\n7\n\x04\x05\x04\x02\x13\x12\x04\
-    \xbc\x04\x02\x17\x1a)\x20Macro\x20references,\x20including\x20invocation\
-    s\n\n\r\n\x05\x05\x04\x02\x13\x01\x12\x04\xbc\x04\x02\x11\n\r\n\x05\x05\
-    \x04\x02\x13\x02\x12\x04\xbc\x04\x14\x16\n%\n\x04\x05\x04\x02\x14\x12\
-    \x04\xbe\x04\x02!\x1a\x17\x20Macro\x20definition\x20only\n\n\r\n\x05\x05\
-    \x04\x02\x14\x01\x12\x04\xbe\x04\x02\x1b\n\r\n\x05\x05\x04\x02\x14\x02\
-    \x12\x04\xbe\x04\x1e\x20\n!\n\x04\x05\x04\x02\x15\x12\x04\xc1\x04\x02\
-    \x16\x1a\x13\x20non-builtin\x20types\n\n\r\n\x05\x05\x04\x02\x15\x01\x12\
-    \x04\xc1\x04\x02\x10\n\r\n\x05\x05\x04\x02\x15\x02\x12\x04\xc1\x04\x13\
-    \x15\nK\n\x04\x05\x04\x02\x16\x12\x04\xc3\x04\x02\x1d\x1a=\x20builtin\
-    \x20types\x20only,\x20such\x20as\x20`str`\x20for\x20Python\x20or\x20`int\
-    `\x20in\x20Go\n\n\r\n\x05\x05\x04\x02\x16\x01\x12\x04\xc3\x04\x02\x17\n\
-    \r\n\x05\x05\x04\x02\x16\x02\x12\x04\xc3\x04\x1a\x1c\n7\n\x04\x05\x04\
-    \x02\x17\x12\x04\xc6\x04\x02\x1b\x1a)\x20Python\x20decorators,\x20c-like\
-    \x20__attribute__\n\n\r\n\x05\x05\x04\x02\x17\x01\x12\x04\xc6\x04\x02\
-    \x15\n\r\n\x05\x05\x04\x02\x17\x02\x12\x04\xc6\x04\x18\x1a\n\x14\n\x04\
-    \x05\x04\x02\x18\x12\x04\xc9\x04\x02\x13\x1a\x06\x20`\\b`\n\n\r\n\x05\
-    \x05\x04\x02\x18\x01\x12\x04\xc9\x04\x02\r\n\r\n\x05\x05\x04\x02\x18\x02\
-    \x12\x04\xc9\x04\x10\x12\n\x18\n\x04\x05\x04\x02\x19\x12\x04\xcb\x04\x02\
-    \x15\x1a\n\x20`*`,\x20`+`\n\n\r\n\x05\x05\x04\x02\x19\x01\x12\x04\xcb\
-    \x04\x02\x0f\n\r\n\x05\x05\x04\x02\x19\x02\x12\x04\xcb\x04\x12\x14\n\x13\
-    \n\x04\x05\x04\x02\x1a\x12\x04\xcd\x04\x02\x15\x1a\x05\x20`.`\n\n\r\n\
-    \x05\x05\x04\x02\x1a\x01\x12\x04\xcd\x04\x02\x0f\n\r\n\x05\x05\x04\x02\
-    \x1a\x02\x12\x04\xcd\x04\x12\x14\n\"\n\x04\x05\x04\x02\x1b\x12\x04\xcf\
-    \x04\x02\x16\x1a\x14\x20`(`,\x20`)`,\x20`[`,\x20`]`\n\n\r\n\x05\x05\x04\
-    \x02\x1b\x01\x12\x04\xcf\x04\x02\x10\n\r\n\x05\x05\x04\x02\x1b\x02\x12\
-    \x04\xcf\x04\x13\x15\n\x18\n\x04\x05\x04\x02\x1c\x12\x04\xd1\x04\x02\x11\
-    \x1a\n\x20`|`,\x20`-`\n\n\r\n\x05\x05\x04\x02\x1c\x01\x12\x04\xd1\x04\
-    \x02\x0b\n\r\n\x05\x05\x04\x02\x1c\x02\x12\x04\xd1\x04\x0e\x10\n0\n\x04\
-    \x05\x04\x02\x1d\x12\x04\xd4\x04\x02\x15\x1a\"\x20Literal\x20strings:\
-    \x20\"Hello,\x20world!\"\n\n\r\n\x05\x05\x04\x02\x1d\x01\x12\x04\xd4\x04\
-    \x02\x0f\n\r\n\x05\x05\x04\x02\x1d\x02\x12\x04\xd4\x04\x12\x14\n-\n\x04\
-    \x05\x04\x02\x1e\x12\x04\xd6\x04\x02\x1b\x1a\x1f\x20non-regex\x20escapes\
-    :\x20\"\\t\",\x20\"\\n\"\n\n\r\n\x05\x05\x04\x02\x1e\x01\x12\x04\xd6\x04\
-    \x02\x15\n\r\n\x05\x05\x04\x02\x1e\x02\x12\x04\xd6\x04\x18\x1a\n_\n\x04\
-    \x05\x04\x02\x1f\x12\x04\xd8\x04\x02\x1c\x1aQ\x20datetimes\x20within\x20\
-    strings,\x20special\x20words\x20within\x20a\x20string,\x20`{}`\x20in\x20\
-    format\x20strings\n\n\r\n\x05\x05\x04\x02\x1f\x01\x12\x04\xd8\x04\x02\
-    \x16\n\r\n\x05\x05\x04\x02\x1f\x02\x12\x04\xd8\x04\x19\x1b\nG\n\x04\x05\
-    \x04\x02\x20\x12\x04\xda\x04\x02\x18\x1a9\x20\"key\"\x20in\x20{\x20\"key\
-    \":\x20\"value\"\x20},\x20useful\x20for\x20example\x20in\x20JSON\n\n\r\n\
-    \x05\x05\x04\x02\x20\x01\x12\x04\xda\x04\x02\x12\n\r\n\x05\x05\x04\x02\
-    \x20\x02\x12\x04\xda\x04\x15\x17\nV\n\x04\x05\x04\x02!\x12\x04\xdc\x04\
-    \x02\x18\x1aH\x20'c'\x20or\x20similar,\x20in\x20languages\x20that\x20dif\
-    ferentiate\x20strings\x20and\x20characters\n\n\r\n\x05\x05\x04\x02!\x01\
-    \x12\x04\xdc\x04\x02\x12\n\r\n\x05\x05\x04\x02!\x02\x12\x04\xdc\x04\x15\
-    \x17\n9\n\x04\x05\x04\x02\"\x12\x04\xde\x04\x02\x16\x1a+\x20Literal\x20n\
-    umbers,\x20both\x20floats\x20and\x20integers\n\n\r\n\x05\x05\x04\x02\"\
-    \x01\x12\x04\xde\x04\x02\x10\n\r\n\x05\x05\x04\x02\"\x02\x12\x04\xde\x04\
-    \x13\x15\n\x1f\n\x04\x05\x04\x02#\x12\x04\xe0\x04\x02\x16\x1a\x11\x20`tr\
-    ue`,\x20`false`\n\n\r\n\x05\x05\x04\x02#\x01\x12\x04\xe0\x04\x02\x10\n\r\
-    \n\x05\x05\x04\x02#\x02\x12\x04\xe0\x04\x13\x15\n&\n\x04\x05\x04\x02$\
-    \x12\x04\xe3\x04\x02\x0b\x1a\x18\x20Used\x20for\x20XML-like\x20tags\n\n\
-    \r\n\x05\x05\x04\x02$\x01\x12\x04\xe3\x04\x02\x05\n\r\n\x05\x05\x04\x02$\
-    \x02\x12\x04\xe3\x04\x08\n\n/\n\x04\x05\x04\x02%\x12\x04\xe5\x04\x02\x14\
-    \x1a!\x20Attribute\x20name\x20in\x20XML-like\x20tags\n\n\r\n\x05\x05\x04\
-    \x02%\x01\x12\x04\xe5\x04\x02\x0e\n\r\n\x05\x05\x04\x02%\x02\x12\x04\xe5\
-    \x04\x11\x13\n,\n\x04\x05\x04\x02&\x12\x04\xe7\x04\x02\x14\x1a\x1e\x20De\
-    limiters\x20for\x20XML-like\x20tags\n\n\r\n\x05\x05\x04\x02&\x01\x12\x04\
-    \xe7\x04\x02\x0e\n\r\n\x05\x05\x04\x02&\x02\x12\x04\xe7\x04\x11\x13\n\
-    \xf9\x01\n\x02\x04\t\x12\x06\xef\x04\0\xce\x05\x01\x1a\xea\x01\x20Occurr\
-    ence\x20associates\x20a\x20source\x20position\x20with\x20a\x20symbol\x20\
-    and/or\x20highlighting\n\x20information.\n\n\x20If\x20possible,\x20index\
-    ers\x20should\x20try\x20to\x20bundle\x20logically\x20related\x20informat\
-    ion\n\x20across\x20occurrences\x20into\x20a\x20single\x20occurrence\x20t\
-    o\x20reduce\x20payload\x20sizes.\n\n\x0b\n\x03\x04\t\x01\x12\x04\xef\x04\
-    \x08\x12\n\x9e\x08\n\x04\x04\t\x02\0\x12\x04\x85\x05\x02\x1b\x1a\x8f\x08\
-    \x20Source\x20position\x20of\x20this\x20occurrence.\x20Must\x20be\x20exa\
-    ctly\x20three\x20or\x20four\n\x20elements:\n\n\x20-\x20Four\x20elements:\
-    \x20`[startLine,\x20startCharacter,\x20endLine,\x20endCharacter]`\n\x20-\
-    \x20Three\x20elements:\x20`[startLine,\x20startCharacter,\x20endCharacte\
-    r]`.\x20The\x20end\x20line\n\x20\x20\x20is\x20inferred\x20to\x20have\x20\
-    the\x20same\x20value\x20as\x20the\x20start\x20line.\n\n\x20Line\x20numbe\
-    rs\x20and\x20characters\x20are\x20always\x200-based.\x20Make\x20sure\x20\
-    to\x20increment\x20the\n\x20line/character\x20values\x20before\x20displa\
-    ying\x20them\x20in\x20an\x20editor-like\x20UI\x20because\n\x20editors\
-    \x20conventionally\x20use\x201-based\x20numbers.\n\n\x20The\x20'characte\
-    r'\x20value\x20is\x20interpreted\x20based\x20on\x20the\x20PositionEncodi\
-    ng\x20for\n\x20the\x20Document.\n\n\x20Historical\x20note:\x20the\x20ori\
-    ginal\x20draft\x20of\x20this\x20schema\x20had\x20a\x20`Range`\x20message\
-    \n\x20type\x20with\x20`start`\x20and\x20`end`\x20fields\x20of\x20type\
-    \x20`Position`,\x20mirroring\x20LSP.\n\x20Benchmarks\x20revealed\x20that\
-    \x20this\x20encoding\x20was\x20inefficient\x20and\x20that\x20we\x20could\
-    \n\x20reduce\x20the\x20total\x20payload\x20size\x20of\x20an\x20index\x20\
-    by\x2050%\x20by\x20using\x20`repeated\x20int32`\n\x20instead.\x20The\x20\
-    `repeated\x20int32`\x20encoding\x20is\x20admittedly\x20more\x20embarrass\
-    ing\x20to\n\x20work\x20with\x20in\x20some\x20programming\x20languages\
-    \x20but\x20we\x20hope\x20the\x20performance\n\x20improvements\x20make\
-    \x20up\x20for\x20it.\n\n\r\n\x05\x04\t\x02\0\x04\x12\x04\x85\x05\x02\n\n\
-    \r\n\x05\x04\t\x02\0\x05\x12\x04\x85\x05\x0b\x10\n\r\n\x05\x04\t\x02\0\
-    \x01\x12\x04\x85\x05\x11\x16\n\r\n\x05\x04\t\x02\0\x03\x12\x04\x85\x05\
-    \x19\x1a\n\x8a\x01\n\x04\x04\t\x02\x01\x12\x04\x88\x05\x02\x14\x1a|\x20(\
-    optional)\x20The\x20symbol\x20that\x20appears\x20at\x20this\x20position.\
-    \x20See\n\x20`SymbolInformation.symbol`\x20for\x20how\x20to\x20format\
-    \x20symbols\x20as\x20strings.\n\n\r\n\x05\x04\t\x02\x01\x05\x12\x04\x88\
-    \x05\x02\x08\n\r\n\x05\x04\t\x02\x01\x01\x12\x04\x88\x05\t\x0f\n\r\n\x05\
-    \x04\t\x02\x01\x03\x12\x04\x88\x05\x12\x13\n\x97\x01\n\x04\x04\t\x02\x02\
-    \x12\x04\x8b\x05\x02\x19\x1a\x88\x01\x20(optional)\x20Bitset\x20containi\
-    ng\x20`SymbolRole`s\x20in\x20this\x20occurrence.\n\x20See\x20`SymbolRole\
-    `'s\x20documentation\x20for\x20how\x20to\x20read\x20and\x20write\x20this\
-    \x20field.\n\n\r\n\x05\x04\t\x02\x02\x05\x12\x04\x8b\x05\x02\x07\n\r\n\
-    \x05\x04\t\x02\x02\x01\x12\x04\x8b\x05\x08\x14\n\r\n\x05\x04\t\x02\x02\
-    \x03\x12\x04\x8b\x05\x17\x18\n\xf1\x03\n\x04\x04\t\x02\x03\x12\x04\x94\
-    \x05\x02-\x1a\xe2\x03\x20(optional)\x20CommonMark-formatted\x20documenta\
-    tion\x20for\x20this\x20specific\x20range.\x20If\n\x20empty,\x20the\x20`S\
-    ymbol.documentation`\x20field\x20is\x20used\x20instead.\x20One\x20exampl\
-    e\n\x20where\x20this\x20field\x20might\x20be\x20useful\x20is\x20when\x20\
-    the\x20symbol\x20represents\x20a\x20generic\n\x20function\x20(with\x20ab\
-    stract\x20type\x20parameters\x20such\x20as\x20`List<T>`)\x20and\x20at\
-    \x20this\n\x20occurrence\x20we\x20know\x20the\x20exact\x20values\x20(suc\
-    h\x20as\x20`List<String>`).\n\n\x20This\x20field\x20can\x20also\x20be\
-    \x20used\x20for\x20dynamically\x20or\x20gradually\x20typed\x20languages,\
-    \n\x20which\x20commonly\x20allow\x20for\x20type-changing\x20assignment.\
-    \n\n\r\n\x05\x04\t\x02\x03\x04\x12\x04\x94\x05\x02\n\n\r\n\x05\x04\t\x02\
-    \x03\x05\x12\x04\x94\x05\x0b\x11\n\r\n\x05\x04\t\x02\x03\x01\x12\x04\x94\
-    \x05\x12(\n\r\n\x05\x04\t\x02\x03\x03\x12\x04\x94\x05+,\nX\n\x04\x04\t\
-    \x02\x04\x12\x04\x96\x05\x02\x1d\x1aJ\x20(optional)\x20What\x20syntax\
-    \x20highlighting\x20class\x20should\x20be\x20used\x20for\x20this\x20rang\
-    e?\n\n\r\n\x05\x04\t\x02\x04\x06\x12\x04\x96\x05\x02\x0c\n\r\n\x05\x04\t\
-    \x02\x04\x01\x12\x04\x96\x05\r\x18\n\r\n\x05\x04\t\x02\x04\x03\x12\x04\
-    \x96\x05\x1b\x1c\nW\n\x04\x04\t\x02\x05\x12\x04\x98\x05\x02&\x1aI\x20(op\
-    tional)\x20Diagnostics\x20that\x20have\x20been\x20reported\x20for\x20thi\
-    s\x20specific\x20range.\n\n\r\n\x05\x04\t\x02\x05\x04\x12\x04\x98\x05\
-    \x02\n\n\r\n\x05\x04\t\x02\x05\x06\x12\x04\x98\x05\x0b\x15\n\r\n\x05\x04\
-    \t\x02\x05\x01\x12\x04\x98\x05\x16!\n\r\n\x05\x04\t\x02\x05\x03\x12\x04\
-    \x98\x05$%\n\xb1\x0e\n\x04\x04\t\x02\x06\x12\x04\xcd\x05\x02%\x1a\xa2\
-    \x0e\x20(optional)\x20Using\x20the\x20same\x20encoding\x20as\x20the\x20s\
-    ibling\x20`range`\x20field,\x20source\n\x20position\x20of\x20the\x20near\
-    est\x20non-trivial\x20enclosing\x20AST\x20node.\x20This\x20range\x20must\
-    \n\x20enclose\x20the\x20`range`\x20field.\x20Example\x20applications\x20\
-    that\x20make\x20use\x20of\x20the\n\x20enclosing_range\x20field:\n\n\x20-\
-    \x20Call\x20hierarchies:\x20to\x20determine\x20what\x20symbols\x20are\
-    \x20references\x20from\x20the\x20body\n\x20\x20\x20of\x20a\x20function\n\
-    \x20-\x20Symbol\x20outline:\x20to\x20display\x20breadcrumbs\x20from\x20t\
-    he\x20cursor\x20position\x20to\x20the\n\x20\x20\x20root\x20of\x20the\x20\
-    file\n\x20-\x20Expand\x20selection:\x20to\x20select\x20the\x20nearest\
-    \x20enclosing\x20AST\x20node.\n\x20-\x20Highlight\x20range:\x20to\x20ind\
-    icate\x20the\x20AST\x20expression\x20that\x20is\x20associated\x20with\
-    \x20a\n\x20\x20\x20hover\x20popover\n\n\x20For\x20definition\x20occurren\
-    ces,\x20the\x20enclosing\x20range\x20should\x20indicate\x20the\n\x20star\
-    t/end\x20bounds\x20of\x20the\x20entire\x20definition\x20AST\x20node,\x20\
-    including\n\x20documentation.\n\x20```\n\x20const\x20n\x20=\x203\n\x20\
-    \x20\x20\x20\x20\x20\x20^\x20range\n\x20^^^^^^^^^^^\x20enclosing_range\n\
-    \n\x20/**\x20Parses\x20the\x20string\x20into\x20something\x20*/\n\x20^\
-    \x20enclosing_range\x20start\x20--------------------------------------|\
-    \n\x20function\x20parse(input\x20string):\x20string\x20{\x20\x20\x20\x20\
     \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20|\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^\x20range\x20\
+    |\n\x20\x20\x20\x20\x20return\x20input.slice(n)\x20\x20\x20\x20\x20\x20\
+    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|\n\x20}\x20\x20\x20\
     \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
     \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20|\n\x20\x20\x20\x20\x20return\x20input.slice(n)\x20\
     \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+    \x20\x20\x20\x20|\n\x20^\x20enclosing_range\x20end\x20<-----------------\
+    ----------------------|\n\x20```\n\n\x20Any\x20attributes/decorators/att\
+    ached\x20macros\x20should\x20also\x20be\x20part\x20of\x20the\n\x20enclos\
+    ing\x20range.\n\n\x20```python\n\x20@cache\n\x20^\x20enclosing_range\x20\
+    start---------------------|\n\x20def\x20factorial(n):\x20\x20\x20\x20\
     \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    |\n\x20}\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20|\n\x20^\x20enclosing_range\x20end\
-    \x20<---------------------------------------|\n\x20```\n\n\x20Any\x20att\
-    ributes/decorators/attached\x20macros\x20should\x20also\x20be\x20part\
-    \x20of\x20the\n\x20enclosing\x20range.\n\n\x20```python\n\x20@cache\n\
-    \x20^\x20enclosing_range\x20start---------------------|\n\x20def\x20fact\
-    orial(n):\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20|\n\x20\x20\x20\x20\x20r\
-    eturn\x20n\x20*\x20factorial(n-1)\x20if\x20n\x20else\x201\x20\x20\x20|\n\
-    \x20<\x20enclosing_range\x20end-----------------------|\n\x20\n\x20```\n\
-    \n\x20For\x20reference\x20occurrences,\x20the\x20enclosing\x20range\x20s\
-    hould\x20indicate\x20the\x20start/end\n\x20bounds\x20of\x20the\x20parent\
-    \x20expression.\n\x20```\n\x20const\x20a\x20=\x20a.b\n\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20\x20\x20\x20\x20^\x20range\n\x20\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20^^^\x20enclosing_range\n\x20const\x20b\x20=\x20a.b(4\
-    1).f(42).g(43)\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20\x20\x20\x20\x20^\x20range\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-    \x20^^^^^^^^^^^^^\x20enclosing_range\n\x20```\n\n\r\n\x05\x04\t\x02\x06\
-    \x04\x12\x04\xcd\x05\x02\n\n\r\n\x05\x04\t\x02\x06\x05\x12\x04\xcd\x05\
-    \x0b\x10\n\r\n\x05\x04\t\x02\x06\x01\x12\x04\xcd\x05\x11\x20\n\r\n\x05\
-    \x04\t\x02\x06\x03\x12\x04\xcd\x05#$\nw\n\x02\x04\n\x12\x06\xd2\x05\0\
-    \xdd\x05\x01\x1ai\x20Represents\x20a\x20diagnostic,\x20such\x20as\x20a\
-    \x20compiler\x20error\x20or\x20warning,\x20which\x20should\x20be\n\x20re\
-    ported\x20for\x20a\x20document.\n\n\x0b\n\x03\x04\n\x01\x12\x04\xd2\x05\
-    \x08\x12\nW\n\x04\x04\n\x02\0\x12\x04\xd4\x05\x02\x18\x1aI\x20Should\x20\
-    this\x20diagnostic\x20be\x20reported\x20as\x20an\x20error,\x20warning,\
-    \x20info,\x20or\x20hint?\n\n\r\n\x05\x04\n\x02\0\x06\x12\x04\xd4\x05\x02\
-    \n\n\r\n\x05\x04\n\x02\0\x01\x12\x04\xd4\x05\x0b\x13\n\r\n\x05\x04\n\x02\
-    \0\x03\x12\x04\xd4\x05\x16\x17\n]\n\x04\x04\n\x02\x01\x12\x04\xd6\x05\
-    \x02\x12\x1aO\x20(optional)\x20Code\x20of\x20this\x20diagnostic,\x20whic\
-    h\x20might\x20appear\x20in\x20the\x20user\x20interface.\n\n\r\n\x05\x04\
-    \n\x02\x01\x05\x12\x04\xd6\x05\x02\x08\n\r\n\x05\x04\n\x02\x01\x01\x12\
-    \x04\xd6\x05\t\r\n\r\n\x05\x04\n\x02\x01\x03\x12\x04\xd6\x05\x10\x11\n+\
-    \n\x04\x04\n\x02\x02\x12\x04\xd8\x05\x02\x15\x1a\x1d\x20Message\x20of\
-    \x20this\x20diagnostic.\n\n\r\n\x05\x04\n\x02\x02\x05\x12\x04\xd8\x05\
-    \x02\x08\n\r\n\x05\x04\n\x02\x02\x01\x12\x04\xd8\x05\t\x10\n\r\n\x05\x04\
-    \n\x02\x02\x03\x12\x04\xd8\x05\x13\x14\n~\n\x04\x04\n\x02\x03\x12\x04\
-    \xdb\x05\x02\x14\x1ap\x20(optional)\x20Human-readable\x20string\x20descr\
-    ibing\x20the\x20source\x20of\x20this\x20diagnostic,\x20e.g.\n\x20'typesc\
-    ript'\x20or\x20'super\x20lint'.\n\n\r\n\x05\x04\n\x02\x03\x05\x12\x04\
-    \xdb\x05\x02\x08\n\r\n\x05\x04\n\x02\x03\x01\x12\x04\xdb\x05\t\x0f\n\r\n\
-    \x05\x04\n\x02\x03\x03\x12\x04\xdb\x05\x12\x13\n\x0c\n\x04\x04\n\x02\x04\
-    \x12\x04\xdc\x05\x02\"\n\r\n\x05\x04\n\x02\x04\x04\x12\x04\xdc\x05\x02\n\
-    \n\r\n\x05\x04\n\x02\x04\x06\x12\x04\xdc\x05\x0b\x18\n\r\n\x05\x04\n\x02\
-    \x04\x01\x12\x04\xdc\x05\x19\x1d\n\r\n\x05\x04\n\x02\x04\x03\x12\x04\xdc\
-    \x05\x20!\n\x0c\n\x02\x05\x05\x12\x06\xdf\x05\0\xe5\x05\x01\n\x0b\n\x03\
-    \x05\x05\x01\x12\x04\xdf\x05\x05\r\n\x0c\n\x04\x05\x05\x02\0\x12\x04\xe0\
-    \x05\x02\x1a\n\r\n\x05\x05\x05\x02\0\x01\x12\x04\xe0\x05\x02\x15\n\r\n\
-    \x05\x05\x05\x02\0\x02\x12\x04\xe0\x05\x18\x19\n\x0c\n\x04\x05\x05\x02\
-    \x01\x12\x04\xe1\x05\x02\x0c\n\r\n\x05\x05\x05\x02\x01\x01\x12\x04\xe1\
-    \x05\x02\x07\n\r\n\x05\x05\x05\x02\x01\x02\x12\x04\xe1\x05\n\x0b\n\x0c\n\
-    \x04\x05\x05\x02\x02\x12\x04\xe2\x05\x02\x0e\n\r\n\x05\x05\x05\x02\x02\
-    \x01\x12\x04\xe2\x05\x02\t\n\r\n\x05\x05\x05\x02\x02\x02\x12\x04\xe2\x05\
-    \x0c\r\n\x0c\n\x04\x05\x05\x02\x03\x12\x04\xe3\x05\x02\x12\n\r\n\x05\x05\
-    \x05\x02\x03\x01\x12\x04\xe3\x05\x02\r\n\r\n\x05\x05\x05\x02\x03\x02\x12\
-    \x04\xe3\x05\x10\x11\n\x0c\n\x04\x05\x05\x02\x04\x12\x04\xe4\x05\x02\x0b\
-    \n\r\n\x05\x05\x05\x02\x04\x01\x12\x04\xe4\x05\x02\x06\n\r\n\x05\x05\x05\
-    \x02\x04\x02\x12\x04\xe4\x05\t\n\n\x0c\n\x02\x05\x06\x12\x06\xe7\x05\0\
-    \xeb\x05\x01\n\x0b\n\x03\x05\x06\x01\x12\x04\xe7\x05\x05\x12\n\x0c\n\x04\
-    \x05\x06\x02\0\x12\x04\xe8\x05\x02\x1f\n\r\n\x05\x05\x06\x02\0\x01\x12\
-    \x04\xe8\x05\x02\x1a\n\r\n\x05\x05\x06\x02\0\x02\x12\x04\xe8\x05\x1d\x1e\
-    \n\x0c\n\x04\x05\x06\x02\x01\x12\x04\xe9\x05\x02\x12\n\r\n\x05\x05\x06\
-    \x02\x01\x01\x12\x04\xe9\x05\x02\r\n\r\n\x05\x05\x06\x02\x01\x02\x12\x04\
-    \xe9\x05\x10\x11\n\x0c\n\x04\x05\x06\x02\x02\x12\x04\xea\x05\x02\x11\n\r\
-    \n\x05\x05\x06\x02\x02\x01\x12\x04\xea\x05\x02\x0c\n\r\n\x05\x05\x06\x02\
-    \x02\x02\x12\x04\xea\x05\x0f\x10\n\xd0\x03\n\x02\x05\x07\x12\x06\xf3\x05\
-    \0\xe9\x06\x01\x1a\xc1\x03\x20Language\x20standardises\x20names\x20of\
-    \x20common\x20programming\x20languages\x20that\x20can\x20be\x20used\n\
-    \x20for\x20the\x20`Document.language`\x20field.\x20The\x20primary\x20pur\
-    pose\x20of\x20this\x20enum\x20is\x20to\n\x20prevent\x20a\x20situation\
-    \x20where\x20we\x20have\x20a\x20single\x20programming\x20language\x20end\
-    s\x20up\x20with\n\x20multiple\x20string\x20representations.\x20For\x20ex\
-    ample,\x20the\x20C++\x20language\x20uses\x20the\x20name\n\x20\"CPP\"\x20\
-    in\x20this\x20enum\x20and\x20other\x20names\x20such\x20as\x20\"cpp\"\x20\
-    are\x20incompatible.\n\x20Feel\x20free\x20to\x20send\x20a\x20pull-reques\
-    t\x20to\x20add\x20missing\x20programming\x20languages.\n\n\x0b\n\x03\x05\
-    \x07\x01\x12\x04\xf3\x05\x05\r\n\x0c\n\x04\x05\x07\x02\0\x12\x04\xf4\x05\
-    \x02\x1a\n\r\n\x05\x05\x07\x02\0\x01\x12\x04\xf4\x05\x02\x15\n\r\n\x05\
-    \x05\x07\x02\0\x02\x12\x04\xf4\x05\x18\x19\n\x0c\n\x04\x05\x07\x02\x01\
-    \x12\x04\xf5\x05\x02\x0c\n\r\n\x05\x05\x07\x02\x01\x01\x12\x04\xf5\x05\
-    \x02\x06\n\r\n\x05\x05\x07\x02\x01\x02\x12\x04\xf5\x05\t\x0b\n\x0c\n\x04\
-    \x05\x07\x02\x02\x12\x04\xf6\x05\x02\x0c\n\r\n\x05\x05\x07\x02\x02\x01\
-    \x12\x04\xf6\x05\x02\x06\n\r\n\x05\x05\x07\x02\x02\x02\x12\x04\xf6\x05\t\
-    \x0b\n\x0c\n\x04\x05\x07\x02\x03\x12\x04\xf7\x05\x02\x0b\n\r\n\x05\x05\
-    \x07\x02\x03\x01\x12\x04\xf7\x05\x02\x05\n\r\n\x05\x05\x07\x02\x03\x02\
-    \x12\x04\xf7\x05\x08\n\n\x0c\n\x04\x05\x07\x02\x04\x12\x04\xf8\x05\x02\
-    \x0b\n\r\n\x05\x05\x07\x02\x04\x01\x12\x04\xf8\x05\x02\x05\n\r\n\x05\x05\
-    \x07\x02\x04\x02\x12\x04\xf8\x05\x08\n\n\x0c\n\x04\x05\x07\x02\x05\x12\
-    \x04\xf9\x05\x02\x0c\n\r\n\x05\x05\x07\x02\x05\x01\x12\x04\xf9\x05\x02\
-    \x06\n\r\n\x05\x05\x07\x02\x05\x02\x12\x04\xf9\x05\t\x0b\n\x0c\n\x04\x05\
-    \x07\x02\x06\x12\x04\xfa\x05\x02\x10\n\r\n\x05\x05\x07\x02\x06\x01\x12\
-    \x04\xfa\x05\x02\n\n\r\n\x05\x05\x07\x02\x06\x02\x12\x04\xfa\x05\r\x0f\n\
-    \x0c\n\x04\x05\x07\x02\x07\x12\x04\xfb\x05\x02\x10\n\r\n\x05\x05\x07\x02\
-    \x07\x01\x12\x04\xfb\x05\x02\n\n\r\n\x05\x05\x07\x02\x07\x02\x12\x04\xfb\
-    \x05\r\x0f\n\x0c\n\x04\x05\x07\x02\x08\x12\x04\xfc\x05\x02\x0b\n\r\n\x05\
-    \x05\x07\x02\x08\x01\x12\x04\xfc\x05\x02\x05\n\r\n\x05\x05\x07\x02\x08\
-    \x02\x12\x04\xfc\x05\x08\n\n\x0c\n\x04\x05\x07\x02\t\x12\x04\xfd\x05\x02\
-    \x0b\n\r\n\x05\x05\x07\x02\t\x01\x12\x04\xfd\x05\x02\x05\n\r\n\x05\x05\
-    \x07\x02\t\x02\x12\x04\xfd\x05\x08\n\n\x0c\n\x04\x05\x07\x02\n\x12\x04\
-    \xfe\x05\x02\x0e\n\r\n\x05\x05\x07\x02\n\x01\x12\x04\xfe\x05\x02\x08\n\r\
-    \n\x05\x05\x07\x02\n\x02\x12\x04\xfe\x05\x0b\r\n\x0c\n\x04\x05\x07\x02\
-    \x0b\x12\x04\xff\x05\x02\t\n\r\n\x05\x05\x07\x02\x0b\x01\x12\x04\xff\x05\
-    \x02\x03\n\r\n\x05\x05\x07\x02\x0b\x02\x12\x04\xff\x05\x06\x08\n\x0c\n\
-    \x04\x05\x07\x02\x0c\x12\x04\x80\x06\x02\r\n\r\n\x05\x05\x07\x02\x0c\x01\
-    \x12\x04\x80\x06\x02\x07\n\r\n\x05\x05\x07\x02\x0c\x02\x12\x04\x80\x06\n\
-    \x0c\nH\n\x04\x05\x07\x02\r\x12\x04\x81\x06\x02\x0b\":\x20C++\x20(the\
-    \x20name\x20\"CPP\"\x20was\x20chosen\x20for\x20consistency\x20with\x20LS\
-    P)\n\n\r\n\x05\x05\x07\x02\r\x01\x12\x04\x81\x06\x02\x05\n\r\n\x05\x05\
-    \x07\x02\r\x02\x12\x04\x81\x06\x08\n\n\x0c\n\x04\x05\x07\x02\x0e\x12\x04\
-    \x82\x06\x02\x0b\n\r\n\x05\x05\x07\x02\x0e\x01\x12\x04\x82\x06\x02\x05\n\
-    \r\n\x05\x05\x07\x02\x0e\x02\x12\x04\x82\x06\x08\n\n\x0c\n\x04\x05\x07\
-    \x02\x0f\x12\x04\x83\x06\x02\r\n\r\n\x05\x05\x07\x02\x0f\x01\x12\x04\x83\
-    \x06\x02\x08\n\r\n\x05\x05\x07\x02\x0f\x02\x12\x04\x83\x06\x0b\x0c\n\x0c\
-    \n\x04\x05\x07\x02\x10\x12\x04\x84\x06\x02\x0e\n\r\n\x05\x05\x07\x02\x10\
-    \x01\x12\x04\x84\x06\x02\t\n\r\n\x05\x05\x07\x02\x10\x02\x12\x04\x84\x06\
-    \x0c\r\n\x0c\n\x04\x05\x07\x02\x11\x12\x04\x85\x06\x02\x14\n\r\n\x05\x05\
-    \x07\x02\x11\x01\x12\x04\x85\x06\x02\x0e\n\r\n\x05\x05\x07\x02\x11\x02\
-    \x12\x04\x85\x06\x11\x13\n\x0c\n\x04\x05\x07\x02\x12\x12\x04\x86\x06\x02\
-    \x11\n\r\n\x05\x05\x07\x02\x12\x01\x12\x04\x86\x06\x02\x0c\n\r\n\x05\x05\
-    \x07\x02\x12\x02\x12\x04\x86\x06\x0f\x10\n\x0c\n\x04\x05\x07\x02\x13\x12\
-    \x04\x87\x06\x02\x0b\n\r\n\x05\x05\x07\x02\x13\x01\x12\x04\x87\x06\x02\
-    \x05\n\r\n\x05\x05\x07\x02\x13\x02\x12\x04\x87\x06\x08\n\n\x0c\n\x04\x05\
-    \x07\x02\x14\x12\x04\x88\x06\x02\x0c\n\r\n\x05\x05\x07\x02\x14\x01\x12\
-    \x04\x88\x06\x02\x06\n\r\n\x05\x05\x07\x02\x14\x02\x12\x04\x88\x06\t\x0b\
-    \n\x0c\n\x04\x05\x07\x02\x15\x12\x04\x89\x06\x02\x0b\n\r\n\x05\x05\x07\
-    \x02\x15\x01\x12\x04\x89\x06\x02\x06\n\r\n\x05\x05\x07\x02\x15\x02\x12\
-    \x04\x89\x06\t\n\n\x0c\n\x04\x05\x07\x02\x16\x12\x04\x8a\x06\x02\x0e\n\r\
-    \n\x05\x05\x07\x02\x16\x01\x12\x04\x8a\x06\x02\x08\n\r\n\x05\x05\x07\x02\
-    \x16\x02\x12\x04\x8a\x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x17\x12\x04\x8b\
-    \x06\x02\x0c\n\r\n\x05\x05\x07\x02\x17\x01\x12\x04\x8b\x06\x02\x06\n\r\n\
-    \x05\x05\x07\x02\x17\x02\x12\x04\x8b\x06\t\x0b\n\x0c\n\x04\x05\x07\x02\
-    \x18\x12\x04\x8c\x06\x02\x12\n\r\n\x05\x05\x07\x02\x18\x01\x12\x04\x8c\
-    \x06\x02\x0c\n\r\n\x05\x05\x07\x02\x18\x02\x12\x04\x8c\x06\x0f\x11\n\x0c\
-    \n\x04\x05\x07\x02\x19\x12\x04\x8d\x06\x02\x0e\n\r\n\x05\x05\x07\x02\x19\
-    \x01\x12\x04\x8d\x06\x02\x08\n\r\n\x05\x05\x07\x02\x19\x02\x12\x04\x8d\
-    \x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x1a\x12\x04\x8e\x06\x02\x0e\n\r\n\x05\
-    \x05\x07\x02\x1a\x01\x12\x04\x8e\x06\x02\x08\n\r\n\x05\x05\x07\x02\x1a\
-    \x02\x12\x04\x8e\x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x1b\x12\x04\x8f\x06\
-    \x02\x0e\n\r\n\x05\x05\x07\x02\x1b\x01\x12\x04\x8f\x06\x02\x08\n\r\n\x05\
-    \x05\x07\x02\x1b\x02\x12\x04\x8f\x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x1c\
-    \x12\x04\x90\x06\x02\x0e\n\r\n\x05\x05\x07\x02\x1c\x01\x12\x04\x90\x06\
-    \x02\x08\n\r\n\x05\x05\x07\x02\x1c\x02\x12\x04\x90\x06\x0b\r\n\x0c\n\x04\
-    \x05\x07\x02\x1d\x12\x04\x91\x06\x02\x0c\n\r\n\x05\x05\x07\x02\x1d\x01\
-    \x12\x04\x91\x06\x02\x06\n\r\n\x05\x05\x07\x02\x1d\x02\x12\x04\x91\x06\t\
-    \x0b\n\x0c\n\x04\x05\x07\x02\x1e\x12\x04\x92\x06\x02\x0c\n\r\n\x05\x05\
-    \x07\x02\x1e\x01\x12\x04\x92\x06\x02\x06\n\r\n\x05\x05\x07\x02\x1e\x02\
-    \x12\x04\x92\x06\t\x0b\n\x0c\n\x04\x05\x07\x02\x1f\x12\x04\x93\x06\x02\
-    \x0f\n\r\n\x05\x05\x07\x02\x1f\x01\x12\x04\x93\x06\x02\t\n\r\n\x05\x05\
-    \x07\x02\x1f\x02\x12\x04\x93\x06\x0c\x0e\n\x0c\n\x04\x05\x07\x02\x20\x12\
-    \x04\x94\x06\x02\x12\n\r\n\x05\x05\x07\x02\x20\x01\x12\x04\x94\x06\x02\
-    \x0c\n\r\n\x05\x05\x07\x02\x20\x02\x12\x04\x94\x06\x0f\x11\n\x0c\n\x04\
-    \x05\x07\x02!\x12\x04\x95\x06\x02\x12\n\r\n\x05\x05\x07\x02!\x01\x12\x04\
-    \x95\x06\x02\x0c\n\r\n\x05\x05\x07\x02!\x02\x12\x04\x95\x06\x0f\x11\n\
-    \x0c\n\x04\x05\x07\x02\"\x12\x04\x96\x06\x02\x12\n\r\n\x05\x05\x07\x02\"\
-    \x01\x12\x04\x96\x06\x02\x0c\n\r\n\x05\x05\x07\x02\"\x02\x12\x04\x96\x06\
-    \x0f\x11\n\x0c\n\x04\x05\x07\x02#\x12\x04\x97\x06\x02\n\n\r\n\x05\x05\
-    \x07\x02#\x01\x12\x04\x97\x06\x02\x04\n\r\n\x05\x05\x07\x02#\x02\x12\x04\
-    \x97\x06\x07\t\n\x0c\n\x04\x05\x07\x02$\x12\x04\x98\x06\x02\x0f\n\r\n\
-    \x05\x05\x07\x02$\x01\x12\x04\x98\x06\x02\t\n\r\n\x05\x05\x07\x02$\x02\
-    \x12\x04\x98\x06\x0c\x0e\n\x0c\n\x04\x05\x07\x02%\x12\x04\x99\x06\x02\r\
-    \n\r\n\x05\x05\x07\x02%\x01\x12\x04\x99\x06\x02\x08\n\r\n\x05\x05\x07\
-    \x02%\x02\x12\x04\x99\x06\x0b\x0c\n\x0c\n\x04\x05\x07\x02&\x12\x04\x9a\
-    \x06\x02\x0c\n\r\n\x05\x05\x07\x02&\x01\x12\x04\x9a\x06\x02\x06\n\r\n\
-    \x05\x05\x07\x02&\x02\x12\x04\x9a\x06\t\x0b\n\x0c\n\x04\x05\x07\x02'\x12\
-    \x04\x9b\x06\x02\x0c\n\r\n\x05\x05\x07\x02'\x01\x12\x04\x9b\x06\x02\x06\
-    \n\r\n\x05\x05\x07\x02'\x02\x12\x04\x9b\x06\t\x0b\n\x0c\n\x04\x05\x07\
-    \x02(\x12\x04\x9c\x06\x02\x12\n\r\n\x05\x05\x07\x02(\x01\x12\x04\x9c\x06\
-    \x02\x0c\n\r\n\x05\x05\x07\x02(\x02\x12\x04\x9c\x06\x0f\x11\n\x0c\n\x04\
-    \x05\x07\x02)\x12\x04\x9d\x06\x02\x0f\n\r\n\x05\x05\x07\x02)\x01\x12\x04\
-    \x9d\x06\x02\t\n\r\n\x05\x05\x07\x02)\x02\x12\x04\x9d\x06\x0c\x0e\n\x0c\
-    \n\x04\x05\x07\x02*\x12\x04\x9e\x06\x02\r\n\r\n\x05\x05\x07\x02*\x01\x12\
-    \x04\x9e\x06\x02\x07\n\r\n\x05\x05\x07\x02*\x02\x12\x04\x9e\x06\n\x0c\n\
-    \x0c\n\x04\x05\x07\x02+\x12\x04\x9f\x06\x02\x0b\n\r\n\x05\x05\x07\x02+\
-    \x01\x12\x04\x9f\x06\x02\x05\n\r\n\x05\x05\x07\x02+\x02\x12\x04\x9f\x06\
-    \x08\n\n\x0c\n\x04\x05\x07\x02,\x12\x04\xa0\x06\x02\t\n\r\n\x05\x05\x07\
-    \x02,\x01\x12\x04\xa0\x06\x02\x03\n\r\n\x05\x05\x07\x02,\x02\x12\x04\xa0\
-    \x06\x06\x08\n\x0c\n\x04\x05\x07\x02-\x12\x04\xa1\x06\x02\x0c\n\r\n\x05\
-    \x05\x07\x02-\x01\x12\x04\xa1\x06\x02\x06\n\r\n\x05\x05\x07\x02-\x02\x12\
-    \x04\xa1\x06\t\x0b\n\x0c\n\x04\x05\x07\x02.\x12\x04\xa2\x06\x02\x0b\n\r\
-    \n\x05\x05\x07\x02.\x01\x12\x04\xa2\x06\x02\x06\n\r\n\x05\x05\x07\x02.\
-    \x02\x12\x04\xa2\x06\t\n\n\x0c\n\x04\x05\x07\x02/\x12\x04\xa3\x06\x02\
-    \x12\n\r\n\x05\x05\x07\x02/\x01\x12\x04\xa3\x06\x02\x0c\n\r\n\x05\x05\
-    \x07\x02/\x02\x12\x04\xa3\x06\x0f\x11\n\x0c\n\x04\x05\x07\x020\x12\x04\
-    \xa4\x06\x02\x17\n\r\n\x05\x05\x07\x020\x01\x12\x04\xa4\x06\x02\x11\n\r\
-    \n\x05\x05\x07\x020\x02\x12\x04\xa4\x06\x14\x16\n\x0c\n\x04\x05\x07\x021\
-    \x12\x04\xa5\x06\x02\x0f\n\r\n\x05\x05\x07\x021\x01\x12\x04\xa5\x06\x02\
-    \t\n\r\n\x05\x05\x07\x021\x02\x12\x04\xa5\x06\x0c\x0e\n\x0c\n\x04\x05\
-    \x07\x022\x12\x04\xa6\x06\x02\x0e\n\r\n\x05\x05\x07\x022\x01\x12\x04\xa6\
-    \x06\x02\x07\n\r\n\x05\x05\x07\x022\x02\x12\x04\xa6\x06\x0b\r\n\x0c\n\
-    \x04\x05\x07\x023\x12\x04\xa7\x06\x02\x11\n\r\n\x05\x05\x07\x023\x01\x12\
-    \x04\xa7\x06\x02\n\n\r\n\x05\x05\x07\x023\x02\x12\x04\xa7\x06\r\x10\n\
-    \x0c\n\x04\x05\x07\x024\x12\x04\xa8\x06\x02\r\n\r\n\x05\x05\x07\x024\x01\
-    \x12\x04\xa8\x06\x02\x08\n\r\n\x05\x05\x07\x024\x02\x12\x04\xa8\x06\x0b\
-    \x0c\n\x0c\n\x04\x05\x07\x025\x12\x04\xa9\x06\x02\r\n\r\n\x05\x05\x07\
-    \x025\x01\x12\x04\xa9\x06\x02\x07\n\r\n\x05\x05\x07\x025\x02\x12\x04\xa9\
-    \x06\n\x0c\n\x0c\n\x04\x05\x07\x026\x12\x04\xaa\x06\x02\x0c\n\r\n\x05\
-    \x05\x07\x026\x01\x12\x04\xaa\x06\x02\x06\n\r\n\x05\x05\x07\x026\x02\x12\
-    \x04\xaa\x06\t\x0b\n\x0c\n\x04\x05\x07\x027\x12\x04\xab\x06\x02\x0c\n\r\
-    \n\x05\x05\x07\x027\x01\x12\x04\xab\x06\x02\x06\n\r\n\x05\x05\x07\x027\
-    \x02\x12\x04\xab\x06\t\x0b\n\x0c\n\x04\x05\x07\x028\x12\x04\xac\x06\x02\
-    \x0b\n\r\n\x05\x05\x07\x028\x01\x12\x04\xac\x06\x02\x05\n\r\n\x05\x05\
-    \x07\x028\x02\x12\x04\xac\x06\x08\n\n\x0c\n\x04\x05\x07\x029\x12\x04\xad\
-    \x06\x02\r\n\r\n\x05\x05\x07\x029\x01\x12\x04\xad\x06\x02\x06\n\r\n\x05\
-    \x05\x07\x029\x02\x12\x04\xad\x06\t\x0c\n\x0c\n\x04\x05\x07\x02:\x12\x04\
-    \xae\x06\x02\x10\n\r\n\x05\x05\x07\x02:\x01\x12\x04\xae\x06\x02\n\n\r\n\
-    \x05\x05\x07\x02:\x02\x12\x04\xae\x06\r\x0f\n\x0c\n\x04\x05\x07\x02;\x12\
-    \x04\xaf\x06\x02\x10\n\r\n\x05\x05\x07\x02;\x01\x12\x04\xaf\x06\x02\n\n\
-    \r\n\x05\x05\x07\x02;\x02\x12\x04\xaf\x06\r\x0f\n\x0c\n\x04\x05\x07\x02<\
-    \x12\x04\xb0\x06\x02\x0e\n\r\n\x05\x05\x07\x02<\x01\x12\x04\xb0\x06\x02\
-    \x08\n\r\n\x05\x05\x07\x02<\x02\x12\x04\xb0\x06\x0b\r\n(\n\x04\x05\x07\
-    \x02=\x12\x04\xb1\x06\x02\x0f\"\x1a\x20https://nickel-lang.org/\n\n\r\n\
-    \x05\x05\x07\x02=\x01\x12\x04\xb1\x06\x02\x08\n\r\n\x05\x05\x07\x02=\x02\
-    \x12\x04\xb1\x06\x0b\x0e\n\x0c\n\x04\x05\x07\x02>\x12\x04\xb2\x06\x02\
-    \x0b\n\r\n\x05\x05\x07\x02>\x01\x12\x04\xb2\x06\x02\x05\n\r\n\x05\x05\
-    \x07\x02>\x02\x12\x04\xb2\x06\x08\n\n\x0c\n\x04\x05\x07\x02?\x12\x04\xb3\
-    \x06\x02\r\n\r\n\x05\x05\x07\x02?\x01\x12\x04\xb3\x06\x02\x07\n\r\n\x05\
-    \x05\x07\x02?\x02\x12\x04\xb3\x06\n\x0c\n\x0c\n\x04\x05\x07\x02@\x12\x04\
-    \xb4\x06\x02\x13\n\r\n\x05\x05\x07\x02@\x01\x12\x04\xb4\x06\x02\r\n\r\n\
-    \x05\x05\x07\x02@\x02\x12\x04\xb4\x06\x10\x12\n\x0c\n\x04\x05\x07\x02A\
-    \x12\x04\xb5\x06\x02\x15\n\r\n\x05\x05\x07\x02A\x01\x12\x04\xb5\x06\x02\
-    \x0f\n\r\n\x05\x05\x07\x02A\x02\x12\x04\xb5\x06\x12\x14\n\x0c\n\x04\x05\
-    \x07\x02B\x12\x04\xb6\x06\x02\x0e\n\r\n\x05\x05\x07\x02B\x01\x12\x04\xb6\
-    \x06\x02\x08\n\r\n\x05\x05\x07\x02B\x02\x12\x04\xb6\x06\x0b\r\n\x0c\n\
-    \x04\x05\x07\x02C\x12\x04\xb7\x06\x02\x0b\n\r\n\x05\x05\x07\x02C\x01\x12\
-    \x04\xb7\x06\x02\x05\n\r\n\x05\x05\x07\x02C\x02\x12\x04\xb7\x06\x08\n\n\
-    \x0c\n\x04\x05\x07\x02D\x12\x04\xb8\x06\x02\r\n\r\n\x05\x05\x07\x02D\x01\
-    \x12\x04\xb8\x06\x02\x07\n\r\n\x05\x05\x07\x02D\x02\x12\x04\xb8\x06\n\
-    \x0c\n\x0c\n\x04\x05\x07\x02E\x12\x04\xb9\x06\x02\x0c\n\r\n\x05\x05\x07\
-    \x02E\x01\x12\x04\xb9\x06\x02\x06\n\r\n\x05\x05\x07\x02E\x02\x12\x04\xb9\
-    \x06\t\x0b\n\x0c\n\x04\x05\x07\x02F\x12\x04\xba\x06\x02\x12\n\r\n\x05\
-    \x05\x07\x02F\x01\x12\x04\xba\x06\x02\x0c\n\r\n\x05\x05\x07\x02F\x02\x12\
-    \x04\xba\x06\x0f\x11\n\x0c\n\x04\x05\x07\x02G\x12\x04\xbb\x06\x02\x0e\n\
-    \r\n\x05\x05\x07\x02G\x01\x12\x04\xbb\x06\x02\x08\n\r\n\x05\x05\x07\x02G\
-    \x02\x12\x04\xbb\x06\x0b\r\n\x0c\n\x04\x05\x07\x02H\x12\x04\xbc\x06\x02\
-    \x11\n\r\n\x05\x05\x07\x02H\x01\x12\x04\xbc\x06\x02\n\n\r\n\x05\x05\x07\
-    \x02H\x02\x12\x04\xbc\x06\r\x10\n\x0c\n\x04\x05\x07\x02I\x12\x04\xbd\x06\
-    \x02\x0e\n\r\n\x05\x05\x07\x02I\x01\x12\x04\xbd\x06\x02\x08\n\r\n\x05\
-    \x05\x07\x02I\x02\x12\x04\xbd\x06\x0b\r\n\x0c\n\x04\x05\x07\x02J\x12\x04\
-    \xbe\x06\x02\t\n\r\n\x05\x05\x07\x02J\x01\x12\x04\xbe\x06\x02\x03\n\r\n\
-    \x05\x05\x07\x02J\x02\x12\x04\xbe\x06\x06\x08\n\x0c\n\x04\x05\x07\x02K\
-    \x12\x04\xbf\x06\x02\x0e\n\r\n\x05\x05\x07\x02K\x01\x12\x04\xbf\x06\x02\
-    \x08\n\r\n\x05\x05\x07\x02K\x02\x12\x04\xbf\x06\x0b\r\n\x0c\n\x04\x05\
-    \x07\x02L\x12\x04\xc0\x06\x02\x0c\n\r\n\x05\x05\x07\x02L\x01\x12\x04\xc0\
-    \x06\x02\x06\n\r\n\x05\x05\x07\x02L\x02\x12\x04\xc0\x06\t\x0b\n\x0c\n\
-    \x04\x05\x07\x02M\x12\x04\xc1\x06\x02\r\n\r\n\x05\x05\x07\x02M\x01\x12\
-    \x04\xc1\x06\x02\x07\n\r\n\x05\x05\x07\x02M\x02\x12\x04\xc1\x06\n\x0c\n2\
-    \n\x04\x05\x07\x02N\x12\x04\xc2\x06\x02\x0e\"$\x20Internal\x20language\
-    \x20for\x20testing\x20SCIP\n\n\r\n\x05\x05\x07\x02N\x01\x12\x04\xc2\x06\
-    \x02\x07\n\r\n\x05\x05\x07\x02N\x02\x12\x04\xc2\x06\n\r\n\x0c\n\x04\x05\
-    \x07\x02O\x12\x04\xc3\x06\x02\x0c\n\r\n\x05\x05\x07\x02O\x01\x12\x04\xc3\
-    \x06\x02\x06\n\r\n\x05\x05\x07\x02O\x02\x12\x04\xc3\x06\t\x0b\n\x0c\n\
-    \x04\x05\x07\x02P\x12\x04\xc4\x06\x02\x0c\n\r\n\x05\x05\x07\x02P\x01\x12\
-    \x04\xc4\x06\x02\x06\n\r\n\x05\x05\x07\x02P\x02\x12\x04\xc4\x06\t\x0b\n\
-    \x0c\n\x04\x05\x07\x02Q\x12\x04\xc5\x06\x02\x0c\n\r\n\x05\x05\x07\x02Q\
-    \x01\x12\x04\xc5\x06\x02\x06\n\r\n\x05\x05\x07\x02Q\x02\x12\x04\xc5\x06\
-    \t\x0b\n\x0c\n\x04\x05\x07\x02R\x12\x04\xc6\x06\x02\x0b\n\r\n\x05\x05\
-    \x07\x02R\x01\x12\x04\xc6\x06\x02\x05\n\r\n\x05\x05\x07\x02R\x02\x12\x04\
-    \xc6\x06\x08\n\n\x0c\n\x04\x05\x07\x02S\x12\x04\xc7\x06\x02\x0c\n\r\n\
-    \x05\x05\x07\x02S\x01\x12\x04\xc7\x06\x02\x06\n\r\n\x05\x05\x07\x02S\x02\
-    \x12\x04\xc7\x06\t\x0b\n\x0c\n\x04\x05\x07\x02T\x12\x04\xc8\x06\x02\x0b\
-    \n\r\n\x05\x05\x07\x02T\x01\x12\x04\xc8\x06\x02\x05\n\r\n\x05\x05\x07\
-    \x02T\x02\x12\x04\xc8\x06\x08\n\n\x0c\n\x04\x05\x07\x02U\x12\x04\xc9\x06\
-    \x02\x0b\n\r\n\x05\x05\x07\x02U\x01\x12\x04\xc9\x06\x02\x05\n\r\n\x05\
-    \x05\x07\x02U\x02\x12\x04\xc9\x06\x08\n\n\x0c\n\x04\x05\x07\x02V\x12\x04\
-    \xca\x06\x02\x0c\n\r\n\x05\x05\x07\x02V\x01\x12\x04\xca\x06\x02\x06\n\r\
-    \n\x05\x05\x07\x02V\x02\x12\x04\xca\x06\t\x0b\n\x0c\n\x04\x05\x07\x02W\
-    \x12\x04\xcb\x06\x02\x0c\n\r\n\x05\x05\x07\x02W\x01\x12\x04\xcb\x06\x02\
-    \x07\n\r\n\x05\x05\x07\x02W\x02\x12\x04\xcb\x06\n\x0b\n\x0c\n\x04\x05\
-    \x07\x02X\x12\x04\xcc\x06\x02\x0e\n\r\n\x05\x05\x07\x02X\x01\x12\x04\xcc\
-    \x06\x02\x08\n\r\n\x05\x05\x07\x02X\x02\x12\x04\xcc\x06\x0b\r\n\x14\n\
-    \x04\x05\x07\x02Y\x12\x04\xcd\x06\x02\x13\"\x06\x20Bash\n\n\r\n\x05\x05\
-    \x07\x02Y\x01\x12\x04\xcd\x06\x02\r\n\r\n\x05\x05\x07\x02Y\x02\x12\x04\
-    \xcd\x06\x10\x12\n\x0c\n\x04\x05\x07\x02Z\x12\x04\xce\x06\x02\x0f\n\r\n\
-    \x05\x05\x07\x02Z\x01\x12\x04\xce\x06\x02\t\n\r\n\x05\x05\x07\x02Z\x02\
-    \x12\x04\xce\x06\x0c\x0e\n\x0c\n\x04\x05\x07\x02[\x12\x04\xcf\x06\x02\
-    \x0e\n\r\n\x05\x05\x07\x02[\x01\x12\x04\xcf\x06\x02\x07\n\r\n\x05\x05\
-    \x07\x02[\x02\x12\x04\xcf\x06\n\r\n\x0c\n\x04\x05\x07\x02\\\x12\x04\xd0\
-    \x06\x02\x10\n\r\n\x05\x05\x07\x02\\\x01\x12\x04\xd0\x06\x02\n\n\r\n\x05\
-    \x05\x07\x02\\\x02\x12\x04\xd0\x06\r\x0f\n\x0c\n\x04\x05\x07\x02]\x12\
-    \x04\xd1\x06\x02\x0f\n\r\n\x05\x05\x07\x02]\x01\x12\x04\xd1\x06\x02\x08\
-    \n\r\n\x05\x05\x07\x02]\x02\x12\x04\xd1\x06\x0b\x0e\n\x0c\n\x04\x05\x07\
-    \x02^\x12\x04\xd2\x06\x02\x0c\n\r\n\x05\x05\x07\x02^\x01\x12\x04\xd2\x06\
-    \x02\x07\n\r\n\x05\x05\x07\x02^\x02\x12\x04\xd2\x06\n\x0b\n\x0c\n\x04\
-    \x05\x07\x02_\x12\x04\xd3\x06\x02\x0c\n\r\n\x05\x05\x07\x02_\x01\x12\x04\
-    \xd3\x06\x02\x05\n\r\n\x05\x05\x07\x02_\x02\x12\x04\xd3\x06\x08\x0b\n\
-    \x0c\n\x04\x05\x07\x02`\x12\x04\xd4\x06\x02\x0c\n\r\n\x05\x05\x07\x02`\
-    \x01\x12\x04\xd4\x06\x02\x06\n\r\n\x05\x05\x07\x02`\x02\x12\x04\xd4\x06\
-    \t\x0b\n\x0c\n\x04\x05\x07\x02a\x12\x04\xd5\x06\x02\x0b\n\r\n\x05\x05\
-    \x07\x02a\x01\x12\x04\xd5\x06\x02\x05\n\r\n\x05\x05\x07\x02a\x02\x12\x04\
-    \xd5\x06\x08\n\n\x0c\n\x04\x05\x07\x02b\x12\x04\xd6\x06\x02\x0f\n\r\n\
-    \x05\x05\x07\x02b\x01\x12\x04\xd6\x06\x02\x08\n\r\n\x05\x05\x07\x02b\x02\
-    \x12\x04\xd6\x06\x0b\x0e\n\x0c\n\x04\x05\x07\x02c\x12\x04\xd7\x06\x02\
-    \x12\n\r\n\x05\x05\x07\x02c\x01\x12\x04\xd7\x06\x02\x0c\n\r\n\x05\x05\
-    \x07\x02c\x02\x12\x04\xd7\x06\x0f\x11\n\x0c\n\x04\x05\x07\x02d\x12\x04\
-    \xd8\x06\x02\x17\n\r\n\x05\x05\x07\x02d\x01\x12\x04\xd8\x06\x02\x11\n\r\
-    \n\x05\x05\x07\x02d\x02\x12\x04\xd8\x06\x14\x16\n\x0c\n\x04\x05\x07\x02e\
-    \x12\x04\xd9\x06\x02\x10\n\r\n\x05\x05\x07\x02e\x01\x12\x04\xd9\x06\x02\
-    \t\n\r\n\x05\x05\x07\x02e\x02\x12\x04\xd9\x06\x0c\x0f\n\x0c\n\x04\x05\
-    \x07\x02f\x12\x04\xda\x06\x02\r\n\r\n\x05\x05\x07\x02f\x01\x12\x04\xda\
-    \x06\x02\x06\n\r\n\x05\x05\x07\x02f\x02\x12\x04\xda\x06\t\x0c\n\x0c\n\
-    \x04\x05\x07\x02g\x12\x04\xdb\x06\x02\x13\n\r\n\x05\x05\x07\x02g\x01\x12\
-    \x04\xdb\x06\x02\r\n\r\n\x05\x05\x07\x02g\x02\x12\x04\xdb\x06\x10\x12\n\
-    \x0c\n\x04\x05\x07\x02h\x12\x04\xdc\x06\x02\x0b\n\r\n\x05\x05\x07\x02h\
-    \x01\x12\x04\xdc\x06\x02\x05\n\r\n\x05\x05\x07\x02h\x02\x12\x04\xdc\x06\
-    \x08\n\n\x0c\n\x04\x05\x07\x02i\x12\x04\xdd\x06\x02\x0f\n\r\n\x05\x05\
-    \x07\x02i\x01\x12\x04\xdd\x06\x02\t\n\r\n\x05\x05\x07\x02i\x02\x12\x04\
-    \xdd\x06\x0c\x0e\n\x0c\n\x04\x05\x07\x02j\x12\x04\xde\x06\x02\x0b\n\r\n\
-    \x05\x05\x07\x02j\x01\x12\x04\xde\x06\x02\x05\n\r\n\x05\x05\x07\x02j\x02\
-    \x12\x04\xde\x06\x08\n\n\x0c\n\x04\x05\x07\x02k\x12\x04\xdf\x06\x02\x0b\
-    \n\r\n\x05\x05\x07\x02k\x01\x12\x04\xdf\x06\x02\x05\n\r\n\x05\x05\x07\
-    \x02k\x02\x12\x04\xdf\x06\x08\n\n\x0c\n\x04\x05\x07\x02l\x12\x04\xe0\x06\
-    \x02\x0c\n\r\n\x05\x05\x07\x02l\x01\x12\x04\xe0\x06\x02\x06\n\r\n\x05\
-    \x05\x07\x02l\x02\x12\x04\xe0\x06\t\x0b\n\x93\x03\n\x04\x05\x07\x02m\x12\
-    \x04\xe1\x06\x02\x0b\"\x84\x03\x20NextLanguage\x20=\x20111;\n\x20Steps\
+    \x20\x20\x20\x20\x20|\n\x20\x20\x20\x20\x20return\x20n\x20*\x20factorial\
+    (n-1)\x20if\x20n\x20else\x201\x20\x20\x20|\n\x20<\x20enclosing_range\x20\
+    end-----------------------|\n\x20\n\x20```\n\n\x20For\x20reference\x20oc\
+    currences,\x20the\x20enclosing\x20range\x20should\x20indicate\x20the\x20\
+    start/end\n\x20bounds\x20of\x20the\x20parent\x20expression.\n\x20```\n\
+    \x20const\x20a\x20=\x20a.b\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+    \x20\x20^\x20range\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^\x20e\
+    nclosing_range\n\x20const\x20b\x20=\x20a.b(41).f(42).g(43)\n\x20\x20\x20\
+    \x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^\x20ran\
+    ge\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20^^^^^^^^^^^^^\x20enclosi\
+    ng_range\n\x20```\n\n\r\n\x05\x04\t\x02\x06\x04\x12\x04\xd0\x05\x02\n\n\
+    \r\n\x05\x04\t\x02\x06\x05\x12\x04\xd0\x05\x0b\x10\n\r\n\x05\x04\t\x02\
+    \x06\x01\x12\x04\xd0\x05\x11\x20\n\r\n\x05\x04\t\x02\x06\x03\x12\x04\xd0\
+    \x05#$\nw\n\x02\x04\n\x12\x06\xd5\x05\0\xe0\x05\x01\x1ai\x20Represents\
+    \x20a\x20diagnostic,\x20such\x20as\x20a\x20compiler\x20error\x20or\x20wa\
+    rning,\x20which\x20should\x20be\n\x20reported\x20for\x20a\x20document.\n\
+    \n\x0b\n\x03\x04\n\x01\x12\x04\xd5\x05\x08\x12\nW\n\x04\x04\n\x02\0\x12\
+    \x04\xd7\x05\x02\x18\x1aI\x20Should\x20this\x20diagnostic\x20be\x20repor\
+    ted\x20as\x20an\x20error,\x20warning,\x20info,\x20or\x20hint?\n\n\r\n\
+    \x05\x04\n\x02\0\x06\x12\x04\xd7\x05\x02\n\n\r\n\x05\x04\n\x02\0\x01\x12\
+    \x04\xd7\x05\x0b\x13\n\r\n\x05\x04\n\x02\0\x03\x12\x04\xd7\x05\x16\x17\n\
+    ]\n\x04\x04\n\x02\x01\x12\x04\xd9\x05\x02\x12\x1aO\x20(optional)\x20Code\
+    \x20of\x20this\x20diagnostic,\x20which\x20might\x20appear\x20in\x20the\
+    \x20user\x20interface.\n\n\r\n\x05\x04\n\x02\x01\x05\x12\x04\xd9\x05\x02\
+    \x08\n\r\n\x05\x04\n\x02\x01\x01\x12\x04\xd9\x05\t\r\n\r\n\x05\x04\n\x02\
+    \x01\x03\x12\x04\xd9\x05\x10\x11\n+\n\x04\x04\n\x02\x02\x12\x04\xdb\x05\
+    \x02\x15\x1a\x1d\x20Message\x20of\x20this\x20diagnostic.\n\n\r\n\x05\x04\
+    \n\x02\x02\x05\x12\x04\xdb\x05\x02\x08\n\r\n\x05\x04\n\x02\x02\x01\x12\
+    \x04\xdb\x05\t\x10\n\r\n\x05\x04\n\x02\x02\x03\x12\x04\xdb\x05\x13\x14\n\
+    ~\n\x04\x04\n\x02\x03\x12\x04\xde\x05\x02\x14\x1ap\x20(optional)\x20Huma\
+    n-readable\x20string\x20describing\x20the\x20source\x20of\x20this\x20dia\
+    gnostic,\x20e.g.\n\x20'typescript'\x20or\x20'super\x20lint'.\n\n\r\n\x05\
+    \x04\n\x02\x03\x05\x12\x04\xde\x05\x02\x08\n\r\n\x05\x04\n\x02\x03\x01\
+    \x12\x04\xde\x05\t\x0f\n\r\n\x05\x04\n\x02\x03\x03\x12\x04\xde\x05\x12\
+    \x13\n\x0c\n\x04\x04\n\x02\x04\x12\x04\xdf\x05\x02\"\n\r\n\x05\x04\n\x02\
+    \x04\x04\x12\x04\xdf\x05\x02\n\n\r\n\x05\x04\n\x02\x04\x06\x12\x04\xdf\
+    \x05\x0b\x18\n\r\n\x05\x04\n\x02\x04\x01\x12\x04\xdf\x05\x19\x1d\n\r\n\
+    \x05\x04\n\x02\x04\x03\x12\x04\xdf\x05\x20!\n\x0c\n\x02\x05\x05\x12\x06\
+    \xe2\x05\0\xe8\x05\x01\n\x0b\n\x03\x05\x05\x01\x12\x04\xe2\x05\x05\r\n\
+    \x0c\n\x04\x05\x05\x02\0\x12\x04\xe3\x05\x02\x1a\n\r\n\x05\x05\x05\x02\0\
+    \x01\x12\x04\xe3\x05\x02\x15\n\r\n\x05\x05\x05\x02\0\x02\x12\x04\xe3\x05\
+    \x18\x19\n\x0c\n\x04\x05\x05\x02\x01\x12\x04\xe4\x05\x02\x0c\n\r\n\x05\
+    \x05\x05\x02\x01\x01\x12\x04\xe4\x05\x02\x07\n\r\n\x05\x05\x05\x02\x01\
+    \x02\x12\x04\xe4\x05\n\x0b\n\x0c\n\x04\x05\x05\x02\x02\x12\x04\xe5\x05\
+    \x02\x0e\n\r\n\x05\x05\x05\x02\x02\x01\x12\x04\xe5\x05\x02\t\n\r\n\x05\
+    \x05\x05\x02\x02\x02\x12\x04\xe5\x05\x0c\r\n\x0c\n\x04\x05\x05\x02\x03\
+    \x12\x04\xe6\x05\x02\x12\n\r\n\x05\x05\x05\x02\x03\x01\x12\x04\xe6\x05\
+    \x02\r\n\r\n\x05\x05\x05\x02\x03\x02\x12\x04\xe6\x05\x10\x11\n\x0c\n\x04\
+    \x05\x05\x02\x04\x12\x04\xe7\x05\x02\x0b\n\r\n\x05\x05\x05\x02\x04\x01\
+    \x12\x04\xe7\x05\x02\x06\n\r\n\x05\x05\x05\x02\x04\x02\x12\x04\xe7\x05\t\
+    \n\n\x0c\n\x02\x05\x06\x12\x06\xea\x05\0\xee\x05\x01\n\x0b\n\x03\x05\x06\
+    \x01\x12\x04\xea\x05\x05\x12\n\x0c\n\x04\x05\x06\x02\0\x12\x04\xeb\x05\
+    \x02\x1f\n\r\n\x05\x05\x06\x02\0\x01\x12\x04\xeb\x05\x02\x1a\n\r\n\x05\
+    \x05\x06\x02\0\x02\x12\x04\xeb\x05\x1d\x1e\n\x0c\n\x04\x05\x06\x02\x01\
+    \x12\x04\xec\x05\x02\x12\n\r\n\x05\x05\x06\x02\x01\x01\x12\x04\xec\x05\
+    \x02\r\n\r\n\x05\x05\x06\x02\x01\x02\x12\x04\xec\x05\x10\x11\n\x0c\n\x04\
+    \x05\x06\x02\x02\x12\x04\xed\x05\x02\x11\n\r\n\x05\x05\x06\x02\x02\x01\
+    \x12\x04\xed\x05\x02\x0c\n\r\n\x05\x05\x06\x02\x02\x02\x12\x04\xed\x05\
+    \x0f\x10\n\xd0\x03\n\x02\x05\x07\x12\x06\xf6\x05\0\xec\x06\x01\x1a\xc1\
+    \x03\x20Language\x20standardises\x20names\x20of\x20common\x20programming\
+    \x20languages\x20that\x20can\x20be\x20used\n\x20for\x20the\x20`Document.\
+    language`\x20field.\x20The\x20primary\x20purpose\x20of\x20this\x20enum\
+    \x20is\x20to\n\x20prevent\x20a\x20situation\x20where\x20we\x20have\x20a\
+    \x20single\x20programming\x20language\x20ends\x20up\x20with\n\x20multipl\
+    e\x20string\x20representations.\x20For\x20example,\x20the\x20C++\x20lang\
+    uage\x20uses\x20the\x20name\n\x20\"CPP\"\x20in\x20this\x20enum\x20and\
+    \x20other\x20names\x20such\x20as\x20\"cpp\"\x20are\x20incompatible.\n\
+    \x20Feel\x20free\x20to\x20send\x20a\x20pull-request\x20to\x20add\x20miss\
+    ing\x20programming\x20languages.\n\n\x0b\n\x03\x05\x07\x01\x12\x04\xf6\
+    \x05\x05\r\n\x0c\n\x04\x05\x07\x02\0\x12\x04\xf7\x05\x02\x1a\n\r\n\x05\
+    \x05\x07\x02\0\x01\x12\x04\xf7\x05\x02\x15\n\r\n\x05\x05\x07\x02\0\x02\
+    \x12\x04\xf7\x05\x18\x19\n\x0c\n\x04\x05\x07\x02\x01\x12\x04\xf8\x05\x02\
+    \x0c\n\r\n\x05\x05\x07\x02\x01\x01\x12\x04\xf8\x05\x02\x06\n\r\n\x05\x05\
+    \x07\x02\x01\x02\x12\x04\xf8\x05\t\x0b\n\x0c\n\x04\x05\x07\x02\x02\x12\
+    \x04\xf9\x05\x02\x0c\n\r\n\x05\x05\x07\x02\x02\x01\x12\x04\xf9\x05\x02\
+    \x06\n\r\n\x05\x05\x07\x02\x02\x02\x12\x04\xf9\x05\t\x0b\n\x0c\n\x04\x05\
+    \x07\x02\x03\x12\x04\xfa\x05\x02\x0b\n\r\n\x05\x05\x07\x02\x03\x01\x12\
+    \x04\xfa\x05\x02\x05\n\r\n\x05\x05\x07\x02\x03\x02\x12\x04\xfa\x05\x08\n\
+    \n\x0c\n\x04\x05\x07\x02\x04\x12\x04\xfb\x05\x02\x0b\n\r\n\x05\x05\x07\
+    \x02\x04\x01\x12\x04\xfb\x05\x02\x05\n\r\n\x05\x05\x07\x02\x04\x02\x12\
+    \x04\xfb\x05\x08\n\n\x0c\n\x04\x05\x07\x02\x05\x12\x04\xfc\x05\x02\x0c\n\
+    \r\n\x05\x05\x07\x02\x05\x01\x12\x04\xfc\x05\x02\x06\n\r\n\x05\x05\x07\
+    \x02\x05\x02\x12\x04\xfc\x05\t\x0b\n\x0c\n\x04\x05\x07\x02\x06\x12\x04\
+    \xfd\x05\x02\x10\n\r\n\x05\x05\x07\x02\x06\x01\x12\x04\xfd\x05\x02\n\n\r\
+    \n\x05\x05\x07\x02\x06\x02\x12\x04\xfd\x05\r\x0f\n\x0c\n\x04\x05\x07\x02\
+    \x07\x12\x04\xfe\x05\x02\x10\n\r\n\x05\x05\x07\x02\x07\x01\x12\x04\xfe\
+    \x05\x02\n\n\r\n\x05\x05\x07\x02\x07\x02\x12\x04\xfe\x05\r\x0f\n\x0c\n\
+    \x04\x05\x07\x02\x08\x12\x04\xff\x05\x02\x0b\n\r\n\x05\x05\x07\x02\x08\
+    \x01\x12\x04\xff\x05\x02\x05\n\r\n\x05\x05\x07\x02\x08\x02\x12\x04\xff\
+    \x05\x08\n\n\x0c\n\x04\x05\x07\x02\t\x12\x04\x80\x06\x02\x0b\n\r\n\x05\
+    \x05\x07\x02\t\x01\x12\x04\x80\x06\x02\x05\n\r\n\x05\x05\x07\x02\t\x02\
+    \x12\x04\x80\x06\x08\n\n\x0c\n\x04\x05\x07\x02\n\x12\x04\x81\x06\x02\x0e\
+    \n\r\n\x05\x05\x07\x02\n\x01\x12\x04\x81\x06\x02\x08\n\r\n\x05\x05\x07\
+    \x02\n\x02\x12\x04\x81\x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x0b\x12\x04\x82\
+    \x06\x02\t\n\r\n\x05\x05\x07\x02\x0b\x01\x12\x04\x82\x06\x02\x03\n\r\n\
+    \x05\x05\x07\x02\x0b\x02\x12\x04\x82\x06\x06\x08\n\x0c\n\x04\x05\x07\x02\
+    \x0c\x12\x04\x83\x06\x02\r\n\r\n\x05\x05\x07\x02\x0c\x01\x12\x04\x83\x06\
+    \x02\x07\n\r\n\x05\x05\x07\x02\x0c\x02\x12\x04\x83\x06\n\x0c\nH\n\x04\
+    \x05\x07\x02\r\x12\x04\x84\x06\x02\x0b\":\x20C++\x20(the\x20name\x20\"CP\
+    P\"\x20was\x20chosen\x20for\x20consistency\x20with\x20LSP)\n\n\r\n\x05\
+    \x05\x07\x02\r\x01\x12\x04\x84\x06\x02\x05\n\r\n\x05\x05\x07\x02\r\x02\
+    \x12\x04\x84\x06\x08\n\n\x0c\n\x04\x05\x07\x02\x0e\x12\x04\x85\x06\x02\
+    \x0b\n\r\n\x05\x05\x07\x02\x0e\x01\x12\x04\x85\x06\x02\x05\n\r\n\x05\x05\
+    \x07\x02\x0e\x02\x12\x04\x85\x06\x08\n\n\x0c\n\x04\x05\x07\x02\x0f\x12\
+    \x04\x86\x06\x02\r\n\r\n\x05\x05\x07\x02\x0f\x01\x12\x04\x86\x06\x02\x08\
+    \n\r\n\x05\x05\x07\x02\x0f\x02\x12\x04\x86\x06\x0b\x0c\n\x0c\n\x04\x05\
+    \x07\x02\x10\x12\x04\x87\x06\x02\x0e\n\r\n\x05\x05\x07\x02\x10\x01\x12\
+    \x04\x87\x06\x02\t\n\r\n\x05\x05\x07\x02\x10\x02\x12\x04\x87\x06\x0c\r\n\
+    \x0c\n\x04\x05\x07\x02\x11\x12\x04\x88\x06\x02\x14\n\r\n\x05\x05\x07\x02\
+    \x11\x01\x12\x04\x88\x06\x02\x0e\n\r\n\x05\x05\x07\x02\x11\x02\x12\x04\
+    \x88\x06\x11\x13\n\x0c\n\x04\x05\x07\x02\x12\x12\x04\x89\x06\x02\x11\n\r\
+    \n\x05\x05\x07\x02\x12\x01\x12\x04\x89\x06\x02\x0c\n\r\n\x05\x05\x07\x02\
+    \x12\x02\x12\x04\x89\x06\x0f\x10\n\x0c\n\x04\x05\x07\x02\x13\x12\x04\x8a\
+    \x06\x02\x0b\n\r\n\x05\x05\x07\x02\x13\x01\x12\x04\x8a\x06\x02\x05\n\r\n\
+    \x05\x05\x07\x02\x13\x02\x12\x04\x8a\x06\x08\n\n\x0c\n\x04\x05\x07\x02\
+    \x14\x12\x04\x8b\x06\x02\x0c\n\r\n\x05\x05\x07\x02\x14\x01\x12\x04\x8b\
+    \x06\x02\x06\n\r\n\x05\x05\x07\x02\x14\x02\x12\x04\x8b\x06\t\x0b\n\x0c\n\
+    \x04\x05\x07\x02\x15\x12\x04\x8c\x06\x02\x0b\n\r\n\x05\x05\x07\x02\x15\
+    \x01\x12\x04\x8c\x06\x02\x06\n\r\n\x05\x05\x07\x02\x15\x02\x12\x04\x8c\
+    \x06\t\n\n\x0c\n\x04\x05\x07\x02\x16\x12\x04\x8d\x06\x02\x0e\n\r\n\x05\
+    \x05\x07\x02\x16\x01\x12\x04\x8d\x06\x02\x08\n\r\n\x05\x05\x07\x02\x16\
+    \x02\x12\x04\x8d\x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x17\x12\x04\x8e\x06\
+    \x02\x0c\n\r\n\x05\x05\x07\x02\x17\x01\x12\x04\x8e\x06\x02\x06\n\r\n\x05\
+    \x05\x07\x02\x17\x02\x12\x04\x8e\x06\t\x0b\n\x0c\n\x04\x05\x07\x02\x18\
+    \x12\x04\x8f\x06\x02\x12\n\r\n\x05\x05\x07\x02\x18\x01\x12\x04\x8f\x06\
+    \x02\x0c\n\r\n\x05\x05\x07\x02\x18\x02\x12\x04\x8f\x06\x0f\x11\n\x0c\n\
+    \x04\x05\x07\x02\x19\x12\x04\x90\x06\x02\x0e\n\r\n\x05\x05\x07\x02\x19\
+    \x01\x12\x04\x90\x06\x02\x08\n\r\n\x05\x05\x07\x02\x19\x02\x12\x04\x90\
+    \x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x1a\x12\x04\x91\x06\x02\x0e\n\r\n\x05\
+    \x05\x07\x02\x1a\x01\x12\x04\x91\x06\x02\x08\n\r\n\x05\x05\x07\x02\x1a\
+    \x02\x12\x04\x91\x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x1b\x12\x04\x92\x06\
+    \x02\x0e\n\r\n\x05\x05\x07\x02\x1b\x01\x12\x04\x92\x06\x02\x08\n\r\n\x05\
+    \x05\x07\x02\x1b\x02\x12\x04\x92\x06\x0b\r\n\x0c\n\x04\x05\x07\x02\x1c\
+    \x12\x04\x93\x06\x02\x0e\n\r\n\x05\x05\x07\x02\x1c\x01\x12\x04\x93\x06\
+    \x02\x08\n\r\n\x05\x05\x07\x02\x1c\x02\x12\x04\x93\x06\x0b\r\n\x0c\n\x04\
+    \x05\x07\x02\x1d\x12\x04\x94\x06\x02\x0c\n\r\n\x05\x05\x07\x02\x1d\x01\
+    \x12\x04\x94\x06\x02\x06\n\r\n\x05\x05\x07\x02\x1d\x02\x12\x04\x94\x06\t\
+    \x0b\n\x0c\n\x04\x05\x07\x02\x1e\x12\x04\x95\x06\x02\x0c\n\r\n\x05\x05\
+    \x07\x02\x1e\x01\x12\x04\x95\x06\x02\x06\n\r\n\x05\x05\x07\x02\x1e\x02\
+    \x12\x04\x95\x06\t\x0b\n\x0c\n\x04\x05\x07\x02\x1f\x12\x04\x96\x06\x02\
+    \x0f\n\r\n\x05\x05\x07\x02\x1f\x01\x12\x04\x96\x06\x02\t\n\r\n\x05\x05\
+    \x07\x02\x1f\x02\x12\x04\x96\x06\x0c\x0e\n\x0c\n\x04\x05\x07\x02\x20\x12\
+    \x04\x97\x06\x02\x12\n\r\n\x05\x05\x07\x02\x20\x01\x12\x04\x97\x06\x02\
+    \x0c\n\r\n\x05\x05\x07\x02\x20\x02\x12\x04\x97\x06\x0f\x11\n\x0c\n\x04\
+    \x05\x07\x02!\x12\x04\x98\x06\x02\x12\n\r\n\x05\x05\x07\x02!\x01\x12\x04\
+    \x98\x06\x02\x0c\n\r\n\x05\x05\x07\x02!\x02\x12\x04\x98\x06\x0f\x11\n\
+    \x0c\n\x04\x05\x07\x02\"\x12\x04\x99\x06\x02\x12\n\r\n\x05\x05\x07\x02\"\
+    \x01\x12\x04\x99\x06\x02\x0c\n\r\n\x05\x05\x07\x02\"\x02\x12\x04\x99\x06\
+    \x0f\x11\n\x0c\n\x04\x05\x07\x02#\x12\x04\x9a\x06\x02\n\n\r\n\x05\x05\
+    \x07\x02#\x01\x12\x04\x9a\x06\x02\x04\n\r\n\x05\x05\x07\x02#\x02\x12\x04\
+    \x9a\x06\x07\t\n\x0c\n\x04\x05\x07\x02$\x12\x04\x9b\x06\x02\x0f\n\r\n\
+    \x05\x05\x07\x02$\x01\x12\x04\x9b\x06\x02\t\n\r\n\x05\x05\x07\x02$\x02\
+    \x12\x04\x9b\x06\x0c\x0e\n\x0c\n\x04\x05\x07\x02%\x12\x04\x9c\x06\x02\r\
+    \n\r\n\x05\x05\x07\x02%\x01\x12\x04\x9c\x06\x02\x08\n\r\n\x05\x05\x07\
+    \x02%\x02\x12\x04\x9c\x06\x0b\x0c\n\x0c\n\x04\x05\x07\x02&\x12\x04\x9d\
+    \x06\x02\x0c\n\r\n\x05\x05\x07\x02&\x01\x12\x04\x9d\x06\x02\x06\n\r\n\
+    \x05\x05\x07\x02&\x02\x12\x04\x9d\x06\t\x0b\n\x0c\n\x04\x05\x07\x02'\x12\
+    \x04\x9e\x06\x02\x0c\n\r\n\x05\x05\x07\x02'\x01\x12\x04\x9e\x06\x02\x06\
+    \n\r\n\x05\x05\x07\x02'\x02\x12\x04\x9e\x06\t\x0b\n\x0c\n\x04\x05\x07\
+    \x02(\x12\x04\x9f\x06\x02\x12\n\r\n\x05\x05\x07\x02(\x01\x12\x04\x9f\x06\
+    \x02\x0c\n\r\n\x05\x05\x07\x02(\x02\x12\x04\x9f\x06\x0f\x11\n\x0c\n\x04\
+    \x05\x07\x02)\x12\x04\xa0\x06\x02\x0f\n\r\n\x05\x05\x07\x02)\x01\x12\x04\
+    \xa0\x06\x02\t\n\r\n\x05\x05\x07\x02)\x02\x12\x04\xa0\x06\x0c\x0e\n\x0c\
+    \n\x04\x05\x07\x02*\x12\x04\xa1\x06\x02\r\n\r\n\x05\x05\x07\x02*\x01\x12\
+    \x04\xa1\x06\x02\x07\n\r\n\x05\x05\x07\x02*\x02\x12\x04\xa1\x06\n\x0c\n\
+    \x0c\n\x04\x05\x07\x02+\x12\x04\xa2\x06\x02\x0b\n\r\n\x05\x05\x07\x02+\
+    \x01\x12\x04\xa2\x06\x02\x05\n\r\n\x05\x05\x07\x02+\x02\x12\x04\xa2\x06\
+    \x08\n\n\x0c\n\x04\x05\x07\x02,\x12\x04\xa3\x06\x02\t\n\r\n\x05\x05\x07\
+    \x02,\x01\x12\x04\xa3\x06\x02\x03\n\r\n\x05\x05\x07\x02,\x02\x12\x04\xa3\
+    \x06\x06\x08\n\x0c\n\x04\x05\x07\x02-\x12\x04\xa4\x06\x02\x0c\n\r\n\x05\
+    \x05\x07\x02-\x01\x12\x04\xa4\x06\x02\x06\n\r\n\x05\x05\x07\x02-\x02\x12\
+    \x04\xa4\x06\t\x0b\n\x0c\n\x04\x05\x07\x02.\x12\x04\xa5\x06\x02\x0b\n\r\
+    \n\x05\x05\x07\x02.\x01\x12\x04\xa5\x06\x02\x06\n\r\n\x05\x05\x07\x02.\
+    \x02\x12\x04\xa5\x06\t\n\n\x0c\n\x04\x05\x07\x02/\x12\x04\xa6\x06\x02\
+    \x12\n\r\n\x05\x05\x07\x02/\x01\x12\x04\xa6\x06\x02\x0c\n\r\n\x05\x05\
+    \x07\x02/\x02\x12\x04\xa6\x06\x0f\x11\n\x0c\n\x04\x05\x07\x020\x12\x04\
+    \xa7\x06\x02\x17\n\r\n\x05\x05\x07\x020\x01\x12\x04\xa7\x06\x02\x11\n\r\
+    \n\x05\x05\x07\x020\x02\x12\x04\xa7\x06\x14\x16\n\x0c\n\x04\x05\x07\x021\
+    \x12\x04\xa8\x06\x02\x0f\n\r\n\x05\x05\x07\x021\x01\x12\x04\xa8\x06\x02\
+    \t\n\r\n\x05\x05\x07\x021\x02\x12\x04\xa8\x06\x0c\x0e\n\x0c\n\x04\x05\
+    \x07\x022\x12\x04\xa9\x06\x02\x0e\n\r\n\x05\x05\x07\x022\x01\x12\x04\xa9\
+    \x06\x02\x07\n\r\n\x05\x05\x07\x022\x02\x12\x04\xa9\x06\x0b\r\n\x0c\n\
+    \x04\x05\x07\x023\x12\x04\xaa\x06\x02\x11\n\r\n\x05\x05\x07\x023\x01\x12\
+    \x04\xaa\x06\x02\n\n\r\n\x05\x05\x07\x023\x02\x12\x04\xaa\x06\r\x10\n\
+    \x0c\n\x04\x05\x07\x024\x12\x04\xab\x06\x02\r\n\r\n\x05\x05\x07\x024\x01\
+    \x12\x04\xab\x06\x02\x08\n\r\n\x05\x05\x07\x024\x02\x12\x04\xab\x06\x0b\
+    \x0c\n\x0c\n\x04\x05\x07\x025\x12\x04\xac\x06\x02\r\n\r\n\x05\x05\x07\
+    \x025\x01\x12\x04\xac\x06\x02\x07\n\r\n\x05\x05\x07\x025\x02\x12\x04\xac\
+    \x06\n\x0c\n\x0c\n\x04\x05\x07\x026\x12\x04\xad\x06\x02\x0c\n\r\n\x05\
+    \x05\x07\x026\x01\x12\x04\xad\x06\x02\x06\n\r\n\x05\x05\x07\x026\x02\x12\
+    \x04\xad\x06\t\x0b\n\x0c\n\x04\x05\x07\x027\x12\x04\xae\x06\x02\x0c\n\r\
+    \n\x05\x05\x07\x027\x01\x12\x04\xae\x06\x02\x06\n\r\n\x05\x05\x07\x027\
+    \x02\x12\x04\xae\x06\t\x0b\n\x0c\n\x04\x05\x07\x028\x12\x04\xaf\x06\x02\
+    \x0b\n\r\n\x05\x05\x07\x028\x01\x12\x04\xaf\x06\x02\x05\n\r\n\x05\x05\
+    \x07\x028\x02\x12\x04\xaf\x06\x08\n\n\x0c\n\x04\x05\x07\x029\x12\x04\xb0\
+    \x06\x02\r\n\r\n\x05\x05\x07\x029\x01\x12\x04\xb0\x06\x02\x06\n\r\n\x05\
+    \x05\x07\x029\x02\x12\x04\xb0\x06\t\x0c\n\x0c\n\x04\x05\x07\x02:\x12\x04\
+    \xb1\x06\x02\x10\n\r\n\x05\x05\x07\x02:\x01\x12\x04\xb1\x06\x02\n\n\r\n\
+    \x05\x05\x07\x02:\x02\x12\x04\xb1\x06\r\x0f\n\x0c\n\x04\x05\x07\x02;\x12\
+    \x04\xb2\x06\x02\x10\n\r\n\x05\x05\x07\x02;\x01\x12\x04\xb2\x06\x02\n\n\
+    \r\n\x05\x05\x07\x02;\x02\x12\x04\xb2\x06\r\x0f\n\x0c\n\x04\x05\x07\x02<\
+    \x12\x04\xb3\x06\x02\x0e\n\r\n\x05\x05\x07\x02<\x01\x12\x04\xb3\x06\x02\
+    \x08\n\r\n\x05\x05\x07\x02<\x02\x12\x04\xb3\x06\x0b\r\n(\n\x04\x05\x07\
+    \x02=\x12\x04\xb4\x06\x02\x0f\"\x1a\x20https://nickel-lang.org/\n\n\r\n\
+    \x05\x05\x07\x02=\x01\x12\x04\xb4\x06\x02\x08\n\r\n\x05\x05\x07\x02=\x02\
+    \x12\x04\xb4\x06\x0b\x0e\n\x0c\n\x04\x05\x07\x02>\x12\x04\xb5\x06\x02\
+    \x0b\n\r\n\x05\x05\x07\x02>\x01\x12\x04\xb5\x06\x02\x05\n\r\n\x05\x05\
+    \x07\x02>\x02\x12\x04\xb5\x06\x08\n\n\x0c\n\x04\x05\x07\x02?\x12\x04\xb6\
+    \x06\x02\r\n\r\n\x05\x05\x07\x02?\x01\x12\x04\xb6\x06\x02\x07\n\r\n\x05\
+    \x05\x07\x02?\x02\x12\x04\xb6\x06\n\x0c\n\x0c\n\x04\x05\x07\x02@\x12\x04\
+    \xb7\x06\x02\x13\n\r\n\x05\x05\x07\x02@\x01\x12\x04\xb7\x06\x02\r\n\r\n\
+    \x05\x05\x07\x02@\x02\x12\x04\xb7\x06\x10\x12\n\x0c\n\x04\x05\x07\x02A\
+    \x12\x04\xb8\x06\x02\x15\n\r\n\x05\x05\x07\x02A\x01\x12\x04\xb8\x06\x02\
+    \x0f\n\r\n\x05\x05\x07\x02A\x02\x12\x04\xb8\x06\x12\x14\n\x0c\n\x04\x05\
+    \x07\x02B\x12\x04\xb9\x06\x02\x0e\n\r\n\x05\x05\x07\x02B\x01\x12\x04\xb9\
+    \x06\x02\x08\n\r\n\x05\x05\x07\x02B\x02\x12\x04\xb9\x06\x0b\r\n\x0c\n\
+    \x04\x05\x07\x02C\x12\x04\xba\x06\x02\x0b\n\r\n\x05\x05\x07\x02C\x01\x12\
+    \x04\xba\x06\x02\x05\n\r\n\x05\x05\x07\x02C\x02\x12\x04\xba\x06\x08\n\n\
+    \x0c\n\x04\x05\x07\x02D\x12\x04\xbb\x06\x02\r\n\r\n\x05\x05\x07\x02D\x01\
+    \x12\x04\xbb\x06\x02\x07\n\r\n\x05\x05\x07\x02D\x02\x12\x04\xbb\x06\n\
+    \x0c\n\x0c\n\x04\x05\x07\x02E\x12\x04\xbc\x06\x02\x0c\n\r\n\x05\x05\x07\
+    \x02E\x01\x12\x04\xbc\x06\x02\x06\n\r\n\x05\x05\x07\x02E\x02\x12\x04\xbc\
+    \x06\t\x0b\n\x0c\n\x04\x05\x07\x02F\x12\x04\xbd\x06\x02\x12\n\r\n\x05\
+    \x05\x07\x02F\x01\x12\x04\xbd\x06\x02\x0c\n\r\n\x05\x05\x07\x02F\x02\x12\
+    \x04\xbd\x06\x0f\x11\n\x0c\n\x04\x05\x07\x02G\x12\x04\xbe\x06\x02\x0e\n\
+    \r\n\x05\x05\x07\x02G\x01\x12\x04\xbe\x06\x02\x08\n\r\n\x05\x05\x07\x02G\
+    \x02\x12\x04\xbe\x06\x0b\r\n\x0c\n\x04\x05\x07\x02H\x12\x04\xbf\x06\x02\
+    \x11\n\r\n\x05\x05\x07\x02H\x01\x12\x04\xbf\x06\x02\n\n\r\n\x05\x05\x07\
+    \x02H\x02\x12\x04\xbf\x06\r\x10\n\x0c\n\x04\x05\x07\x02I\x12\x04\xc0\x06\
+    \x02\x0e\n\r\n\x05\x05\x07\x02I\x01\x12\x04\xc0\x06\x02\x08\n\r\n\x05\
+    \x05\x07\x02I\x02\x12\x04\xc0\x06\x0b\r\n\x0c\n\x04\x05\x07\x02J\x12\x04\
+    \xc1\x06\x02\t\n\r\n\x05\x05\x07\x02J\x01\x12\x04\xc1\x06\x02\x03\n\r\n\
+    \x05\x05\x07\x02J\x02\x12\x04\xc1\x06\x06\x08\n\x0c\n\x04\x05\x07\x02K\
+    \x12\x04\xc2\x06\x02\x0e\n\r\n\x05\x05\x07\x02K\x01\x12\x04\xc2\x06\x02\
+    \x08\n\r\n\x05\x05\x07\x02K\x02\x12\x04\xc2\x06\x0b\r\n\x0c\n\x04\x05\
+    \x07\x02L\x12\x04\xc3\x06\x02\x0c\n\r\n\x05\x05\x07\x02L\x01\x12\x04\xc3\
+    \x06\x02\x06\n\r\n\x05\x05\x07\x02L\x02\x12\x04\xc3\x06\t\x0b\n\x0c\n\
+    \x04\x05\x07\x02M\x12\x04\xc4\x06\x02\r\n\r\n\x05\x05\x07\x02M\x01\x12\
+    \x04\xc4\x06\x02\x07\n\r\n\x05\x05\x07\x02M\x02\x12\x04\xc4\x06\n\x0c\n2\
+    \n\x04\x05\x07\x02N\x12\x04\xc5\x06\x02\x0e\"$\x20Internal\x20language\
+    \x20for\x20testing\x20SCIP\n\n\r\n\x05\x05\x07\x02N\x01\x12\x04\xc5\x06\
+    \x02\x07\n\r\n\x05\x05\x07\x02N\x02\x12\x04\xc5\x06\n\r\n\x0c\n\x04\x05\
+    \x07\x02O\x12\x04\xc6\x06\x02\x0c\n\r\n\x05\x05\x07\x02O\x01\x12\x04\xc6\
+    \x06\x02\x06\n\r\n\x05\x05\x07\x02O\x02\x12\x04\xc6\x06\t\x0b\n\x0c\n\
+    \x04\x05\x07\x02P\x12\x04\xc7\x06\x02\x0c\n\r\n\x05\x05\x07\x02P\x01\x12\
+    \x04\xc7\x06\x02\x06\n\r\n\x05\x05\x07\x02P\x02\x12\x04\xc7\x06\t\x0b\n\
+    \x0c\n\x04\x05\x07\x02Q\x12\x04\xc8\x06\x02\x0c\n\r\n\x05\x05\x07\x02Q\
+    \x01\x12\x04\xc8\x06\x02\x06\n\r\n\x05\x05\x07\x02Q\x02\x12\x04\xc8\x06\
+    \t\x0b\n\x0c\n\x04\x05\x07\x02R\x12\x04\xc9\x06\x02\x0b\n\r\n\x05\x05\
+    \x07\x02R\x01\x12\x04\xc9\x06\x02\x05\n\r\n\x05\x05\x07\x02R\x02\x12\x04\
+    \xc9\x06\x08\n\n\x0c\n\x04\x05\x07\x02S\x12\x04\xca\x06\x02\x0c\n\r\n\
+    \x05\x05\x07\x02S\x01\x12\x04\xca\x06\x02\x06\n\r\n\x05\x05\x07\x02S\x02\
+    \x12\x04\xca\x06\t\x0b\n\x0c\n\x04\x05\x07\x02T\x12\x04\xcb\x06\x02\x0b\
+    \n\r\n\x05\x05\x07\x02T\x01\x12\x04\xcb\x06\x02\x05\n\r\n\x05\x05\x07\
+    \x02T\x02\x12\x04\xcb\x06\x08\n\n\x0c\n\x04\x05\x07\x02U\x12\x04\xcc\x06\
+    \x02\x0b\n\r\n\x05\x05\x07\x02U\x01\x12\x04\xcc\x06\x02\x05\n\r\n\x05\
+    \x05\x07\x02U\x02\x12\x04\xcc\x06\x08\n\n\x0c\n\x04\x05\x07\x02V\x12\x04\
+    \xcd\x06\x02\x0c\n\r\n\x05\x05\x07\x02V\x01\x12\x04\xcd\x06\x02\x06\n\r\
+    \n\x05\x05\x07\x02V\x02\x12\x04\xcd\x06\t\x0b\n\x0c\n\x04\x05\x07\x02W\
+    \x12\x04\xce\x06\x02\x0c\n\r\n\x05\x05\x07\x02W\x01\x12\x04\xce\x06\x02\
+    \x07\n\r\n\x05\x05\x07\x02W\x02\x12\x04\xce\x06\n\x0b\n\x0c\n\x04\x05\
+    \x07\x02X\x12\x04\xcf\x06\x02\x0e\n\r\n\x05\x05\x07\x02X\x01\x12\x04\xcf\
+    \x06\x02\x08\n\r\n\x05\x05\x07\x02X\x02\x12\x04\xcf\x06\x0b\r\n\x14\n\
+    \x04\x05\x07\x02Y\x12\x04\xd0\x06\x02\x13\"\x06\x20Bash\n\n\r\n\x05\x05\
+    \x07\x02Y\x01\x12\x04\xd0\x06\x02\r\n\r\n\x05\x05\x07\x02Y\x02\x12\x04\
+    \xd0\x06\x10\x12\n\x0c\n\x04\x05\x07\x02Z\x12\x04\xd1\x06\x02\x0f\n\r\n\
+    \x05\x05\x07\x02Z\x01\x12\x04\xd1\x06\x02\t\n\r\n\x05\x05\x07\x02Z\x02\
+    \x12\x04\xd1\x06\x0c\x0e\n\x0c\n\x04\x05\x07\x02[\x12\x04\xd2\x06\x02\
+    \x0e\n\r\n\x05\x05\x07\x02[\x01\x12\x04\xd2\x06\x02\x07\n\r\n\x05\x05\
+    \x07\x02[\x02\x12\x04\xd2\x06\n\r\n\x0c\n\x04\x05\x07\x02\\\x12\x04\xd3\
+    \x06\x02\x10\n\r\n\x05\x05\x07\x02\\\x01\x12\x04\xd3\x06\x02\n\n\r\n\x05\
+    \x05\x07\x02\\\x02\x12\x04\xd3\x06\r\x0f\n\x0c\n\x04\x05\x07\x02]\x12\
+    \x04\xd4\x06\x02\x0f\n\r\n\x05\x05\x07\x02]\x01\x12\x04\xd4\x06\x02\x08\
+    \n\r\n\x05\x05\x07\x02]\x02\x12\x04\xd4\x06\x0b\x0e\n\x0c\n\x04\x05\x07\
+    \x02^\x12\x04\xd5\x06\x02\x0c\n\r\n\x05\x05\x07\x02^\x01\x12\x04\xd5\x06\
+    \x02\x07\n\r\n\x05\x05\x07\x02^\x02\x12\x04\xd5\x06\n\x0b\n\x0c\n\x04\
+    \x05\x07\x02_\x12\x04\xd6\x06\x02\x0c\n\r\n\x05\x05\x07\x02_\x01\x12\x04\
+    \xd6\x06\x02\x05\n\r\n\x05\x05\x07\x02_\x02\x12\x04\xd6\x06\x08\x0b\n\
+    \x0c\n\x04\x05\x07\x02`\x12\x04\xd7\x06\x02\x0c\n\r\n\x05\x05\x07\x02`\
+    \x01\x12\x04\xd7\x06\x02\x06\n\r\n\x05\x05\x07\x02`\x02\x12\x04\xd7\x06\
+    \t\x0b\n\x0c\n\x04\x05\x07\x02a\x12\x04\xd8\x06\x02\x0b\n\r\n\x05\x05\
+    \x07\x02a\x01\x12\x04\xd8\x06\x02\x05\n\r\n\x05\x05\x07\x02a\x02\x12\x04\
+    \xd8\x06\x08\n\n\x0c\n\x04\x05\x07\x02b\x12\x04\xd9\x06\x02\x0f\n\r\n\
+    \x05\x05\x07\x02b\x01\x12\x04\xd9\x06\x02\x08\n\r\n\x05\x05\x07\x02b\x02\
+    \x12\x04\xd9\x06\x0b\x0e\n\x0c\n\x04\x05\x07\x02c\x12\x04\xda\x06\x02\
+    \x12\n\r\n\x05\x05\x07\x02c\x01\x12\x04\xda\x06\x02\x0c\n\r\n\x05\x05\
+    \x07\x02c\x02\x12\x04\xda\x06\x0f\x11\n\x0c\n\x04\x05\x07\x02d\x12\x04\
+    \xdb\x06\x02\x17\n\r\n\x05\x05\x07\x02d\x01\x12\x04\xdb\x06\x02\x11\n\r\
+    \n\x05\x05\x07\x02d\x02\x12\x04\xdb\x06\x14\x16\n\x0c\n\x04\x05\x07\x02e\
+    \x12\x04\xdc\x06\x02\x10\n\r\n\x05\x05\x07\x02e\x01\x12\x04\xdc\x06\x02\
+    \t\n\r\n\x05\x05\x07\x02e\x02\x12\x04\xdc\x06\x0c\x0f\n\x0c\n\x04\x05\
+    \x07\x02f\x12\x04\xdd\x06\x02\r\n\r\n\x05\x05\x07\x02f\x01\x12\x04\xdd\
+    \x06\x02\x06\n\r\n\x05\x05\x07\x02f\x02\x12\x04\xdd\x06\t\x0c\n\x0c\n\
+    \x04\x05\x07\x02g\x12\x04\xde\x06\x02\x13\n\r\n\x05\x05\x07\x02g\x01\x12\
+    \x04\xde\x06\x02\r\n\r\n\x05\x05\x07\x02g\x02\x12\x04\xde\x06\x10\x12\n\
+    \x0c\n\x04\x05\x07\x02h\x12\x04\xdf\x06\x02\x0b\n\r\n\x05\x05\x07\x02h\
+    \x01\x12\x04\xdf\x06\x02\x05\n\r\n\x05\x05\x07\x02h\x02\x12\x04\xdf\x06\
+    \x08\n\n\x0c\n\x04\x05\x07\x02i\x12\x04\xe0\x06\x02\x0f\n\r\n\x05\x05\
+    \x07\x02i\x01\x12\x04\xe0\x06\x02\t\n\r\n\x05\x05\x07\x02i\x02\x12\x04\
+    \xe0\x06\x0c\x0e\n\x0c\n\x04\x05\x07\x02j\x12\x04\xe1\x06\x02\x0b\n\r\n\
+    \x05\x05\x07\x02j\x01\x12\x04\xe1\x06\x02\x05\n\r\n\x05\x05\x07\x02j\x02\
+    \x12\x04\xe1\x06\x08\n\n\x0c\n\x04\x05\x07\x02k\x12\x04\xe2\x06\x02\x0b\
+    \n\r\n\x05\x05\x07\x02k\x01\x12\x04\xe2\x06\x02\x05\n\r\n\x05\x05\x07\
+    \x02k\x02\x12\x04\xe2\x06\x08\n\n\x0c\n\x04\x05\x07\x02l\x12\x04\xe3\x06\
+    \x02\x0c\n\r\n\x05\x05\x07\x02l\x01\x12\x04\xe3\x06\x02\x06\n\r\n\x05\
+    \x05\x07\x02l\x02\x12\x04\xe3\x06\t\x0b\n\x93\x03\n\x04\x05\x07\x02m\x12\
+    \x04\xe4\x06\x02\x0b\"\x84\x03\x20NextLanguage\x20=\x20111;\n\x20Steps\
     \x20add\x20a\x20new\x20language:\n\x201.\x20Copy-paste\x20the\x20\"NextL\
     anguage\x20=\x20N\"\x20line\x20above\n\x202.\x20Increment\x20\"NextLangu\
     age\x20=\x20N\"\x20to\x20\"NextLanguage\x20=\x20N+1\"\n\x203.\x20Replace\
@@ -5642,8 +12821,337 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x20correct\x20line\x20above\x20using\x20alphabetical\x20order\n\x205.\
     \x20(optional)\x20Add\x20a\x20brief\x20comment\x20behind\x20the\x20langu\
     age\x20if\x20the\x20name\x20is\x20not\x20self-explanatory\n\n\r\n\x05\
-    \x05\x07\x02m\x01\x12\x04\xe1\x06\x02\x05\n\r\n\x05\x05\x07\x02m\x02\x12\
-    \x04\xe1\x06\x08\nb\x06proto3\
+    \x05\x07\x02m\x01\x12\x04\xe4\x06\x02\x05\n\r\n\x05\x05\x07\x02m\x02\x12\
+    \x04\xe4\x06\x08\n\n\x0c\n\x02\x04\x0b\x12\x06\xef\x06\0\xf1\x06\x01\n\
+    \x0b\n\x03\x04\x0b\x01\x12\x04\xef\x06\x08\x12\n\x0c\n\x04\x04\x0b\x02\0\
+    \x12\x04\xf0\x06\x02\x0f\n\r\n\x05\x04\x0b\x02\0\x06\x12\x04\xf0\x06\x02\
+    \x06\n\r\n\x05\x04\x0b\x02\0\x01\x12\x04\xf0\x06\x07\n\n\r\n\x05\x04\x0b\
+    \x02\0\x03\x12\x04\xf0\x06\r\x0e\n\x0c\n\x02\x04\x0c\x12\x06\xf3\x06\0\
+    \xf6\x06\x01\n\x0b\n\x03\x04\x0c\x01\x12\x04\xf3\x06\x08\r\n\x0c\n\x04\
+    \x04\x0c\x02\0\x12\x04\xf4\x06\x02\x1f\n\r\n\x05\x04\x0c\x02\0\x04\x12\
+    \x04\xf4\x06\x02\n\n\r\n\x05\x04\x0c\x02\0\x05\x12\x04\xf4\x06\x0b\x11\n\
+    \r\n\x05\x04\x0c\x02\0\x01\x12\x04\xf4\x06\x12\x1a\n\r\n\x05\x04\x0c\x02\
+    \0\x03\x12\x04\xf4\x06\x1d\x1e\n\x0c\n\x04\x04\x0c\x02\x01\x12\x04\xf5\
+    \x06\x02+\n\r\n\x05\x04\x0c\x02\x01\x04\x12\x04\xf5\x06\x02\n\n\r\n\x05\
+    \x04\x0c\x02\x01\x06\x12\x04\xf5\x06\x0b\x1c\n\r\n\x05\x04\x0c\x02\x01\
+    \x01\x12\x04\xf5\x06\x1d&\n\r\n\x05\x04\x0c\x02\x01\x03\x12\x04\xf5\x06)\
+    *\n\x0c\n\x02\x04\r\x12\x06\xf8\x06\0\x8c\x07\x01\n\x0b\n\x03\x04\r\x01\
+    \x12\x04\xf8\x06\x08\x0c\n\x0b\n\x03\x04\r\t\x12\x04\xf9\x06\x02)\n\x0c\
+    \n\x04\x04\r\t\0\x12\x04\xf9\x06\x0b\x0c\n\r\n\x05\x04\r\t\0\x01\x12\x04\
+    \xf9\x06\x0b\x0c\n\r\n\x05\x04\r\t\0\x02\x12\x04\xf9\x06\x0b\x0c\n\x0c\n\
+    \x04\x04\r\t\x01\x12\x04\xf9\x06\x0e\x0f\n\r\n\x05\x04\r\t\x01\x01\x12\
+    \x04\xf9\x06\x0e\x0f\n\r\n\x05\x04\r\t\x01\x02\x12\x04\xf9\x06\x0e\x0f\n\
+    \x0c\n\x04\x04\r\t\x02\x12\x04\xf9\x06\x11\x12\n\r\n\x05\x04\r\t\x02\x01\
+    \x12\x04\xf9\x06\x11\x12\n\r\n\x05\x04\r\t\x02\x02\x12\x04\xf9\x06\x11\
+    \x12\n\x0c\n\x04\x04\r\t\x03\x12\x04\xf9\x06\x14\x15\n\r\n\x05\x04\r\t\
+    \x03\x01\x12\x04\xf9\x06\x14\x15\n\r\n\x05\x04\r\t\x03\x02\x12\x04\xf9\
+    \x06\x14\x15\n\x0c\n\x04\x04\r\t\x04\x12\x04\xf9\x06\x17\x18\n\r\n\x05\
+    \x04\r\t\x04\x01\x12\x04\xf9\x06\x17\x18\n\r\n\x05\x04\r\t\x04\x02\x12\
+    \x04\xf9\x06\x17\x18\n\x0c\n\x04\x04\r\t\x05\x12\x04\xf9\x06\x1a\x1c\n\r\
+    \n\x05\x04\r\t\x05\x01\x12\x04\xf9\x06\x1a\x1c\n\r\n\x05\x04\r\t\x05\x02\
+    \x12\x04\xf9\x06\x1a\x1c\n\x0c\n\x04\x04\r\t\x06\x12\x04\xf9\x06\x1e\x20\
+    \n\r\n\x05\x04\r\t\x06\x01\x12\x04\xf9\x06\x1e\x20\n\r\n\x05\x04\r\t\x06\
+    \x02\x12\x04\xf9\x06\x1e\x20\n\x0c\n\x04\x04\r\t\x07\x12\x04\xf9\x06\"$\
+    \n\r\n\x05\x04\r\t\x07\x01\x12\x04\xf9\x06\"$\n\r\n\x05\x04\r\t\x07\x02\
+    \x12\x04\xf9\x06\"$\n\x0c\n\x04\x04\r\t\x08\x12\x04\xf9\x06&(\n\r\n\x05\
+    \x04\r\t\x08\x01\x12\x04\xf9\x06&(\n\r\n\x05\x04\r\t\x08\x02\x12\x04\xf9\
+    \x06&(\n\x0e\n\x04\x04\r\x08\0\x12\x06\xfa\x06\x02\x8b\x07\x03\n\r\n\x05\
+    \x04\r\x08\0\x01\x12\x04\xfa\x06\x08\x14\n\x0c\n\x04\x04\r\x02\0\x12\x04\
+    \xfb\x06\x04\x19\n\r\n\x05\x04\r\x02\0\x06\x12\x04\xfb\x06\x04\x0b\n\r\n\
+    \x05\x04\r\x02\0\x01\x12\x04\xfb\x06\x0c\x14\n\r\n\x05\x04\r\x02\0\x03\
+    \x12\x04\xfb\x06\x17\x18\n\x0c\n\x04\x04\r\x02\x01\x12\x04\xfc\x06\x04\
+    \x20\n\r\n\x05\x04\r\x02\x01\x06\x12\x04\xfc\x06\x04\x0e\n\r\n\x05\x04\r\
+    \x02\x01\x01\x12\x04\xfc\x06\x0f\x1a\n\r\n\x05\x04\r\x02\x01\x03\x12\x04\
+    \xfc\x06\x1d\x1f\n\x0c\n\x04\x04\r\x02\x02\x12\x04\xfd\x06\x04\x1c\n\r\n\
+    \x05\x04\r\x02\x02\x06\x12\x04\xfd\x06\x04\x0c\n\r\n\x05\x04\r\x02\x02\
+    \x01\x12\x04\xfd\x06\r\x16\n\r\n\x05\x04\r\x02\x02\x03\x12\x04\xfd\x06\
+    \x19\x1b\n\x0c\n\x04\x04\r\x02\x03\x12\x04\xfe\x06\x04\x1e\n\r\n\x05\x04\
+    \r\x02\x03\x06\x12\x04\xfe\x06\x04\r\n\r\n\x05\x04\r\x02\x03\x01\x12\x04\
+    \xfe\x06\x0e\x18\n\r\n\x05\x04\r\x02\x03\x03\x12\x04\xfe\x06\x1b\x1d\n\
+    \x0c\n\x04\x04\r\x02\x04\x12\x04\xff\x06\x04$\n\r\n\x05\x04\r\x02\x04\
+    \x06\x12\x04\xff\x06\x04\x10\n\r\n\x05\x04\r\x02\x04\x01\x12\x04\xff\x06\
+    \x11\x1e\n\r\n\x05\x04\r\x02\x04\x03\x12\x04\xff\x06!#\n\x0c\n\x04\x04\r\
+    \x02\x05\x12\x04\x80\x07\x04,\n\r\n\x05\x04\r\x02\x05\x06\x12\x04\x80\
+    \x07\x04\x14\n\r\n\x05\x04\r\x02\x05\x01\x12\x04\x80\x07\x15&\n\r\n\x05\
+    \x04\r\x02\x05\x03\x12\x04\x80\x07)+\n\x0c\n\x04\x04\r\x02\x06\x12\x04\
+    \x81\x07\x04\x1e\n\r\n\x05\x04\r\x02\x06\x06\x12\x04\x81\x07\x04\r\n\r\n\
+    \x05\x04\r\x02\x06\x01\x12\x04\x81\x07\x0e\x18\n\r\n\x05\x04\r\x02\x06\
+    \x03\x12\x04\x81\x07\x1b\x1d\n\x0c\n\x04\x04\r\x02\x07\x12\x04\x82\x07\
+    \x04\x1c\n\r\n\x05\x04\r\x02\x07\x06\x12\x04\x82\x07\x04\x0c\n\r\n\x05\
+    \x04\r\x02\x07\x01\x12\x04\x82\x07\r\x16\n\r\n\x05\x04\r\x02\x07\x03\x12\
+    \x04\x82\x07\x19\x1b\n\x0c\n\x04\x04\r\x02\x08\x12\x04\x83\x07\x04'\n\r\
+    \n\x05\x04\r\x02\x08\x06\x12\x04\x83\x07\x04\x12\n\r\n\x05\x04\r\x02\x08\
+    \x01\x12\x04\x83\x07\x13\"\n\r\n\x05\x04\r\x02\x08\x03\x12\x04\x83\x07%&\
+    \n\x0c\n\x04\x04\r\x02\t\x12\x04\x84\x07\x04%\n\r\n\x05\x04\r\x02\t\x06\
+    \x12\x04\x84\x07\x04\x11\n\r\n\x05\x04\r\x02\t\x01\x12\x04\x84\x07\x12\
+    \x20\n\r\n\x05\x04\r\x02\t\x03\x12\x04\x84\x07#$\n\x0c\n\x04\x04\r\x02\n\
+    \x12\x04\x85\x07\x04)\n\r\n\x05\x04\r\x02\n\x06\x12\x04\x85\x07\x04\x13\
+    \n\r\n\x05\x04\r\x02\n\x01\x12\x04\x85\x07\x14$\n\r\n\x05\x04\r\x02\n\
+    \x03\x12\x04\x85\x07'(\n\x0c\n\x04\x04\r\x02\x0b\x12\x04\x86\x07\x04&\n\
+    \r\n\x05\x04\r\x02\x0b\x06\x12\x04\x86\x07\x04\x11\n\r\n\x05\x04\r\x02\
+    \x0b\x01\x12\x04\x86\x07\x12\x20\n\r\n\x05\x04\r\x02\x0b\x03\x12\x04\x86\
+    \x07#%\n\x0c\n\x04\x04\r\x02\x0c\x12\x04\x87\x07\x04!\n\r\n\x05\x04\r\
+    \x02\x0c\x06\x12\x04\x87\x07\x04\x0e\n\r\n\x05\x04\r\x02\x0c\x01\x12\x04\
+    \x87\x07\x0f\x1b\n\r\n\x05\x04\r\x02\x0c\x03\x12\x04\x87\x07\x1e\x20\n\
+    \x0c\n\x04\x04\r\x02\r\x12\x04\x88\x07\x04$\n\r\n\x05\x04\r\x02\r\x06\
+    \x12\x04\x88\x07\x04\x10\n\r\n\x05\x04\r\x02\r\x01\x12\x04\x88\x07\x11\
+    \x1e\n\r\n\x05\x04\r\x02\r\x03\x12\x04\x88\x07!#\n\x0c\n\x04\x04\r\x02\
+    \x0e\x12\x04\x89\x07\x04\x1e\n\r\n\x05\x04\r\x02\x0e\x06\x12\x04\x89\x07\
+    \x04\r\n\r\n\x05\x04\r\x02\x0e\x01\x12\x04\x89\x07\x0e\x18\n\r\n\x05\x04\
+    \r\x02\x0e\x03\x12\x04\x89\x07\x1b\x1d\n\x0c\n\x04\x04\r\x02\x0f\x12\x04\
+    \x8a\x07\x04\x20\n\r\n\x05\x04\r\x02\x0f\x06\x12\x04\x8a\x07\x04\x0e\n\r\
+    \n\x05\x04\r\x02\x0f\x01\x12\x04\x8a\x07\x0f\x1a\n\r\n\x05\x04\r\x02\x0f\
+    \x03\x12\x04\x8a\x07\x1d\x1f\n\x0c\n\x02\x04\x0e\x12\x06\x8e\x07\0\x91\
+    \x07\x01\n\x0b\n\x03\x04\x0e\x01\x12\x04\x8e\x07\x08\x12\n\x0c\n\x04\x04\
+    \x0e\x02\0\x12\x04\x8f\x07\x02\x17\n\r\n\x05\x04\x0e\x02\0\x06\x12\x04\
+    \x8f\x07\x02\x07\n\r\n\x05\x04\x0e\x02\0\x01\x12\x04\x8f\x07\x08\x12\n\r\
+    \n\x05\x04\x0e\x02\0\x03\x12\x04\x8f\x07\x15\x16\n\x0c\n\x04\x04\x0e\x02\
+    \x01\x12\x04\x90\x07\x02\x17\n\r\n\x05\x04\x0e\x02\x01\x06\x12\x04\x90\
+    \x07\x02\x06\n\r\n\x05\x04\x0e\x02\x01\x01\x12\x04\x90\x07\x07\x12\n\r\n\
+    \x05\x04\x0e\x02\x01\x03\x12\x04\x90\x07\x15\x16\n\x0c\n\x02\x04\x0f\x12\
+    \x06\x93\x07\0\x97\x07\x01\n\x0b\n\x03\x04\x0f\x01\x12\x04\x93\x07\x08\
+    \x0f\n\x0c\n\x04\x04\x0f\x02\0\x12\x04\x94\x07\x02\x12\n\r\n\x05\x04\x0f\
+    \x02\0\x06\x12\x04\x94\x07\x02\x06\n\r\n\x05\x04\x0f\x02\0\x01\x12\x04\
+    \x94\x07\x07\r\n\r\n\x05\x04\x0f\x02\0\x03\x12\x04\x94\x07\x10\x11\n\x0c\
+    \n\x04\x04\x0f\x02\x01\x12\x04\x95\x07\x02\x14\n\r\n\x05\x04\x0f\x02\x01\
+    \x05\x12\x04\x95\x07\x02\x08\n\r\n\x05\x04\x0f\x02\x01\x01\x12\x04\x95\
+    \x07\t\x0f\n\r\n\x05\x04\x0f\x02\x01\x03\x12\x04\x95\x07\x12\x13\n\x0c\n\
+    \x04\x04\x0f\x02\x02\x12\x04\x96\x07\x02#\n\r\n\x05\x04\x0f\x02\x02\x04\
+    \x12\x04\x96\x07\x02\n\n\r\n\x05\x04\x0f\x02\x02\x06\x12\x04\x96\x07\x0b\
+    \x0f\n\r\n\x05\x04\x0f\x02\x02\x01\x12\x04\x96\x07\x10\x1e\n\r\n\x05\x04\
+    \x0f\x02\x02\x03\x12\x04\x96\x07!\"\n\x0c\n\x02\x04\x10\x12\x06\x99\x07\
+    \0\x9c\x07\x01\n\x0b\n\x03\x04\x10\x01\x12\x04\x99\x07\x08\x12\n\x0c\n\
+    \x04\x04\x10\x02\0\x12\x04\x9a\x07\x02\x12\n\r\n\x05\x04\x10\x02\0\x06\
+    \x12\x04\x9a\x07\x02\x06\n\r\n\x05\x04\x10\x02\0\x01\x12\x04\x9a\x07\x07\
+    \r\n\r\n\x05\x04\x10\x02\0\x03\x12\x04\x9a\x07\x10\x11\n\x0c\n\x04\x04\
+    \x10\x02\x01\x12\x04\x9b\x07\x02\x14\n\r\n\x05\x04\x10\x02\x01\x05\x12\
+    \x04\x9b\x07\x02\x08\n\r\n\x05\x04\x10\x02\x01\x01\x12\x04\x9b\x07\t\x0f\
+    \n\r\n\x05\x04\x10\x02\x01\x03\x12\x04\x9b\x07\x12\x13\n\x0c\n\x02\x04\
+    \x11\x12\x06\x9e\x07\0\xa0\x07\x01\n\x0b\n\x03\x04\x11\x01\x12\x04\x9e\
+    \x07\x08\x10\n\x0c\n\x04\x04\x11\x02\0\x12\x04\x9f\x07\x02\x14\n\r\n\x05\
+    \x04\x11\x02\0\x05\x12\x04\x9f\x07\x02\x08\n\r\n\x05\x04\x11\x02\0\x01\
+    \x12\x04\x9f\x07\t\x0f\n\r\n\x05\x04\x11\x02\0\x03\x12\x04\x9f\x07\x12\
+    \x13\n\x0c\n\x02\x04\x12\x12\x06\xa2\x07\0\xa5\x07\x01\n\x0b\n\x03\x04\
+    \x12\x01\x12\x04\xa2\x07\x08\x11\n\x0c\n\x04\x04\x12\x02\0\x12\x04\xa3\
+    \x07\x02\x12\n\r\n\x05\x04\x12\x02\0\x06\x12\x04\xa3\x07\x02\x06\n\r\n\
+    \x05\x04\x12\x02\0\x01\x12\x04\xa3\x07\x07\r\n\r\n\x05\x04\x12\x02\0\x03\
+    \x12\x04\xa3\x07\x10\x11\n\x0c\n\x04\x04\x12\x02\x01\x12\x04\xa4\x07\x02\
+    \x14\n\r\n\x05\x04\x12\x02\x01\x05\x12\x04\xa4\x07\x02\x08\n\r\n\x05\x04\
+    \x12\x02\x01\x01\x12\x04\xa4\x07\t\x0f\n\r\n\x05\x04\x12\x02\x01\x03\x12\
+    \x04\xa4\x07\x12\x13\n\x0c\n\x02\x04\x13\x12\x06\xa7\x07\0\xa9\x07\x01\n\
+    \x0b\n\x03\x04\x13\x01\x12\x04\xa7\x07\x08\x14\n\x0c\n\x04\x04\x13\x02\0\
+    \x12\x04\xa8\x07\x02\x18\n\r\n\x05\x04\x13\x02\0\x06\x12\x04\xa8\x07\x02\
+    \n\n\r\n\x05\x04\x13\x02\0\x01\x12\x04\xa8\x07\x0b\x13\n\r\n\x05\x04\x13\
+    \x02\0\x03\x12\x04\xa8\x07\x16\x17\n\x0c\n\x02\x04\x14\x12\x06\xab\x07\0\
+    \xad\x07\x01\n\x0b\n\x03\x04\x14\x01\x12\x04\xab\x07\x08\x18\n\x0c\n\x04\
+    \x04\x14\x02\0\x12\x04\xac\x07\x02\x1a\n\r\n\x05\x04\x14\x02\0\x04\x12\
+    \x04\xac\x07\x02\n\n\r\n\x05\x04\x14\x02\0\x06\x12\x04\xac\x07\x0b\x0f\n\
+    \r\n\x05\x04\x14\x02\0\x01\x12\x04\xac\x07\x10\x15\n\r\n\x05\x04\x14\x02\
+    \0\x03\x12\x04\xac\x07\x18\x19\n\x0c\n\x02\x04\x15\x12\x06\xaf\x07\0\xb1\
+    \x07\x01\n\x0b\n\x03\x04\x15\x01\x12\x04\xaf\x07\x08\x11\n\x0c\n\x04\x04\
+    \x15\x02\0\x12\x04\xb0\x07\x02\x1a\n\r\n\x05\x04\x15\x02\0\x04\x12\x04\
+    \xb0\x07\x02\n\n\r\n\x05\x04\x15\x02\0\x06\x12\x04\xb0\x07\x0b\x0f\n\r\n\
+    \x05\x04\x15\x02\0\x01\x12\x04\xb0\x07\x10\x15\n\r\n\x05\x04\x15\x02\0\
+    \x03\x12\x04\xb0\x07\x18\x19\n\x0c\n\x02\x04\x16\x12\x06\xb3\x07\0\xb5\
+    \x07\x01\n\x0b\n\x03\x04\x16\x01\x12\x04\xb3\x07\x08\x10\n\x0c\n\x04\x04\
+    \x16\x02\0\x12\x04\xb4\x07\x02\x1a\n\r\n\x05\x04\x16\x02\0\x04\x12\x04\
+    \xb4\x07\x02\n\n\r\n\x05\x04\x16\x02\0\x06\x12\x04\xb4\x07\x0b\x0f\n\r\n\
+    \x05\x04\x16\x02\0\x01\x12\x04\xb4\x07\x10\x15\n\r\n\x05\x04\x16\x02\0\
+    \x03\x12\x04\xb4\x07\x18\x19\n\x0c\n\x02\x04\x17\x12\x06\xb7\x07\0\xbb\
+    \x07\x01\n\x0b\n\x03\x04\x17\x01\x12\x04\xb7\x07\x08\x16\n\x0b\n\x03\x04\
+    \x17\t\x12\x04\xb8\x07\x02\x13\n\x0c\n\x04\x04\x17\t\0\x12\x04\xb8\x07\
+    \x0b\x0c\n\r\n\x05\x04\x17\t\0\x01\x12\x04\xb8\x07\x0b\x0c\n\r\n\x05\x04\
+    \x17\t\0\x02\x12\x04\xb8\x07\x0b\x0c\n\x0c\n\x04\x04\x17\t\x01\x12\x04\
+    \xb8\x07\x0e\x0f\n\r\n\x05\x04\x17\t\x01\x01\x12\x04\xb8\x07\x0e\x0f\n\r\
+    \n\x05\x04\x17\t\x01\x02\x12\x04\xb8\x07\x0e\x0f\n\x0c\n\x04\x04\x17\t\
+    \x02\x12\x04\xb8\x07\x11\x12\n\r\n\x05\x04\x17\t\x02\x01\x12\x04\xb8\x07\
+    \x11\x12\n\r\n\x05\x04\x17\t\x02\x02\x12\x04\xb8\x07\x11\x12\n\x0c\n\x04\
+    \x04\x17\x02\0\x12\x04\xb9\x07\x02\x0f\n\r\n\x05\x04\x17\x02\0\x06\x12\
+    \x04\xb9\x07\x02\x06\n\r\n\x05\x04\x17\x02\0\x01\x12\x04\xb9\x07\x07\n\n\
+    \r\n\x05\x04\x17\x02\0\x03\x12\x04\xb9\x07\r\x0e\n\x0c\n\x04\x04\x17\x02\
+    \x01\x12\x04\xba\x07\x02\x19\n\r\n\x05\x04\x17\x02\x01\x06\x12\x04\xba\
+    \x07\x02\x07\n\r\n\x05\x04\x17\x02\x01\x01\x12\x04\xba\x07\x08\x14\n\r\n\
+    \x05\x04\x17\x02\x01\x03\x12\x04\xba\x07\x17\x18\n\x0c\n\x02\x04\x18\x12\
+    \x06\xbd\x07\0\xc1\x07\x01\n\x0b\n\x03\x04\x18\x01\x12\x04\xbd\x07\x08\
+    \x15\n\x0b\n\x03\x04\x18\t\x12\x04\xbe\x07\x02\r\n\x0c\n\x04\x04\x18\t\0\
+    \x12\x04\xbe\x07\x0b\x0c\n\r\n\x05\x04\x18\t\0\x01\x12\x04\xbe\x07\x0b\
+    \x0c\n\r\n\x05\x04\x18\t\0\x02\x12\x04\xbe\x07\x0b\x0c\n\x0c\n\x04\x04\
+    \x18\x02\0\x12\x04\xbf\x07\x02&\n\r\n\x05\x04\x18\x02\0\x04\x12\x04\xbf\
+    \x07\x02\n\n\r\n\x05\x04\x18\x02\0\x06\x12\x04\xbf\x07\x0b\x15\n\r\n\x05\
+    \x04\x18\x02\0\x01\x12\x04\xbf\x07\x16!\n\r\n\x05\x04\x18\x02\0\x03\x12\
+    \x04\xbf\x07$%\n\x0c\n\x04\x04\x18\x02\x01\x12\x04\xc0\x07\x02\x0f\n\r\n\
+    \x05\x04\x18\x02\x01\x06\x12\x04\xc0\x07\x02\x06\n\r\n\x05\x04\x18\x02\
+    \x01\x01\x12\x04\xc0\x07\x07\n\n\r\n\x05\x04\x18\x02\x01\x03\x12\x04\xc0\
+    \x07\r\x0e\n\x0c\n\x02\x04\x19\x12\x06\xc3\x07\0\xc7\x07\x01\n\x0b\n\x03\
+    \x04\x19\x01\x12\x04\xc3\x07\x08\x17\n\x0b\n\x03\x04\x19\t\x12\x04\xc4\
+    \x07\x02\r\n\x0c\n\x04\x04\x19\t\0\x12\x04\xc4\x07\x0b\x0c\n\r\n\x05\x04\
+    \x19\t\0\x01\x12\x04\xc4\x07\x0b\x0c\n\r\n\x05\x04\x19\t\0\x02\x12\x04\
+    \xc4\x07\x0b\x0c\n\x0c\n\x04\x04\x19\x02\0\x12\x04\xc5\x07\x02\x0f\n\r\n\
+    \x05\x04\x19\x02\0\x06\x12\x04\xc5\x07\x02\x06\n\r\n\x05\x04\x19\x02\0\
+    \x01\x12\x04\xc5\x07\x07\n\n\r\n\x05\x04\x19\x02\0\x03\x12\x04\xc5\x07\r\
+    \x0e\n\x0c\n\x04\x04\x19\x02\x01\x12\x04\xc6\x07\x02\x19\n\r\n\x05\x04\
+    \x19\x02\x01\x06\x12\x04\xc6\x07\x02\x07\n\r\n\x05\x04\x19\x02\x01\x01\
+    \x12\x04\xc6\x07\x08\x14\n\r\n\x05\x04\x19\x02\x01\x03\x12\x04\xc6\x07\
+    \x17\x18\n\x0c\n\x02\x04\x1a\x12\x06\xc9\x07\0\xcd\x07\x01\n\x0b\n\x03\
+    \x04\x1a\x01\x12\x04\xc9\x07\x08\x15\n\x0b\n\x03\x04\x1a\t\x12\x04\xca\
+    \x07\x02\r\n\x0c\n\x04\x04\x1a\t\0\x12\x04\xca\x07\x0b\x0c\n\r\n\x05\x04\
+    \x1a\t\0\x01\x12\x04\xca\x07\x0b\x0c\n\r\n\x05\x04\x1a\t\0\x02\x12\x04\
+    \xca\x07\x0b\x0c\n\x0c\n\x04\x04\x1a\x02\0\x12\x04\xcb\x07\x02\x1c\n\r\n\
+    \x05\x04\x1a\x02\0\x06\x12\x04\xcb\x07\x02\x07\n\r\n\x05\x04\x1a\x02\0\
+    \x01\x12\x04\xcb\x07\x08\x17\n\r\n\x05\x04\x1a\x02\0\x03\x12\x04\xcb\x07\
+    \x1a\x1b\n\x0c\n\x04\x04\x1a\x02\x01\x12\x04\xcc\x07\x02\x0f\n\r\n\x05\
+    \x04\x1a\x02\x01\x06\x12\x04\xcc\x07\x02\x06\n\r\n\x05\x04\x1a\x02\x01\
+    \x01\x12\x04\xcc\x07\x07\n\n\r\n\x05\x04\x1a\x02\x01\x03\x12\x04\xcc\x07\
+    \r\x0e\n\x0c\n\x02\x04\x1b\x12\x06\xcf\x07\0\xd1\x07\x01\n\x0b\n\x03\x04\
+    \x1b\x01\x12\x04\xcf\x07\x08\x12\n\x0c\n\x04\x04\x1b\x02\0\x12\x04\xd0\
+    \x07\x02\x0f\n\r\n\x05\x04\x1b\x02\0\x06\x12\x04\xd0\x07\x02\x06\n\r\n\
+    \x05\x04\x1b\x02\0\x01\x12\x04\xd0\x07\x07\n\n\r\n\x05\x04\x1b\x02\0\x03\
+    \x12\x04\xd0\x07\r\x0e\n\x0c\n\x02\x04\x1c\x12\x06\xd3\x07\0\xd5\x07\x01\
+    \n\x0b\n\x03\x04\x1c\x01\x12\x04\xd3\x07\x08\x14\n\x0c\n\x04\x04\x1c\x02\
+    \0\x12\x04\xd4\x07\x02\x0f\n\r\n\x05\x04\x1c\x02\0\x06\x12\x04\xd4\x07\
+    \x02\x06\n\r\n\x05\x04\x1c\x02\0\x01\x12\x04\xd4\x07\x07\n\n\r\n\x05\x04\
+    \x1c\x02\0\x03\x12\x04\xd4\x07\r\x0e\n\x0c\n\x02\x04\x1d\x12\x06\xd7\x07\
+    \0\xde\x07\x01\n\x0b\n\x03\x04\x1d\x01\x12\x04\xd7\x07\x08\x11\n\x0e\n\
+    \x04\x04\x1d\x03\0\x12\x06\xd8\x07\x02\xdb\x07\x03\n\r\n\x05\x04\x1d\x03\
+    \0\x01\x12\x04\xd8\x07\n\x12\n\x0e\n\x06\x04\x1d\x03\0\x02\0\x12\x04\xd9\
+    \x07\x04\x11\n\x0f\n\x07\x04\x1d\x03\0\x02\0\x06\x12\x04\xd9\x07\x04\x08\
+    \n\x0f\n\x07\x04\x1d\x03\0\x02\0\x01\x12\x04\xd9\x07\t\x0c\n\x0f\n\x07\
+    \x04\x1d\x03\0\x02\0\x03\x12\x04\xd9\x07\x0f\x10\n\x0e\n\x06\x04\x1d\x03\
+    \0\x02\x01\x12\x04\xda\x07\x04\x12\n\x0f\n\x07\x04\x1d\x03\0\x02\x01\x06\
+    \x12\x04\xda\x07\x04\x08\n\x0f\n\x07\x04\x1d\x03\0\x02\x01\x01\x12\x04\
+    \xda\x07\t\r\n\x0f\n\x07\x04\x1d\x03\0\x02\x01\x03\x12\x04\xda\x07\x10\
+    \x11\n\x0c\n\x04\x04\x1d\x02\0\x12\x04\xdc\x07\x02\x15\n\r\n\x05\x04\x1d\
+    \x02\0\x06\x12\x04\xdc\x07\x02\x06\n\r\n\x05\x04\x1d\x02\0\x01\x12\x04\
+    \xdc\x07\x07\x10\n\r\n\x05\x04\x1d\x02\0\x03\x12\x04\xdc\x07\x13\x14\n\
+    \x0c\n\x04\x04\x1d\x02\x01\x12\x04\xdd\x07\x02\x1e\n\r\n\x05\x04\x1d\x02\
+    \x01\x04\x12\x04\xdd\x07\x02\n\n\r\n\x05\x04\x1d\x02\x01\x06\x12\x04\xdd\
+    \x07\x0b\x13\n\r\n\x05\x04\x1d\x02\x01\x01\x12\x04\xdd\x07\x14\x19\n\r\n\
+    \x05\x04\x1d\x02\x01\x03\x12\x04\xdd\x07\x1c\x1d\n\x0c\n\x02\x04\x1e\x12\
+    \x06\xe0\x07\0\xee\x07\x01\n\x0b\n\x03\x04\x1e\x01\x12\x04\xe0\x07\x08\
+    \x10\n\x0e\n\x04\x04\x1e\x08\0\x12\x06\xe1\x07\x02\xed\x07\x03\n\r\n\x05\
+    \x04\x1e\x08\0\x01\x12\x04\xe1\x07\x08\x14\n\x0c\n\x04\x04\x1e\x02\0\x12\
+    \x04\xe2\x07\x04#\n\r\n\x05\x04\x1e\x02\0\x06\x12\x04\xe2\x07\x04\x10\n\
+    \r\n\x05\x04\x1e\x02\0\x01\x12\x04\xe2\x07\x11\x1e\n\r\n\x05\x04\x1e\x02\
+    \0\x03\x12\x04\xe2\x07!\"\n\x0c\n\x04\x04\x1e\x02\x01\x12\x04\xe3\x07\
+    \x04)\n\r\n\x05\x04\x1e\x02\x01\x06\x12\x04\xe3\x07\x04\x13\n\r\n\x05\
+    \x04\x1e\x02\x01\x01\x12\x04\xe3\x07\x14$\n\r\n\x05\x04\x1e\x02\x01\x03\
+    \x12\x04\xe3\x07'(\n\x0c\n\x04\x04\x1e\x02\x02\x12\x04\xe4\x07\x04#\n\r\
+    \n\x05\x04\x1e\x02\x02\x06\x12\x04\xe4\x07\x04\x10\n\r\n\x05\x04\x1e\x02\
+    \x02\x01\x12\x04\xe4\x07\x11\x1e\n\r\n\x05\x04\x1e\x02\x02\x03\x12\x04\
+    \xe4\x07!\"\n\x0c\n\x04\x04\x1e\x02\x03\x12\x04\xe5\x07\x04%\n\r\n\x05\
+    \x04\x1e\x02\x03\x06\x12\x04\xe5\x07\x04\x11\n\r\n\x05\x04\x1e\x02\x03\
+    \x01\x12\x04\xe5\x07\x12\x20\n\r\n\x05\x04\x1e\x02\x03\x03\x12\x04\xe5\
+    \x07#$\n\x0c\n\x04\x04\x1e\x02\x04\x12\x04\xe6\x07\x04#\n\r\n\x05\x04\
+    \x1e\x02\x04\x06\x12\x04\xe6\x07\x04\x10\n\r\n\x05\x04\x1e\x02\x04\x01\
+    \x12\x04\xe6\x07\x11\x1e\n\r\n\x05\x04\x1e\x02\x04\x03\x12\x04\xe6\x07!\
+    \"\n\x0c\n\x04\x04\x1e\x02\x05\x12\x04\xe7\x07\x04!\n\r\n\x05\x04\x1e\
+    \x02\x05\x06\x12\x04\xe7\x07\x04\x0f\n\r\n\x05\x04\x1e\x02\x05\x01\x12\
+    \x04\xe7\x07\x10\x1c\n\r\n\x05\x04\x1e\x02\x05\x03\x12\x04\xe7\x07\x1f\
+    \x20\n\x0c\n\x04\x04\x1e\x02\x06\x12\x04\xe8\x07\x04#\n\r\n\x05\x04\x1e\
+    \x02\x06\x06\x12\x04\xe8\x07\x04\x10\n\r\n\x05\x04\x1e\x02\x06\x01\x12\
+    \x04\xe8\x07\x11\x1e\n\r\n\x05\x04\x1e\x02\x06\x03\x12\x04\xe8\x07!\"\n\
+    \x0c\n\x04\x04\x1e\x02\x07\x12\x04\xe9\x07\x04%\n\r\n\x05\x04\x1e\x02\
+    \x07\x06\x12\x04\xe9\x07\x04\x11\n\r\n\x05\x04\x1e\x02\x07\x01\x12\x04\
+    \xe9\x07\x12\x20\n\r\n\x05\x04\x1e\x02\x07\x03\x12\x04\xe9\x07#$\n\x0c\n\
+    \x04\x04\x1e\x02\x08\x12\x04\xea\x07\x04'\n\r\n\x05\x04\x1e\x02\x08\x06\
+    \x12\x04\xea\x07\x04\x12\n\r\n\x05\x04\x1e\x02\x08\x01\x12\x04\xea\x07\
+    \x13\"\n\r\n\x05\x04\x1e\x02\x08\x03\x12\x04\xea\x07%&\n\x0c\n\x04\x04\
+    \x1e\x02\t\x12\x04\xeb\x07\x04(\n\r\n\x05\x04\x1e\x02\t\x06\x12\x04\xeb\
+    \x07\x04\x12\n\r\n\x05\x04\x1e\x02\t\x01\x12\x04\xeb\x07\x13\"\n\r\n\x05\
+    \x04\x1e\x02\t\x03\x12\x04\xeb\x07%'\n\x0c\n\x04\x04\x1e\x02\n\x12\x04\
+    \xec\x07\x04$\n\r\n\x05\x04\x1e\x02\n\x06\x12\x04\xec\x07\x04\x10\n\r\n\
+    \x05\x04\x1e\x02\n\x01\x12\x04\xec\x07\x11\x1e\n\r\n\x05\x04\x1e\x02\n\
+    \x03\x12\x04\xec\x07!#\n\x0c\n\x02\x04\x1f\x12\x06\xf0\x07\0\xf1\x07\x01\
+    \n\x0b\n\x03\x04\x1f\x01\x12\x04\xf0\x07\x08\x14\n\x0c\n\x02\x04\x20\x12\
+    \x06\xf3\x07\0\xf5\x07\x01\n\x0b\n\x03\x04\x20\x01\x12\x04\xf3\x07\x08\
+    \x17\n\x0c\n\x04\x04\x20\x02\0\x12\x04\xf4\x07\x02\x11\n\r\n\x05\x04\x20\
+    \x02\0\x05\x12\x04\xf4\x07\x02\x06\n\r\n\x05\x04\x20\x02\0\x01\x12\x04\
+    \xf4\x07\x07\x0c\n\r\n\x05\x04\x20\x02\0\x03\x12\x04\xf4\x07\x0f\x10\n\
+    \x0c\n\x02\x04!\x12\x06\xf7\x07\0\xf9\x07\x01\n\x0b\n\x03\x04!\x01\x12\
+    \x04\xf7\x07\x08\x14\n\x0c\n\x04\x04!\x02\0\x12\x04\xf8\x07\x02\x12\n\r\
+    \n\x05\x04!\x02\0\x05\x12\x04\xf8\x07\x02\x07\n\r\n\x05\x04!\x02\0\x01\
+    \x12\x04\xf8\x07\x08\r\n\r\n\x05\x04!\x02\0\x03\x12\x04\xf8\x07\x10\x11\
+    \n\x0c\n\x02\x04\"\x12\x06\xfb\x07\0\xfd\x07\x01\n\x0b\n\x03\x04\"\x01\
+    \x12\x04\xfb\x07\x08\x15\n\x0c\n\x04\x04\"\x02\0\x12\x04\xfc\x07\x02\x12\
+    \n\r\n\x05\x04\"\x02\0\x05\x12\x04\xfc\x07\x02\x07\n\r\n\x05\x04\"\x02\0\
+    \x01\x12\x04\xfc\x07\x08\r\n\r\n\x05\x04\"\x02\0\x03\x12\x04\xfc\x07\x10\
+    \x11\n\x0c\n\x02\x04#\x12\x06\xff\x07\0\x81\x08\x01\n\x0b\n\x03\x04#\x01\
+    \x12\x04\xff\x07\x08\x14\n\x0c\n\x04\x04#\x02\0\x12\x04\x80\x08\x02\x12\
+    \n\r\n\x05\x04#\x02\0\x05\x12\x04\x80\x08\x02\x07\n\r\n\x05\x04#\x02\0\
+    \x01\x12\x04\x80\x08\x08\r\n\r\n\x05\x04#\x02\0\x03\x12\x04\x80\x08\x10\
+    \x11\n\x0c\n\x02\x04$\x12\x06\x83\x08\0\x85\x08\x01\n\x0b\n\x03\x04$\x01\
+    \x12\x04\x83\x08\x08\x13\n\x0c\n\x04\x04$\x02\0\x12\x04\x84\x08\x02\x12\
+    \n\r\n\x05\x04$\x02\0\x05\x12\x04\x84\x08\x02\x07\n\r\n\x05\x04$\x02\0\
+    \x01\x12\x04\x84\x08\x08\r\n\r\n\x05\x04$\x02\0\x03\x12\x04\x84\x08\x10\
+    \x11\n\x0c\n\x02\x04%\x12\x06\x87\x08\0\x89\x08\x01\n\x0b\n\x03\x04%\x01\
+    \x12\x04\x87\x08\x08\x14\n\x0c\n\x04\x04%\x02\0\x12\x04\x88\x08\x02\x12\
+    \n\r\n\x05\x04%\x02\0\x05\x12\x04\x88\x08\x02\x07\n\r\n\x05\x04%\x02\0\
+    \x01\x12\x04\x88\x08\x08\r\n\r\n\x05\x04%\x02\0\x03\x12\x04\x88\x08\x10\
+    \x11\n\x0c\n\x02\x04&\x12\x06\x8b\x08\0\x8d\x08\x01\n\x0b\n\x03\x04&\x01\
+    \x12\x04\x8b\x08\x08\x15\n\x0c\n\x04\x04&\x02\0\x12\x04\x8c\x08\x02\x12\
+    \n\r\n\x05\x04&\x02\0\x05\x12\x04\x8c\x08\x02\x07\n\r\n\x05\x04&\x02\0\
+    \x01\x12\x04\x8c\x08\x08\r\n\r\n\x05\x04&\x02\0\x03\x12\x04\x8c\x08\x10\
+    \x11\n\x0c\n\x02\x04'\x12\x06\x8f\x08\0\x91\x08\x01\n\x0b\n\x03\x04'\x01\
+    \x12\x04\x8f\x08\x08\x16\n\x0c\n\x04\x04'\x02\0\x12\x04\x90\x08\x02\x13\
+    \n\r\n\x05\x04'\x02\0\x05\x12\x04\x90\x08\x02\x08\n\r\n\x05\x04'\x02\0\
+    \x01\x12\x04\x90\x08\t\x0e\n\r\n\x05\x04'\x02\0\x03\x12\x04\x90\x08\x11\
+    \x12\n\x0c\n\x02\x04(\x12\x06\x93\x08\0\x95\x08\x01\n\x0b\n\x03\x04(\x01\
+    \x12\x04\x93\x08\x08\x16\n\x0c\n\x04\x04(\x02\0\x12\x04\x94\x08\x02\x13\
+    \n\r\n\x05\x04(\x02\0\x05\x12\x04\x94\x08\x02\x08\n\r\n\x05\x04(\x02\0\
+    \x01\x12\x04\x94\x08\t\x0e\n\r\n\x05\x04(\x02\0\x03\x12\x04\x94\x08\x11\
+    \x12\n\x0c\n\x02\x04)\x12\x06\x97\x08\0\x98\x08\x01\n\x0b\n\x03\x04)\x01\
+    \x12\x04\x97\x08\x08\x14\n\x0c\n\x02\x04*\x12\x06\x9a\x08\0\xa1\x08\x01\
+    \n\x0b\n\x03\x04*\x01\x12\x04\x9a\x08\x08\x11\n\x0e\n\x04\x04*\x08\0\x12\
+    \x06\x9b\x08\x02\xa0\x08\x03\n\r\n\x05\x04*\x08\0\x01\x12\x04\x9b\x08\
+    \x08\x14\n\x0c\n\x04\x04*\x02\0\x12\x04\x9c\x08\x04'\n\r\n\x05\x04*\x02\
+    \0\x06\x12\x04\x9c\x08\x04\x12\n\r\n\x05\x04*\x02\0\x01\x12\x04\x9c\x08\
+    \x13\"\n\r\n\x05\x04*\x02\0\x03\x12\x04\x9c\x08%&\n\x0c\n\x04\x04*\x02\
+    \x01\x12\x04\x9d\x08\x04)\n\r\n\x05\x04*\x02\x01\x06\x12\x04\x9d\x08\x04\
+    \x13\n\r\n\x05\x04*\x02\x01\x01\x12\x04\x9d\x08\x14$\n\r\n\x05\x04*\x02\
+    \x01\x03\x12\x04\x9d\x08'(\n\x0c\n\x04\x04*\x02\x02\x12\x04\x9e\x08\x04%\
+    \n\r\n\x05\x04*\x02\x02\x06\x12\x04\x9e\x08\x04\x11\n\r\n\x05\x04*\x02\
+    \x02\x01\x12\x04\x9e\x08\x12\x20\n\r\n\x05\x04*\x02\x02\x03\x12\x04\x9e\
+    \x08#$\n\x0c\n\x04\x04*\x02\x03\x12\x04\x9f\x08\x04'\n\r\n\x05\x04*\x02\
+    \x03\x06\x12\x04\x9f\x08\x04\x12\n\r\n\x05\x04*\x02\x03\x01\x12\x04\x9f\
+    \x08\x13\"\n\r\n\x05\x04*\x02\x03\x03\x12\x04\x9f\x08%&\n\x0c\n\x02\x04+\
+    \x12\x06\xa3\x08\0\xa8\x08\x01\n\x0b\n\x03\x04+\x01\x12\x04\xa3\x08\x08\
+    \x16\n\x0c\n\x04\x04+\x02\0\x12\x04\xa4\x08\x02\x1c\n\r\n\x05\x04+\x02\0\
+    \x06\x12\x04\xa4\x08\x02\x07\n\r\n\x05\x04+\x02\0\x01\x12\x04\xa4\x08\
+    \x08\x17\n\r\n\x05\x04+\x02\0\x03\x12\x04\xa4\x08\x1a\x1b\n\x0c\n\x04\
+    \x04+\x02\x01\x12\x04\xa5\x08\x02\x1c\n\r\n\x05\x04+\x02\x01\x04\x12\x04\
+    \xa5\x08\x02\n\n\r\n\x05\x04+\x02\x01\x06\x12\x04\xa5\x08\x0b\x0f\n\r\n\
+    \x05\x04+\x02\x01\x01\x12\x04\xa5\x08\x10\x17\n\r\n\x05\x04+\x02\x01\x03\
+    \x12\x04\xa5\x08\x1a\x1b\n\x0c\n\x04\x04+\x02\x02\x12\x04\xa6\x08\x02\
+    \x10\n\r\n\x05\x04+\x02\x02\x06\x12\x04\xa6\x08\x02\x06\n\r\n\x05\x04+\
+    \x02\x02\x01\x12\x04\xa6\x08\x07\x0b\n\r\n\x05\x04+\x02\x02\x03\x12\x04\
+    \xa6\x08\x0e\x0f\n\x0c\n\x04\x04+\x02\x03\x12\x04\xa7\x08\x02\x19\n\r\n\
+    \x05\x04+\x02\x03\x06\x12\x04\xa7\x08\x02\x07\n\r\n\x05\x04+\x02\x03\x01\
+    \x12\x04\xa7\x08\x08\x14\n\r\n\x05\x04+\x02\x03\x03\x12\x04\xa7\x08\x17\
+    \x18\n\x0c\n\x02\x04,\x12\x06\xaa\x08\0\xae\x08\x01\n\x0b\n\x03\x04,\x01\
+    \x12\x04\xaa\x08\x08\x17\n\x0c\n\x04\x04,\x02\0\x12\x04\xab\x08\x02\x1c\
+    \n\r\n\x05\x04,\x02\0\x06\x12\x04\xab\x08\x02\x07\n\r\n\x05\x04,\x02\0\
+    \x01\x12\x04\xab\x08\x08\x17\n\r\n\x05\x04,\x02\0\x03\x12\x04\xab\x08\
+    \x1a\x1b\n\x0c\n\x04\x04,\x02\x01\x12\x04\xac\x08\x02%\n\r\n\x05\x04,\
+    \x02\x01\x04\x12\x04\xac\x08\x02\n\n\r\n\x05\x04,\x02\x01\x06\x12\x04\
+    \xac\x08\x0b\x10\n\r\n\x05\x04,\x02\x01\x01\x12\x04\xac\x08\x11\x20\n\r\
+    \n\x05\x04,\x02\x01\x03\x12\x04\xac\x08#$\n\x0c\n\x04\x04,\x02\x02\x12\
+    \x04\xad\x08\x02\x17\n\r\n\x05\x04,\x02\x02\x06\x12\x04\xad\x08\x02\x06\
+    \n\r\n\x05\x04,\x02\x02\x01\x12\x04\xad\x08\x07\x12\n\r\n\x05\x04,\x02\
+    \x02\x03\x12\x04\xad\x08\x15\x16\n\x0c\n\x02\x04-\x12\x06\xb0\x08\0\xb4\
+    \x08\x01\n\x0b\n\x03\x04-\x01\x12\x04\xb0\x08\x08\x15\n\x0c\n\x04\x04-\
+    \x02\0\x12\x04\xb1\x08\x02\x1c\n\r\n\x05\x04-\x02\0\x06\x12\x04\xb1\x08\
+    \x02\x07\n\r\n\x05\x04-\x02\0\x01\x12\x04\xb1\x08\x08\x17\n\r\n\x05\x04-\
+    \x02\0\x03\x12\x04\xb1\x08\x1a\x1b\n\x0c\n\x04\x04-\x02\x01\x12\x04\xb2\
+    \x08\x02\x17\n\r\n\x05\x04-\x02\x01\x06\x12\x04\xb2\x08\x02\x06\n\r\n\
+    \x05\x04-\x02\x01\x01\x12\x04\xb2\x08\x07\x12\n\r\n\x05\x04-\x02\x01\x03\
+    \x12\x04\xb2\x08\x15\x16\n\x0c\n\x04\x04-\x02\x02\x12\x04\xb3\x08\x02\
+    \x17\n\r\n\x05\x04-\x02\x02\x06\x12\x04\xb3\x08\x02\x06\n\r\n\x05\x04-\
+    \x02\x02\x01\x12\x04\xb3\x08\x07\x12\n\r\n\x05\x04-\x02\x02\x03\x12\x04\
+    \xb3\x08\x15\x16\n\x0c\n\x02\x04.\x12\x06\xb6\x08\0\xb8\x08\x01\n\x0b\n\
+    \x03\x04.\x01\x12\x04\xb6\x08\x08\x16\n\x0c\n\x04\x04.\x02\0\x12\x04\xb7\
+    \x08\x02\x0f\n\r\n\x05\x04.\x02\0\x06\x12\x04\xb7\x08\x02\x06\n\r\n\x05\
+    \x04.\x02\0\x01\x12\x04\xb7\x08\x07\n\n\r\n\x05\x04.\x02\0\x03\x12\x04\
+    \xb7\x08\r\x0eb\x06proto3\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
@@ -5661,7 +13169,7 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
     file_descriptor.get(|| {
         let generated_file_descriptor = generated_file_descriptor_lazy.get(|| {
             let mut deps = ::std::vec::Vec::with_capacity(0);
-            let mut messages = ::std::vec::Vec::with_capacity(11);
+            let mut messages = ::std::vec::Vec::with_capacity(48);
             messages.push(Index::generated_message_descriptor_data());
             messages.push(Metadata::generated_message_descriptor_data());
             messages.push(ToolInfo::generated_message_descriptor_data());
@@ -5673,6 +13181,43 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
             messages.push(Relationship::generated_message_descriptor_data());
             messages.push(Occurrence::generated_message_descriptor_data());
             messages.push(Diagnostic::generated_message_descriptor_data());
+            messages.push(Annotation::generated_message_descriptor_data());
+            messages.push(Scope::generated_message_descriptor_data());
+            messages.push(Type::generated_message_descriptor_data());
+            messages.push(LambdaType::generated_message_descriptor_data());
+            messages.push(TypeRef::generated_message_descriptor_data());
+            messages.push(SingleType::generated_message_descriptor_data());
+            messages.push(ThisType::generated_message_descriptor_data());
+            messages.push(SuperType::generated_message_descriptor_data());
+            messages.push(ConstantType::generated_message_descriptor_data());
+            messages.push(IntersectionType::generated_message_descriptor_data());
+            messages.push(UnionType::generated_message_descriptor_data());
+            messages.push(WithType::generated_message_descriptor_data());
+            messages.push(StructuralType::generated_message_descriptor_data());
+            messages.push(AnnotatedType::generated_message_descriptor_data());
+            messages.push(ExistentialType::generated_message_descriptor_data());
+            messages.push(UniversalType::generated_message_descriptor_data());
+            messages.push(ByNameType::generated_message_descriptor_data());
+            messages.push(RepeatedType::generated_message_descriptor_data());
+            messages.push(MatchType::generated_message_descriptor_data());
+            messages.push(Constant::generated_message_descriptor_data());
+            messages.push(UnitConstant::generated_message_descriptor_data());
+            messages.push(BooleanConstant::generated_message_descriptor_data());
+            messages.push(ByteConstant::generated_message_descriptor_data());
+            messages.push(ShortConstant::generated_message_descriptor_data());
+            messages.push(CharConstant::generated_message_descriptor_data());
+            messages.push(IntConstant::generated_message_descriptor_data());
+            messages.push(LongConstant::generated_message_descriptor_data());
+            messages.push(FloatConstant::generated_message_descriptor_data());
+            messages.push(DoubleConstant::generated_message_descriptor_data());
+            messages.push(StringConstant::generated_message_descriptor_data());
+            messages.push(NullConstant::generated_message_descriptor_data());
+            messages.push(Signature::generated_message_descriptor_data());
+            messages.push(ClassSignature::generated_message_descriptor_data());
+            messages.push(MethodSignature::generated_message_descriptor_data());
+            messages.push(TypeSignature::generated_message_descriptor_data());
+            messages.push(ValueSignature::generated_message_descriptor_data());
+            messages.push(match_type::CaseType::generated_message_descriptor_data());
             let mut enums = ::std::vec::Vec::with_capacity(10);
             enums.push(ProtocolVersion::generated_enum_descriptor_data());
             enums.push(TextEncoding::generated_enum_descriptor_data());

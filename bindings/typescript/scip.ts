@@ -1114,6 +1114,7 @@ export namespace scip {
             display_name?: string;
             signature_documentation?: Document;
             enclosing_symbol?: string;
+            signature?: Signature;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3, 4], this.#one_of_decls);
@@ -1138,6 +1139,9 @@ export namespace scip {
                 }
                 if ("enclosing_symbol" in data && data.enclosing_symbol != undefined) {
                     this.enclosing_symbol = data.enclosing_symbol;
+                }
+                if ("signature" in data && data.signature != undefined) {
+                    this.signature = data.signature;
                 }
             }
         }
@@ -1186,6 +1190,15 @@ export namespace scip {
         set enclosing_symbol(value: string) {
             pb_1.Message.setField(this, 8, value);
         }
+        get signature() {
+            return pb_1.Message.getWrapperField(this, Signature, 9) as Signature;
+        }
+        set signature(value: Signature) {
+            pb_1.Message.setWrapperField(this, 9, value);
+        }
+        get has_signature() {
+            return pb_1.Message.getField(this, 9) != null;
+        }
         static fromObject(data: {
             symbol?: string;
             documentation?: string[];
@@ -1194,6 +1207,7 @@ export namespace scip {
             display_name?: string;
             signature_documentation?: ReturnType<typeof Document.prototype.toObject>;
             enclosing_symbol?: string;
+            signature?: ReturnType<typeof Signature.prototype.toObject>;
         }): SymbolInformation {
             const message = new SymbolInformation({});
             if (data.symbol != null) {
@@ -1217,6 +1231,9 @@ export namespace scip {
             if (data.enclosing_symbol != null) {
                 message.enclosing_symbol = data.enclosing_symbol;
             }
+            if (data.signature != null) {
+                message.signature = Signature.fromObject(data.signature);
+            }
             return message;
         }
         toObject() {
@@ -1228,6 +1245,7 @@ export namespace scip {
                 display_name?: string;
                 signature_documentation?: ReturnType<typeof Document.prototype.toObject>;
                 enclosing_symbol?: string;
+                signature?: ReturnType<typeof Signature.prototype.toObject>;
             } = {};
             if (this.symbol != null) {
                 data.symbol = this.symbol;
@@ -1250,6 +1268,9 @@ export namespace scip {
             if (this.enclosing_symbol != null) {
                 data.enclosing_symbol = this.enclosing_symbol;
             }
+            if (this.signature != null) {
+                data.signature = this.signature.toObject();
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -1270,6 +1291,8 @@ export namespace scip {
                 writer.writeMessage(7, this.signature_documentation, () => this.signature_documentation.serialize(writer));
             if (this.enclosing_symbol.length)
                 writer.writeString(8, this.enclosing_symbol);
+            if (this.has_signature)
+                writer.writeMessage(9, this.signature, () => this.signature.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1299,6 +1322,9 @@ export namespace scip {
                         break;
                     case 8:
                         message.enclosing_symbol = reader.readString();
+                        break;
+                    case 9:
+                        reader.readMessage(message.signature, () => message.signature = Signature.deserialize(reader));
                         break;
                     default: reader.skipField();
                 }
@@ -1920,6 +1946,4136 @@ export namespace scip {
         }
         static deserializeBinary(bytes: Uint8Array): Diagnostic {
             return Diagnostic.deserialize(bytes);
+        }
+    }
+    export class Annotation extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tpe?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tpe" in data && data.tpe != undefined) {
+                    this.tpe = data.tpe;
+                }
+            }
+        }
+        get tpe() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set tpe(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_tpe() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        static fromObject(data: {
+            tpe?: ReturnType<typeof Type.prototype.toObject>;
+        }): Annotation {
+            const message = new Annotation({});
+            if (data.tpe != null) {
+                message.tpe = Type.fromObject(data.tpe);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tpe?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.tpe != null) {
+                data.tpe = this.tpe.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_tpe)
+                writer.writeMessage(1, this.tpe, () => this.tpe.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Annotation {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Annotation();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tpe, () => message.tpe = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): Annotation {
+            return Annotation.deserialize(bytes);
+        }
+    }
+    export class Scope extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            symlinks?: string[];
+            hardlinks?: SymbolInformation[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1, 2], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("symlinks" in data && data.symlinks != undefined) {
+                    this.symlinks = data.symlinks;
+                }
+                if ("hardlinks" in data && data.hardlinks != undefined) {
+                    this.hardlinks = data.hardlinks;
+                }
+            }
+        }
+        get symlinks() {
+            return pb_1.Message.getFieldWithDefault(this, 1, []) as string[];
+        }
+        set symlinks(value: string[]) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get hardlinks() {
+            return pb_1.Message.getRepeatedWrapperField(this, SymbolInformation, 2) as SymbolInformation[];
+        }
+        set hardlinks(value: SymbolInformation[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 2, value);
+        }
+        static fromObject(data: {
+            symlinks?: string[];
+            hardlinks?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
+        }): Scope {
+            const message = new Scope({});
+            if (data.symlinks != null) {
+                message.symlinks = data.symlinks;
+            }
+            if (data.hardlinks != null) {
+                message.hardlinks = data.hardlinks.map(item => SymbolInformation.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                symlinks?: string[];
+                hardlinks?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
+            } = {};
+            if (this.symlinks != null) {
+                data.symlinks = this.symlinks;
+            }
+            if (this.hardlinks != null) {
+                data.hardlinks = this.hardlinks.map((item: SymbolInformation) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.symlinks.length)
+                writer.writeRepeatedString(1, this.symlinks);
+            if (this.hardlinks.length)
+                writer.writeRepeatedMessage(2, this.hardlinks, (item: SymbolInformation) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Scope {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Scope();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        pb_1.Message.addToRepeatedField(message, 1, reader.readString());
+                        break;
+                    case 2:
+                        reader.readMessage(message.hardlinks, () => pb_1.Message.addToRepeatedWrapperField(message, 2, SymbolInformation.deserialize(reader), SymbolInformation));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): Scope {
+            return Scope.deserialize(bytes);
+        }
+    }
+    export class Type extends pb_1.Message {
+        #one_of_decls: number[][] = [[2, 20, 21, 22, 23, 17, 18, 19, 7, 8, 9, 10, 13, 14, 25, 26]];
+        constructor(data?: any[] | ({} & (({
+            type_ref?: TypeRef;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: SingleType;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: ThisType;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: SuperType;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: ConstantType;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: IntersectionType;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: UnionType;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: WithType;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: StructuralType;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: AnnotatedType;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: ExistentialType;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: UniversalType;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: ByNameType;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: RepeatedType;
+            match_type?: never;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: MatchType;
+            lambda_type?: never;
+        } | {
+            type_ref?: never;
+            single_type?: never;
+            this_type?: never;
+            super_type?: never;
+            constant_type?: never;
+            intersection_type?: never;
+            union_type?: never;
+            with_type?: never;
+            structural_type?: never;
+            annotated_type?: never;
+            existential_type?: never;
+            universal_type?: never;
+            by_name_type?: never;
+            repeated_type?: never;
+            match_type?: never;
+            lambda_type?: LambdaType;
+        })))) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("type_ref" in data && data.type_ref != undefined) {
+                    this.type_ref = data.type_ref;
+                }
+                if ("single_type" in data && data.single_type != undefined) {
+                    this.single_type = data.single_type;
+                }
+                if ("this_type" in data && data.this_type != undefined) {
+                    this.this_type = data.this_type;
+                }
+                if ("super_type" in data && data.super_type != undefined) {
+                    this.super_type = data.super_type;
+                }
+                if ("constant_type" in data && data.constant_type != undefined) {
+                    this.constant_type = data.constant_type;
+                }
+                if ("intersection_type" in data && data.intersection_type != undefined) {
+                    this.intersection_type = data.intersection_type;
+                }
+                if ("union_type" in data && data.union_type != undefined) {
+                    this.union_type = data.union_type;
+                }
+                if ("with_type" in data && data.with_type != undefined) {
+                    this.with_type = data.with_type;
+                }
+                if ("structural_type" in data && data.structural_type != undefined) {
+                    this.structural_type = data.structural_type;
+                }
+                if ("annotated_type" in data && data.annotated_type != undefined) {
+                    this.annotated_type = data.annotated_type;
+                }
+                if ("existential_type" in data && data.existential_type != undefined) {
+                    this.existential_type = data.existential_type;
+                }
+                if ("universal_type" in data && data.universal_type != undefined) {
+                    this.universal_type = data.universal_type;
+                }
+                if ("by_name_type" in data && data.by_name_type != undefined) {
+                    this.by_name_type = data.by_name_type;
+                }
+                if ("repeated_type" in data && data.repeated_type != undefined) {
+                    this.repeated_type = data.repeated_type;
+                }
+                if ("match_type" in data && data.match_type != undefined) {
+                    this.match_type = data.match_type;
+                }
+                if ("lambda_type" in data && data.lambda_type != undefined) {
+                    this.lambda_type = data.lambda_type;
+                }
+            }
+        }
+        get type_ref() {
+            return pb_1.Message.getWrapperField(this, TypeRef, 2) as TypeRef;
+        }
+        set type_ref(value: TypeRef) {
+            pb_1.Message.setOneofWrapperField(this, 2, this.#one_of_decls[0], value);
+        }
+        get has_type_ref() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        get single_type() {
+            return pb_1.Message.getWrapperField(this, SingleType, 20) as SingleType;
+        }
+        set single_type(value: SingleType) {
+            pb_1.Message.setOneofWrapperField(this, 20, this.#one_of_decls[0], value);
+        }
+        get has_single_type() {
+            return pb_1.Message.getField(this, 20) != null;
+        }
+        get this_type() {
+            return pb_1.Message.getWrapperField(this, ThisType, 21) as ThisType;
+        }
+        set this_type(value: ThisType) {
+            pb_1.Message.setOneofWrapperField(this, 21, this.#one_of_decls[0], value);
+        }
+        get has_this_type() {
+            return pb_1.Message.getField(this, 21) != null;
+        }
+        get super_type() {
+            return pb_1.Message.getWrapperField(this, SuperType, 22) as SuperType;
+        }
+        set super_type(value: SuperType) {
+            pb_1.Message.setOneofWrapperField(this, 22, this.#one_of_decls[0], value);
+        }
+        get has_super_type() {
+            return pb_1.Message.getField(this, 22) != null;
+        }
+        get constant_type() {
+            return pb_1.Message.getWrapperField(this, ConstantType, 23) as ConstantType;
+        }
+        set constant_type(value: ConstantType) {
+            pb_1.Message.setOneofWrapperField(this, 23, this.#one_of_decls[0], value);
+        }
+        get has_constant_type() {
+            return pb_1.Message.getField(this, 23) != null;
+        }
+        get intersection_type() {
+            return pb_1.Message.getWrapperField(this, IntersectionType, 17) as IntersectionType;
+        }
+        set intersection_type(value: IntersectionType) {
+            pb_1.Message.setOneofWrapperField(this, 17, this.#one_of_decls[0], value);
+        }
+        get has_intersection_type() {
+            return pb_1.Message.getField(this, 17) != null;
+        }
+        get union_type() {
+            return pb_1.Message.getWrapperField(this, UnionType, 18) as UnionType;
+        }
+        set union_type(value: UnionType) {
+            pb_1.Message.setOneofWrapperField(this, 18, this.#one_of_decls[0], value);
+        }
+        get has_union_type() {
+            return pb_1.Message.getField(this, 18) != null;
+        }
+        get with_type() {
+            return pb_1.Message.getWrapperField(this, WithType, 19) as WithType;
+        }
+        set with_type(value: WithType) {
+            pb_1.Message.setOneofWrapperField(this, 19, this.#one_of_decls[0], value);
+        }
+        get has_with_type() {
+            return pb_1.Message.getField(this, 19) != null;
+        }
+        get structural_type() {
+            return pb_1.Message.getWrapperField(this, StructuralType, 7) as StructuralType;
+        }
+        set structural_type(value: StructuralType) {
+            pb_1.Message.setOneofWrapperField(this, 7, this.#one_of_decls[0], value);
+        }
+        get has_structural_type() {
+            return pb_1.Message.getField(this, 7) != null;
+        }
+        get annotated_type() {
+            return pb_1.Message.getWrapperField(this, AnnotatedType, 8) as AnnotatedType;
+        }
+        set annotated_type(value: AnnotatedType) {
+            pb_1.Message.setOneofWrapperField(this, 8, this.#one_of_decls[0], value);
+        }
+        get has_annotated_type() {
+            return pb_1.Message.getField(this, 8) != null;
+        }
+        get existential_type() {
+            return pb_1.Message.getWrapperField(this, ExistentialType, 9) as ExistentialType;
+        }
+        set existential_type(value: ExistentialType) {
+            pb_1.Message.setOneofWrapperField(this, 9, this.#one_of_decls[0], value);
+        }
+        get has_existential_type() {
+            return pb_1.Message.getField(this, 9) != null;
+        }
+        get universal_type() {
+            return pb_1.Message.getWrapperField(this, UniversalType, 10) as UniversalType;
+        }
+        set universal_type(value: UniversalType) {
+            pb_1.Message.setOneofWrapperField(this, 10, this.#one_of_decls[0], value);
+        }
+        get has_universal_type() {
+            return pb_1.Message.getField(this, 10) != null;
+        }
+        get by_name_type() {
+            return pb_1.Message.getWrapperField(this, ByNameType, 13) as ByNameType;
+        }
+        set by_name_type(value: ByNameType) {
+            pb_1.Message.setOneofWrapperField(this, 13, this.#one_of_decls[0], value);
+        }
+        get has_by_name_type() {
+            return pb_1.Message.getField(this, 13) != null;
+        }
+        get repeated_type() {
+            return pb_1.Message.getWrapperField(this, RepeatedType, 14) as RepeatedType;
+        }
+        set repeated_type(value: RepeatedType) {
+            pb_1.Message.setOneofWrapperField(this, 14, this.#one_of_decls[0], value);
+        }
+        get has_repeated_type() {
+            return pb_1.Message.getField(this, 14) != null;
+        }
+        get match_type() {
+            return pb_1.Message.getWrapperField(this, MatchType, 25) as MatchType;
+        }
+        set match_type(value: MatchType) {
+            pb_1.Message.setOneofWrapperField(this, 25, this.#one_of_decls[0], value);
+        }
+        get has_match_type() {
+            return pb_1.Message.getField(this, 25) != null;
+        }
+        get lambda_type() {
+            return pb_1.Message.getWrapperField(this, LambdaType, 26) as LambdaType;
+        }
+        set lambda_type(value: LambdaType) {
+            pb_1.Message.setOneofWrapperField(this, 26, this.#one_of_decls[0], value);
+        }
+        get has_lambda_type() {
+            return pb_1.Message.getField(this, 26) != null;
+        }
+        get sealed_value() {
+            const cases: {
+                [index: number]: "none" | "type_ref" | "single_type" | "this_type" | "super_type" | "constant_type" | "intersection_type" | "union_type" | "with_type" | "structural_type" | "annotated_type" | "existential_type" | "universal_type" | "by_name_type" | "repeated_type" | "match_type" | "lambda_type";
+            } = {
+                0: "none",
+                2: "type_ref",
+                20: "single_type",
+                21: "this_type",
+                22: "super_type",
+                23: "constant_type",
+                17: "intersection_type",
+                18: "union_type",
+                19: "with_type",
+                7: "structural_type",
+                8: "annotated_type",
+                9: "existential_type",
+                10: "universal_type",
+                13: "by_name_type",
+                14: "repeated_type",
+                25: "match_type",
+                26: "lambda_type"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [2, 20, 21, 22, 23, 17, 18, 19, 7, 8, 9, 10, 13, 14, 25, 26])];
+        }
+        static fromObject(data: {
+            type_ref?: ReturnType<typeof TypeRef.prototype.toObject>;
+            single_type?: ReturnType<typeof SingleType.prototype.toObject>;
+            this_type?: ReturnType<typeof ThisType.prototype.toObject>;
+            super_type?: ReturnType<typeof SuperType.prototype.toObject>;
+            constant_type?: ReturnType<typeof ConstantType.prototype.toObject>;
+            intersection_type?: ReturnType<typeof IntersectionType.prototype.toObject>;
+            union_type?: ReturnType<typeof UnionType.prototype.toObject>;
+            with_type?: ReturnType<typeof WithType.prototype.toObject>;
+            structural_type?: ReturnType<typeof StructuralType.prototype.toObject>;
+            annotated_type?: ReturnType<typeof AnnotatedType.prototype.toObject>;
+            existential_type?: ReturnType<typeof ExistentialType.prototype.toObject>;
+            universal_type?: ReturnType<typeof UniversalType.prototype.toObject>;
+            by_name_type?: ReturnType<typeof ByNameType.prototype.toObject>;
+            repeated_type?: ReturnType<typeof RepeatedType.prototype.toObject>;
+            match_type?: ReturnType<typeof MatchType.prototype.toObject>;
+            lambda_type?: ReturnType<typeof LambdaType.prototype.toObject>;
+        }): Type {
+            const message = new Type({});
+            if (data.type_ref != null) {
+                message.type_ref = TypeRef.fromObject(data.type_ref);
+            }
+            if (data.single_type != null) {
+                message.single_type = SingleType.fromObject(data.single_type);
+            }
+            if (data.this_type != null) {
+                message.this_type = ThisType.fromObject(data.this_type);
+            }
+            if (data.super_type != null) {
+                message.super_type = SuperType.fromObject(data.super_type);
+            }
+            if (data.constant_type != null) {
+                message.constant_type = ConstantType.fromObject(data.constant_type);
+            }
+            if (data.intersection_type != null) {
+                message.intersection_type = IntersectionType.fromObject(data.intersection_type);
+            }
+            if (data.union_type != null) {
+                message.union_type = UnionType.fromObject(data.union_type);
+            }
+            if (data.with_type != null) {
+                message.with_type = WithType.fromObject(data.with_type);
+            }
+            if (data.structural_type != null) {
+                message.structural_type = StructuralType.fromObject(data.structural_type);
+            }
+            if (data.annotated_type != null) {
+                message.annotated_type = AnnotatedType.fromObject(data.annotated_type);
+            }
+            if (data.existential_type != null) {
+                message.existential_type = ExistentialType.fromObject(data.existential_type);
+            }
+            if (data.universal_type != null) {
+                message.universal_type = UniversalType.fromObject(data.universal_type);
+            }
+            if (data.by_name_type != null) {
+                message.by_name_type = ByNameType.fromObject(data.by_name_type);
+            }
+            if (data.repeated_type != null) {
+                message.repeated_type = RepeatedType.fromObject(data.repeated_type);
+            }
+            if (data.match_type != null) {
+                message.match_type = MatchType.fromObject(data.match_type);
+            }
+            if (data.lambda_type != null) {
+                message.lambda_type = LambdaType.fromObject(data.lambda_type);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                type_ref?: ReturnType<typeof TypeRef.prototype.toObject>;
+                single_type?: ReturnType<typeof SingleType.prototype.toObject>;
+                this_type?: ReturnType<typeof ThisType.prototype.toObject>;
+                super_type?: ReturnType<typeof SuperType.prototype.toObject>;
+                constant_type?: ReturnType<typeof ConstantType.prototype.toObject>;
+                intersection_type?: ReturnType<typeof IntersectionType.prototype.toObject>;
+                union_type?: ReturnType<typeof UnionType.prototype.toObject>;
+                with_type?: ReturnType<typeof WithType.prototype.toObject>;
+                structural_type?: ReturnType<typeof StructuralType.prototype.toObject>;
+                annotated_type?: ReturnType<typeof AnnotatedType.prototype.toObject>;
+                existential_type?: ReturnType<typeof ExistentialType.prototype.toObject>;
+                universal_type?: ReturnType<typeof UniversalType.prototype.toObject>;
+                by_name_type?: ReturnType<typeof ByNameType.prototype.toObject>;
+                repeated_type?: ReturnType<typeof RepeatedType.prototype.toObject>;
+                match_type?: ReturnType<typeof MatchType.prototype.toObject>;
+                lambda_type?: ReturnType<typeof LambdaType.prototype.toObject>;
+            } = {};
+            if (this.type_ref != null) {
+                data.type_ref = this.type_ref.toObject();
+            }
+            if (this.single_type != null) {
+                data.single_type = this.single_type.toObject();
+            }
+            if (this.this_type != null) {
+                data.this_type = this.this_type.toObject();
+            }
+            if (this.super_type != null) {
+                data.super_type = this.super_type.toObject();
+            }
+            if (this.constant_type != null) {
+                data.constant_type = this.constant_type.toObject();
+            }
+            if (this.intersection_type != null) {
+                data.intersection_type = this.intersection_type.toObject();
+            }
+            if (this.union_type != null) {
+                data.union_type = this.union_type.toObject();
+            }
+            if (this.with_type != null) {
+                data.with_type = this.with_type.toObject();
+            }
+            if (this.structural_type != null) {
+                data.structural_type = this.structural_type.toObject();
+            }
+            if (this.annotated_type != null) {
+                data.annotated_type = this.annotated_type.toObject();
+            }
+            if (this.existential_type != null) {
+                data.existential_type = this.existential_type.toObject();
+            }
+            if (this.universal_type != null) {
+                data.universal_type = this.universal_type.toObject();
+            }
+            if (this.by_name_type != null) {
+                data.by_name_type = this.by_name_type.toObject();
+            }
+            if (this.repeated_type != null) {
+                data.repeated_type = this.repeated_type.toObject();
+            }
+            if (this.match_type != null) {
+                data.match_type = this.match_type.toObject();
+            }
+            if (this.lambda_type != null) {
+                data.lambda_type = this.lambda_type.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_type_ref)
+                writer.writeMessage(2, this.type_ref, () => this.type_ref.serialize(writer));
+            if (this.has_single_type)
+                writer.writeMessage(20, this.single_type, () => this.single_type.serialize(writer));
+            if (this.has_this_type)
+                writer.writeMessage(21, this.this_type, () => this.this_type.serialize(writer));
+            if (this.has_super_type)
+                writer.writeMessage(22, this.super_type, () => this.super_type.serialize(writer));
+            if (this.has_constant_type)
+                writer.writeMessage(23, this.constant_type, () => this.constant_type.serialize(writer));
+            if (this.has_intersection_type)
+                writer.writeMessage(17, this.intersection_type, () => this.intersection_type.serialize(writer));
+            if (this.has_union_type)
+                writer.writeMessage(18, this.union_type, () => this.union_type.serialize(writer));
+            if (this.has_with_type)
+                writer.writeMessage(19, this.with_type, () => this.with_type.serialize(writer));
+            if (this.has_structural_type)
+                writer.writeMessage(7, this.structural_type, () => this.structural_type.serialize(writer));
+            if (this.has_annotated_type)
+                writer.writeMessage(8, this.annotated_type, () => this.annotated_type.serialize(writer));
+            if (this.has_existential_type)
+                writer.writeMessage(9, this.existential_type, () => this.existential_type.serialize(writer));
+            if (this.has_universal_type)
+                writer.writeMessage(10, this.universal_type, () => this.universal_type.serialize(writer));
+            if (this.has_by_name_type)
+                writer.writeMessage(13, this.by_name_type, () => this.by_name_type.serialize(writer));
+            if (this.has_repeated_type)
+                writer.writeMessage(14, this.repeated_type, () => this.repeated_type.serialize(writer));
+            if (this.has_match_type)
+                writer.writeMessage(25, this.match_type, () => this.match_type.serialize(writer));
+            if (this.has_lambda_type)
+                writer.writeMessage(26, this.lambda_type, () => this.lambda_type.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Type {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Type();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 2:
+                        reader.readMessage(message.type_ref, () => message.type_ref = TypeRef.deserialize(reader));
+                        break;
+                    case 20:
+                        reader.readMessage(message.single_type, () => message.single_type = SingleType.deserialize(reader));
+                        break;
+                    case 21:
+                        reader.readMessage(message.this_type, () => message.this_type = ThisType.deserialize(reader));
+                        break;
+                    case 22:
+                        reader.readMessage(message.super_type, () => message.super_type = SuperType.deserialize(reader));
+                        break;
+                    case 23:
+                        reader.readMessage(message.constant_type, () => message.constant_type = ConstantType.deserialize(reader));
+                        break;
+                    case 17:
+                        reader.readMessage(message.intersection_type, () => message.intersection_type = IntersectionType.deserialize(reader));
+                        break;
+                    case 18:
+                        reader.readMessage(message.union_type, () => message.union_type = UnionType.deserialize(reader));
+                        break;
+                    case 19:
+                        reader.readMessage(message.with_type, () => message.with_type = WithType.deserialize(reader));
+                        break;
+                    case 7:
+                        reader.readMessage(message.structural_type, () => message.structural_type = StructuralType.deserialize(reader));
+                        break;
+                    case 8:
+                        reader.readMessage(message.annotated_type, () => message.annotated_type = AnnotatedType.deserialize(reader));
+                        break;
+                    case 9:
+                        reader.readMessage(message.existential_type, () => message.existential_type = ExistentialType.deserialize(reader));
+                        break;
+                    case 10:
+                        reader.readMessage(message.universal_type, () => message.universal_type = UniversalType.deserialize(reader));
+                        break;
+                    case 13:
+                        reader.readMessage(message.by_name_type, () => message.by_name_type = ByNameType.deserialize(reader));
+                        break;
+                    case 14:
+                        reader.readMessage(message.repeated_type, () => message.repeated_type = RepeatedType.deserialize(reader));
+                        break;
+                    case 25:
+                        reader.readMessage(message.match_type, () => message.match_type = MatchType.deserialize(reader));
+                        break;
+                    case 26:
+                        reader.readMessage(message.lambda_type, () => message.lambda_type = LambdaType.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): Type {
+            return Type.deserialize(bytes);
+        }
+    }
+    export class LambdaType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            parameters?: Scope;
+            return_type?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("parameters" in data && data.parameters != undefined) {
+                    this.parameters = data.parameters;
+                }
+                if ("return_type" in data && data.return_type != undefined) {
+                    this.return_type = data.return_type;
+                }
+            }
+        }
+        get parameters() {
+            return pb_1.Message.getWrapperField(this, Scope, 1) as Scope;
+        }
+        set parameters(value: Scope) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_parameters() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get return_type() {
+            return pb_1.Message.getWrapperField(this, Type, 2) as Type;
+        }
+        set return_type(value: Type) {
+            pb_1.Message.setWrapperField(this, 2, value);
+        }
+        get has_return_type() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        static fromObject(data: {
+            parameters?: ReturnType<typeof Scope.prototype.toObject>;
+            return_type?: ReturnType<typeof Type.prototype.toObject>;
+        }): LambdaType {
+            const message = new LambdaType({});
+            if (data.parameters != null) {
+                message.parameters = Scope.fromObject(data.parameters);
+            }
+            if (data.return_type != null) {
+                message.return_type = Type.fromObject(data.return_type);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                parameters?: ReturnType<typeof Scope.prototype.toObject>;
+                return_type?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.parameters != null) {
+                data.parameters = this.parameters.toObject();
+            }
+            if (this.return_type != null) {
+                data.return_type = this.return_type.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_parameters)
+                writer.writeMessage(1, this.parameters, () => this.parameters.serialize(writer));
+            if (this.has_return_type)
+                writer.writeMessage(2, this.return_type, () => this.return_type.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): LambdaType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new LambdaType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.parameters, () => message.parameters = Scope.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.return_type, () => message.return_type = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): LambdaType {
+            return LambdaType.deserialize(bytes);
+        }
+    }
+    export class TypeRef extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            prefix?: Type;
+            symbol?: string;
+            type_arguments?: Type[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("prefix" in data && data.prefix != undefined) {
+                    this.prefix = data.prefix;
+                }
+                if ("symbol" in data && data.symbol != undefined) {
+                    this.symbol = data.symbol;
+                }
+                if ("type_arguments" in data && data.type_arguments != undefined) {
+                    this.type_arguments = data.type_arguments;
+                }
+            }
+        }
+        get prefix() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set prefix(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_prefix() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get symbol() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set symbol(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get type_arguments() {
+            return pb_1.Message.getRepeatedWrapperField(this, Type, 3) as Type[];
+        }
+        set type_arguments(value: Type[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 3, value);
+        }
+        static fromObject(data: {
+            prefix?: ReturnType<typeof Type.prototype.toObject>;
+            symbol?: string;
+            type_arguments?: ReturnType<typeof Type.prototype.toObject>[];
+        }): TypeRef {
+            const message = new TypeRef({});
+            if (data.prefix != null) {
+                message.prefix = Type.fromObject(data.prefix);
+            }
+            if (data.symbol != null) {
+                message.symbol = data.symbol;
+            }
+            if (data.type_arguments != null) {
+                message.type_arguments = data.type_arguments.map(item => Type.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                prefix?: ReturnType<typeof Type.prototype.toObject>;
+                symbol?: string;
+                type_arguments?: ReturnType<typeof Type.prototype.toObject>[];
+            } = {};
+            if (this.prefix != null) {
+                data.prefix = this.prefix.toObject();
+            }
+            if (this.symbol != null) {
+                data.symbol = this.symbol;
+            }
+            if (this.type_arguments != null) {
+                data.type_arguments = this.type_arguments.map((item: Type) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_prefix)
+                writer.writeMessage(1, this.prefix, () => this.prefix.serialize(writer));
+            if (this.symbol.length)
+                writer.writeString(2, this.symbol);
+            if (this.type_arguments.length)
+                writer.writeRepeatedMessage(3, this.type_arguments, (item: Type) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TypeRef {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TypeRef();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.prefix, () => message.prefix = Type.deserialize(reader));
+                        break;
+                    case 2:
+                        message.symbol = reader.readString();
+                        break;
+                    case 3:
+                        reader.readMessage(message.type_arguments, () => pb_1.Message.addToRepeatedWrapperField(message, 3, Type.deserialize(reader), Type));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): TypeRef {
+            return TypeRef.deserialize(bytes);
+        }
+    }
+    export class SingleType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            prefix?: Type;
+            symbol?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("prefix" in data && data.prefix != undefined) {
+                    this.prefix = data.prefix;
+                }
+                if ("symbol" in data && data.symbol != undefined) {
+                    this.symbol = data.symbol;
+                }
+            }
+        }
+        get prefix() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set prefix(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_prefix() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get symbol() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set symbol(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            prefix?: ReturnType<typeof Type.prototype.toObject>;
+            symbol?: string;
+        }): SingleType {
+            const message = new SingleType({});
+            if (data.prefix != null) {
+                message.prefix = Type.fromObject(data.prefix);
+            }
+            if (data.symbol != null) {
+                message.symbol = data.symbol;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                prefix?: ReturnType<typeof Type.prototype.toObject>;
+                symbol?: string;
+            } = {};
+            if (this.prefix != null) {
+                data.prefix = this.prefix.toObject();
+            }
+            if (this.symbol != null) {
+                data.symbol = this.symbol;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_prefix)
+                writer.writeMessage(1, this.prefix, () => this.prefix.serialize(writer));
+            if (this.symbol.length)
+                writer.writeString(2, this.symbol);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SingleType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SingleType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.prefix, () => message.prefix = Type.deserialize(reader));
+                        break;
+                    case 2:
+                        message.symbol = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): SingleType {
+            return SingleType.deserialize(bytes);
+        }
+    }
+    export class ThisType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            symbol?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("symbol" in data && data.symbol != undefined) {
+                    this.symbol = data.symbol;
+                }
+            }
+        }
+        get symbol() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set symbol(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            symbol?: string;
+        }): ThisType {
+            const message = new ThisType({});
+            if (data.symbol != null) {
+                message.symbol = data.symbol;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                symbol?: string;
+            } = {};
+            if (this.symbol != null) {
+                data.symbol = this.symbol;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.symbol.length)
+                writer.writeString(1, this.symbol);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ThisType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ThisType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.symbol = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ThisType {
+            return ThisType.deserialize(bytes);
+        }
+    }
+    export class SuperType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            prefix?: Type;
+            symbol?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("prefix" in data && data.prefix != undefined) {
+                    this.prefix = data.prefix;
+                }
+                if ("symbol" in data && data.symbol != undefined) {
+                    this.symbol = data.symbol;
+                }
+            }
+        }
+        get prefix() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set prefix(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_prefix() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get symbol() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set symbol(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            prefix?: ReturnType<typeof Type.prototype.toObject>;
+            symbol?: string;
+        }): SuperType {
+            const message = new SuperType({});
+            if (data.prefix != null) {
+                message.prefix = Type.fromObject(data.prefix);
+            }
+            if (data.symbol != null) {
+                message.symbol = data.symbol;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                prefix?: ReturnType<typeof Type.prototype.toObject>;
+                symbol?: string;
+            } = {};
+            if (this.prefix != null) {
+                data.prefix = this.prefix.toObject();
+            }
+            if (this.symbol != null) {
+                data.symbol = this.symbol;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_prefix)
+                writer.writeMessage(1, this.prefix, () => this.prefix.serialize(writer));
+            if (this.symbol.length)
+                writer.writeString(2, this.symbol);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SuperType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SuperType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.prefix, () => message.prefix = Type.deserialize(reader));
+                        break;
+                    case 2:
+                        message.symbol = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): SuperType {
+            return SuperType.deserialize(bytes);
+        }
+    }
+    export class ConstantType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            constant?: Constant;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("constant" in data && data.constant != undefined) {
+                    this.constant = data.constant;
+                }
+            }
+        }
+        get constant() {
+            return pb_1.Message.getWrapperField(this, Constant, 1) as Constant;
+        }
+        set constant(value: Constant) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_constant() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        static fromObject(data: {
+            constant?: ReturnType<typeof Constant.prototype.toObject>;
+        }): ConstantType {
+            const message = new ConstantType({});
+            if (data.constant != null) {
+                message.constant = Constant.fromObject(data.constant);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                constant?: ReturnType<typeof Constant.prototype.toObject>;
+            } = {};
+            if (this.constant != null) {
+                data.constant = this.constant.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_constant)
+                writer.writeMessage(1, this.constant, () => this.constant.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ConstantType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ConstantType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.constant, () => message.constant = Constant.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ConstantType {
+            return ConstantType.deserialize(bytes);
+        }
+    }
+    export class IntersectionType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            types?: Type[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("types" in data && data.types != undefined) {
+                    this.types = data.types;
+                }
+            }
+        }
+        get types() {
+            return pb_1.Message.getRepeatedWrapperField(this, Type, 1) as Type[];
+        }
+        set types(value: Type[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            types?: ReturnType<typeof Type.prototype.toObject>[];
+        }): IntersectionType {
+            const message = new IntersectionType({});
+            if (data.types != null) {
+                message.types = data.types.map(item => Type.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                types?: ReturnType<typeof Type.prototype.toObject>[];
+            } = {};
+            if (this.types != null) {
+                data.types = this.types.map((item: Type) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.types.length)
+                writer.writeRepeatedMessage(1, this.types, (item: Type) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): IntersectionType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new IntersectionType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.types, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Type.deserialize(reader), Type));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): IntersectionType {
+            return IntersectionType.deserialize(bytes);
+        }
+    }
+    export class UnionType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            types?: Type[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("types" in data && data.types != undefined) {
+                    this.types = data.types;
+                }
+            }
+        }
+        get types() {
+            return pb_1.Message.getRepeatedWrapperField(this, Type, 1) as Type[];
+        }
+        set types(value: Type[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            types?: ReturnType<typeof Type.prototype.toObject>[];
+        }): UnionType {
+            const message = new UnionType({});
+            if (data.types != null) {
+                message.types = data.types.map(item => Type.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                types?: ReturnType<typeof Type.prototype.toObject>[];
+            } = {};
+            if (this.types != null) {
+                data.types = this.types.map((item: Type) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.types.length)
+                writer.writeRepeatedMessage(1, this.types, (item: Type) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UnionType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UnionType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.types, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Type.deserialize(reader), Type));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UnionType {
+            return UnionType.deserialize(bytes);
+        }
+    }
+    export class WithType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            types?: Type[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("types" in data && data.types != undefined) {
+                    this.types = data.types;
+                }
+            }
+        }
+        get types() {
+            return pb_1.Message.getRepeatedWrapperField(this, Type, 1) as Type[];
+        }
+        set types(value: Type[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            types?: ReturnType<typeof Type.prototype.toObject>[];
+        }): WithType {
+            const message = new WithType({});
+            if (data.types != null) {
+                message.types = data.types.map(item => Type.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                types?: ReturnType<typeof Type.prototype.toObject>[];
+            } = {};
+            if (this.types != null) {
+                data.types = this.types.map((item: Type) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.types.length)
+                writer.writeRepeatedMessage(1, this.types, (item: Type) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): WithType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new WithType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.types, () => pb_1.Message.addToRepeatedWrapperField(message, 1, Type.deserialize(reader), Type));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): WithType {
+            return WithType.deserialize(bytes);
+        }
+    }
+    export class StructuralType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tpe?: Type;
+            declarations?: Scope;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tpe" in data && data.tpe != undefined) {
+                    this.tpe = data.tpe;
+                }
+                if ("declarations" in data && data.declarations != undefined) {
+                    this.declarations = data.declarations;
+                }
+            }
+        }
+        get tpe() {
+            return pb_1.Message.getWrapperField(this, Type, 4) as Type;
+        }
+        set tpe(value: Type) {
+            pb_1.Message.setWrapperField(this, 4, value);
+        }
+        get has_tpe() {
+            return pb_1.Message.getField(this, 4) != null;
+        }
+        get declarations() {
+            return pb_1.Message.getWrapperField(this, Scope, 5) as Scope;
+        }
+        set declarations(value: Scope) {
+            pb_1.Message.setWrapperField(this, 5, value);
+        }
+        get has_declarations() {
+            return pb_1.Message.getField(this, 5) != null;
+        }
+        static fromObject(data: {
+            tpe?: ReturnType<typeof Type.prototype.toObject>;
+            declarations?: ReturnType<typeof Scope.prototype.toObject>;
+        }): StructuralType {
+            const message = new StructuralType({});
+            if (data.tpe != null) {
+                message.tpe = Type.fromObject(data.tpe);
+            }
+            if (data.declarations != null) {
+                message.declarations = Scope.fromObject(data.declarations);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tpe?: ReturnType<typeof Type.prototype.toObject>;
+                declarations?: ReturnType<typeof Scope.prototype.toObject>;
+            } = {};
+            if (this.tpe != null) {
+                data.tpe = this.tpe.toObject();
+            }
+            if (this.declarations != null) {
+                data.declarations = this.declarations.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_tpe)
+                writer.writeMessage(4, this.tpe, () => this.tpe.serialize(writer));
+            if (this.has_declarations)
+                writer.writeMessage(5, this.declarations, () => this.declarations.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StructuralType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StructuralType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 4:
+                        reader.readMessage(message.tpe, () => message.tpe = Type.deserialize(reader));
+                        break;
+                    case 5:
+                        reader.readMessage(message.declarations, () => message.declarations = Scope.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): StructuralType {
+            return StructuralType.deserialize(bytes);
+        }
+    }
+    export class AnnotatedType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            annotations?: Annotation[];
+            tpe?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("annotations" in data && data.annotations != undefined) {
+                    this.annotations = data.annotations;
+                }
+                if ("tpe" in data && data.tpe != undefined) {
+                    this.tpe = data.tpe;
+                }
+            }
+        }
+        get annotations() {
+            return pb_1.Message.getRepeatedWrapperField(this, Annotation, 3) as Annotation[];
+        }
+        set annotations(value: Annotation[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 3, value);
+        }
+        get tpe() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set tpe(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_tpe() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        static fromObject(data: {
+            annotations?: ReturnType<typeof Annotation.prototype.toObject>[];
+            tpe?: ReturnType<typeof Type.prototype.toObject>;
+        }): AnnotatedType {
+            const message = new AnnotatedType({});
+            if (data.annotations != null) {
+                message.annotations = data.annotations.map(item => Annotation.fromObject(item));
+            }
+            if (data.tpe != null) {
+                message.tpe = Type.fromObject(data.tpe);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                annotations?: ReturnType<typeof Annotation.prototype.toObject>[];
+                tpe?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.annotations != null) {
+                data.annotations = this.annotations.map((item: Annotation) => item.toObject());
+            }
+            if (this.tpe != null) {
+                data.tpe = this.tpe.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.annotations.length)
+                writer.writeRepeatedMessage(3, this.annotations, (item: Annotation) => item.serialize(writer));
+            if (this.has_tpe)
+                writer.writeMessage(1, this.tpe, () => this.tpe.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AnnotatedType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AnnotatedType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 3:
+                        reader.readMessage(message.annotations, () => pb_1.Message.addToRepeatedWrapperField(message, 3, Annotation.deserialize(reader), Annotation));
+                        break;
+                    case 1:
+                        reader.readMessage(message.tpe, () => message.tpe = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): AnnotatedType {
+            return AnnotatedType.deserialize(bytes);
+        }
+    }
+    export class ExistentialType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tpe?: Type;
+            declarations?: Scope;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tpe" in data && data.tpe != undefined) {
+                    this.tpe = data.tpe;
+                }
+                if ("declarations" in data && data.declarations != undefined) {
+                    this.declarations = data.declarations;
+                }
+            }
+        }
+        get tpe() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set tpe(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_tpe() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get declarations() {
+            return pb_1.Message.getWrapperField(this, Scope, 3) as Scope;
+        }
+        set declarations(value: Scope) {
+            pb_1.Message.setWrapperField(this, 3, value);
+        }
+        get has_declarations() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        static fromObject(data: {
+            tpe?: ReturnType<typeof Type.prototype.toObject>;
+            declarations?: ReturnType<typeof Scope.prototype.toObject>;
+        }): ExistentialType {
+            const message = new ExistentialType({});
+            if (data.tpe != null) {
+                message.tpe = Type.fromObject(data.tpe);
+            }
+            if (data.declarations != null) {
+                message.declarations = Scope.fromObject(data.declarations);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tpe?: ReturnType<typeof Type.prototype.toObject>;
+                declarations?: ReturnType<typeof Scope.prototype.toObject>;
+            } = {};
+            if (this.tpe != null) {
+                data.tpe = this.tpe.toObject();
+            }
+            if (this.declarations != null) {
+                data.declarations = this.declarations.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_tpe)
+                writer.writeMessage(1, this.tpe, () => this.tpe.serialize(writer));
+            if (this.has_declarations)
+                writer.writeMessage(3, this.declarations, () => this.declarations.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ExistentialType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ExistentialType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tpe, () => message.tpe = Type.deserialize(reader));
+                        break;
+                    case 3:
+                        reader.readMessage(message.declarations, () => message.declarations = Scope.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ExistentialType {
+            return ExistentialType.deserialize(bytes);
+        }
+    }
+    export class UniversalType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            type_parameters?: Scope;
+            tpe?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("type_parameters" in data && data.type_parameters != undefined) {
+                    this.type_parameters = data.type_parameters;
+                }
+                if ("tpe" in data && data.tpe != undefined) {
+                    this.tpe = data.tpe;
+                }
+            }
+        }
+        get type_parameters() {
+            return pb_1.Message.getWrapperField(this, Scope, 3) as Scope;
+        }
+        set type_parameters(value: Scope) {
+            pb_1.Message.setWrapperField(this, 3, value);
+        }
+        get has_type_parameters() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        get tpe() {
+            return pb_1.Message.getWrapperField(this, Type, 2) as Type;
+        }
+        set tpe(value: Type) {
+            pb_1.Message.setWrapperField(this, 2, value);
+        }
+        get has_tpe() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        static fromObject(data: {
+            type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+            tpe?: ReturnType<typeof Type.prototype.toObject>;
+        }): UniversalType {
+            const message = new UniversalType({});
+            if (data.type_parameters != null) {
+                message.type_parameters = Scope.fromObject(data.type_parameters);
+            }
+            if (data.tpe != null) {
+                message.tpe = Type.fromObject(data.tpe);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+                tpe?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.type_parameters != null) {
+                data.type_parameters = this.type_parameters.toObject();
+            }
+            if (this.tpe != null) {
+                data.tpe = this.tpe.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_type_parameters)
+                writer.writeMessage(3, this.type_parameters, () => this.type_parameters.serialize(writer));
+            if (this.has_tpe)
+                writer.writeMessage(2, this.tpe, () => this.tpe.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UniversalType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UniversalType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 3:
+                        reader.readMessage(message.type_parameters, () => message.type_parameters = Scope.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.tpe, () => message.tpe = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UniversalType {
+            return UniversalType.deserialize(bytes);
+        }
+    }
+    export class ByNameType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tpe?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tpe" in data && data.tpe != undefined) {
+                    this.tpe = data.tpe;
+                }
+            }
+        }
+        get tpe() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set tpe(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_tpe() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        static fromObject(data: {
+            tpe?: ReturnType<typeof Type.prototype.toObject>;
+        }): ByNameType {
+            const message = new ByNameType({});
+            if (data.tpe != null) {
+                message.tpe = Type.fromObject(data.tpe);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tpe?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.tpe != null) {
+                data.tpe = this.tpe.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_tpe)
+                writer.writeMessage(1, this.tpe, () => this.tpe.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ByNameType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ByNameType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tpe, () => message.tpe = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ByNameType {
+            return ByNameType.deserialize(bytes);
+        }
+    }
+    export class RepeatedType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tpe?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tpe" in data && data.tpe != undefined) {
+                    this.tpe = data.tpe;
+                }
+            }
+        }
+        get tpe() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set tpe(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_tpe() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        static fromObject(data: {
+            tpe?: ReturnType<typeof Type.prototype.toObject>;
+        }): RepeatedType {
+            const message = new RepeatedType({});
+            if (data.tpe != null) {
+                message.tpe = Type.fromObject(data.tpe);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tpe?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.tpe != null) {
+                data.tpe = this.tpe.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_tpe)
+                writer.writeMessage(1, this.tpe, () => this.tpe.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RepeatedType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RepeatedType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tpe, () => message.tpe = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): RepeatedType {
+            return RepeatedType.deserialize(bytes);
+        }
+    }
+    export class MatchType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            scrutinee?: Type;
+            cases?: MatchType.CaseType[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("scrutinee" in data && data.scrutinee != undefined) {
+                    this.scrutinee = data.scrutinee;
+                }
+                if ("cases" in data && data.cases != undefined) {
+                    this.cases = data.cases;
+                }
+            }
+        }
+        get scrutinee() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set scrutinee(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_scrutinee() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get cases() {
+            return pb_1.Message.getRepeatedWrapperField(this, MatchType.CaseType, 2) as MatchType.CaseType[];
+        }
+        set cases(value: MatchType.CaseType[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 2, value);
+        }
+        static fromObject(data: {
+            scrutinee?: ReturnType<typeof Type.prototype.toObject>;
+            cases?: ReturnType<typeof MatchType.CaseType.prototype.toObject>[];
+        }): MatchType {
+            const message = new MatchType({});
+            if (data.scrutinee != null) {
+                message.scrutinee = Type.fromObject(data.scrutinee);
+            }
+            if (data.cases != null) {
+                message.cases = data.cases.map(item => MatchType.CaseType.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                scrutinee?: ReturnType<typeof Type.prototype.toObject>;
+                cases?: ReturnType<typeof MatchType.CaseType.prototype.toObject>[];
+            } = {};
+            if (this.scrutinee != null) {
+                data.scrutinee = this.scrutinee.toObject();
+            }
+            if (this.cases != null) {
+                data.cases = this.cases.map((item: MatchType.CaseType) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_scrutinee)
+                writer.writeMessage(1, this.scrutinee, () => this.scrutinee.serialize(writer));
+            if (this.cases.length)
+                writer.writeRepeatedMessage(2, this.cases, (item: MatchType.CaseType) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): MatchType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new MatchType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.scrutinee, () => message.scrutinee = Type.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.cases, () => pb_1.Message.addToRepeatedWrapperField(message, 2, MatchType.CaseType.deserialize(reader), MatchType.CaseType));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): MatchType {
+            return MatchType.deserialize(bytes);
+        }
+    }
+    export namespace MatchType {
+        export class CaseType extends pb_1.Message {
+            #one_of_decls: number[][] = [];
+            constructor(data?: any[] | {
+                key?: Type;
+                body?: Type;
+            }) {
+                super();
+                pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+                if (!Array.isArray(data) && typeof data == "object") {
+                    if ("key" in data && data.key != undefined) {
+                        this.key = data.key;
+                    }
+                    if ("body" in data && data.body != undefined) {
+                        this.body = data.body;
+                    }
+                }
+            }
+            get key() {
+                return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+            }
+            set key(value: Type) {
+                pb_1.Message.setWrapperField(this, 1, value);
+            }
+            get has_key() {
+                return pb_1.Message.getField(this, 1) != null;
+            }
+            get body() {
+                return pb_1.Message.getWrapperField(this, Type, 2) as Type;
+            }
+            set body(value: Type) {
+                pb_1.Message.setWrapperField(this, 2, value);
+            }
+            get has_body() {
+                return pb_1.Message.getField(this, 2) != null;
+            }
+            static fromObject(data: {
+                key?: ReturnType<typeof Type.prototype.toObject>;
+                body?: ReturnType<typeof Type.prototype.toObject>;
+            }): CaseType {
+                const message = new CaseType({});
+                if (data.key != null) {
+                    message.key = Type.fromObject(data.key);
+                }
+                if (data.body != null) {
+                    message.body = Type.fromObject(data.body);
+                }
+                return message;
+            }
+            toObject() {
+                const data: {
+                    key?: ReturnType<typeof Type.prototype.toObject>;
+                    body?: ReturnType<typeof Type.prototype.toObject>;
+                } = {};
+                if (this.key != null) {
+                    data.key = this.key.toObject();
+                }
+                if (this.body != null) {
+                    data.body = this.body.toObject();
+                }
+                return data;
+            }
+            serialize(): Uint8Array;
+            serialize(w: pb_1.BinaryWriter): void;
+            serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+                const writer = w || new pb_1.BinaryWriter();
+                if (this.has_key)
+                    writer.writeMessage(1, this.key, () => this.key.serialize(writer));
+                if (this.has_body)
+                    writer.writeMessage(2, this.body, () => this.body.serialize(writer));
+                if (!w)
+                    return writer.getResultBuffer();
+            }
+            static deserialize(bytes: Uint8Array | pb_1.BinaryReader): CaseType {
+                const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new CaseType();
+                while (reader.nextField()) {
+                    if (reader.isEndGroup())
+                        break;
+                    switch (reader.getFieldNumber()) {
+                        case 1:
+                            reader.readMessage(message.key, () => message.key = Type.deserialize(reader));
+                            break;
+                        case 2:
+                            reader.readMessage(message.body, () => message.body = Type.deserialize(reader));
+                            break;
+                        default: reader.skipField();
+                    }
+                }
+                return message;
+            }
+            serializeBinary(): Uint8Array {
+                return this.serialize();
+            }
+            static deserializeBinary(bytes: Uint8Array): CaseType {
+                return CaseType.deserialize(bytes);
+            }
+        }
+    }
+    export class Constant extends pb_1.Message {
+        #one_of_decls: number[][] = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]];
+        constructor(data?: any[] | ({} & (({
+            unit_constant?: UnitConstant;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: BooleanConstant;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: ByteConstant;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: ShortConstant;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: CharConstant;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: IntConstant;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: LongConstant;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: FloatConstant;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: DoubleConstant;
+            string_constant?: never;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: StringConstant;
+            null_constant?: never;
+        } | {
+            unit_constant?: never;
+            boolean_constant?: never;
+            byte_constant?: never;
+            short_constant?: never;
+            char_constant?: never;
+            int_constant?: never;
+            long_constant?: never;
+            float_constant?: never;
+            double_constant?: never;
+            string_constant?: never;
+            null_constant?: NullConstant;
+        })))) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("unit_constant" in data && data.unit_constant != undefined) {
+                    this.unit_constant = data.unit_constant;
+                }
+                if ("boolean_constant" in data && data.boolean_constant != undefined) {
+                    this.boolean_constant = data.boolean_constant;
+                }
+                if ("byte_constant" in data && data.byte_constant != undefined) {
+                    this.byte_constant = data.byte_constant;
+                }
+                if ("short_constant" in data && data.short_constant != undefined) {
+                    this.short_constant = data.short_constant;
+                }
+                if ("char_constant" in data && data.char_constant != undefined) {
+                    this.char_constant = data.char_constant;
+                }
+                if ("int_constant" in data && data.int_constant != undefined) {
+                    this.int_constant = data.int_constant;
+                }
+                if ("long_constant" in data && data.long_constant != undefined) {
+                    this.long_constant = data.long_constant;
+                }
+                if ("float_constant" in data && data.float_constant != undefined) {
+                    this.float_constant = data.float_constant;
+                }
+                if ("double_constant" in data && data.double_constant != undefined) {
+                    this.double_constant = data.double_constant;
+                }
+                if ("string_constant" in data && data.string_constant != undefined) {
+                    this.string_constant = data.string_constant;
+                }
+                if ("null_constant" in data && data.null_constant != undefined) {
+                    this.null_constant = data.null_constant;
+                }
+            }
+        }
+        get unit_constant() {
+            return pb_1.Message.getWrapperField(this, UnitConstant, 1) as UnitConstant;
+        }
+        set unit_constant(value: UnitConstant) {
+            pb_1.Message.setOneofWrapperField(this, 1, this.#one_of_decls[0], value);
+        }
+        get has_unit_constant() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get boolean_constant() {
+            return pb_1.Message.getWrapperField(this, BooleanConstant, 2) as BooleanConstant;
+        }
+        set boolean_constant(value: BooleanConstant) {
+            pb_1.Message.setOneofWrapperField(this, 2, this.#one_of_decls[0], value);
+        }
+        get has_boolean_constant() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        get byte_constant() {
+            return pb_1.Message.getWrapperField(this, ByteConstant, 3) as ByteConstant;
+        }
+        set byte_constant(value: ByteConstant) {
+            pb_1.Message.setOneofWrapperField(this, 3, this.#one_of_decls[0], value);
+        }
+        get has_byte_constant() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        get short_constant() {
+            return pb_1.Message.getWrapperField(this, ShortConstant, 4) as ShortConstant;
+        }
+        set short_constant(value: ShortConstant) {
+            pb_1.Message.setOneofWrapperField(this, 4, this.#one_of_decls[0], value);
+        }
+        get has_short_constant() {
+            return pb_1.Message.getField(this, 4) != null;
+        }
+        get char_constant() {
+            return pb_1.Message.getWrapperField(this, CharConstant, 5) as CharConstant;
+        }
+        set char_constant(value: CharConstant) {
+            pb_1.Message.setOneofWrapperField(this, 5, this.#one_of_decls[0], value);
+        }
+        get has_char_constant() {
+            return pb_1.Message.getField(this, 5) != null;
+        }
+        get int_constant() {
+            return pb_1.Message.getWrapperField(this, IntConstant, 6) as IntConstant;
+        }
+        set int_constant(value: IntConstant) {
+            pb_1.Message.setOneofWrapperField(this, 6, this.#one_of_decls[0], value);
+        }
+        get has_int_constant() {
+            return pb_1.Message.getField(this, 6) != null;
+        }
+        get long_constant() {
+            return pb_1.Message.getWrapperField(this, LongConstant, 7) as LongConstant;
+        }
+        set long_constant(value: LongConstant) {
+            pb_1.Message.setOneofWrapperField(this, 7, this.#one_of_decls[0], value);
+        }
+        get has_long_constant() {
+            return pb_1.Message.getField(this, 7) != null;
+        }
+        get float_constant() {
+            return pb_1.Message.getWrapperField(this, FloatConstant, 8) as FloatConstant;
+        }
+        set float_constant(value: FloatConstant) {
+            pb_1.Message.setOneofWrapperField(this, 8, this.#one_of_decls[0], value);
+        }
+        get has_float_constant() {
+            return pb_1.Message.getField(this, 8) != null;
+        }
+        get double_constant() {
+            return pb_1.Message.getWrapperField(this, DoubleConstant, 9) as DoubleConstant;
+        }
+        set double_constant(value: DoubleConstant) {
+            pb_1.Message.setOneofWrapperField(this, 9, this.#one_of_decls[0], value);
+        }
+        get has_double_constant() {
+            return pb_1.Message.getField(this, 9) != null;
+        }
+        get string_constant() {
+            return pb_1.Message.getWrapperField(this, StringConstant, 10) as StringConstant;
+        }
+        set string_constant(value: StringConstant) {
+            pb_1.Message.setOneofWrapperField(this, 10, this.#one_of_decls[0], value);
+        }
+        get has_string_constant() {
+            return pb_1.Message.getField(this, 10) != null;
+        }
+        get null_constant() {
+            return pb_1.Message.getWrapperField(this, NullConstant, 11) as NullConstant;
+        }
+        set null_constant(value: NullConstant) {
+            pb_1.Message.setOneofWrapperField(this, 11, this.#one_of_decls[0], value);
+        }
+        get has_null_constant() {
+            return pb_1.Message.getField(this, 11) != null;
+        }
+        get sealed_value() {
+            const cases: {
+                [index: number]: "none" | "unit_constant" | "boolean_constant" | "byte_constant" | "short_constant" | "char_constant" | "int_constant" | "long_constant" | "float_constant" | "double_constant" | "string_constant" | "null_constant";
+            } = {
+                0: "none",
+                1: "unit_constant",
+                2: "boolean_constant",
+                3: "byte_constant",
+                4: "short_constant",
+                5: "char_constant",
+                6: "int_constant",
+                7: "long_constant",
+                8: "float_constant",
+                9: "double_constant",
+                10: "string_constant",
+                11: "null_constant"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])];
+        }
+        static fromObject(data: {
+            unit_constant?: ReturnType<typeof UnitConstant.prototype.toObject>;
+            boolean_constant?: ReturnType<typeof BooleanConstant.prototype.toObject>;
+            byte_constant?: ReturnType<typeof ByteConstant.prototype.toObject>;
+            short_constant?: ReturnType<typeof ShortConstant.prototype.toObject>;
+            char_constant?: ReturnType<typeof CharConstant.prototype.toObject>;
+            int_constant?: ReturnType<typeof IntConstant.prototype.toObject>;
+            long_constant?: ReturnType<typeof LongConstant.prototype.toObject>;
+            float_constant?: ReturnType<typeof FloatConstant.prototype.toObject>;
+            double_constant?: ReturnType<typeof DoubleConstant.prototype.toObject>;
+            string_constant?: ReturnType<typeof StringConstant.prototype.toObject>;
+            null_constant?: ReturnType<typeof NullConstant.prototype.toObject>;
+        }): Constant {
+            const message = new Constant({});
+            if (data.unit_constant != null) {
+                message.unit_constant = UnitConstant.fromObject(data.unit_constant);
+            }
+            if (data.boolean_constant != null) {
+                message.boolean_constant = BooleanConstant.fromObject(data.boolean_constant);
+            }
+            if (data.byte_constant != null) {
+                message.byte_constant = ByteConstant.fromObject(data.byte_constant);
+            }
+            if (data.short_constant != null) {
+                message.short_constant = ShortConstant.fromObject(data.short_constant);
+            }
+            if (data.char_constant != null) {
+                message.char_constant = CharConstant.fromObject(data.char_constant);
+            }
+            if (data.int_constant != null) {
+                message.int_constant = IntConstant.fromObject(data.int_constant);
+            }
+            if (data.long_constant != null) {
+                message.long_constant = LongConstant.fromObject(data.long_constant);
+            }
+            if (data.float_constant != null) {
+                message.float_constant = FloatConstant.fromObject(data.float_constant);
+            }
+            if (data.double_constant != null) {
+                message.double_constant = DoubleConstant.fromObject(data.double_constant);
+            }
+            if (data.string_constant != null) {
+                message.string_constant = StringConstant.fromObject(data.string_constant);
+            }
+            if (data.null_constant != null) {
+                message.null_constant = NullConstant.fromObject(data.null_constant);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                unit_constant?: ReturnType<typeof UnitConstant.prototype.toObject>;
+                boolean_constant?: ReturnType<typeof BooleanConstant.prototype.toObject>;
+                byte_constant?: ReturnType<typeof ByteConstant.prototype.toObject>;
+                short_constant?: ReturnType<typeof ShortConstant.prototype.toObject>;
+                char_constant?: ReturnType<typeof CharConstant.prototype.toObject>;
+                int_constant?: ReturnType<typeof IntConstant.prototype.toObject>;
+                long_constant?: ReturnType<typeof LongConstant.prototype.toObject>;
+                float_constant?: ReturnType<typeof FloatConstant.prototype.toObject>;
+                double_constant?: ReturnType<typeof DoubleConstant.prototype.toObject>;
+                string_constant?: ReturnType<typeof StringConstant.prototype.toObject>;
+                null_constant?: ReturnType<typeof NullConstant.prototype.toObject>;
+            } = {};
+            if (this.unit_constant != null) {
+                data.unit_constant = this.unit_constant.toObject();
+            }
+            if (this.boolean_constant != null) {
+                data.boolean_constant = this.boolean_constant.toObject();
+            }
+            if (this.byte_constant != null) {
+                data.byte_constant = this.byte_constant.toObject();
+            }
+            if (this.short_constant != null) {
+                data.short_constant = this.short_constant.toObject();
+            }
+            if (this.char_constant != null) {
+                data.char_constant = this.char_constant.toObject();
+            }
+            if (this.int_constant != null) {
+                data.int_constant = this.int_constant.toObject();
+            }
+            if (this.long_constant != null) {
+                data.long_constant = this.long_constant.toObject();
+            }
+            if (this.float_constant != null) {
+                data.float_constant = this.float_constant.toObject();
+            }
+            if (this.double_constant != null) {
+                data.double_constant = this.double_constant.toObject();
+            }
+            if (this.string_constant != null) {
+                data.string_constant = this.string_constant.toObject();
+            }
+            if (this.null_constant != null) {
+                data.null_constant = this.null_constant.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_unit_constant)
+                writer.writeMessage(1, this.unit_constant, () => this.unit_constant.serialize(writer));
+            if (this.has_boolean_constant)
+                writer.writeMessage(2, this.boolean_constant, () => this.boolean_constant.serialize(writer));
+            if (this.has_byte_constant)
+                writer.writeMessage(3, this.byte_constant, () => this.byte_constant.serialize(writer));
+            if (this.has_short_constant)
+                writer.writeMessage(4, this.short_constant, () => this.short_constant.serialize(writer));
+            if (this.has_char_constant)
+                writer.writeMessage(5, this.char_constant, () => this.char_constant.serialize(writer));
+            if (this.has_int_constant)
+                writer.writeMessage(6, this.int_constant, () => this.int_constant.serialize(writer));
+            if (this.has_long_constant)
+                writer.writeMessage(7, this.long_constant, () => this.long_constant.serialize(writer));
+            if (this.has_float_constant)
+                writer.writeMessage(8, this.float_constant, () => this.float_constant.serialize(writer));
+            if (this.has_double_constant)
+                writer.writeMessage(9, this.double_constant, () => this.double_constant.serialize(writer));
+            if (this.has_string_constant)
+                writer.writeMessage(10, this.string_constant, () => this.string_constant.serialize(writer));
+            if (this.has_null_constant)
+                writer.writeMessage(11, this.null_constant, () => this.null_constant.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Constant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Constant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.unit_constant, () => message.unit_constant = UnitConstant.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.boolean_constant, () => message.boolean_constant = BooleanConstant.deserialize(reader));
+                        break;
+                    case 3:
+                        reader.readMessage(message.byte_constant, () => message.byte_constant = ByteConstant.deserialize(reader));
+                        break;
+                    case 4:
+                        reader.readMessage(message.short_constant, () => message.short_constant = ShortConstant.deserialize(reader));
+                        break;
+                    case 5:
+                        reader.readMessage(message.char_constant, () => message.char_constant = CharConstant.deserialize(reader));
+                        break;
+                    case 6:
+                        reader.readMessage(message.int_constant, () => message.int_constant = IntConstant.deserialize(reader));
+                        break;
+                    case 7:
+                        reader.readMessage(message.long_constant, () => message.long_constant = LongConstant.deserialize(reader));
+                        break;
+                    case 8:
+                        reader.readMessage(message.float_constant, () => message.float_constant = FloatConstant.deserialize(reader));
+                        break;
+                    case 9:
+                        reader.readMessage(message.double_constant, () => message.double_constant = DoubleConstant.deserialize(reader));
+                        break;
+                    case 10:
+                        reader.readMessage(message.string_constant, () => message.string_constant = StringConstant.deserialize(reader));
+                        break;
+                    case 11:
+                        reader.readMessage(message.null_constant, () => message.null_constant = NullConstant.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): Constant {
+            return Constant.deserialize(bytes);
+        }
+    }
+    export class UnitConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {}) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") { }
+        }
+        static fromObject(data: {}): UnitConstant {
+            const message = new UnitConstant({});
+            return message;
+        }
+        toObject() {
+            const data: {} = {};
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): UnitConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new UnitConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): UnitConstant {
+            return UnitConstant.deserialize(bytes);
+        }
+    }
+    export class BooleanConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: boolean;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set value(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: boolean;
+        }): BooleanConstant {
+            const message = new BooleanConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: boolean;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value != false)
+                writer.writeBool(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): BooleanConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new BooleanConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readBool();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): BooleanConstant {
+            return BooleanConstant.deserialize(bytes);
+        }
+    }
+    export class ByteConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set value(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: number;
+        }): ByteConstant {
+            const message = new ByteConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: number;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value != 0)
+                writer.writeInt32(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ByteConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ByteConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ByteConstant {
+            return ByteConstant.deserialize(bytes);
+        }
+    }
+    export class ShortConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set value(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: number;
+        }): ShortConstant {
+            const message = new ShortConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: number;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value != 0)
+                writer.writeInt32(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ShortConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ShortConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ShortConstant {
+            return ShortConstant.deserialize(bytes);
+        }
+    }
+    export class CharConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set value(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: number;
+        }): CharConstant {
+            const message = new CharConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: number;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value != 0)
+                writer.writeInt32(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): CharConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new CharConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): CharConstant {
+            return CharConstant.deserialize(bytes);
+        }
+    }
+    export class IntConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set value(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: number;
+        }): IntConstant {
+            const message = new IntConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: number;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value != 0)
+                writer.writeInt32(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): IntConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new IntConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): IntConstant {
+            return IntConstant.deserialize(bytes);
+        }
+    }
+    export class LongConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set value(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: number;
+        }): LongConstant {
+            const message = new LongConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: number;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value != 0)
+                writer.writeInt64(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): LongConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new LongConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readInt64();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): LongConstant {
+            return LongConstant.deserialize(bytes);
+        }
+    }
+    export class FloatConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set value(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: number;
+        }): FloatConstant {
+            const message = new FloatConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: number;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value != 0)
+                writer.writeFloat(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): FloatConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new FloatConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readFloat();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): FloatConstant {
+            return FloatConstant.deserialize(bytes);
+        }
+    }
+    export class DoubleConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set value(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: number;
+        }): DoubleConstant {
+            const message = new DoubleConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: number;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value != 0)
+                writer.writeDouble(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): DoubleConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new DoubleConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readDouble();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): DoubleConstant {
+            return DoubleConstant.deserialize(bytes);
+        }
+    }
+    export class StringConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            value?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("value" in data && data.value != undefined) {
+                    this.value = data.value;
+                }
+            }
+        }
+        get value() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set value(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            value?: string;
+        }): StringConstant {
+            const message = new StringConstant({});
+            if (data.value != null) {
+                message.value = data.value;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                value?: string;
+            } = {};
+            if (this.value != null) {
+                data.value = this.value;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.value.length)
+                writer.writeString(1, this.value);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StringConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StringConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.value = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): StringConstant {
+            return StringConstant.deserialize(bytes);
+        }
+    }
+    export class NullConstant extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {}) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") { }
+        }
+        static fromObject(data: {}): NullConstant {
+            const message = new NullConstant({});
+            return message;
+        }
+        toObject() {
+            const data: {} = {};
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): NullConstant {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new NullConstant();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): NullConstant {
+            return NullConstant.deserialize(bytes);
+        }
+    }
+    export class Signature extends pb_1.Message {
+        #one_of_decls: number[][] = [[1, 2, 3, 4]];
+        constructor(data?: any[] | ({} & (({
+            class_signature?: ClassSignature;
+            method_signature?: never;
+            type_signature?: never;
+            value_signature?: never;
+        } | {
+            class_signature?: never;
+            method_signature?: MethodSignature;
+            type_signature?: never;
+            value_signature?: never;
+        } | {
+            class_signature?: never;
+            method_signature?: never;
+            type_signature?: TypeSignature;
+            value_signature?: never;
+        } | {
+            class_signature?: never;
+            method_signature?: never;
+            type_signature?: never;
+            value_signature?: ValueSignature;
+        })))) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("class_signature" in data && data.class_signature != undefined) {
+                    this.class_signature = data.class_signature;
+                }
+                if ("method_signature" in data && data.method_signature != undefined) {
+                    this.method_signature = data.method_signature;
+                }
+                if ("type_signature" in data && data.type_signature != undefined) {
+                    this.type_signature = data.type_signature;
+                }
+                if ("value_signature" in data && data.value_signature != undefined) {
+                    this.value_signature = data.value_signature;
+                }
+            }
+        }
+        get class_signature() {
+            return pb_1.Message.getWrapperField(this, ClassSignature, 1) as ClassSignature;
+        }
+        set class_signature(value: ClassSignature) {
+            pb_1.Message.setOneofWrapperField(this, 1, this.#one_of_decls[0], value);
+        }
+        get has_class_signature() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get method_signature() {
+            return pb_1.Message.getWrapperField(this, MethodSignature, 2) as MethodSignature;
+        }
+        set method_signature(value: MethodSignature) {
+            pb_1.Message.setOneofWrapperField(this, 2, this.#one_of_decls[0], value);
+        }
+        get has_method_signature() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        get type_signature() {
+            return pb_1.Message.getWrapperField(this, TypeSignature, 3) as TypeSignature;
+        }
+        set type_signature(value: TypeSignature) {
+            pb_1.Message.setOneofWrapperField(this, 3, this.#one_of_decls[0], value);
+        }
+        get has_type_signature() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        get value_signature() {
+            return pb_1.Message.getWrapperField(this, ValueSignature, 4) as ValueSignature;
+        }
+        set value_signature(value: ValueSignature) {
+            pb_1.Message.setOneofWrapperField(this, 4, this.#one_of_decls[0], value);
+        }
+        get has_value_signature() {
+            return pb_1.Message.getField(this, 4) != null;
+        }
+        get sealed_value() {
+            const cases: {
+                [index: number]: "none" | "class_signature" | "method_signature" | "type_signature" | "value_signature";
+            } = {
+                0: "none",
+                1: "class_signature",
+                2: "method_signature",
+                3: "type_signature",
+                4: "value_signature"
+            };
+            return cases[pb_1.Message.computeOneofCase(this, [1, 2, 3, 4])];
+        }
+        static fromObject(data: {
+            class_signature?: ReturnType<typeof ClassSignature.prototype.toObject>;
+            method_signature?: ReturnType<typeof MethodSignature.prototype.toObject>;
+            type_signature?: ReturnType<typeof TypeSignature.prototype.toObject>;
+            value_signature?: ReturnType<typeof ValueSignature.prototype.toObject>;
+        }): Signature {
+            const message = new Signature({});
+            if (data.class_signature != null) {
+                message.class_signature = ClassSignature.fromObject(data.class_signature);
+            }
+            if (data.method_signature != null) {
+                message.method_signature = MethodSignature.fromObject(data.method_signature);
+            }
+            if (data.type_signature != null) {
+                message.type_signature = TypeSignature.fromObject(data.type_signature);
+            }
+            if (data.value_signature != null) {
+                message.value_signature = ValueSignature.fromObject(data.value_signature);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                class_signature?: ReturnType<typeof ClassSignature.prototype.toObject>;
+                method_signature?: ReturnType<typeof MethodSignature.prototype.toObject>;
+                type_signature?: ReturnType<typeof TypeSignature.prototype.toObject>;
+                value_signature?: ReturnType<typeof ValueSignature.prototype.toObject>;
+            } = {};
+            if (this.class_signature != null) {
+                data.class_signature = this.class_signature.toObject();
+            }
+            if (this.method_signature != null) {
+                data.method_signature = this.method_signature.toObject();
+            }
+            if (this.type_signature != null) {
+                data.type_signature = this.type_signature.toObject();
+            }
+            if (this.value_signature != null) {
+                data.value_signature = this.value_signature.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_class_signature)
+                writer.writeMessage(1, this.class_signature, () => this.class_signature.serialize(writer));
+            if (this.has_method_signature)
+                writer.writeMessage(2, this.method_signature, () => this.method_signature.serialize(writer));
+            if (this.has_type_signature)
+                writer.writeMessage(3, this.type_signature, () => this.type_signature.serialize(writer));
+            if (this.has_value_signature)
+                writer.writeMessage(4, this.value_signature, () => this.value_signature.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Signature {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Signature();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.class_signature, () => message.class_signature = ClassSignature.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.method_signature, () => message.method_signature = MethodSignature.deserialize(reader));
+                        break;
+                    case 3:
+                        reader.readMessage(message.type_signature, () => message.type_signature = TypeSignature.deserialize(reader));
+                        break;
+                    case 4:
+                        reader.readMessage(message.value_signature, () => message.value_signature = ValueSignature.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): Signature {
+            return Signature.deserialize(bytes);
+        }
+    }
+    export class ClassSignature extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            type_parameters?: Scope;
+            parents?: Type[];
+            self?: Type;
+            declarations?: Scope;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("type_parameters" in data && data.type_parameters != undefined) {
+                    this.type_parameters = data.type_parameters;
+                }
+                if ("parents" in data && data.parents != undefined) {
+                    this.parents = data.parents;
+                }
+                if ("self" in data && data.self != undefined) {
+                    this.self = data.self;
+                }
+                if ("declarations" in data && data.declarations != undefined) {
+                    this.declarations = data.declarations;
+                }
+            }
+        }
+        get type_parameters() {
+            return pb_1.Message.getWrapperField(this, Scope, 1) as Scope;
+        }
+        set type_parameters(value: Scope) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_type_parameters() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get parents() {
+            return pb_1.Message.getRepeatedWrapperField(this, Type, 2) as Type[];
+        }
+        set parents(value: Type[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 2, value);
+        }
+        get self() {
+            return pb_1.Message.getWrapperField(this, Type, 3) as Type;
+        }
+        set self(value: Type) {
+            pb_1.Message.setWrapperField(this, 3, value);
+        }
+        get has_self() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        get declarations() {
+            return pb_1.Message.getWrapperField(this, Scope, 4) as Scope;
+        }
+        set declarations(value: Scope) {
+            pb_1.Message.setWrapperField(this, 4, value);
+        }
+        get has_declarations() {
+            return pb_1.Message.getField(this, 4) != null;
+        }
+        static fromObject(data: {
+            type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+            parents?: ReturnType<typeof Type.prototype.toObject>[];
+            self?: ReturnType<typeof Type.prototype.toObject>;
+            declarations?: ReturnType<typeof Scope.prototype.toObject>;
+        }): ClassSignature {
+            const message = new ClassSignature({});
+            if (data.type_parameters != null) {
+                message.type_parameters = Scope.fromObject(data.type_parameters);
+            }
+            if (data.parents != null) {
+                message.parents = data.parents.map(item => Type.fromObject(item));
+            }
+            if (data.self != null) {
+                message.self = Type.fromObject(data.self);
+            }
+            if (data.declarations != null) {
+                message.declarations = Scope.fromObject(data.declarations);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+                parents?: ReturnType<typeof Type.prototype.toObject>[];
+                self?: ReturnType<typeof Type.prototype.toObject>;
+                declarations?: ReturnType<typeof Scope.prototype.toObject>;
+            } = {};
+            if (this.type_parameters != null) {
+                data.type_parameters = this.type_parameters.toObject();
+            }
+            if (this.parents != null) {
+                data.parents = this.parents.map((item: Type) => item.toObject());
+            }
+            if (this.self != null) {
+                data.self = this.self.toObject();
+            }
+            if (this.declarations != null) {
+                data.declarations = this.declarations.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_type_parameters)
+                writer.writeMessage(1, this.type_parameters, () => this.type_parameters.serialize(writer));
+            if (this.parents.length)
+                writer.writeRepeatedMessage(2, this.parents, (item: Type) => item.serialize(writer));
+            if (this.has_self)
+                writer.writeMessage(3, this.self, () => this.self.serialize(writer));
+            if (this.has_declarations)
+                writer.writeMessage(4, this.declarations, () => this.declarations.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ClassSignature {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ClassSignature();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.type_parameters, () => message.type_parameters = Scope.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.parents, () => pb_1.Message.addToRepeatedWrapperField(message, 2, Type.deserialize(reader), Type));
+                        break;
+                    case 3:
+                        reader.readMessage(message.self, () => message.self = Type.deserialize(reader));
+                        break;
+                    case 4:
+                        reader.readMessage(message.declarations, () => message.declarations = Scope.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ClassSignature {
+            return ClassSignature.deserialize(bytes);
+        }
+    }
+    export class MethodSignature extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            type_parameters?: Scope;
+            parameter_lists?: Scope[];
+            return_type?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("type_parameters" in data && data.type_parameters != undefined) {
+                    this.type_parameters = data.type_parameters;
+                }
+                if ("parameter_lists" in data && data.parameter_lists != undefined) {
+                    this.parameter_lists = data.parameter_lists;
+                }
+                if ("return_type" in data && data.return_type != undefined) {
+                    this.return_type = data.return_type;
+                }
+            }
+        }
+        get type_parameters() {
+            return pb_1.Message.getWrapperField(this, Scope, 1) as Scope;
+        }
+        set type_parameters(value: Scope) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_type_parameters() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get parameter_lists() {
+            return pb_1.Message.getRepeatedWrapperField(this, Scope, 2) as Scope[];
+        }
+        set parameter_lists(value: Scope[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 2, value);
+        }
+        get return_type() {
+            return pb_1.Message.getWrapperField(this, Type, 3) as Type;
+        }
+        set return_type(value: Type) {
+            pb_1.Message.setWrapperField(this, 3, value);
+        }
+        get has_return_type() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        static fromObject(data: {
+            type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+            parameter_lists?: ReturnType<typeof Scope.prototype.toObject>[];
+            return_type?: ReturnType<typeof Type.prototype.toObject>;
+        }): MethodSignature {
+            const message = new MethodSignature({});
+            if (data.type_parameters != null) {
+                message.type_parameters = Scope.fromObject(data.type_parameters);
+            }
+            if (data.parameter_lists != null) {
+                message.parameter_lists = data.parameter_lists.map(item => Scope.fromObject(item));
+            }
+            if (data.return_type != null) {
+                message.return_type = Type.fromObject(data.return_type);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+                parameter_lists?: ReturnType<typeof Scope.prototype.toObject>[];
+                return_type?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.type_parameters != null) {
+                data.type_parameters = this.type_parameters.toObject();
+            }
+            if (this.parameter_lists != null) {
+                data.parameter_lists = this.parameter_lists.map((item: Scope) => item.toObject());
+            }
+            if (this.return_type != null) {
+                data.return_type = this.return_type.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_type_parameters)
+                writer.writeMessage(1, this.type_parameters, () => this.type_parameters.serialize(writer));
+            if (this.parameter_lists.length)
+                writer.writeRepeatedMessage(2, this.parameter_lists, (item: Scope) => item.serialize(writer));
+            if (this.has_return_type)
+                writer.writeMessage(3, this.return_type, () => this.return_type.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): MethodSignature {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new MethodSignature();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.type_parameters, () => message.type_parameters = Scope.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.parameter_lists, () => pb_1.Message.addToRepeatedWrapperField(message, 2, Scope.deserialize(reader), Scope));
+                        break;
+                    case 3:
+                        reader.readMessage(message.return_type, () => message.return_type = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): MethodSignature {
+            return MethodSignature.deserialize(bytes);
+        }
+    }
+    export class TypeSignature extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            type_parameters?: Scope;
+            lower_bound?: Type;
+            upper_bound?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("type_parameters" in data && data.type_parameters != undefined) {
+                    this.type_parameters = data.type_parameters;
+                }
+                if ("lower_bound" in data && data.lower_bound != undefined) {
+                    this.lower_bound = data.lower_bound;
+                }
+                if ("upper_bound" in data && data.upper_bound != undefined) {
+                    this.upper_bound = data.upper_bound;
+                }
+            }
+        }
+        get type_parameters() {
+            return pb_1.Message.getWrapperField(this, Scope, 1) as Scope;
+        }
+        set type_parameters(value: Scope) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_type_parameters() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get lower_bound() {
+            return pb_1.Message.getWrapperField(this, Type, 2) as Type;
+        }
+        set lower_bound(value: Type) {
+            pb_1.Message.setWrapperField(this, 2, value);
+        }
+        get has_lower_bound() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        get upper_bound() {
+            return pb_1.Message.getWrapperField(this, Type, 3) as Type;
+        }
+        set upper_bound(value: Type) {
+            pb_1.Message.setWrapperField(this, 3, value);
+        }
+        get has_upper_bound() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        static fromObject(data: {
+            type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+            lower_bound?: ReturnType<typeof Type.prototype.toObject>;
+            upper_bound?: ReturnType<typeof Type.prototype.toObject>;
+        }): TypeSignature {
+            const message = new TypeSignature({});
+            if (data.type_parameters != null) {
+                message.type_parameters = Scope.fromObject(data.type_parameters);
+            }
+            if (data.lower_bound != null) {
+                message.lower_bound = Type.fromObject(data.lower_bound);
+            }
+            if (data.upper_bound != null) {
+                message.upper_bound = Type.fromObject(data.upper_bound);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+                lower_bound?: ReturnType<typeof Type.prototype.toObject>;
+                upper_bound?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.type_parameters != null) {
+                data.type_parameters = this.type_parameters.toObject();
+            }
+            if (this.lower_bound != null) {
+                data.lower_bound = this.lower_bound.toObject();
+            }
+            if (this.upper_bound != null) {
+                data.upper_bound = this.upper_bound.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_type_parameters)
+                writer.writeMessage(1, this.type_parameters, () => this.type_parameters.serialize(writer));
+            if (this.has_lower_bound)
+                writer.writeMessage(2, this.lower_bound, () => this.lower_bound.serialize(writer));
+            if (this.has_upper_bound)
+                writer.writeMessage(3, this.upper_bound, () => this.upper_bound.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TypeSignature {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TypeSignature();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.type_parameters, () => message.type_parameters = Scope.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.lower_bound, () => message.lower_bound = Type.deserialize(reader));
+                        break;
+                    case 3:
+                        reader.readMessage(message.upper_bound, () => message.upper_bound = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): TypeSignature {
+            return TypeSignature.deserialize(bytes);
+        }
+    }
+    export class ValueSignature extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tpe?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tpe" in data && data.tpe != undefined) {
+                    this.tpe = data.tpe;
+                }
+            }
+        }
+        get tpe() {
+            return pb_1.Message.getWrapperField(this, Type, 1) as Type;
+        }
+        set tpe(value: Type) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_tpe() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        static fromObject(data: {
+            tpe?: ReturnType<typeof Type.prototype.toObject>;
+        }): ValueSignature {
+            const message = new ValueSignature({});
+            if (data.tpe != null) {
+                message.tpe = Type.fromObject(data.tpe);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tpe?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.tpe != null) {
+                data.tpe = this.tpe.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_tpe)
+                writer.writeMessage(1, this.tpe, () => this.tpe.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): ValueSignature {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new ValueSignature();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tpe, () => message.tpe = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): ValueSignature {
+            return ValueSignature.deserialize(bytes);
         }
     }
 }
