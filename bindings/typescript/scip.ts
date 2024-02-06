@@ -2847,102 +2847,6 @@ export namespace scip {
             return Type.deserialize(bytes);
         }
     }
-    export class LambdaType extends pb_1.Message {
-        #one_of_decls: number[][] = [];
-        constructor(data?: any[] | {
-            parameters?: Scope;
-            return_type?: Type;
-        }) {
-            super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-            if (!Array.isArray(data) && typeof data == "object") {
-                if ("parameters" in data && data.parameters != undefined) {
-                    this.parameters = data.parameters;
-                }
-                if ("return_type" in data && data.return_type != undefined) {
-                    this.return_type = data.return_type;
-                }
-            }
-        }
-        get parameters() {
-            return pb_1.Message.getWrapperField(this, Scope, 1) as Scope;
-        }
-        set parameters(value: Scope) {
-            pb_1.Message.setWrapperField(this, 1, value);
-        }
-        get has_parameters() {
-            return pb_1.Message.getField(this, 1) != null;
-        }
-        get return_type() {
-            return pb_1.Message.getWrapperField(this, Type, 2) as Type;
-        }
-        set return_type(value: Type) {
-            pb_1.Message.setWrapperField(this, 2, value);
-        }
-        get has_return_type() {
-            return pb_1.Message.getField(this, 2) != null;
-        }
-        static fromObject(data: {
-            parameters?: ReturnType<typeof Scope.prototype.toObject>;
-            return_type?: ReturnType<typeof Type.prototype.toObject>;
-        }): LambdaType {
-            const message = new LambdaType({});
-            if (data.parameters != null) {
-                message.parameters = Scope.fromObject(data.parameters);
-            }
-            if (data.return_type != null) {
-                message.return_type = Type.fromObject(data.return_type);
-            }
-            return message;
-        }
-        toObject() {
-            const data: {
-                parameters?: ReturnType<typeof Scope.prototype.toObject>;
-                return_type?: ReturnType<typeof Type.prototype.toObject>;
-            } = {};
-            if (this.parameters != null) {
-                data.parameters = this.parameters.toObject();
-            }
-            if (this.return_type != null) {
-                data.return_type = this.return_type.toObject();
-            }
-            return data;
-        }
-        serialize(): Uint8Array;
-        serialize(w: pb_1.BinaryWriter): void;
-        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
-            const writer = w || new pb_1.BinaryWriter();
-            if (this.has_parameters)
-                writer.writeMessage(1, this.parameters, () => this.parameters.serialize(writer));
-            if (this.has_return_type)
-                writer.writeMessage(2, this.return_type, () => this.return_type.serialize(writer));
-            if (!w)
-                return writer.getResultBuffer();
-        }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): LambdaType {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new LambdaType();
-            while (reader.nextField()) {
-                if (reader.isEndGroup())
-                    break;
-                switch (reader.getFieldNumber()) {
-                    case 1:
-                        reader.readMessage(message.parameters, () => message.parameters = Scope.deserialize(reader));
-                        break;
-                    case 2:
-                        reader.readMessage(message.return_type, () => message.return_type = Type.deserialize(reader));
-                        break;
-                    default: reader.skipField();
-                }
-            }
-            return message;
-        }
-        serializeBinary(): Uint8Array {
-            return this.serialize();
-        }
-        static deserializeBinary(bytes: Uint8Array): LambdaType {
-            return LambdaType.deserialize(bytes);
-        }
-    }
     export class TypeRef extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -4293,6 +4197,128 @@ export namespace scip {
             static deserializeBinary(bytes: Uint8Array): CaseType {
                 return CaseType.deserialize(bytes);
             }
+        }
+    }
+    export class LambdaType extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            type_parameters?: Scope;
+            parameters?: Scope;
+            return_type?: Type;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("type_parameters" in data && data.type_parameters != undefined) {
+                    this.type_parameters = data.type_parameters;
+                }
+                if ("parameters" in data && data.parameters != undefined) {
+                    this.parameters = data.parameters;
+                }
+                if ("return_type" in data && data.return_type != undefined) {
+                    this.return_type = data.return_type;
+                }
+            }
+        }
+        get type_parameters() {
+            return pb_1.Message.getWrapperField(this, Scope, 3) as Scope;
+        }
+        set type_parameters(value: Scope) {
+            pb_1.Message.setWrapperField(this, 3, value);
+        }
+        get has_type_parameters() {
+            return pb_1.Message.getField(this, 3) != null;
+        }
+        get parameters() {
+            return pb_1.Message.getWrapperField(this, Scope, 1) as Scope;
+        }
+        set parameters(value: Scope) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_parameters() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get return_type() {
+            return pb_1.Message.getWrapperField(this, Type, 2) as Type;
+        }
+        set return_type(value: Type) {
+            pb_1.Message.setWrapperField(this, 2, value);
+        }
+        get has_return_type() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        static fromObject(data: {
+            type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+            parameters?: ReturnType<typeof Scope.prototype.toObject>;
+            return_type?: ReturnType<typeof Type.prototype.toObject>;
+        }): LambdaType {
+            const message = new LambdaType({});
+            if (data.type_parameters != null) {
+                message.type_parameters = Scope.fromObject(data.type_parameters);
+            }
+            if (data.parameters != null) {
+                message.parameters = Scope.fromObject(data.parameters);
+            }
+            if (data.return_type != null) {
+                message.return_type = Type.fromObject(data.return_type);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                type_parameters?: ReturnType<typeof Scope.prototype.toObject>;
+                parameters?: ReturnType<typeof Scope.prototype.toObject>;
+                return_type?: ReturnType<typeof Type.prototype.toObject>;
+            } = {};
+            if (this.type_parameters != null) {
+                data.type_parameters = this.type_parameters.toObject();
+            }
+            if (this.parameters != null) {
+                data.parameters = this.parameters.toObject();
+            }
+            if (this.return_type != null) {
+                data.return_type = this.return_type.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_type_parameters)
+                writer.writeMessage(3, this.type_parameters, () => this.type_parameters.serialize(writer));
+            if (this.has_parameters)
+                writer.writeMessage(1, this.parameters, () => this.parameters.serialize(writer));
+            if (this.has_return_type)
+                writer.writeMessage(2, this.return_type, () => this.return_type.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): LambdaType {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new LambdaType();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 3:
+                        reader.readMessage(message.type_parameters, () => message.type_parameters = Scope.deserialize(reader));
+                        break;
+                    case 1:
+                        reader.readMessage(message.parameters, () => message.parameters = Scope.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.return_type, () => message.return_type = Type.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): LambdaType {
+            return LambdaType.deserialize(bytes);
         }
     }
     export class Constant extends pb_1.Message {

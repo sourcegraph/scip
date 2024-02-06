@@ -220,10 +220,13 @@ function in `IndexVisitor` and update `ParseStreaming`.
 
 ### LambdaType
 
-| Name            | Type  | Description |
-| --------------- | ----- | ----------- |
-| **parameters**  | Scope |
-| **return_type** | Type  |
+Also known as "function type".
+
+| Name                | Type  | Description                                 |
+| ------------------- | ----- | ------------------------------------------- |
+| **type_parameters** | Scope | not tag 1 for compatibility with SemanticDB |
+| **parameters**      | Scope |
+| **return_type**     | Type  |
 
 ### LongConstant
 

@@ -908,10 +908,6 @@ message Type {
   }
 }
 
-message LambdaType {
-  Scope parameters = 1;
-  Type return_type = 2;
-}
 
 message TypeRef {
   Type prefix = 1;
@@ -988,6 +984,13 @@ message MatchType {
   }
   Type scrutinee = 1;
   repeated CaseType cases = 2;
+}
+
+// Also known as "function type".
+message LambdaType {
+  Scope type_parameters = 3; // not tag 1 for compatibility with SemanticDB
+  Scope parameters = 1;
+  Type return_type = 2;
 }
 
 message Constant {
