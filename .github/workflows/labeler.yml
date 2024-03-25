@@ -1,4 +1,4 @@
-name: "Issue Labeler"
+name: 'Issue Labeler'
 on:
   issues:
     types: [opened, edited]
@@ -11,8 +11,8 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
-    - uses: github/issue-labeler@v3.4
-      with:
-        configuration-path: .github/labeler.yml
-        enable-versioned-regex: 0
-        repo-token: ${{ github.token }}
+      - uses: github/issue-labeler@v3.4
+        with:
+          configuration-path: .github/labeler.yml
+          enable-versioned-regex: 0
+          repo-token: ${{ github.token }}
