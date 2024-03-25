@@ -1,0 +1,4 @@
+team/graph:
+  - '/.*/'
+graph/scip:
+  - '/.*/'
