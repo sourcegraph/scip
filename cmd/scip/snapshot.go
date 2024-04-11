@@ -44,12 +44,7 @@ and symbol information.`,
 				Destination: &snapshotFlags.strict,
 				Value:       true,
 			},
-			&cli.StringFlag{
-				Name:        "comment-syntax",
-				Usage:       "Comment syntax to use for snapshot files",
-				Destination: &snapshotFlags.commentSyntax,
-				Value:       "//",
-			},
+			commentSyntaxFlag(&snapshotFlags.commentSyntax),
 		},
 		Action: func(c *cli.Context) error {
 			return snapshotMain(snapshotFlags)
