@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -32,13 +33,48 @@ func testCommand() cli.Command {
 	return test
 }
 
-func findOccurrencesAtLine(lineNumber int, occurrences []*scip.Occurrence) []*scip.Occurrence {
-	result := []*scip.Occurrence{}
-	for _, occurrence := range occurrences {
-		if occurrence.Range[0] == int32(lineNumber) {
-			result = append(result, occurrence)
+func buildSymbolsForOccurrence(lineNumber int, commentSyntax string, occurrences []*scip.Occurrence) []string {
+	result := []string{}
+	for _, occ := range occurrences {
+		if occ.Range[0] == int32(lineNumber) {
+			b := strings.Builder{}
+
+			pos := scip.NewRange(occ.Range)
+			if !pos.IsSingleLine() {
+				continue
+			}
+
+			// replace the comment length with whitespace
+			b.WriteString(buildIndent(len(commentSyntax)))
+
+			// write whitespace for the indent of the line
+			b.WriteString(buildIndent(int(pos.Start.Character) - len(commentSyntax)))
+			length := pos.End.Character - pos.Start.Character
+			for caret := int32(0); caret < length; caret++ {
+				b.WriteRune('^')
+			}
+			b.WriteRune(' ')
+
+			role := "reference"
+			if scip.SymbolRole_Definition.Matches(occ) {
+				role = "definition"
+			} else if scip.SymbolRole_ForwardDefinition.Matches(occ) {
+				role = "forward_definition"
+			}
+			b.WriteString(role)
+
+			b.WriteRune(' ')
+
+			symbol, err := scip.LenientVerboseSymbolFormatter.Format(occ.Symbol)
+			if err != nil {
+				fmt.Printf("Error formatting symbol: %s\n", occ.Symbol)
+			} else {
+				b.WriteString(symbol)
+				result = append(result, b.String())
+			}
 		}
 	}
+
 	return result
 }
 
@@ -64,6 +100,35 @@ func formatOccurrence(occurrence *scip.Occurrence, formatter scip.SymbolFormatte
 	return b.String(), nil
 }
 
+func findTestsAtLine(lineNumber int, lines []string, commentSyntax string) []string {
+	if lineNumber >= len(lines)-1 {
+		return []string{}
+	}
+
+	testLines := []string{}
+	for i := lineNumber + 1; i < len(lines); i++ {
+		line := lines[i]
+		if strings.HasPrefix(strings.TrimSpace(line), commentSyntax) {
+			line = strings.Replace(line, commentSyntax, buildIndent(len(commentSyntax)), 1)
+			testLines = append(testLines, line)
+		} else {
+			// For the first line that isn't a comment, break
+			break
+		}
+	}
+
+	return testLines
+}
+
+func isValidTestLine(line string, symbols []string) bool {
+	for _, symbol := range symbols {
+		if line == symbol {
+			return true
+		}
+	}
+	return false
+}
+
 func testMain(directory string, flags testFlags) error {
 	index, err := readFromOption(flags.from)
 	if err != nil {
@@ -72,49 +137,40 @@ func testMain(directory string, flags testFlags) error {
 
 	for _, document := range index.Documents {
 		sourceFilePath := filepath.Join(directory, document.RelativePath)
-		symtab := document.SymbolTable()
 
 		data, err := os.ReadFile(sourceFilePath)
 		if err != nil {
 			return err
 		}
+		lines := strings.Split(string(data), "\n")
+		for lineNumber, _ := range lines {
 
-		for lineNumber, line := range strings.Split(string(data), "\n") {
-			line = strings.TrimSuffix(line, "\r")
-
-			if strings.HasPrefix(strings.TrimSpace(line), flags.commentSyntax) {
-				occurrences := findOccurrencesAtLine(lineNumber, document.Occurrences)
-
+			testsAtLine := findTestsAtLine(lineNumber, lines, flags.commentSyntax)
+			if len(testsAtLine) == 0 {
+				continue
 			}
 
-			// for i < len(document.Occurrences) && document.Occurrences[i].Range[0] == int32(lineNumber) {
+			symbols := buildSymbolsForOccurrence(lineNumber, flags.commentSyntax, document.Occurrences)
 
-			// }
+			for _, testLine := range testsAtLine {
+				if !isValidTestLine(testLine, symbols) {
+					fmt.Println("Invalid Line:")
+					fmt.Printf("  Actual: '%s'\n", testLine)
+					fmt.Println("  Expected (one of):")
+					for _, symbol := range symbols {
+						fmt.Printf("    - '%s'\n", symbol)
+					}
+				}
+			}
 		}
 	}
-
-	// snapshots, err := testutil.FormatSnapshots(index, flags.commentSyntax, scip.LenientVerboseSymbolFormatter, directory)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// for _, snapshot := range snapshots {
-	// 	sourceFilePath := filepath.Join(directory, snapshot.RelativePath)
-	// 	data, err := os.ReadFile(sourceFilePath)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-
-	// 	for lineNumber, line := range strings.Split(string(data), "\n") {
-	// 		line = strings.TrimSuffix(line, "\r")
-	// 		if strings.HasPrefix(strings.TrimSpace(line), flags.commentSyntax) {
-	// 			if snapshot.Lines[lineNumber] != line {
-	// 				fmt.Printf("ERROR %s: %d", sourceFilePath, lineNumber)
-	// 				fmt.Printf("  %s", snapshot.Lines[lineNumber])
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	return nil
+}
+
+func buildIndent(length int) string {
+	b := strings.Builder{}
+	for i := 0; i < length; i++ {
+		b.WriteRune(' ')
+	}
+	return b.String()
 }
