@@ -52,7 +52,6 @@ func findTestsAtLine(lineNumber int, lines []string, commentSyntax string) []str
 	for i := lineNumber + 1; i < len(lines); i++ {
 		line := lines[i]
 		if strings.HasPrefix(strings.TrimSpace(line), commentSyntax) {
-			line = strings.Replace(line, commentSyntax, buildIndent(len(commentSyntax)), 1)
 			testLines = append(testLines, line)
 		} else {
 			// For the first line that isn't a comment, break
@@ -77,7 +76,6 @@ func parseTestLine(line string, commentSyntax string) *testLine {
 	enforceLength := false
 
 	if strings.Contains(line, "<-") {
-		fmt.Println(line)
 		start = strings.Index(line, commentSyntax)
 		line = strings.Replace(line, "<-", "", 1)
 	} else {
@@ -175,14 +173,6 @@ func testMain(directory string, flags testFlags) error {
 		}
 	}
 	return nil
-}
-
-func buildIndent(length int) string {
-	b := strings.Builder{}
-	for i := 0; i < length; i++ {
-		b.WriteRune(' ')
-	}
-	return b.String()
 }
 
 func countOccurrences(s string, char rune) int {
