@@ -33,71 +33,14 @@ func testCommand() cli.Command {
 	return test
 }
 
-func buildSymbolsForOccurrence(lineNumber int, commentSyntax string, occurrences []*scip.Occurrence) []string {
-	result := []string{}
+func findOccurrencesForLine(lineNumber int, occurrences []*scip.Occurrence) []*scip.Occurrence {
+	result := []*scip.Occurrence{}
 	for _, occ := range occurrences {
 		if occ.Range[0] == int32(lineNumber) {
-			b := strings.Builder{}
-
-			pos := scip.NewRange(occ.Range)
-			if !pos.IsSingleLine() {
-				continue
-			}
-
-			// replace the comment length with whitespace
-			b.WriteString(buildIndent(len(commentSyntax)))
-
-			// write whitespace for the indent of the line
-			b.WriteString(buildIndent(int(pos.Start.Character) - len(commentSyntax)))
-			length := pos.End.Character - pos.Start.Character
-			for caret := int32(0); caret < length; caret++ {
-				b.WriteRune('^')
-			}
-			b.WriteRune(' ')
-
-			role := "reference"
-			if scip.SymbolRole_Definition.Matches(occ) {
-				role = "definition"
-			} else if scip.SymbolRole_ForwardDefinition.Matches(occ) {
-				role = "forward_definition"
-			}
-			b.WriteString(role)
-
-			b.WriteRune(' ')
-
-			symbol, err := scip.LenientVerboseSymbolFormatter.Format(occ.Symbol)
-			if err != nil {
-				fmt.Printf("Error formatting symbol: %s\n", occ.Symbol)
-			} else {
-				b.WriteString(symbol)
-				result = append(result, b.String())
-			}
+			result = append(result, occ)
 		}
 	}
-
 	return result
-}
-
-func formatOccurrence(occurrence *scip.Occurrence, formatter scip.SymbolFormatter) (string, error) {
-	b := strings.Builder{}
-
-	role := "reference"
-	if scip.SymbolRole_Definition.Matches(occurrence) {
-		role = "definition"
-	} else if scip.SymbolRole_ForwardDefinition.Matches(occurrence) {
-		role = "forward_definition"
-	}
-	b.WriteString(role)
-
-	b.WriteRune(' ')
-
-	symbol, err := formatter.Format(occurrence.Symbol)
-	if err != nil {
-		return "", err
-	}
-	b.WriteString(symbol)
-
-	return b.String(), nil
 }
 
 func findTestsAtLine(lineNumber int, lines []string, commentSyntax string) []string {
@@ -120,11 +63,76 @@ func findTestsAtLine(lineNumber int, lines []string, commentSyntax string) []str
 	return testLines
 }
 
-func isValidTestLine(line string, symbols []string) bool {
-	for _, symbol := range symbols {
-		if line == symbol {
-			return true
+type testLine struct {
+	symbol        string
+	role          string
+	start         int
+	length        int
+	enforceLength bool
+}
+
+func parseTestLine(line string, commentSyntax string) *testLine {
+	start := 0
+	length := 0
+	enforceLength := false
+
+	if strings.Contains(line, "<-") {
+		start = strings.Index(line, commentSyntax)
+		line = strings.Replace(line, "<-", "", 1)
+	} else {
+		start = strings.Index(line, "^")
+
+		if strings.Contains(line, "^^") {
+			enforceLength = true
+			length = countOccurrences(line, '^')
 		}
+		line = strings.ReplaceAll(line, "^", "")
+	}
+
+	// remove the comment prefix & whitespace
+	line = strings.TrimSpace(strings.Replace(line, commentSyntax, "", 1))
+
+	role := strings.Split(line, " ")[0]
+	symbol := strings.TrimSpace(strings.Replace(line, role, "", 1))
+
+	return &testLine{
+		symbol:        symbol,
+		role:          role,
+		start:         start,
+		length:        length,
+		enforceLength: enforceLength,
+	}
+}
+
+func roleFromOccurrence(occ *scip.Occurrence) string {
+	if scip.SymbolRole_Definition.Matches(occ) {
+		return "definition"
+	} else if scip.SymbolRole_ForwardDefinition.Matches(occ) {
+		return "forward_definition"
+	}
+	return "reference"
+}
+
+func isValidTestLine(parsedTestLine *testLine, occurrences []*scip.Occurrence) bool {
+	for _, occ := range occurrences {
+		if parsedTestLine.symbol != occ.Symbol {
+			continue
+		}
+
+		if parsedTestLine.role != roleFromOccurrence(occ) {
+			continue
+		}
+
+		pos := scip.NewRange(occ.Range)
+		if parsedTestLine.enforceLength && parsedTestLine.length != int(pos.End.Character-pos.Start.Character) {
+			continue
+		}
+
+		if int(pos.Start.Character) > parsedTestLine.start || int(pos.End.Character-1) < parsedTestLine.start {
+			continue
+		}
+
+		return true
 	}
 	return false
 }
@@ -150,15 +158,16 @@ func testMain(directory string, flags testFlags) error {
 				continue
 			}
 
-			symbols := buildSymbolsForOccurrence(lineNumber, flags.commentSyntax, document.Occurrences)
+			occurrences := findOccurrencesForLine(lineNumber, document.Occurrences)
 
 			for _, testLine := range testsAtLine {
-				if !isValidTestLine(testLine, symbols) {
+				parsedTestLine := parseTestLine(testLine, flags.commentSyntax)
+				if !isValidTestLine(parsedTestLine, occurrences) {
 					fmt.Println("Invalid Line:")
 					fmt.Printf("  Actual: '%s'\n", testLine)
 					fmt.Println("  Expected (one of):")
-					for _, symbol := range symbols {
-						fmt.Printf("    - '%s'\n", symbol)
+					for _, occ := range occurrences {
+						fmt.Printf("    - '%s'\n", occ.Symbol)
 					}
 				}
 			}
@@ -173,4 +182,14 @@ func buildIndent(length int) string {
 		b.WriteRune(' ')
 	}
 	return b.String()
+}
+
+func countOccurrences(s string, char rune) int {
+	count := 0
+	for _, ch := range s {
+		if ch == char {
+			count++
+		}
+	}
+	return count
 }
