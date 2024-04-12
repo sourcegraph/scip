@@ -77,6 +77,7 @@ func parseTestLine(line string, commentSyntax string) *testLine {
 	enforceLength := false
 
 	if strings.Contains(line, "<-") {
+		fmt.Println(line)
 		start = strings.Index(line, commentSyntax)
 		line = strings.Replace(line, "<-", "", 1)
 	} else {
