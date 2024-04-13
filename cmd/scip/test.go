@@ -33,17 +33,74 @@ func testCommand() cli.Command {
 	return test
 }
 
-func findOccurrencesForLine(lineNumber int, occurrences []*scip.Occurrence) []*scip.Occurrence {
-	result := []*scip.Occurrence{}
-	for _, occ := range occurrences {
-		if occ.Range[0] == int32(lineNumber) {
-			result = append(result, occ)
+func testMain(directory string, flags testFlags) error {
+	index, err := readFromOption(flags.from)
+	if err != nil {
+		return err
+	}
+
+	for _, document := range index.Documents {
+		sourceFilePath := filepath.Join(directory, document.RelativePath)
+
+		data, err := os.ReadFile(sourceFilePath)
+		if err != nil {
+			return err
+		}
+		lines := strings.Split(string(data), "\n")
+		for lineNumber := range lines {
+
+			testsAtLine := commentsForLine(lineNumber, lines, flags.commentSyntax)
+
+			// if the test file contains no test lines, skip it. Only test the lines
+			// that the test file dictates should be tested
+			if len(testsAtLine) == 0 {
+				continue
+			}
+
+			attributes := attributesForOccurrencesAtLine(lineNumber, document.Occurrences)
+			for _, testLine := range testsAtLine {
+				testCase := parseTestCase(testLine, flags.commentSyntax)
+				if !isValidTestCase(testCase, attributes) {
+					fmt.Println("Invalid Line:")
+					fmt.Printf("  Actual: '%s'\n", testLine)
+					fmt.Println("  Expected (one of):")
+					for _, attr := range attributes {
+						fmt.Printf("    - '%s'\n", attr.data)
+					}
+				}
+			}
 		}
 	}
-	return result
+	return nil
 }
 
-func findTestsAtLine(lineNumber int, lines []string, commentSyntax string) []string {
+// symbolAttribute refers to a single attribute of a symbol.
+// This can be a definition, reference, documentation, or diagnostic
+type symbolAttribute struct {
+	// the column number where this symbol starts
+	start int
+
+	// the length of the symbol's name
+	length int
+
+	// the type of attribute that this is
+	kind string
+
+	// contextual information about the attribute, as determined
+	// by the [kind]
+	data string
+}
+
+// symbolAttributeTestCase refers to metadata used to validate
+// [symbolAttributes]
+type symbolAttributeTestCase struct {
+	attribute     *symbolAttribute
+	enforceLength bool
+}
+
+// commentsForLine returns the list of lines, after a provided [lineNumber], which are
+// classified as comment. The comment type can be configured using [commentSyntax]
+func commentsForLine(lineNumber int, lines []string, commentSyntax string) []string {
 	if lineNumber >= len(lines)-1 {
 		return []string{}
 	}
@@ -62,28 +119,49 @@ func findTestsAtLine(lineNumber int, lines []string, commentSyntax string) []str
 	return testLines
 }
 
-type testLine struct {
-	symbol        string
-	role          string
-	start         int
-	length        int
-	enforceLength bool
+func attributesForOccurrencesAtLine(lineNumber int, occurrences []*scip.Occurrence) []*symbolAttribute {
+	result := []*symbolAttribute{}
+	for _, occ := range occurrences {
+		if occ.Range[0] == int32(lineNumber) {
+			pos := scip.NewRange(occ.Range)
+
+			kind := "reference"
+			if scip.SymbolRole_Definition.Matches(occ) {
+				kind = "definition"
+			} else if scip.SymbolRole_ForwardDefinition.Matches(occ) {
+				kind = "forward_definition"
+			}
+
+			result = append(result, &symbolAttribute{
+				start:  int(pos.Start.Character),
+				length: int(pos.End.Character - pos.Start.Character),
+				kind:   kind,
+				data:   occ.Symbol,
+			})
+		}
+	}
+	return result
 }
 
-func parseTestLine(line string, commentSyntax string) *testLine {
+func parseTestCase(line string, commentSyntax string) *symbolAttributeTestCase {
 	start := 0
 	length := 0
 	enforceLength := false
 
 	if strings.Contains(line, "<-") {
+		// if the test line selects via `<-`, treat the symbol selection
+		// as the location of the commentSyntax
 		start = strings.Index(line, commentSyntax)
 		line = strings.Replace(line, "<-", "", 1)
 	} else {
+		// otherwise treat the start as the first `^`
 		start = strings.Index(line, "^")
 
+		// a single `^` dictates no length enforcement
+		// anything more signifies length should be verified
 		if strings.Contains(line, "^^") {
 			enforceLength = true
-			length = countOccurrences(line, '^')
+			length = charCountInString(line, '^')
 		}
 		line = strings.ReplaceAll(line, "^", "")
 	}
@@ -91,91 +169,50 @@ func parseTestLine(line string, commentSyntax string) *testLine {
 	// remove the comment prefix & whitespace
 	line = strings.TrimSpace(strings.Replace(line, commentSyntax, "", 1))
 
-	role := strings.Split(line, " ")[0]
-	symbol := strings.TrimSpace(strings.Replace(line, role, "", 1))
+	// the type of the symbol should be the first word
+	// this is "definition", "reference", "documentation", "diagnostic", etc..
+	kind := strings.Split(line, " ")[0]
 
-	return &testLine{
-		symbol:        symbol,
-		role:          role,
-		start:         start,
-		length:        length,
+	// the data is everything except the type
+	data := strings.TrimSpace(strings.Replace(line, kind, "", 1))
+
+	return &symbolAttributeTestCase{
+		attribute: &symbolAttribute{
+			kind:   kind,
+			data:   data,
+			start:  start,
+			length: length,
+		},
 		enforceLength: enforceLength,
 	}
 }
 
-func roleFromOccurrence(occ *scip.Occurrence) string {
-	if scip.SymbolRole_Definition.Matches(occ) {
-		return "definition"
-	} else if scip.SymbolRole_ForwardDefinition.Matches(occ) {
-		return "forward_definition"
-	}
-	return "reference"
-}
-
-func isValidTestLine(parsedTestLine *testLine, occurrences []*scip.Occurrence) bool {
-	for _, occ := range occurrences {
-		if parsedTestLine.symbol != occ.Symbol {
-			continue
+func isValidTestCase(testCase *symbolAttributeTestCase, attributes []*symbolAttribute) bool {
+	for _, attr := range attributes {
+		if isValidTestCaseForAttribute(testCase, attr) {
+			return true
 		}
-
-		if parsedTestLine.role != roleFromOccurrence(occ) {
-			continue
-		}
-
-		pos := scip.NewRange(occ.Range)
-		if parsedTestLine.enforceLength && parsedTestLine.length != int(pos.End.Character-pos.Start.Character) {
-			continue
-		}
-
-		if int(pos.Start.Character) > parsedTestLine.start || int(pos.End.Character-1) < parsedTestLine.start {
-			continue
-		}
-
-		return true
 	}
 	return false
 }
 
-func testMain(directory string, flags testFlags) error {
-	index, err := readFromOption(flags.from)
-	if err != nil {
-		return err
+func isValidTestCaseForAttribute(testCase *symbolAttributeTestCase, attr *symbolAttribute) bool {
+	if testCase.attribute.start != attr.start {
+		return false
 	}
 
-	for _, document := range index.Documents {
-		sourceFilePath := filepath.Join(directory, document.RelativePath)
-
-		data, err := os.ReadFile(sourceFilePath)
-		if err != nil {
-			return err
-		}
-		lines := strings.Split(string(data), "\n")
-		for lineNumber, _ := range lines {
-
-			testsAtLine := findTestsAtLine(lineNumber, lines, flags.commentSyntax)
-			if len(testsAtLine) == 0 {
-				continue
-			}
-
-			occurrences := findOccurrencesForLine(lineNumber, document.Occurrences)
-
-			for _, testLine := range testsAtLine {
-				parsedTestLine := parseTestLine(testLine, flags.commentSyntax)
-				if !isValidTestLine(parsedTestLine, occurrences) {
-					fmt.Println("Invalid Line:")
-					fmt.Printf("  Actual: '%s'\n", testLine)
-					fmt.Println("  Expected (one of):")
-					for _, occ := range occurrences {
-						fmt.Printf("    - '%s'\n", occ.Symbol)
-					}
-				}
-			}
-		}
+	if testCase.enforceLength && testCase.attribute.length != attr.length {
+		return false
 	}
-	return nil
+
+	if testCase.attribute.kind != attr.kind {
+		return false
+	}
+
+	return testCase.attribute.data == attr.data
 }
 
-func countOccurrences(s string, char rune) int {
+func charCountInString(s string, char rune) int {
 	count := 0
 	for _, ch := range s {
 		if ch == char {
