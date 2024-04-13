@@ -49,20 +49,19 @@ func testMain(directory string, flags testFlags) error {
 		lines := strings.Split(string(data), "\n")
 		for lineNumber := range lines {
 
-			testsAtLine := commentsForLine(lineNumber, lines, flags.commentSyntax)
+			testCasesAtLine := testCasesForLine(lineNumber, lines, flags.commentSyntax)
 
 			// if the test file contains no test lines, skip it. Only test the lines
 			// that the test file dictates should be tested
-			if len(testsAtLine) == 0 {
+			if len(testCasesAtLine) == 0 {
 				continue
 			}
 
 			attributes := attributesForOccurrencesAtLine(lineNumber, document.Occurrences)
-			for _, testLine := range testsAtLine {
-				testCase := parseTestCase(testLine, flags.commentSyntax)
+			for _, testCase := range testCasesAtLine {
 				if !isValidTestCase(testCase, attributes) {
 					fmt.Println("Invalid Line:")
-					fmt.Printf("  Actual: '%s'\n", testLine)
+					fmt.Printf("  Actual: '%s'\n", testCase.attribute.data)
 					fmt.Println("  Expected (one of):")
 					for _, attr := range attributes {
 						fmt.Printf("    - '%s'\n", attr.data)
@@ -89,6 +88,11 @@ type symbolAttribute struct {
 	// contextual information about the attribute, as determined
 	// by the [kind]
 	data string
+
+	// any additional information necessary to represent this attribute
+	// each line should be considered a "newline", and is used for multiline
+	// comments (in documentation), and diagnostic information
+	additionalData []string
 }
 
 // symbolAttributeTestCase refers to metadata used to validate
@@ -100,16 +104,18 @@ type symbolAttributeTestCase struct {
 
 // commentsForLine returns the list of lines, after a provided [lineNumber], which are
 // classified as comment. The comment type can be configured using [commentSyntax]
-func commentsForLine(lineNumber int, lines []string, commentSyntax string) []string {
+func testCasesForLine(lineNumber int, lines []string, commentSyntax string) []*symbolAttributeTestCase {
+	testCases := []*symbolAttributeTestCase{}
+
 	if lineNumber >= len(lines)-1 {
-		return []string{}
+		return testCases
 	}
 
-	testLines := []string{}
+	testLines := []*symbolAttributeTestCase{}
 	for i := lineNumber + 1; i < len(lines); i++ {
 		line := lines[i]
 		if strings.HasPrefix(strings.TrimSpace(line), commentSyntax) {
-			testLines = append(testLines, line)
+			testLines = append(testLines, parseTestCase(line, lines[i:], commentSyntax))
 		} else {
 			// For the first line that isn't a comment, break
 			break
@@ -125,25 +131,40 @@ func attributesForOccurrencesAtLine(lineNumber int, occurrences []*scip.Occurren
 		if occ.Range[0] == int32(lineNumber) {
 			pos := scip.NewRange(occ.Range)
 
+			start := int(pos.Start.Character)
+			length := int(pos.End.Character - pos.Start.Character)
+
 			kind := "reference"
 			if scip.SymbolRole_Definition.Matches(occ) {
 				kind = "definition"
 			} else if scip.SymbolRole_ForwardDefinition.Matches(occ) {
 				kind = "forward_definition"
 			}
-
 			result = append(result, &symbolAttribute{
-				start:  int(pos.Start.Character),
-				length: int(pos.End.Character - pos.Start.Character),
-				kind:   kind,
-				data:   occ.Symbol,
+				start:          start,
+				length:         length,
+				kind:           kind,
+				data:           occ.Symbol,
+				additionalData: []string{},
 			})
+
+			for _, diagnostic := range occ.Diagnostics {
+				result = append(result, &symbolAttribute{
+					start:  start,
+					length: length,
+					kind:   "diagnostic",
+					data:   diagnostic.Severity.String(),
+					additionalData: []string{
+						diagnostic.Message,
+					},
+				})
+			}
 		}
 	}
 	return result
 }
 
-func parseTestCase(line string, commentSyntax string) *symbolAttributeTestCase {
+func parseTestCase(line string, leadingLines []string, commentSyntax string) *symbolAttributeTestCase {
 	start := 0
 	length := 0
 	enforceLength := false
@@ -176,12 +197,29 @@ func parseTestCase(line string, commentSyntax string) *symbolAttributeTestCase {
 	// the data is everything except the type
 	data := strings.TrimSpace(strings.Replace(line, kind, "", 1))
 
+	additionalData := []string{}
+	i := 0
+	for i < len(leadingLines) {
+		leadingLine := leadingLines[i]
+		multilinePrefix := fmt.Sprintf("%s >", commentSyntax)
+		if strings.Contains(leadingLine, multilinePrefix) {
+			additionalData = append(
+				additionalData,
+				strings.TrimSpace(strings.Replace(leadingLine, multilinePrefix, "", 1)),
+			)
+			i++
+		} else {
+			break
+		}
+	}
+
 	return &symbolAttributeTestCase{
 		attribute: &symbolAttribute{
-			kind:   kind,
-			data:   data,
-			start:  start,
-			length: length,
+			kind:           kind,
+			start:          start,
+			length:         length,
+			data:           data,
+			additionalData: additionalData,
 		},
 		enforceLength: enforceLength,
 	}
