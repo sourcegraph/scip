@@ -18,9 +18,11 @@ type testFlags struct {
 func testCommand() cli.Command {
 	var testFlags testFlags
 	test := cli.Command{
-		Name:        "test",
-		Usage:       "",
-		Description: "",
+		Name:  "test",
+		Usage: "Validate subsets of snapshot files",
+		Description: `The test subcommand validates whether a provided scip index
+file matches manually specified symbol fields within an index. This can be used in
+conjunction with snapshot to provide a cohesive testing framework for scip indexers.`,
 		Flags: []cli.Flag{
 			fromFlag(&testFlags.from),
 			commentSyntaxFlag(&testFlags.commentSyntax),
@@ -39,6 +41,8 @@ func testMain(directory string, flags testFlags) error {
 		return err
 	}
 
+	hasFailure := false
+
 	for _, document := range index.Documents {
 		sourceFilePath := filepath.Join(directory, document.RelativePath)
 
@@ -46,6 +50,10 @@ func testMain(directory string, flags testFlags) error {
 		if err != nil {
 			return err
 		}
+
+		failures := []string{}
+		successCount := 0
+
 		lines := strings.Split(string(data), "\n")
 		for lineNumber := range lines {
 
@@ -60,16 +68,37 @@ func testMain(directory string, flags testFlags) error {
 			attributes := attributesForOccurrencesAtLine(lineNumber, document.Occurrences)
 			for _, testCase := range testCasesAtLine {
 				if !isValidTestCase(testCase, attributes) {
-					fmt.Println("Invalid Line:")
-					fmt.Printf("  Actual: '%s'\n", testCase.attribute.data)
-					fmt.Println("  Expected (one of):")
-					for _, attr := range attributes {
-						fmt.Printf("    - '%s'\n", attr.data)
+					hasFailure = true
+
+					failureDesc := []string{
+						fmt.Sprintf("Failure - row: %d, column: %d", lineNumber, testCase.attribute.start),
+						fmt.Sprintf("  Expected: '%s %s'", testCase.attribute.kind, testCase.attribute.data),
+						"  Actual:",
 					}
+					for _, attr := range attributes {
+						failureDesc = append(failureDesc, fmt.Sprintf("    - '%s %s'", attr.kind, attr.data))
+					}
+					failures = append(failures, strings.Join(failureDesc, "\n"))
+				} else {
+					successCount++
 				}
 			}
 		}
+
+		if len(failures) > 0 {
+			fmt.Printf(red("✗ %s\n"), document.RelativePath)
+			for _, failure := range failures {
+				fmt.Println(indent(failure, 4))
+			}
+		} else {
+			fmt.Printf(green("✓ %s (%d assertions)\n"), document.RelativePath, successCount)
+		}
 	}
+
+	if hasFailure {
+		return cli.Exit("", 1)
+	}
+
 	return nil
 }
 
@@ -235,12 +264,14 @@ func isValidTestCase(testCase *symbolAttributeTestCase, attributes []*symbolAttr
 }
 
 func isValidTestCaseForAttribute(testCase *symbolAttributeTestCase, attr *symbolAttribute) bool {
-	if testCase.attribute.start != attr.start {
-		return false
-	}
-
-	if testCase.enforceLength && testCase.attribute.length != attr.length {
-		return false
+	if testCase.enforceLength {
+		if testCase.attribute.length != attr.length || testCase.attribute.start != attr.start {
+			return false
+		}
+	} else {
+		if testCase.attribute.start < attr.start || testCase.attribute.start > (attr.start+attr.length)-1 {
+			return false
+		}
 	}
 
 	if testCase.attribute.kind != attr.kind {
@@ -258,4 +289,20 @@ func charCountInString(s string, char rune) int {
 		}
 	}
 	return count
+}
+
+func red(str string) string {
+	return fmt.Sprintf("\033[31m%s\033[0m", str)
+}
+func green(str string) string {
+	return fmt.Sprintf("\033[32m%s\033[0m", str)
+}
+
+func indent(str string, count int) string {
+	lines := strings.Split(str, "\n")
+	newLines := []string{}
+	for _, line := range lines {
+		newLines = append(newLines, strings.Repeat(" ", count)+line)
+	}
+	return strings.Join(newLines, "\n")
 }
