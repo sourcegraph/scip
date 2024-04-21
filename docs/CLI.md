@@ -154,6 +154,13 @@ Four selection kinds are currently supported
 - `forward_definition`
 - `diagnostic`
 
+The `.` character can be used as a wildcard, to match any symbol segment
+```js
+function someFunction() {
+   //        ^ definition . . test_package . lib/`test.js`/someFunction().
+}
+```
+
 For kinds which can provide additional data, you can use a `>` character on a new line
 ```js
 function someFn() {
