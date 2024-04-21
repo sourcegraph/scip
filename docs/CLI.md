@@ -112,6 +112,58 @@ OPTIONS:
    --comment-syntax value  Comment syntax to use for snapshot files (default: "//")
 ```
 
+## `scip test`
+
+```
+NAME:
+   scip test - Validate subsets of snapshot files
+
+USAGE:
+   scip test [command options] [arguments...]
+
+DESCRIPTION:
+   The test subcommand validates whether a provided scip index
+   file matches manually specified symbol fields within an index. This can be used in
+   conjunction with snapshot to provide a cohesive testing framework for scip indexers.
+
+OPTIONS:
+   --from value            Path to SCIP index file (default: "index.scip")
+   --comment-syntax value  Comment syntax to use for snapshot files (default: "//")
+   --help, -h              show help
+```
+
+### File Specification
+
+The validation files for `scip test` are loosely based on [sublime text's](https://www.sublimetext.com/docs/syntax.html#testing) syntax highlighting files. Symbol ranges are selected using `^`, `^^` and `// <-`. Symbol attributes can be specified as the first word: `definition`, `reference`, `diagnostic`, and all subsequent lines are interpreted based on the kind of symbol attribute you are writing a test for
+
+Given the following example, the cli command `scip test` will exit with a non-zero exit code if the provided `index.scip` file does not contain a definition, at the specified range, with the specified symbol
+```js
+function someFunction() {
+   //    ^^^^^^^^^^^^ definition scip-typescript npm test_package 1.0.0 lib/`test.js`/someFunction().
+}
+```
+
+Three range selection comment formats are supported:
+- `// ^^^`: enforces the length of the symbol. Will fail if the range at this location does not equal 3 characters
+- `// ^`: ignore length, symbol can occur at any point between the start and end of the `^` character
+- `// <-`: ignore length, and treat the "start" of the symbol at the beginning of the comment. This follows sublime-text's format
+
+Four selection kinds are currently supported
+- `definition`
+- `reference`
+- `forward_definition`
+- `diagnostic`
+
+For kinds which can provide additional data, you can use a `>` character on a new line
+```js
+function someFn() {
+   let someVar = "";
+   //   ^ diagnostic Warning
+   //   > someVar is unused.
+   //   > remove it or use it.
+}
+```
+
 ## `scip stats`
 
 ```
