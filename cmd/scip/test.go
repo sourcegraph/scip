@@ -55,9 +55,8 @@ func testMain(directory string, flags testFlags) error {
 		successCount := 0
 
 		lines := strings.Split(string(data), "\n")
-		for lineNumber := range lines {
-
-			testCasesAtLine := testCasesForLine(lineNumber, lines, flags.commentSyntax)
+		for lineNumber := 0; lineNumber < len(lines); lineNumber++ {
+			testCasesAtLine, usedLines := testCasesForLine(lineNumber, lines, flags.commentSyntax)
 
 			// if the test file contains no test lines, skip it. Only test the lines
 			// that the test file dictates should be tested
@@ -68,24 +67,17 @@ func testMain(directory string, flags testFlags) error {
 			attributes := attributesForOccurrencesAtLine(lineNumber, document.Occurrences)
 			for _, testCase := range testCasesAtLine {
 				if !isValidTestCase(testCase, attributes) {
-					hasFailure = true
-
-					failureDesc := []string{
-						fmt.Sprintf("Failure - row: %d, column: %d", lineNumber, testCase.attribute.start),
-						fmt.Sprintf("  Expected: '%s %s'", testCase.attribute.kind, testCase.attribute.data),
-						"  Actual:",
-					}
-					for _, attr := range attributes {
-						failureDesc = append(failureDesc, fmt.Sprintf("    - '%s %s'", attr.kind, attr.data))
-					}
-					failures = append(failures, strings.Join(failureDesc, "\n"))
+					failures = append(failures, formatFailure(lineNumber, testCase, attributes))
 				} else {
 					successCount++
 				}
 			}
+
+			lineNumber += usedLines
 		}
 
 		if len(failures) > 0 {
+			hasFailure = true
 			fmt.Printf(red("✗ %s\n"), document.RelativePath)
 			for _, failure := range failures {
 				fmt.Println(indent(failure, 4))
@@ -132,26 +124,36 @@ type symbolAttributeTestCase struct {
 }
 
 // commentsForLine returns the list of lines, after a provided [lineNumber], which are
-// classified as comment. The comment type can be configured using [commentSyntax]
-func testCasesForLine(lineNumber int, lines []string, commentSyntax string) []*symbolAttributeTestCase {
+// classified as comment. The comment type can be configured using [commentSyntax].
+//
+// Returns the list of symbolAttributeTestCase(s) for the provided line, and the number of
+// of lines that were "consumed" by the cases on this line
+func testCasesForLine(lineNumber int, lines []string, commentSyntax string) ([]*symbolAttributeTestCase, int) {
 	testCases := []*symbolAttributeTestCase{}
 
+	// if the specified lineNumber is outside the bounds of lines
+	// return an empty array
 	if lineNumber >= len(lines)-1 {
-		return testCases
+		return testCases, 0
 	}
 
 	testLines := []*symbolAttributeTestCase{}
+	usedLines := 0
 	for i := lineNumber + 1; i < len(lines); i++ {
 		line := lines[i]
-		if strings.HasPrefix(strings.TrimSpace(line), commentSyntax) {
-			testLines = append(testLines, parseTestCase(line, lines[i:], commentSyntax))
-		} else {
-			// For the first line that isn't a comment, break
+
+		if !strings.HasPrefix(strings.TrimSpace(line), commentSyntax) {
+			// if the line does not start with a comment, we're done. break
 			break
 		}
+		testCase := parseTestCase(line, lines[i+1:], commentSyntax)
+
+		testLines = append(testLines, testCase)
+		i += len(testCase.attribute.additionalData)
+		usedLines += 1 + len(testCase.attribute.additionalData)
 	}
 
-	return testLines
+	return testLines, usedLines
 }
 
 func attributesForOccurrencesAtLine(lineNumber int, occurrences []*scip.Occurrence) []*symbolAttribute {
@@ -227,19 +229,24 @@ func parseTestCase(line string, leadingLines []string, commentSyntax string) *sy
 	data := strings.TrimSpace(strings.Replace(line, kind, "", 1))
 
 	additionalData := []string{}
-	i := 0
-	for i < len(leadingLines) {
+	for i := range leadingLines {
 		leadingLine := leadingLines[i]
-		multilinePrefix := fmt.Sprintf("%s >", commentSyntax)
-		if strings.Contains(leadingLine, multilinePrefix) {
-			additionalData = append(
-				additionalData,
-				strings.TrimSpace(strings.Replace(leadingLine, multilinePrefix, "", 1)),
-			)
-			i++
-		} else {
+		// if the leadingLine is not a comment line, we're outside of the test case block.
+		if !strings.HasPrefix(strings.TrimSpace(leadingLine), commentSyntax) {
 			break
 		}
+
+		// remove the comment character(s)
+		leadingLine = strings.Replace(leadingLine, commentSyntax, "", 1)
+
+		// if the leading line doesn't start with '>', its not a multiline case
+		if !strings.HasPrefix(strings.TrimSpace(leadingLine), ">") {
+			break
+		}
+
+		// remove the '>' character
+		leadingLine = strings.Replace(leadingLine, ">", "", 1)
+		additionalData = append(additionalData, strings.TrimSpace(leadingLine))
 	}
 
 	return &symbolAttributeTestCase{
@@ -278,9 +285,50 @@ func isValidTestCaseForAttribute(testCase *symbolAttributeTestCase, attr *symbol
 		return false
 	}
 
-	return testCase.attribute.data == attr.data
+	// check if symbols are equal, a `.` character in the testCaseSymbol is considered
+	// a wildcard, and matches the correlating group
+	testCaseSymbolParts := strings.Split(testCase.attribute.data, " ")
+	attrSymbolParts := strings.Split(attr.data, " ")
+	for i, testCaseSymbolPart := range testCaseSymbolParts {
+		if testCaseSymbolPart == "." {
+			continue
+		}
+		if testCaseSymbolPart != attrSymbolParts[i] {
+			return false
+		}
+	}
+
+	// only validate additionalData if the testCases provides one
+	// otherwise, ignore what the attribute specifies
+	if len(testCase.attribute.additionalData) > 0 {
+		if !isEqual(testCase.attribute.additionalData, attr.additionalData) {
+			return false
+		}
+	}
+
+	return true
 }
 
+func formatFailure(lineNumber int, testCase *symbolAttributeTestCase, attributesAtLine []*symbolAttribute) string {
+	failureDesc := []string{
+		fmt.Sprintf("Failure - row: %d, column: %d", lineNumber, testCase.attribute.start),
+		fmt.Sprintf("  Expected: '%s %s'", testCase.attribute.kind, testCase.attribute.data),
+	}
+	for _, add := range testCase.attribute.additionalData {
+		failureDesc = append(failureDesc, indent(fmt.Sprintf("'%s'", add), 12))
+	}
+
+	failureDesc = append(failureDesc, "  Actual:")
+	for _, attr := range attributesAtLine {
+		failureDesc = append(failureDesc, fmt.Sprintf("    - '%s %s'", attr.kind, attr.data))
+		for _, add := range attr.additionalData {
+			failureDesc = append(failureDesc, indent(fmt.Sprintf("'%s'", add), 6))
+		}
+	}
+	return strings.Join(failureDesc, "\n")
+}
+
+// --------------------------------- Utils ---------------------------------
 func charCountInString(s string, char rune) int {
 	count := 0
 	for _, ch := range s {
@@ -305,4 +353,17 @@ func indent(str string, count int) string {
 		newLines = append(newLines, strings.Repeat(" ", count)+line)
 	}
 	return strings.Join(newLines, "\n")
+}
+
+func isEqual(a []string, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i, aVal := range a {
+		if b[i] != aVal {
+			return false
+		}
+	}
+	return true
 }
