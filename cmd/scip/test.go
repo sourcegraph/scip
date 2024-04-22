@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/urfave/cli/v2"
 )
@@ -20,9 +22,9 @@ func testCommand() cli.Command {
 	test := cli.Command{
 		Name:  "test",
 		Usage: "Validate subsets of snapshot files",
-		Description: `The test subcommand validates whether a provided scip index
+		Description: `The test subcommand validates whether a provided SCIP index
 file matches manually specified symbol fields within an index. This can be used in
-conjunction with snapshot to provide a cohesive testing framework for scip indexers.`,
+conjunction with snapshot to provide a cohesive testing framework for SCIP indexers.`,
 		Flags: []cli.Flag{
 			fromFlag(&testFlags.from),
 			commentSyntaxFlag(&testFlags.commentSyntax),
@@ -78,12 +80,15 @@ func testMain(directory string, flags testFlags) error {
 
 		if len(failures) > 0 {
 			hasFailure = true
-			fmt.Printf(red("✗ %s\n"), document.RelativePath)
+			red := color.New(color.FgRed)
+			red.Printf("✗ %s\n", document.RelativePath)
+
 			for _, failure := range failures {
 				fmt.Println(indent(failure, 4))
 			}
 		} else {
-			fmt.Printf(green("✓ %s (%d assertions)\n"), document.RelativePath, successCount)
+			green := color.New(color.FgGreen)
+			green.Printf("✓ %s (%d assertions)\n", document.RelativePath, successCount)
 		}
 	}
 
@@ -213,7 +218,7 @@ func parseTestCase(line string, leadingLines []string, commentSyntax string) *sy
 		// anything more signifies length should be verified
 		if strings.Contains(line, "^^") {
 			enforceLength = true
-			length = charCountInString(line, '^')
+			length = strings.Count(line, "^")
 		}
 		line = strings.ReplaceAll(line, "^", "")
 	}
@@ -301,7 +306,7 @@ func isValidTestCaseForAttribute(testCase *symbolAttributeTestCase, attr *symbol
 	// only validate additionalData if the testCases provides one
 	// otherwise, ignore what the attribute specifies
 	if len(testCase.attribute.additionalData) > 0 {
-		if !isEqual(testCase.attribute.additionalData, attr.additionalData) {
+		if !slices.Equal(testCase.attribute.additionalData, attr.additionalData) {
 			return false
 		}
 	}
@@ -329,22 +334,6 @@ func formatFailure(lineNumber int, testCase *symbolAttributeTestCase, attributes
 }
 
 // --------------------------------- Utils ---------------------------------
-func charCountInString(s string, char rune) int {
-	count := 0
-	for _, ch := range s {
-		if ch == char {
-			count++
-		}
-	}
-	return count
-}
-
-func red(str string) string {
-	return fmt.Sprintf("\033[31m%s\033[0m", str)
-}
-func green(str string) string {
-	return fmt.Sprintf("\033[32m%s\033[0m", str)
-}
 
 func indent(str string, count int) string {
 	lines := strings.Split(str, "\n")
@@ -353,17 +342,4 @@ func indent(str string, count int) string {
 		newLines = append(newLines, strings.Repeat(" ", count)+line)
 	}
 	return strings.Join(newLines, "\n")
-}
-
-func isEqual(a []string, b []string) bool {
-	if len(a) != len(b) {
-		return false
-	}
-
-	for i, aVal := range a {
-		if b[i] != aVal {
-			return false
-		}
-	}
-	return true
 }

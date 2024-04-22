@@ -1,6 +1,7 @@
 package main
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -49,7 +50,7 @@ func TestTestCasesForLine(t *testing.T) {
 	// validate that additionalData is correctly parsed
 	require.True(
 		t,
-		isEqual(
+		slices.Equal(
 			actual[3].attribute.additionalData,
 			[]string{"with multiline", "additional data"},
 		),
