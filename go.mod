@@ -9,6 +9,7 @@ require (
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/hhatto/gocloc v0.4.2
 	github.com/k0kubun/pp/v3 v3.1.0
+	github.com/montanaflynn/stats v0.7.1
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/smacker/go-tree-sitter v0.0.0-20220209044044-0d3022e933c3
 	github.com/sourcegraph/sourcegraph/lib v0.0.0-20220511160847-5a43d3ea24eb
