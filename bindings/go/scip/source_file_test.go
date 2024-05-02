@@ -23,7 +23,7 @@ func TestRangeText(t *testing.T) {
 		{range_: []int32{0, 0, 0, 8}, expect: autogold.Expect("Mary had")},
 		{range_: []int32{0, 0, 1, 0}, expect: autogold.Expect("Mary had a little lamb,\n")},
 		{range_: []int32{0, 0, 1, 10}, expect: autogold.Expect("Mary had a little lamb,\nIts fleece")},
-		{range_: []int32{0, 0, 5, 0}, expect: autogold.Expect(`Mary had a little lamb,
+		{range_: []int32{0, 0, 4, 0}, expect: autogold.Expect(`Mary had a little lamb,
 Its fleece was white as snow.
 And everywhere that Mary went,
 The lamb was sure to go.

@@ -69,7 +69,7 @@ func (d *SourceFile) String() string {
 // RangeText returns the substring of the source file contents that enclose the provided range.
 func (d *SourceFile) RangeText(position Range) string {
 	result := strings.Builder{}
-	for line := position.Start.Line; line <= position.End.Line && int(line) < len(d.Lines); line++ {
+	for line := position.Start.Line; line <= position.End.Line; line++ {
 		start := position.Start.Character
 		if line > position.Start.Line {
 			result.WriteString("\n")
