@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "./node_modules/.bin/tsc --build --force bindings/typescript",
-    "prettier": "./node_modules/prettier/bin-prettier.js --write --list-different '**/*.{ts,js(on)?,md,yml}'",
-    "prettier-check": "./node_modules/prettier/bin-prettier.js --check '**/*.{ts,js(on)?,md,yml}'"
+    "prettier": "./node_modules/.bin/prettier --write --list-different '**/*.{ts,js(on)?,md,yml}'",
+    "prettier-check": "./node_modules/.bin/prettier --check '**/*.{ts,js(on)?,md,yml}'"
   },
   "workspaces": {
     "packages": [
