@@ -2253,12 +2253,14 @@ type Occurrence struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Source position of this occurrence. Must be exactly three or four
+	// Half-open [start, end) range of this occurrence. Must be exactly three or four
 	// elements:
 	//
 	//   - Four elements: `[startLine, startCharacter, endLine, endCharacter]`
 	//   - Three elements: `[startLine, startCharacter, endCharacter]`. The end line
 	//     is inferred to have the same value as the start line.
+	//
+	// It is allowed for the range to be empty (i.e. start==end).
 	//
 	// Line numbers and characters are always 0-based. Make sure to increment the
 	// line/character values before displaying them in an editor-like UI because
@@ -2294,8 +2296,8 @@ type Occurrence struct {
 	SyntaxKind SyntaxKind `protobuf:"varint,5,opt,name=syntax_kind,json=syntaxKind,proto3,enum=scip.SyntaxKind" json:"syntax_kind,omitempty"`
 	// (optional) Diagnostics that have been reported for this specific range.
 	Diagnostics []*Diagnostic `protobuf:"bytes,6,rep,name=diagnostics,proto3" json:"diagnostics,omitempty"`
-	// (optional) Using the same encoding as the sibling `range` field, source
-	// position of the nearest non-trivial enclosing AST node. This range must
+	// (optional) Using the same encoding as the sibling `range` field, half-open
+	// source range of the nearest non-trivial enclosing AST node. This range must
 	// enclose the `range` field. Example applications that make use of the
 	// enclosing_range field:
 	//
