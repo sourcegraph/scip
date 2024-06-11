@@ -1,6 +1,6 @@
 # ChangeLog
 
-## Unreleased
+## v0.4.0
 
 SCIP schema:
 

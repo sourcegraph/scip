@@ -18,7 +18,7 @@ USAGE:
    scip [global options] command [command options] [arguments...]
 
 VERSION:
-   v0.3.3
+   v0.4.0
 
 DESCRIPTION:
    For more details, see the project README at:
