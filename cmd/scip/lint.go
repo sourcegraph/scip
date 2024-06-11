@@ -113,7 +113,7 @@ type occurrenceKey struct {
 }
 
 func scipOccurrenceKey(occ *scip.Occurrence) occurrenceKey {
-	return occurrenceKey{scip.NewRange(occ.Range), occ.SymbolRoles}
+	return occurrenceKey{scip.NewRangeUnchecked(occ.Range), occ.SymbolRoles}
 }
 
 type occurrenceMap = map[occurrenceKey]*scip.Occurrence
@@ -202,16 +202,16 @@ func (st *symbolTable) addRelationship(sym string, path string, rel *scip.Relati
 
 func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
 	if occ.Symbol == "" {
-		return emptyStringError{what: "symbol", context: fmt.Sprintf("occurrence at %s @ %s", path, scipRangeToString(scip.NewRange(occ.Range)))}
+		return emptyStringError{what: "symbol", context: fmt.Sprintf("occurrence at %s @ %s", path, scipRangeToString(scip.NewRangeUnchecked(occ.Range)))}
 	}
 	if scip.SymbolRole_Definition.Matches(occ) && scip.SymbolRole_ForwardDefinition.Matches(occ) {
-		return forwardDefIsDefinitionError{occ.Symbol, path, scip.NewRange(occ.Range)}
+		return forwardDefIsDefinitionError{occ.Symbol, path, scip.NewRangeUnchecked(occ.Range)}
 	}
 	tryInsertOccurrence := func(occMap fileOccurrenceMap) error {
 		occKey := scipOccurrenceKey(occ)
 		if fileOccs, ok := occMap[path]; ok {
 			if _, ok := fileOccs[occKey]; ok {
-				return duplicateOccurrenceWarning{occ.Symbol, path, scip.NewRange(occ.Range), occ.SymbolRoles}
+				return duplicateOccurrenceWarning{occ.Symbol, path, scip.NewRangeUnchecked(occ.Range), occ.SymbolRoles}
 			} else {
 				fileOccs[occKey] = occ
 			}
@@ -231,7 +231,7 @@ func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
 			return err
 		}
 	} else {
-		return missingSymbolForOccurrenceError{occ.Symbol, path, scip.NewRange(occ.Range)}
+		return missingSymbolForOccurrenceError{occ.Symbol, path, scip.NewRangeUnchecked(occ.Range)}
 	}
 	return nil
 }

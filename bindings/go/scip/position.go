@@ -45,11 +45,97 @@ func (p Position) Less(other Position) bool {
 	return p.Character < other.Character
 }
 
-// NewRange converts an SCIP range into `Range`
+func NewRange(scipRange []int32) (Range, error) {
+	switch len(scipRange) {
+	case 3:
+		startLine := scipRange[0]
+		startChar := scipRange[1]
+		endChar := scipRange[2]
+		if startLine >= 0 && startChar >= 0 {
+			if endChar >= startChar {
+				return Range{
+					Start: Position{
+						Line:      startLine,
+						Character: startChar,
+					},
+					End: Position{
+						Line:      startLine,
+						Character: endChar,
+					},
+				}, nil
+			}
+			return Range{}, EndBeforeStartRangeError
+		}
+		return Range{}, NegativeOffsetsRangeError
+	case 4:
+		startLine := scipRange[0]
+		startChar := scipRange[1]
+		endLine := scipRange[2]
+		endChar := scipRange[3]
+		if startLine >= 0 && startChar >= 0 {
+			if endLine > startLine {
+				if endChar > 0 {
+					return Range{
+						Start: Position{
+							Line:      startLine,
+							Character: startChar,
+						},
+						End: Position{
+							Line:      endLine,
+							Character: endChar,
+						},
+					}, nil
+				}
+				return Range{}, NegativeOffsetsRangeError
+			} else if endLine == startLine {
+				if endChar >= startChar {
+					return Range{
+						Start: Position{
+							Line:      startLine,
+							Character: startChar,
+						},
+						End: Position{
+							Line:      endLine,
+							Character: endChar,
+						},
+					}, nil
+				}
+				return Range{}, EndBeforeStartRangeError
+			}
+			return Range{}, EndBeforeStartRangeError
+		}
+		return Range{}, NegativeOffsetsRangeError
+	}
+	return Range{}, IncorrectLengthRangeError
+}
+
+type RangeError int32
+
+const (
+	IncorrectLengthRangeError RangeError = iota
+	NegativeOffsetsRangeError
+	EndBeforeStartRangeError
+)
+
+var _ error = RangeError(0)
+
+func (e RangeError) Error() string {
+	switch e {
+	case IncorrectLengthRangeError:
+		return "incorrect length"
+	case NegativeOffsetsRangeError:
+		return "negative offsets"
+	case EndBeforeStartRangeError:
+		return "end before start"
+	}
+	panic("unhandled range error")
+}
+
+// NewRangeUnchecked converts an SCIP range into `Range`
 //
 // Pre-condition: The input slice must follow the SCIP range encoding.
 // https://sourcegraph.com/github.com/sourcegraph/scip/-/blob/scip.proto?L646:18-646:23
-func NewRange(scipRange []int32) Range {
+func NewRangeUnchecked(scipRange []int32) Range {
 	// Single-line case is most common
 	endCharacter := scipRange[2]
 	endLine := scipRange[0]

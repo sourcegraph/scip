@@ -78,20 +78,20 @@ func TestSortOccurrences(t *testing.T) {
 
 func TestSortRanges(t *testing.T) {
 	occurrences := []Range{
-		NewRange([]int32{2, 3, 5}),       // rank 2
-		NewRange([]int32{11, 10, 12}),    // rank 10
-		NewRange([]int32{6, 3, 5}),       // rank 4
-		NewRange([]int32{10, 4, 8}),      // rank 6
-		NewRange([]int32{10, 10, 12}),    // rank 7
-		NewRange([]int32{0, 3, 4, 5}),    // rank 0
-		NewRange([]int32{12, 1, 13, 12}), // rank 11
-		NewRange([]int32{11, 1, 3}),      // rank 8
-		NewRange([]int32{5, 3, 5}),       // rank 3
-		NewRange([]int32{10, 1, 3}),      // rank 5
-		NewRange([]int32{12, 10, 13, 3}), // rank 13
-		NewRange([]int32{11, 4, 8}),      // rank 9
-		NewRange([]int32{12, 4, 13, 8}),  // rank 12
-		NewRange([]int32{1, 3, 3, 5}),    // rank 1
+		NewRangeUnchecked([]int32{2, 3, 5}),       // rank 2
+		NewRangeUnchecked([]int32{11, 10, 12}),    // rank 10
+		NewRangeUnchecked([]int32{6, 3, 5}),       // rank 4
+		NewRangeUnchecked([]int32{10, 4, 8}),      // rank 6
+		NewRangeUnchecked([]int32{10, 10, 12}),    // rank 7
+		NewRangeUnchecked([]int32{0, 3, 4, 5}),    // rank 0
+		NewRangeUnchecked([]int32{12, 1, 13, 12}), // rank 11
+		NewRangeUnchecked([]int32{11, 1, 3}),      // rank 8
+		NewRangeUnchecked([]int32{5, 3, 5}),       // rank 3
+		NewRangeUnchecked([]int32{10, 1, 3}),      // rank 5
+		NewRangeUnchecked([]int32{12, 10, 13, 3}), // rank 13
+		NewRangeUnchecked([]int32{11, 4, 8}),      // rank 9
+		NewRangeUnchecked([]int32{12, 4, 13, 8}),  // rank 12
+		NewRangeUnchecked([]int32{1, 3, 3, 5}),    // rank 1
 	}
 	unsorted := make([]Range, len(occurrences))
 	copy(unsorted, occurrences)

@@ -36,7 +36,7 @@ func RemoveIllegalOccurrences(occurrences []*Occurrence) []*Occurrence {
 // CanonicalizeOccurrence deterministically re-orders the fields of the given occurrence.
 func CanonicalizeOccurrence(occurrence *Occurrence) *Occurrence {
 	// Express ranges as three-components if possible
-	occurrence.Range = NewRange(occurrence.Range).SCIPRange()
+	occurrence.Range = NewRangeUnchecked(occurrence.Range).SCIPRange()
 	occurrence.Diagnostics = CanonicalizeDiagnostics(occurrence.Diagnostics)
 	return occurrence
 }

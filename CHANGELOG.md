@@ -9,7 +9,8 @@ SCIP schema:
 Go SCIP bindings:
 
 - Breaking changes:
-  - The `NewRange` function now returns `Range` instead of `*Range`.
+  - The `NewRange` function does well-formedness checks and returns `(Range, error)` instead of `*Range`.
+    When skipping checks, `NewRangeUnchecked` can be used instead.
   - The `SortRanges` function takes a `[]Range` instead of a `[]*Range`
     to avoid extra heap allocations.
 - Features:
