@@ -3,6 +3,8 @@ package scip
 import (
 	"testing"
 
+	"github.com/hexops/autogold/v2"
+
 	"github.com/stretchr/testify/require"
 	"pgregory.net/rapid"
 )
@@ -151,6 +153,103 @@ func TestCompareReverse(t *testing.T) {
 		cmp2 := r2.Compare(r1)
 		if cmp1 != -cmp2 {
 			t.Errorf("%+v.Compare(%+v) = %d but %+v.Compare(%+v) = %d", r1, r2, cmp1, r2, r1, cmp2)
+		}
+	})
+}
+
+func TestNewRange_UnitTests(t *testing.T) {
+	type testCase struct {
+		input    []int32
+		expected autogold.Value
+	}
+	type result struct {
+		range_ Range
+		err    string
+	}
+	testCases := []testCase{
+		{
+			input:    nil,
+			expected: autogold.Expect(result{err: "incorrect length"}),
+		},
+		{
+			input:    []int32{3},
+			expected: autogold.Expect(result{err: "incorrect length"}),
+		},
+		{
+			input:    []int32{3, 3},
+			expected: autogold.Expect(result{err: "incorrect length"}),
+		},
+		{
+			input: []int32{12, 0, 14},
+			expected: autogold.Expect(result{range_: Range{
+				Start: Position{Line: 12},
+				End: Position{
+					Line:      12,
+					Character: 14,
+				},
+			}}),
+		},
+		{
+			input:    []int32{12, 14, 0},
+			expected: autogold.Expect(result{err: "end before start"}),
+		},
+		{
+			input:    []int32{12, 14, 0},
+			expected: autogold.Expect(result{err: "end before start"}),
+		},
+		{
+			input: []int32{12, 15, 14, 0},
+			expected: autogold.Expect(result{range_: Range{
+				Start: Position{
+					Line:      12,
+					Character: 15,
+				},
+				End: Position{Line: 14},
+			}}),
+		},
+		{
+			input: []int32{12, 0, 12, 0},
+			expected: autogold.Expect(result{range_: Range{
+				Start: Position{Line: 12},
+				End:   Position{Line: 12},
+			}}),
+		},
+		{
+			input:    []int32{12, 0, 13, 1, 4},
+			expected: autogold.Expect(result{err: "incorrect length"}),
+		},
+		{
+			input:    []int32{3, -1, 4},
+			expected: autogold.Expect(result{err: "negative offsets"}),
+		},
+	}
+
+	for _, tc := range testCases {
+		require.NotPanicsf(t, func() {
+			r, err := NewRange(tc.input)
+			errStr := ""
+			if err != nil {
+				errStr = err.Error()
+			}
+			tc.expected.Equal(t, result{range_: r, err: errStr})
+		}, "panicked for input: %v", tc.input)
+	}
+}
+
+func TestNewRange(t *testing.T) {
+	rapid.Check(t, func(t *rapid.T) {
+		input := rapid.SliceOfN(rapid.Int32Range(-2, 10), 0, 5).Draw(t, "input")
+		var r1 Range
+		var err error
+		require.NotPanics(t, func() {
+			r1, err = NewRange(input)
+		})
+		if err != nil {
+			return
+		}
+		r2 := NewRangeUnchecked(input)
+		if r1.CompareStrict(r2) != 0 {
+			t.Fatalf("NewRange vs NewRangeUnchecked: %s %s", r1, r2)
 		}
 	})
 }

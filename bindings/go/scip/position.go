@@ -45,68 +45,46 @@ func (p Position) Less(other Position) bool {
 	return p.Character < other.Character
 }
 
-func NewRange(scipRange []int32) (Range, error) {
-	switch len(scipRange) {
-	case 3:
-		startLine := scipRange[0]
-		startChar := scipRange[1]
-		endChar := scipRange[2]
-		if startLine >= 0 && startChar >= 0 {
-			if endChar >= startChar {
-				return Range{
-					Start: Position{
-						Line:      startLine,
-						Character: startChar,
-					},
-					End: Position{
-						Line:      startLine,
-						Character: endChar,
-					},
-				}, nil
-			}
-			return Range{}, EndBeforeStartRangeError
-		}
-		return Range{}, NegativeOffsetsRangeError
-	case 4:
-		startLine := scipRange[0]
-		startChar := scipRange[1]
-		endLine := scipRange[2]
-		endChar := scipRange[3]
-		if startLine >= 0 && startChar >= 0 {
-			if endLine > startLine {
-				if endChar > 0 {
-					return Range{
-						Start: Position{
-							Line:      startLine,
-							Character: startChar,
-						},
-						End: Position{
-							Line:      endLine,
-							Character: endChar,
-						},
-					}, nil
-				}
-				return Range{}, NegativeOffsetsRangeError
-			} else if endLine == startLine {
-				if endChar >= startChar {
-					return Range{
-						Start: Position{
-							Line:      startLine,
-							Character: startChar,
-						},
-						End: Position{
-							Line:      endLine,
-							Character: endChar,
-						},
-					}, nil
-				}
-				return Range{}, EndBeforeStartRangeError
-			}
-			return Range{}, EndBeforeStartRangeError
-		}
+//go:noinline
+func makeNewRangeError(startLine, endLine, startChar, endChar int32) (Range, error) {
+	if startLine < 0 || endLine < 0 || startChar < 0 || endChar < 0 {
 		return Range{}, NegativeOffsetsRangeError
 	}
-	return Range{}, IncorrectLengthRangeError
+	if startLine > endLine || (startLine == endLine && startChar > endChar) {
+		return Range{}, EndBeforeStartRangeError
+	}
+	panic("unreachable")
+}
+
+// NewRange constructs a Range while checking if the input is valid.
+func NewRange(scipRange []int32) (Range, error) {
+	// N.B. This function is kept small so that it can be inlined easily.
+	// See also: https://github.com/golang/go/issues/17566
+	var startLine, endLine, startChar, endChar int32
+	switch len(scipRange) {
+	case 3:
+		startLine = scipRange[0]
+		endLine = startLine
+		startChar = scipRange[1]
+		endChar = scipRange[2]
+		if startLine >= 0 && startChar >= 0 && endChar >= startChar {
+			break
+		}
+		return makeNewRangeError(startLine, endLine, startChar, endChar)
+	case 4:
+		startLine = scipRange[0]
+		startChar = scipRange[1]
+		endLine = scipRange[2]
+		endChar = scipRange[3]
+		if startLine >= 0 && startChar >= 0 &&
+			((endLine > startLine && endChar >= 0) || (endLine == startLine && endChar >= startChar)) {
+			break
+		}
+		return makeNewRangeError(startLine, endLine, startChar, endChar)
+	default:
+		return Range{}, IncorrectLengthRangeError
+	}
+	return Range{Start: Position{Line: startLine, Character: startChar}, End: Position{Line: endLine, Character: endChar}}, nil
 }
 
 type RangeError int32
