@@ -18,6 +18,7 @@ require (
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/tools v0.12.0
 	google.golang.org/protobuf v1.31.0
+	pgregory.net/rapid v1.1.0
 )
 
 require (

@@ -167,15 +167,15 @@ func TestErrors(t *testing.T) {
 			"missingSymbolForOccurrence",
 			makeIndex(nil, nil, stringMap{"f": {"a"}}),
 			[]error{
-				missingSymbolForOccurrenceError{"a", "f", *scip.NewRange(placeholderRange)},
+				missingSymbolForOccurrenceError{"a", "f", scip.NewRangeUnchecked(placeholderRange)},
 			},
 		},
 		{
 			"duplicateOccurrence",
 			makeIndex([]string{"a"}, stringMap{"f": {"b"}}, stringMap{"f": {"a", "a", "b", "b"}}),
 			[]error{
-				duplicateOccurrenceWarning{"a", "f", *scip.NewRange(placeholderRange), placeholderRole},
-				duplicateOccurrenceWarning{"b", "f", *scip.NewRange(placeholderRange), placeholderRole},
+				duplicateOccurrenceWarning{"a", "f", scip.NewRangeUnchecked(placeholderRange), placeholderRole},
+				duplicateOccurrenceWarning{"b", "f", scip.NewRangeUnchecked(placeholderRange), placeholderRole},
 			},
 		},
 	}

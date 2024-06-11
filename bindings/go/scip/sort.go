@@ -31,15 +31,16 @@ func SortDocuments(documents []*Document) []*Document {
 // occurrences are properly enclosed by later occurrences.
 func FindOccurrences(occurrences []*Occurrence, targetLine, targetCharacter int32) []*Occurrence {
 	var filtered []*Occurrence
+	pos := Position{targetLine, targetCharacter}
 	for _, occurrence := range occurrences {
-		if compareRanges(occurrence.Range, targetLine, targetCharacter) == 0 {
+		if NewRangeUnchecked(occurrence.Range).Contains(pos) {
 			filtered = append(filtered, occurrence)
 		}
 	}
 
 	sort.Slice(filtered, func(i, j int) bool {
-		// Ordered so that the least precise (largest) range comes first
-		return compareRanges(filtered[i].Range, filtered[j].Range...) > 0
+		// Ordered so that the least precise (largest) range comes last
+		return NewRangeUnchecked(filtered[i].Range).CompareStrict(NewRangeUnchecked(filtered[j].Range)) > 0
 	})
 
 	return filtered
@@ -51,11 +52,12 @@ func FindOccurrences(occurrences []*Occurrence, targetLine, targetCharacter int3
 // occurrences are sorted by symbol name.
 func SortOccurrences(occurrences []*Occurrence) []*Occurrence {
 	sort.Slice(occurrences, func(i, j int) bool {
-		if rawRangesEqual(occurrences[i].Range, occurrences[j].Range) {
-			return occurrences[i].Symbol < occurrences[j].Symbol
+		r1 := NewRangeUnchecked(occurrences[i].Range)
+		r2 := NewRangeUnchecked(occurrences[j].Range)
+		if ret := r1.CompareStrict(r2); ret != 0 {
+			return ret < 0
 		}
-
-		return compareRanges(occurrences[i].Range, occurrences[j].Range...) <= 0
+		return occurrences[i].Symbol < occurrences[j].Symbol
 	})
 
 	return occurrences
@@ -73,26 +75,18 @@ func rawRangesEqual(a, b []int32) bool {
 		return true
 	}
 
-	ra := NewRange(a)
-	rb := NewRange(b)
+	ra := NewRangeUnchecked(a)
+	rb := NewRangeUnchecked(b)
 
 	return ra.Start.Line == rb.Start.Line && ra.Start.Character == rb.Start.Character && ra.End.Line == rb.End.Line && ra.End.Character == rb.End.Character
 }
 
 // SortRanges sorts the given range slice (in-place) and returns it (for convenience). Ranges are
 // sorted in ascending order of starting position, where enclosing ranges come before the enclosed.
-func SortRanges(ranges []*Range) []*Range {
+func SortRanges(ranges []Range) []Range {
 	sort.Slice(ranges, func(i, j int) bool {
-		return comparePositionToRange(
-			ranges[i].Start.Line,
-			ranges[i].Start.Character,
-			ranges[i].End.Line,
-			ranges[i].End.Character,
-			ranges[j].Start.Line,
-			ranges[j].Start.Character,
-		) <= 0
+		return ranges[i].LessStrict(ranges[j])
 	})
-
 	return ranges
 }
 
@@ -139,39 +133,6 @@ func SortRelationships(relationships []*Relationship) []*Relationship {
 	})
 
 	return relationships
-}
-
-// compareRanges compares the order of the leading edge of the two ranges. This method returns
-//
-// - -1 if the leading edge of r2 occurs before r1,
-// - +1 if the leading edge of r2 occurs after r1, and
-// - +0 if the leading edge of r2 is enclosed by r1.
-//
-// Note that ranges are half-closed intervals, so a match on the leading end of the range will
-// be considered enclosed, but a match on the trailing edge will not.
-func compareRanges(r1 []int32, r2 ...int32) int {
-	startLine, startCharacter, endLine, endCharacter := unpackRange(r1)
-
-	return comparePositionToRange(
-		startLine,
-		startCharacter,
-		endLine,
-		endCharacter,
-		r2[0],
-		r2[1],
-	)
-}
-
-// unpackRange unpacks the raw SCIP range into a four-element range bound. This function
-// duplicates some of the logic in the SCIP repository, but we're dealing heavily with raw
-// encoded proto messages in the database layer here as well, and we'd like to avoid boxing
-// into a Range unnecessarily.
-func unpackRange(r []int32) (int32, int32, int32, int32) {
-	if len(r) == 3 {
-		return r[0], r[1], r[0], r[2]
-	}
-
-	return r[0], r[1], r[2], r[3]
 }
 
 // comparePositionToRange compares the given target position represented by line and character

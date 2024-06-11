@@ -6,6 +6,16 @@ SCIP schema:
 
 - Added documentation that ranges must be half-open intervals.
 
+Go SCIP bindings:
+
+- Breaking changes:
+  - The `NewRange` function does well-formedness checks and returns `(Range, error)` instead of `*Range`.
+    When skipping checks, `NewRangeUnchecked` can be used instead.
+  - The `SortRanges` function takes a `[]Range` instead of a `[]*Range`
+    to avoid extra heap allocations.
+- Features:
+  - Added new methods for `Range` and `Position` types.
+
 ## v0.3.3
 
 SCIP schema:
