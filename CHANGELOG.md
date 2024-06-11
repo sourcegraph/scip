@@ -1,5 +1,11 @@
 # ChangeLog
 
+## Unreleased
+
+SCIP schema:
+
+- Added documentation that ranges must be half-open intervals.
+
 ## v0.3.3
 
 SCIP schema:

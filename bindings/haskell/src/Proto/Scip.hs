@@ -6508,7 +6508,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\228\180\STX\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\248\180\STX\n\
     \\a\DC2\ENQ\n\
     \\NUL\233\ACK\SOH\n\
     \\130\EOT\n\
@@ -8231,8 +8231,8 @@ packedFileDescriptor
     \\n\
     \\v\n\
     \\ETX\EOT\t\SOH\DC2\EOT\239\EOT\b\DC2\n\
-    \\158\b\n\
-    \\EOT\EOT\t\STX\NUL\DC2\EOT\133\ENQ\STX\ESC\SUB\143\b Source position of this occurrence. Must be exactly three or four\n\
+    \\171\b\n\
+    \\EOT\EOT\t\STX\NUL\DC2\EOT\133\ENQ\STX\ESC\SUB\156\b Half-open [start, end) range of this occurrence. Must be exactly three or four\n\
     \ elements:\n\
     \\n\
     \ - Four elements: `[startLine, startCharacter, endLine, endCharacter]`\n\
@@ -8323,9 +8323,9 @@ packedFileDescriptor
     \\ENQ\EOT\t\STX\ENQ\SOH\DC2\EOT\152\ENQ\SYN!\n\
     \\r\n\
     \\ENQ\EOT\t\STX\ENQ\ETX\DC2\EOT\152\ENQ$%\n\
-    \\177\SO\n\
-    \\EOT\EOT\t\STX\ACK\DC2\EOT\205\ENQ\STX%\SUB\162\SO (optional) Using the same encoding as the sibling `range` field, source\n\
-    \ position of the nearest non-trivial enclosing AST node. This range must\n\
+    \\184\SO\n\
+    \\EOT\EOT\t\STX\ACK\DC2\EOT\205\ENQ\STX%\SUB\169\SO (optional) Using the same encoding as the sibling `range` field, half-open\n\
+    \ source range of the nearest non-trivial enclosing AST node. This range must\n\
     \ enclose the `range` field. Example applications that make use of the\n\
     \ enclosing_range field:\n\
     \\n\

@@ -622,7 +622,7 @@ enum SyntaxKind {
 // If possible, indexers should try to bundle logically related information
 // across occurrences into a single occurrence to reduce payload sizes.
 message Occurrence {
-  // Source position of this occurrence. Must be exactly three or four
+  // Half-open [start, end) range of this occurrence. Must be exactly three or four
   // elements:
   //
   // - Four elements: `[startLine, startCharacter, endLine, endCharacter]`
@@ -663,8 +663,8 @@ message Occurrence {
   SyntaxKind syntax_kind = 5;
   // (optional) Diagnostics that have been reported for this specific range.
   repeated Diagnostic diagnostics = 6;
-  // (optional) Using the same encoding as the sibling `range` field, source
-  // position of the nearest non-trivial enclosing AST node. This range must
+  // (optional) Using the same encoding as the sibling `range` field, half-open
+  // source range of the nearest non-trivial enclosing AST node. This range must
   // enclose the `range` field. Example applications that make use of the
   // enclosing_range field:
   //
