@@ -2260,6 +2260,8 @@ type Occurrence struct {
 	//   - Three elements: `[startLine, startCharacter, endCharacter]`. The end line
 	//     is inferred to have the same value as the start line.
 	//
+	// It is allowed for the range to be empty (i.e. start==end).
+	//
 	// Line numbers and characters are always 0-based. Make sure to increment the
 	// line/character values before displaying them in an editor-like UI because
 	// editors conventionally use 1-based numbers.
