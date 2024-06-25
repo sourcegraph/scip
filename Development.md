@@ -28,18 +28,13 @@
 
 1. Regenerating definitions after changing the schema in [scip.proto](./scip.proto).
 
-   If you have **asdf** setup on your machine, you can use the binding generation script directly:
+   `./dev/generate-all-in-docker.sh`
 
-   ```
-   ./dev/proto-generate.sh
-   ```
+   We provide a script that sets up the correct build environment in Docker
+   and runs the necessary regeneration steps.
 
-   For the Haskell bindings, see `bindings/haskell/README.md`.
-
-   You can also run the same script in a pre-configured Docker environment,
-   by running `./dev/generate-all-in-docker.sh` - this command will
-   build the environment and generate both the proto bindings, and the reprolang
-   parser generation. The only dependency you need is Docker.
+   Both the proto bindings and reprolang parser are generated.
+   The only dependency you need is Docker.
 
 2. Regenerating snapshots after making changes to the CLI.
    ```
