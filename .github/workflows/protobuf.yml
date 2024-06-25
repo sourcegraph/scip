@@ -10,21 +10,12 @@ on:
       - 'buf**'
       - '.tool-versions'
       - 'dev/proto-generate.sh'
+      - 'dev/proto-generate-in-docker.sh'
+      - 'Dockerfile.bindings'
 
 jobs:
   protoc-gen-up-to-date:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Haskell
-        uses: haskell/actions/setup@v2
-        with:
-          ghc-version: '8.10'
-          cabal-version: 'latest'
-      - uses: ./.github/actions/asdf
-        with:
-          js: true
-          rust: true
-          golang: true
-      - run: ./dev/proto-generate.sh
-      - run: git diff --exit-code
+      - run: ./dev/proto-generate-in-docker.sh
