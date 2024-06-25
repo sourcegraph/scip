@@ -1,4 +1,4 @@
-name: Protobuf
+name: Generated code is up to date
 
 on:
   pull_request:
@@ -12,10 +12,12 @@ on:
       - 'dev/proto-generate.sh'
       - 'dev/proto-generate-in-docker.sh'
       - 'Dockerfile.bindings'
+      - 'cmd/scip/tests/reprolang/**'
 
 jobs:
-  protoc-gen-up-to-date:
+  gen-up-to-date:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: ./dev/proto-generate-in-docker.sh
+      - run: ./dev/generate-all-in-docker.sh
+      - run: git diff --exit-code
