@@ -6393,7 +6393,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\165\182\STX\n\
+    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\167\182\STX\n\
     \\a\DC2\ENQ\n\
     \\NUL\235\ACK\SOH\n\
     \\130\EOT\n\
@@ -6731,8 +6731,8 @@ packedFileDescriptor
     \\ENQ\ENQ\STX\STX\ETX\SOH\DC2\EOT\143\SOH\STX\"\n\
     \\r\n\
     \\ENQ\ENQ\STX\STX\ETX\STX\DC2\EOT\143\SOH%&\n\
-    \\148\DC2\n\
-    \\STX\EOT\EOT\DC2\ACK\187\SOH\NUL\191\SOH\SOH\SUB\133\DC2 Symbol is similar to a URI, it identifies a class, method, or a local\n\
+    \\150\DC2\n\
+    \\STX\EOT\EOT\DC2\ACK\187\SOH\NUL\191\SOH\SOH\SUB\135\DC2 Symbol is similar to a URI, it identifies a class, method, or a local\n\
     \ variable. `SymbolInformation` contains rich metadata about symbols such as\n\
     \ the docstring.\n\
     \\n\
@@ -6742,7 +6742,7 @@ packedFileDescriptor
     \ # (<x>)+ stands for one or more repetitions of <x>\n\
     \ <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>\n\
     \ <package>              ::= <manager> ' ' <package-name> ' ' <version>\n\
-    \ <scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor equal to 'local'\n\
+    \ <scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor start with 'local'\n\
     \ <manager>              ::= any UTF-8, escape spaces with double space. Use the placeholder '.' to indicate an empty value\n\
     \ <package-name>         ::= same as above\n\
     \ <version>              ::= same as above\n\

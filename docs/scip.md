@@ -296,7 +296,7 @@ interchangeably with `Symbol`. The syntax for Symbol is the following:
 # (<x>)+ stands for one or more repetitions of <x>
 <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>
 <package>              ::= <manager> ' ' <package-name> ' ' <version>
-<scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor equal to 'local'
+<scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor start with 'local'
 <manager>              ::= any UTF-8, escape spaces with double space. Use the placeholder '.' to indicate an empty value
 <package-name>         ::= same as above
 <version>              ::= same as above
