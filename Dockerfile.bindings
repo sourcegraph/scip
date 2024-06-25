@@ -1,6 +1,7 @@
-FROM ubuntu:jammy
+FROM ubuntu@sha256:19478ce7fc2ffbce89df29fea5725a8d12e57de52eb9ea570890dc5852aac1ac
 
 ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update -q && apt-get install -y git curl xz-utils tar gpg build-essential libssl-dev zlib1g-dev \
     libbz2-dev libreadline-dev libsqlite3-dev \
     libncursesw5-dev tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
@@ -30,11 +31,15 @@ RUN asdf plugin add nodejs && \
 
 COPY .tool-versions .
 
-# We run binding regeneration in ephemeral location 
-# to make sure all dependencies are pre-downloaded
-RUN asdf install && cabal install proto-lens-protoc-0.8.0.1 ghc-source-gen-0.4.5.0 
+RUN asdf install && \
+    # Pre-fetch Haskell dependencies as they take the longest time by far
+    # TODO(anton): run the proto-generate.sh script during the build time to 
+    # pre-fecth all dependencies. I attempted to do so but ran into issues 
+    # with Yarn
+    cabal install proto-lens-protoc-0.8.0.1 ghc-source-gen-0.4.5.0 
 
 WORKDIR /src
 
 ENTRYPOINT ["./dev/proto-generate.sh"]
+
 
