@@ -3,7 +3,6 @@ package scip
 import (
 	"fmt"
 	"strings"
-	"unicode"
 
 	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
@@ -22,10 +21,13 @@ func IsLocalSymbol(symbol string) bool {
 	return strings.HasPrefix(symbol, "local ")
 }
 
+func isSimpleIdentifierCharacter(c rune) bool {
+	return ('0' <= c && c <= '9') || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || c == '$' || c == '+' || c == '-' || c == '_'
+}
+
 func isSimpleIdentifier(s string) bool {
 	for _, c := range s {
-		if ('0' <= c && c <= '9') || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') ||
-			c == '$' || c == '+' || c == '-' || c == '_' {
+		if isSimpleIdentifierCharacter(c) {
 			continue
 		}
 		return false
@@ -218,17 +220,13 @@ func (s *symbolParser) acceptIdentifier(what string) (string, error) {
 		return s.acceptBacktickEscapedIdentifier(what)
 	}
 	start := s.index
-	for s.index < len(s.Symbol) && isIdentifierCharacter(s.current()) {
+	for s.index < len(s.Symbol) && isSimpleIdentifierCharacter(s.current()) {
 		s.index++
 	}
 	if start == s.index {
 		return "", s.error("empty identifier")
 	}
 	return string(s.Symbol[start:s.index]), nil
-}
-
-func isIdentifierCharacter(r rune) bool {
-	return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '-' || r == '+' || r == '$' || r == '_'
 }
 
 func (s *symbolParser) acceptSpaceEscapedIdentifier(what string) (string, error) {
