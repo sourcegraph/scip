@@ -154,8 +154,8 @@ enum PositionEncoding {
 // # (<x>)+ stands for one or more repetitions of <x>
 // <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>
 // <package>              ::= <manager> ' ' <package-name> ' ' <version>
-// <scheme>               ::= any UTF-8, escape spaces with double space.
-// <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
+// <scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor equal to 'local'
+// <manager>              ::= any UTF-8, escape spaces with double space. Use the placeholder '.' to indicate an empty value
 // <package-name>         ::= same as above
 // <version>              ::= same as above
 // <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta> | <macro>
@@ -172,8 +172,8 @@ enum PositionEncoding {
 // <identifier>           ::= <simple-identifier> | <escaped-identifier>
 // <simple-identifier>    ::= (<identifier-character>)+
 // <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit
-// <escaped-identifier>   ::= '`' (<escaped-character>)+ '`'
-// <escaped-characters>   ::= any UTF-8 character, escape backticks with double backtick.
+// <escaped-identifier>   ::= '`' (<escaped-character>)+ '`', must contain at least one non-<identifier-character>
+// <escaped-characters>   ::= any UTF-8, escape backticks with double backtick.
 // <local-id>             ::= <simple-identifier>
 // ```
 //
