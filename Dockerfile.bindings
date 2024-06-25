@@ -30,8 +30,9 @@ RUN asdf plugin add nodejs && \
 
 COPY .tool-versions .
 
-RUN asdf install 
-
+# We run binding regeneration in ephemeral location 
+# to make sure all dependencies are pre-downloaded
+RUN asdf install && cabal install proto-lens-protoc-0.8.0.1 ghc-source-gen-0.4.5.0 
 
 WORKDIR /src
 
