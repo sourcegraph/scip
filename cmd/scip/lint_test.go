@@ -120,6 +120,13 @@ func TestErrors(t *testing.T) {
 			},
 		},
 		{
+			"nonCanonicalSymbol",
+			makeIndex([]string{}, stringMap{}, stringMap{"c": {". . . . `simple`#"}}),
+			[]error{
+				nonCanonicalSymbolError{". . . . `simple`#", ". . . . simple#", ""},
+			},
+		},
+		{
 			"duplicateDocument",
 			&scip.Index{Documents: []*scip.Document{{RelativePath: "dup"}, {RelativePath: "dup"}}},
 			[]error{
