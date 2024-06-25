@@ -40,6 +40,6 @@ RUN asdf install && \
 
 WORKDIR /src
 
-ENTRYPOINT ["./dev/proto-generate.sh"]
+CMD ["bash", "-c", "./dev/proto-generate.sh && ./cmd/scip/tests/reprolang/generate-tree-sitter-parser.sh"]
 
 

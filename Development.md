@@ -37,9 +37,9 @@
    For the Haskell bindings, see `bindings/haskell/README.md`.
 
    You can also run the same script in a pre-configured Docker environment,
-   by running `./dev/proto-generate-in-docker.sh` - this command will
-   build the environment and run ./dev/proto-generate.sh script. The only
-   dependency you need is Docker.
+   by running `./dev/generate-all-in-docker.sh` - this command will
+   build the environment and generate both the proto bindings, and the reprolang
+   parser generation. The only dependency you need is Docker.
 
 2. Regenerating snapshots after making changes to the CLI.
    ```
