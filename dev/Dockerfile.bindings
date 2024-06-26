@@ -40,6 +40,10 @@ RUN asdf install && \
 
 WORKDIR /src
 
+# We're doing it to circumvent issues with Yarn not being able to write to 
+# node_modules under this root (in some circumstances, on CI only)
+RUN chown asdf:asdf /src && chmod 0666 /src
+
 CMD ["bash", "-c", "./dev/proto-generate.sh && ./cmd/scip/tests/reprolang/generate-tree-sitter-parser.sh"]
 
 
