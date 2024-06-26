@@ -22,7 +22,7 @@ func IsLocalSymbol(symbol string) bool {
 }
 
 func isSimpleIdentifierCharacter(c rune) bool {
-	return ('0' <= c && c <= '9') || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || c == '$' || c == '+' || c == '-' || c == '_'
+	return c == '_' || c == '+' || c == '-' || c == '$' || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || ('0' <= c && c <= '9')
 }
 
 func isSimpleIdentifier(s string) bool {
