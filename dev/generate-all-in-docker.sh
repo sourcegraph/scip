@@ -6,5 +6,5 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.." # cd to repo root dir
 
 IMAGE_NAME=$(./dev/build-docker-environment.sh)
 
-docker run -v $(pwd):/src -v /src/node_modules $IMAGE_NAME 
+docker run -v $(pwd):/src $IMAGE_NAME 
 
