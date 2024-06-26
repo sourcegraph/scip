@@ -240,14 +240,19 @@ func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
 	return nil
 }
 
+// SkipLintSymbolParseTest is only set to true in the tests to allow using more succinct symbols
+var SkipLintSymbolParseTest = false
+
 func lintSymbolString(symbol string, context string) error {
 	if symbol == "" {
 		return emptyStringError{what: "symbol", context: context}
 	}
 	sym, err := scip.ParseSymbol(symbol)
 	if err != nil {
-		// TODO: This should be linted (but it makes all the tests fail)
-		return nil
+		if SkipLintSymbolParseTest {
+			return nil
+		}
+		return err
 	}
 	formatted := scip.VerboseSymbolFormatter.FormatSymbol(sym)
 	if symbol != formatted {

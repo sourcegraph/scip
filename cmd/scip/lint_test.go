@@ -96,6 +96,7 @@ type testCase struct {
 }
 
 func TestErrors(t *testing.T) {
+	SkipLintSymbolParseTest = true
 	var testCases []testCase
 
 	testCases = []testCase{
