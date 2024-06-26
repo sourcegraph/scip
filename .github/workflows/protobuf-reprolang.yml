@@ -26,7 +26,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: docker pull ghcr.io/sourcegraph/scip:latest || echo "no suitable cache"
+      - run: docker pull ghcr.io/sourcegraph/scip-bindings-env:latest || echo "no suitable cache"
 
       - name: Regenerate protobuf bindings and reprolang parser
         run: |
