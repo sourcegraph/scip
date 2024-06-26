@@ -26,5 +26,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: ./dev/generate-all-in-docker.sh
+      - run: docker pull ghcr.io/sourcegraph/scip:latest || echo "no suitable cache"
+
+      - run: chown -R 1001:1001 . && ./dev/generate-all-in-docker.sh
+
       - run: git diff --exit-code

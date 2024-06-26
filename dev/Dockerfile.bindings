@@ -7,7 +7,8 @@ RUN apt-get update -q && apt-get install -y git curl xz-utils tar gpg build-esse
     libncursesw5-dev tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
     libffi8 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5 pkg-config
 
-RUN adduser --shell /bin/bash --home /asdf --disabled-password asdf
+RUN groupadd -g 1001 asdf
+RUN adduser -u 1001 --gid 1001 --shell /bin/bash --home /asdf --disabled-password asdf
 ENV PATH="${PATH}:/asdf/.asdf/shims:/asdf/.asdf/bin"
 
 USER asdf
