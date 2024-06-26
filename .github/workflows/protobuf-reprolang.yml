@@ -28,7 +28,8 @@ jobs:
 
       - run: docker pull ghcr.io/sourcegraph/scip:latest || echo "no suitable cache"
 
-      - run: |
+      - name: Regenerate protobuf bindings and reprolang parser
+        run: |
           # We're changing the owner of the checkout folder to a particular user id,
           # matching the user id of `asdf` user we create inside the docker container.
           sudo chown -R 1001:1001 . && ./dev/generate-all-in-docker.sh
