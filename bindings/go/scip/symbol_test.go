@@ -213,13 +213,30 @@ func TestParseV2(t *testing.T) {
 	require.Nil(t, err)
 	scipIndex := Index{}
 	require.NoError(t, proto.Unmarshal(scipBytes, &scipIndex))
+	total := 0
 	require.NotPanics(t, func() {
 		for _, document := range scipIndex.Documents {
 			var sym Symbol
+			if total > 1000*1000 {
+				return
+			}
+			total += len(document.Occurrences)
 			for i := 0; i < len(document.Occurrences); i++ {
 				occ := document.Occurrences[i]
 				err = parsePartialSymbolV2(occ.Symbol, true, &sym)
 				require.NoError(t, err)
+				old, err := ParsePartialSymbol(occ.Symbol, true)
+				require.NoError(t, err)
+				require.Equal(t, old.Scheme, sym.Scheme)
+				require.Equal(t, old.Package, sym.Package)
+				require.Equalf(t, len(old.Descriptors), len(sym.Descriptors), "symbol: %v, d1: %+v, d2: %+v", occ.Symbol,
+					old.Descriptors, sym.Descriptors)
+				for i, d := range old.Descriptors {
+					dnew := sym.Descriptors[i]
+					require.Equal(t, d.Name, dnew.Name)
+					require.Equal(t, d.Suffix, dnew.Suffix)
+					require.Equal(t, d.Disambiguator, dnew.Disambiguator)
+				}
 			}
 		}
 	})
