@@ -11,8 +11,6 @@ import (
 
 	simdutf8 "github.com/bytedance/sonic/utf8"
 	"github.com/google/go-cmp/cmp"
-	"github.com/sourcegraph/beaut"
-	"github.com/sourcegraph/beaut/lib/knownwf"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 )
