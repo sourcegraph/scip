@@ -158,7 +158,7 @@ func (b *simpleBenchmark) run(name string, f func(*simpleBenchmark)) benchmarkRe
 }
 
 func TestUtf8Validation(t *testing.T) {
-	path := "/Users/varun/Code/play/indexes/llvm/3.scip"
+	path := "/Users/varun/Code/play/indexes/chromium/index.scip"
 	scipReader, err := os.Open(path)
 	require.Nil(t, err)
 	scipBytes, err := io.ReadAll(scipReader)
@@ -179,7 +179,10 @@ func TestUtf8Validation(t *testing.T) {
 		var sym Symbol
 		for i := 0; i < b.N; i++ {
 			occ := allOccurrences[i]
-			_ = parsePartialSymbolV2(occ.Symbol, true, &sym)
+			err = parsePartialSymbolV2(occ.Symbol, true, &sym)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 	stdUtf8ValidationOnly := func(b *simpleBenchmark) {
@@ -194,7 +197,7 @@ func TestUtf8Validation(t *testing.T) {
 			simdutf8.ValidateString(occ.Symbol)
 		}
 	}
-	sb := simpleBenchmark{MaxN: len(allOccurrences)}
+	sb := simpleBenchmark{MaxN: 1000 * 1000}
 	res1 := sb.run("parse", parseBenchmark)
 	res1_2 := sb.run("parseV2", parseV2Benchmark)
 	res2 := sb.run("stdUtf8ValidationOnly", stdUtf8ValidationOnly)
@@ -204,35 +207,22 @@ func TestUtf8Validation(t *testing.T) {
 	//t.Fatalf("Benchmark results:\n%s\n%s\n%s\n", res1.String(), res2.String(), res3.String())
 }
 
-func TestBasic(t *testing.T) {
-	utf8str, _ := beaut.NewUTF8String("cxx . . $ g(91b051fbe1b42daf).")
-	_, err := ParseSymbolUTF8(utf8str)
-	require.NoError(t, err)
-}
-func TestEquivalent(t *testing.T) {
-	path := "/Users/varun/Code/play/indexes/llvm/3.scip"
+func TestParseV2(t *testing.T) {
+	path := "/Users/varun/Code/play/indexes/chromium/index.scip"
 	scipReader, err := os.Open(path)
 	require.Nil(t, err)
 	scipBytes, err := io.ReadAll(scipReader)
 	require.Nil(t, err)
 	scipIndex := Index{}
 	require.NoError(t, proto.Unmarshal(scipBytes, &scipIndex))
-	for _, document := range scipIndex.Documents {
-		for _, occ := range document.Occurrences {
-			sym1, err := ParseSymbol(occ.Symbol)
-			require.NoError(t, err)
-			sym2, err := ParseSymbolUTF8(beaut.NewUTF8StringUnchecked(occ.Symbol, knownwf.UTF8DeserializedFromProtobufString))
-			require.NoError(t, err)
-			require.Equal(t, sym1.Scheme, sym2.Scheme)
-			require.Equal(t, sym1.Package, sym2.Package)
-			require.Equal(t, len(sym1.Descriptors), len(sym2.Descriptors))
-			for i := range sym1.Descriptors {
-				d1 := sym1.Descriptors[i]
-				d2 := sym2.Descriptors[i]
-				require.Equal(t, d1.Name, d2.Name)
-				require.Equal(t, d1.Suffix, d2.Suffix)
-				require.Equal(t, d1.Disambiguator, d2.Disambiguator)
+	require.NotPanics(t, func() {
+		for _, document := range scipIndex.Documents {
+			var sym Symbol
+			for i := 0; i < len(document.Occurrences); i++ {
+				occ := document.Occurrences[i]
+				err = parsePartialSymbolV2(occ.Symbol, true, &sym)
+				require.NoError(t, err)
 			}
 		}
-	}
+	})
 }

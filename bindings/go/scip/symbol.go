@@ -513,7 +513,7 @@ func (z *zeroAllocSymbolParser) parseDescriptor(out *RawDescriptorList) error {
 	nextRune, nextRuneByteLength := z.peekNext()
 	switch nextRune {
 	case '(':
-		z.Advance(nextRune, nextRuneByteLength)
+		z.Advance('(', nextRuneByteLength)
 		z.advanceRune()
 		name, err := z.acceptIdentifier(parseCtxParameterName)
 		if err != nil {
@@ -522,7 +522,7 @@ func (z *zeroAllocSymbolParser) parseDescriptor(out *RawDescriptorList) error {
 		out.pushDescriptor(name, Descriptor_Parameter)
 		return z.acceptOneByte(')', parseCtxClosingParameterName)
 	case '[':
-		z.Advance(nextRune, nextRuneByteLength)
+		z.Advance('[', nextRuneByteLength)
 		z.advanceRune()
 		name, err := z.acceptIdentifier(parseCtxTypeParameterName)
 		if err != nil {
@@ -540,7 +540,7 @@ func (z *zeroAllocSymbolParser) parseDescriptor(out *RawDescriptorList) error {
 		switch suffixRune {
 		case '(':
 			disambiguator := ""
-			if nextRune, _ := z.peekNext(); nextRune != ')' {
+			if z.currentRune != ')' {
 				disambiguator, err = z.acceptIdentifier(parseCtxMethodDisambiguator)
 				if err != nil {
 					return err
