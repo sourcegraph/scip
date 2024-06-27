@@ -2,16 +2,17 @@ package scip
 
 import (
 	"fmt"
-	simdutf8 "github.com/bytedance/sonic/utf8"
-	"github.com/google/go-cmp/cmp"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto"
 	"io"
 	"os"
 	"strings"
 	"testing"
 	"time"
 	"unicode/utf8"
+
+	simdutf8 "github.com/bytedance/sonic/utf8"
+	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestParseSymbol(t *testing.T) {
