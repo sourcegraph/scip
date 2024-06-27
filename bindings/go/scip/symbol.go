@@ -512,7 +512,8 @@ func (z *zeroAllocSymbolParser) parseDescriptor(out *RawDescriptorList) error {
 	nextRune, nextRuneByteLength := z.peekNext()
 	switch nextRune {
 	case '(':
-		z.Advance(nextRune, nextRuneByteLength)
+		z.Advance('(', nextRuneByteLength)
+		z.advanceRune()
 		name, err := z.acceptIdentifier(parseCtxParameterName)
 		if err != nil {
 			return err
@@ -521,7 +522,8 @@ func (z *zeroAllocSymbolParser) parseDescriptor(out *RawDescriptorList) error {
 		return z.acceptOneByte(')', parseCtxClosingParameterName)
 		//return &Descriptor{Name: name, Suffix: Descriptor_Parameter}, z.acceptCharacter(')', "closing parameter name")
 	case '[':
-		z.Advance(nextRune, nextRuneByteLength)
+		z.Advance('[', nextRuneByteLength)
+		z.advanceRune()
 		name, err := z.acceptIdentifier(parseCtxTypeParameterName)
 		if err != nil {
 			return err
@@ -538,7 +540,7 @@ func (z *zeroAllocSymbolParser) parseDescriptor(out *RawDescriptorList) error {
 		switch suffixRune {
 		case '(':
 			disambiguator := ""
-			if nextRune, _ := z.peekNext(); nextRune != ')' {
+			if z.currentRune != ')' {
 				disambiguator, err = z.acceptIdentifier(parseCtxMethodDisambiguator)
 				if err != nil {
 					return err
@@ -658,6 +660,7 @@ func (z *zeroAllocSymbolParser) acceptTerminatedIdentifier(what parseCtx, termin
 	for z.byteIndex < slen {
 		if z.currentRune != terminatorRune {
 			z.advanceRune()
+			continue
 		}
 		z.advanceOneByte(terminator)
 		if z.byteIndex == slen {

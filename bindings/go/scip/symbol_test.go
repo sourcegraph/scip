@@ -154,7 +154,7 @@ func (b *simpleBenchmark) run(name string, f func(*simpleBenchmark)) benchmarkRe
 }
 
 func TestUtf8Validation(t *testing.T) {
-	path := "/Users/varun/Code/play/indexes/llvm/3.scip"
+	path := "/Users/varun/Code/play/indexes/chromium/index.scip"
 	scipReader, err := os.Open(path)
 	require.Nil(t, err)
 	scipBytes, err := io.ReadAll(scipReader)
@@ -175,7 +175,10 @@ func TestUtf8Validation(t *testing.T) {
 		var sym Symbol
 		for i := 0; i < b.N; i++ {
 			occ := allOccurrences[i]
-			_ = parsePartialSymbolV2(occ.Symbol, true, &sym)
+			err = parsePartialSymbolV2(occ.Symbol, true, &sym)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 	stdUtf8ValidationOnly := func(b *simpleBenchmark) {
@@ -190,7 +193,7 @@ func TestUtf8Validation(t *testing.T) {
 			simdutf8.ValidateString(occ.Symbol)
 		}
 	}
-	sb := simpleBenchmark{MaxN: len(allOccurrences)}
+	sb := simpleBenchmark{MaxN: 1000 * 1000}
 	res1 := sb.run("parse", parseBenchmark)
 	res1_2 := sb.run("parseV2", parseV2Benchmark)
 	res2 := sb.run("stdUtf8ValidationOnly", stdUtf8ValidationOnly)
@@ -198,4 +201,24 @@ func TestUtf8Validation(t *testing.T) {
 	//res3 := sb.run("simdUtf8ValidationOnly", simdUtf8ValidationOnly)
 	t.Fatalf("Benchmark results:\n%s\n%s\n%s\n", res1.String(), res1_2.String(), res2.String())
 	//t.Fatalf("Benchmark results:\n%s\n%s\n%s\n", res1.String(), res2.String(), res3.String())
+}
+
+func TestParseV2(t *testing.T) {
+	path := "/Users/varun/Code/play/indexes/chromium/index.scip"
+	scipReader, err := os.Open(path)
+	require.Nil(t, err)
+	scipBytes, err := io.ReadAll(scipReader)
+	require.Nil(t, err)
+	scipIndex := Index{}
+	require.NoError(t, proto.Unmarshal(scipBytes, &scipIndex))
+	require.NotPanics(t, func() {
+		for _, document := range scipIndex.Documents {
+			var sym Symbol
+			for i := 0; i < len(document.Occurrences); i++ {
+				occ := document.Occurrences[i]
+				err = parsePartialSymbolV2(occ.Symbol, true, &sym)
+				require.NoError(t, err)
+			}
+		}
+	})
 }
