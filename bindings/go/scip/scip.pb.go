@@ -1742,6 +1742,7 @@ func (x *Document) GetPositionEncoding() PositionEncoding {
 // interchangeably with `Symbol`. The syntax for Symbol is the following:
 // ```
 // # (<x>)+ stands for one or more repetitions of <x>
+// # (<x>)? stands for zero or one occurrence of <x>
 // <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>
 // <package>              ::= <manager> ' ' <package-name> ' ' <version>
 // <scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor start with 'local'
@@ -1754,7 +1755,7 @@ func (x *Document) GetPositionEncoding() PositionEncoding {
 // <term>                 ::= <name> '.'
 // <meta>                 ::= <name> ':'
 // <macro>                ::= <name> '!'
-// <method>               ::= <name> '(' <method-disambiguator> ').'
+// <method>               ::= <name> '(' (<method-disambiguator>)? ').'
 // <type-parameter>       ::= '[' <name> ']'
 // <parameter>            ::= '(' <name> ')'
 // <name>                 ::= <identifier>
