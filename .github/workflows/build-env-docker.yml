@@ -17,12 +17,18 @@ env:
 jobs:
   docker_release_build:
     runs-on: ubuntu-latest
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
     strategy:
       fail-fast: false
       matrix:
         platform:
           - linux/amd64
-          - linux/arm64
+          # - linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v3
