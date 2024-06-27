@@ -5,7 +5,7 @@ name: Create and publish a Docker image for bindings build environment
 
 on:
   push:
-    branches: ['fix-docker-workflow']
+    branches: ['main']
 
 concurrency:
   group: docker-build
