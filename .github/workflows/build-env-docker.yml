@@ -3,17 +3,18 @@
 
 name: Create and publish a Docker image for bindings build environment
 
-# Configures this workflow to run every time a change is pushed to the branch called `release`.
 on:
   push:
     branches: ['fix-docker-workflow']
 
-# Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
+concurrency:
+  group: docker-build
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ghcr.io/sourcegraph/scip-bindings-env
 
-# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   docker_release_build:
     runs-on: ubuntu-latest
@@ -56,14 +57,14 @@ jobs:
 
       - name: Build and push by digest
         id: build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           file: dev/Dockerfile.bindings
           push: true
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME}}:main
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME}}:latest
           cache-to: type=inline
 
       - name: Export digest

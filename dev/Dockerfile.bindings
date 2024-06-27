@@ -19,26 +19,26 @@ RUN git clone --depth 1 https://github.com/asdf-vm/asdf.git $HOME/.asdf && \
 RUN . ~/.bashrc
 
 # YOLO
-RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-
-ENV PATH="${PATH}:/asdf/.ghcup/bin"
-
-RUN asdf plugin add nodejs && \
-    asdf plugin add golang && \
-    asdf plugin add shellcheck && \
-    asdf plugin add yarn && \
-    asdf plugin add python && \
-    asdf plugin add rust
-
-COPY .tool-versions .
-
-RUN asdf install && \
-    # Pre-fetch Haskell dependencies as they take the longest time by far
-    # TODO(anton): run the proto-generate.sh script during the build time to 
-    # pre-fecth all dependencies. I attempted to do so but ran into issues 
-    # with Yarn
-    cabal install proto-lens-protoc-0.8.0.1 ghc-source-gen-0.4.5.0 
-
+# RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+#
+# ENV PATH="${PATH}:/asdf/.ghcup/bin"
+#
+# RUN asdf plugin add nodejs && \
+#     asdf plugin add golang && \
+#     asdf plugin add shellcheck && \
+#     asdf plugin add yarn && \
+#     asdf plugin add python && \
+#     asdf plugin add rust
+#
+# COPY .tool-versions .
+#
+# RUN asdf install && \
+#     # Pre-fetch Haskell dependencies as they take the longest time by far
+#     # TODO(anton): run the proto-generate.sh script during the build time to 
+#     # pre-fecth all dependencies. I attempted to do so but ran into issues 
+#     # with Yarn
+#     cabal install proto-lens-protoc-0.8.0.1 ghc-source-gen-0.4.5.0 
+#
 WORKDIR /src
 
 CMD ["./dev/docker-entrypoint.sh"]
