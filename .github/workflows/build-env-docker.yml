@@ -85,7 +85,7 @@ jobs:
         uses: actions/attest-build-provenance@v1
         with:
           subject-name: ${{ env.IMAGE_NAME}}
-          subject-digest: ${{ steps.push.outputs.digest }}
+          subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
 
   docker_release_merge:
