@@ -1,0 +1,37 @@
+name: Generated code is up to date
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'docs/**'
+      - 'bindings/**'
+      - 'scip.proto'
+      - 'buf**'
+      - '.tool-versions'
+      - 'dev/proto-generate.sh'
+      - 'dev/proto-generate-in-docker.sh'
+      - 'Dockerfile.bindings'
+      - 'cmd/scip/tests/reprolang/**'
+
+jobs:
+  gen-up-to-date:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: docker pull ghcr.io/sourcegraph/scip-bindings-env:latest || echo "no suitable cache"
+
+      - name: Regenerate protobuf bindings and reprolang parser
+        run: |
+          # We're changing the owner of the checkout folder to a particular user id,
+          # matching the user id of `asdf` user we create inside the docker container.
+          sudo chown -R 1001:1001 . && ./dev/generate-all-in-docker.sh
+
+      - run: git diff --exit-code
