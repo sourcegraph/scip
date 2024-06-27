@@ -512,11 +512,9 @@ func (z *zeroAllocSymbolParser) Advance(nextRune rune, nextRuneByteLength int32)
 
 func (z *zeroAllocSymbolParser) parseDescriptor(out *RawDescriptorList) error {
 	start := z.byteIndex
-	nextRune, nextRuneByteLength := z.peekNext()
-	switch nextRune {
+	switch z.currentRune {
 	case '(':
-		z.Advance('(', nextRuneByteLength)
-		z.advanceRune()
+		z.advanceOneByte('(')
 		name, err := z.acceptIdentifier(parseCtxParameterName)
 		if err != nil {
 			return err
@@ -524,8 +522,7 @@ func (z *zeroAllocSymbolParser) parseDescriptor(out *RawDescriptorList) error {
 		out.pushDescriptor(name, Descriptor_Parameter)
 		return z.acceptOneByte(')', parseCtxClosingParameterName)
 	case '[':
-		z.Advance('[', nextRuneByteLength)
-		z.advanceRune()
+		z.advanceOneByte('[')
 		name, err := z.acceptIdentifier(parseCtxTypeParameterName)
 		if err != nil {
 			return err
@@ -612,12 +609,15 @@ func isIdentifierCharacter(r rune) bool {
 func (z *zeroAllocSymbolParser) advanceOneByte(_ byte) {
 	// TODO: Add build tag with asserts and check that current byte matches the passed in byte.
 	nextRune, nextRuneByteLength := z.peekNext()
-	z.Advance(nextRune, nextRuneByteLength)
+	// z.byteIndex can become equal to len(z.SymbolString) here
+	z.byteIndex += 1
+	z.currentRune = nextRune
+	z.bytesToNextRune = nextRuneByteLength
 }
 
 func (z *zeroAllocSymbolParser) advanceRune() {
 	nextRune, nextRuneByteLength := z.peekNext()
-	z.Advance(nextRune, nextRuneByteLength)
+	z.Advance(nextRune, min(nextRuneByteLength, 1))
 }
 
 func (z *zeroAllocSymbolParser) acceptOneByte(b byte, what parseCtx) error {
