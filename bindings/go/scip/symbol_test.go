@@ -1,10 +1,18 @@
 package scip
 
 import (
+	"fmt"
+	"io"
+	"os"
+	"strings"
 	"testing"
+	"time"
+	"unicode/utf8"
 
+	simdutf8 "github.com/bytedance/sonic/utf8"
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestParseSymbol(t *testing.T) {
@@ -97,4 +105,138 @@ func TestParseSymbolError(t *testing.T) {
 			t.Fatalf("expected error from parsing %q", symbolName)
 		}
 	}
+}
+
+func testBenchmarkAllocs(t *testing.T, f func(b *testing.B), threshold int64) {
+	res := testing.Benchmark(f)
+	allocs := res.AllocsPerOp()
+	if allocs > threshold {
+		t.Fatalf("Expected AllocsPerOp <= %d, got %d", threshold, allocs)
+	}
+}
+
+type simpleBenchmark struct {
+	N    int
+	MaxN int
+}
+
+type benchmarkResult struct {
+	benchmarkName string
+	timings       []timing
+}
+
+func (r *benchmarkResult) String() string {
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("Benchmark %s:\n", r.benchmarkName))
+	for _, timing := range r.timings {
+		sb.WriteString(fmt.Sprintf("\t%d: %s\n", timing.N, timing.totalTime))
+	}
+	return sb.String()
+}
+
+type timing struct {
+	N         int
+	totalTime time.Duration
+}
+
+func (b *simpleBenchmark) run(name string, f func(*simpleBenchmark)) benchmarkResult {
+	var timings []timing
+	for n := 1000; n <= b.MaxN; n = n * 10 {
+		b.N = n
+		start := time.Now()
+		f(b)
+		delta := time.Now().Sub(start)
+		timings = append(timings, struct {
+			N         int
+			totalTime time.Duration
+		}{N: n, totalTime: delta})
+	}
+	return benchmarkResult{name, timings}
+}
+
+func TestUtf8Validation(t *testing.T) {
+	path := "/Users/varun/Code/play/indexes/chromium/index.scip"
+	scipReader, err := os.Open(path)
+	require.Nil(t, err)
+	scipBytes, err := io.ReadAll(scipReader)
+	require.Nil(t, err)
+	scipIndex := Index{}
+	require.NoError(t, proto.Unmarshal(scipBytes, &scipIndex))
+	allOccurrences := []*Occurrence{}
+	for _, document := range scipIndex.Documents {
+		allOccurrences = append(allOccurrences, document.Occurrences...)
+	}
+	parseBenchmark := func(b *simpleBenchmark) {
+		for i := 0; i < b.N; i++ {
+			occ := allOccurrences[i]
+			_, _ = ParseSymbol(occ.Symbol)
+		}
+	}
+	parseV2Benchmark := func(b *simpleBenchmark) {
+		var sym Symbol
+		for i := 0; i < b.N; i++ {
+			occ := allOccurrences[i]
+			err = parsePartialSymbolV2(occ.Symbol, true, &sym)
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
+	stdUtf8ValidationOnly := func(b *simpleBenchmark) {
+		for i := 0; i < b.N; i++ {
+			occ := allOccurrences[i]
+			utf8.ValidString(occ.Symbol)
+		}
+	}
+	simdUtf8ValidationOnly := func(b *simpleBenchmark) {
+		for i := 0; i < b.N; i++ {
+			occ := allOccurrences[i]
+			simdutf8.ValidateString(occ.Symbol)
+		}
+	}
+	sb := simpleBenchmark{MaxN: 1000 * 1000}
+	res1 := sb.run("parse", parseBenchmark)
+	res1_2 := sb.run("parseV2", parseV2Benchmark)
+	res2 := sb.run("stdUtf8ValidationOnly", stdUtf8ValidationOnly)
+	_ = simdUtf8ValidationOnly
+	//res3 := sb.run("simdUtf8ValidationOnly", simdUtf8ValidationOnly)
+	t.Fatalf("Benchmark results:\n%s\n%s\n%s\n", res1.String(), res1_2.String(), res2.String())
+	//t.Fatalf("Benchmark results:\n%s\n%s\n%s\n", res1.String(), res2.String(), res3.String())
+}
+
+func TestParseV2(t *testing.T) {
+	path := "/Users/varun/Code/play/indexes/chromium/index.scip"
+	scipReader, err := os.Open(path)
+	require.Nil(t, err)
+	scipBytes, err := io.ReadAll(scipReader)
+	require.Nil(t, err)
+	scipIndex := Index{}
+	require.NoError(t, proto.Unmarshal(scipBytes, &scipIndex))
+	total := 0
+	require.NotPanics(t, func() {
+		for _, document := range scipIndex.Documents {
+			var sym Symbol
+			if total > 1000*1000 {
+				return
+			}
+			total += len(document.Occurrences)
+			for i := 0; i < len(document.Occurrences); i++ {
+				occ := document.Occurrences[i]
+				err = parsePartialSymbolV2(occ.Symbol, true, &sym)
+				require.NoError(t, err)
+				old, err := ParsePartialSymbol(occ.Symbol, true)
+				require.NoError(t, err)
+				require.Equal(t, old.Scheme, sym.Scheme)
+				require.Equal(t, old.Package, sym.Package)
+				require.Equalf(t, len(old.Descriptors), len(sym.Descriptors), "symbol: %v, d1: %+v, d2: %+v", occ.Symbol,
+					old.Descriptors, sym.Descriptors)
+				for i, d := range old.Descriptors {
+					dnew := sym.Descriptors[i]
+					require.Equal(t, d.Name, dnew.Name)
+					require.Equal(t, d.Suffix, dnew.Suffix)
+					require.Equal(t, d.Disambiguator, dnew.Disambiguator)
+				}
+			}
+		}
+	})
 }
