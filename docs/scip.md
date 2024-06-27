@@ -294,10 +294,11 @@ interchangeably with `Symbol`. The syntax for Symbol is the following:
 
 ```
 # (<x>)+ stands for one or more repetitions of <x>
+# (<x>)? stands for zero or one occurrence of <x>
 <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>
 <package>              ::= <manager> ' ' <package-name> ' ' <version>
-<scheme>               ::= any UTF-8, escape spaces with double space.
-<manager>              ::= same as above, use the placeholder '.' to indicate an empty value
+<scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor start with 'local'
+<manager>              ::= any UTF-8, escape spaces with double space. Use the placeholder '.' to indicate an empty value
 <package-name>         ::= same as above
 <version>              ::= same as above
 <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta> | <macro>
@@ -306,7 +307,7 @@ interchangeably with `Symbol`. The syntax for Symbol is the following:
 <term>                 ::= <name> '.'
 <meta>                 ::= <name> ':'
 <macro>                ::= <name> '!'
-<method>               ::= <name> '(' <method-disambiguator> ').'
+<method>               ::= <name> '(' (<method-disambiguator>)? ').'
 <type-parameter>       ::= '[' <name> ']'
 <parameter>            ::= '(' <name> ')'
 <name>                 ::= <identifier>
@@ -314,8 +315,8 @@ interchangeably with `Symbol`. The syntax for Symbol is the following:
 <identifier>           ::= <simple-identifier> | <escaped-identifier>
 <simple-identifier>    ::= (<identifier-character>)+
 <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit
-<escaped-identifier>   ::= '`' (<escaped-character>)+ '`'
-<escaped-characters>   ::= any UTF-8 character, escape backticks with double backtick.
+<escaped-identifier>   ::= '`' (<escaped-character>)+ '`', must contain at least one non-<identifier-character>
+<escaped-characters>   ::= any UTF-8, escape backticks with double backtick.
 <local-id>             ::= <simple-identifier>
 ```
 

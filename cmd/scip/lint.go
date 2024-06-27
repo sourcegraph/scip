@@ -201,8 +201,12 @@ func (st *symbolTable) addRelationship(sym string, path string, rel *scip.Relati
 }
 
 func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
-	if occ.Symbol == "" {
-		return emptyStringError{what: "symbol", context: fmt.Sprintf("occurrence at %s @ %s", path, scipRangeToString(scip.NewRangeUnchecked(occ.Range)))}
+	err := lintSymbolString(
+		occ.Symbol,
+		fmt.Sprintf("occurrence at %s @ %s", path, scipRangeToString(scip.NewRangeUnchecked(occ.Range))),
+	)
+	if err != nil {
+		return err
 	}
 	if scip.SymbolRole_Definition.Matches(occ) && scip.SymbolRole_ForwardDefinition.Matches(occ) {
 		return forwardDefIsDefinitionError{occ.Symbol, path, scip.NewRangeUnchecked(occ.Range)}
@@ -236,6 +240,27 @@ func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
 	return nil
 }
 
+// SkipLintSymbolParseTest is only set to true in the tests to allow using more succinct symbols
+var SkipLintSymbolParseTest = false
+
+func lintSymbolString(symbol string, context string) error {
+	if symbol == "" {
+		return emptyStringError{what: "symbol", context: context}
+	}
+	sym, err := scip.ParseSymbol(symbol)
+	if err != nil {
+		if SkipLintSymbolParseTest {
+			return nil
+		}
+		return err
+	}
+	formatted := scip.VerboseSymbolFormatter.FormatSymbol(sym)
+	if symbol != formatted {
+		return nonCanonicalSymbolError{symbol, formatted, context}
+	}
+	return nil
+}
+
 // --- SCIP related utilities ---
 
 func scipRangeToString(r scip.Range) string {
@@ -264,6 +289,16 @@ type emptyStringError struct {
 
 func (e emptyStringError) Error() string {
 	return fmt.Sprintf("error: found empty %s in %s", e.what, e.context)
+}
+
+type nonCanonicalSymbolError struct {
+	original  string
+	canonical string
+	context   string
+}
+
+func (e nonCanonicalSymbolError) Error() string {
+	return fmt.Sprintf("error: found non-canonical symbol '%s' should be formatted as '%s'", e.original, e.canonical)
 }
 
 type duplicateDocumentWarning struct {

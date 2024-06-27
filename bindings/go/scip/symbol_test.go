@@ -88,6 +88,7 @@ func TestParseSymbolError(t *testing.T) {
 		"lsif-java maven package 1.0.0",
 		"lsif-java maven package 1.0.0 java/io/File#Entry.trailingstring",
 		"lsif-java maven package 1.0.0 java/io/File#Entry.unrecognizedSuffix@",
+		"lsif-java maven package 1.0.0 java/io/File#Entry.nonSimpλeIdentifier.",
 		"local 🧠",
 		"local ",
 		"local &&&",

@@ -96,6 +96,7 @@ type testCase struct {
 }
 
 func TestErrors(t *testing.T) {
+	SkipLintSymbolParseTest = true
 	var testCases []testCase
 
 	testCases = []testCase{
@@ -117,6 +118,13 @@ func TestErrors(t *testing.T) {
 				emptyStringError{"symbol", "occurrence at c @ 0:0-0:0"},
 				emptyStringError{"symbol", "relationships for h"},
 				emptyStringError{"symbol", "relationships for external symbol k"},
+			},
+		},
+		{
+			"nonCanonicalSymbol",
+			makeIndex([]string{}, stringMap{}, stringMap{"c": {". . . . `simple`#"}}),
+			[]error{
+				nonCanonicalSymbolError{". . . . `simple`#", ". . . . simple#", ""},
 			},
 		},
 		{

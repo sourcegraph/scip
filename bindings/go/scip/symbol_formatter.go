@@ -139,7 +139,7 @@ func writeEscapedPackage(b *strings.Builder, name string) {
 func writeSuffixedDescriptor(b *strings.Builder, identifier string, suffixes ...rune) {
 	escape := false
 	for _, ch := range identifier {
-		if !isIdentifierCharacter(ch) {
+		if !isSimpleIdentifierCharacter(ch) {
 			escape = true
 			break
 		}
