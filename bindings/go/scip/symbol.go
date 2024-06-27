@@ -438,7 +438,9 @@ func (s *symbolParser) parseDescriptors() ([]*Descriptor, error) {
 
 func (z *zeroAllocSymbolParser) parseDescriptors(out *RawDescriptorList) error {
 	for z.byteIndex < len(z.SymbolString) {
-		return z.parseDescriptor(out)
+		if err := z.parseDescriptor(out); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -672,6 +674,7 @@ func (z *zeroAllocSymbolParser) acceptTerminatedIdentifier(what parseCtx, termin
 		}
 		if z.currentRune == terminatorRune {
 			hasEscapedTerminator = true
+			// will include 1 copy of the terminator
 			builder.WriteString(z.SymbolString[anchor:z.byteIndex])
 			z.advanceOneByte(terminator)
 			anchor = z.byteIndex
@@ -679,9 +682,11 @@ func (z *zeroAllocSymbolParser) acceptTerminatedIdentifier(what parseCtx, termin
 		}
 		if hasEscapedTerminator {
 			// Append the rest to the builder and return
-			builder.WriteString(z.SymbolString[anchor:z.byteIndex])
+			builder.WriteString(z.SymbolString[anchor : z.byteIndex-1])
 			return builder.String(), nil
 		}
+		// In the non-escaped case, z.byteIndex is already 1-past the
+		// terminator, so do an extra -1
 		return z.SymbolString[anchor : z.byteIndex-1], nil
 	}
 	return "", endOfSymbolError{what, terminatorRune}
