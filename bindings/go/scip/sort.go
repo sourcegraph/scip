@@ -2,10 +2,12 @@ package scip
 
 import (
 	"sort"
+
+	"golang.org/x/exp/slices"
 )
 
 // FindSymbol returns the symbol with the given name in the given document. If there is no symbol by
-// that name, this function returns nil.
+// that name, this function returns nil. Prefer using FindSymbolBinarySearch over this function.
 func FindSymbol(document *Document, symbolName string) *SymbolInformation {
 	for _, symbol := range document.Symbols {
 		if symbol.Symbol == symbolName {
@@ -13,6 +15,25 @@ func FindSymbol(document *Document, symbolName string) *SymbolInformation {
 		}
 	}
 
+	return nil
+}
+
+// FindSymbolBinarySearch attempts to find the SymbolInformation in the given document.
+//
+// Pre-condition: The symbols array must be sorted in ascending order based on the symbol name,
+// and SymbolInformation values must be merged. This guarantee is upheld by CanonicalizeDocument.
+func FindSymbolBinarySearch(canonicalizedDocument *Document, symbolName string) *SymbolInformation {
+	i, found := slices.BinarySearchFunc(canonicalizedDocument.Symbols, symbolName, func(sym *SymbolInformation, lookup string) int {
+		if sym.Symbol < lookup {
+			return -1
+		} else if sym.Symbol == lookup {
+			return 0
+		}
+		return 1
+	})
+	if found {
+		return canonicalizedDocument.Symbols[i]
+	}
 	return nil
 }
 

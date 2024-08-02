@@ -4,6 +4,9 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/slices"
+	"pgregory.net/rapid"
 )
 
 func TestFindOccurrences(t *testing.T) {
@@ -121,4 +124,35 @@ func TestSortRanges(t *testing.T) {
 	if diff := cmp.Diff(expected, ranges); diff != "" {
 		t.Errorf("unexpected occurrence order (-want +got):\n%s", diff)
 	}
+}
+
+func genSymbolInfo() *rapid.Generator[*SymbolInformation] {
+	return rapid.Custom(func(t *rapid.T) *SymbolInformation {
+		return &SymbolInformation{Symbol: rapid.String().Draw(t, "symbol")}
+	})
+}
+
+func TestFindSymbolBinarySearch(t *testing.T) {
+	rapid.Check(t, func(t *rapid.T) {
+		symbolInfoGen := genSymbolInfo()
+		symbolInfos := rapid.SliceOfN(symbolInfoGen, 0, 10).Draw(t, "symbolInfos")
+		doc := &Document{Symbols: symbolInfos}
+		canonicalDoc := CanonicalizeDocument(doc)
+		for _, symbolInfo := range symbolInfos {
+			got := FindSymbolBinarySearch(canonicalDoc, symbolInfo.Symbol)
+			require.NotNil(t, got)
+			require.Equal(t, symbolInfo.Symbol, got.Symbol)
+		}
+		other := rapid.String().Draw(t, "otherSymbol")
+		isInOriginalSlice := slices.ContainsFunc(symbolInfos, func(info *SymbolInformation) bool {
+			return info.Symbol == other
+		})
+		got := FindSymbolBinarySearch(canonicalDoc, other)
+		if isInOriginalSlice {
+			require.NotNil(t, got)
+			require.Equal(t, other, got.Symbol)
+		} else {
+			require.Nil(t, got)
+		}
+	})
 }
