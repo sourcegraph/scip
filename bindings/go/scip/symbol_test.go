@@ -241,3 +241,13 @@ func TestParseV2(t *testing.T) {
 		}
 	})
 }
+
+func TestParseX(t *testing.T) {
+	s := "cxx . todo-pkg todo-version gfx/Rect#x(455f465bc33b4cdf)."
+	var sym Symbol
+	require.NotPanics(t, func() {
+		err := parsePartialSymbolV2(s, true, &sym)
+		require.NoError(t, err)
+		require.Len(t, sym.Descriptors, 3)
+	})
+}

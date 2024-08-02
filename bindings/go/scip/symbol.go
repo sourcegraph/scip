@@ -642,6 +642,7 @@ func (z *zeroAllocSymbolParser) acceptIdentifier(what parseCtx) (string, error) 
 		z.advanceRune()
 	}
 	if start == z.byteIndex {
+		fmt.Printf("z.currentRune = %q, z.byteIndex = %d, z.symbolString = %q\n", z.currentRune, z.byteIndex, z.SymbolString)
 		return "", z.error(errorCaseEmptyIdent, what)
 	}
 	return z.SymbolString[start:z.byteIndex], nil
