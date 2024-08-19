@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -8,7 +9,6 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
-	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
 func lintCommand() cli.Command {
@@ -34,10 +34,7 @@ func lintMain(indexPath string) error {
 	if err != nil {
 		return err
 	}
-	var errOut errors.MultiError
-	errSet := lintMainPure(scipIndex)
-	errOut = errors.Append(errOut, errSet.Unique()...)
-	return errOut
+	return errors.Join(lintMainPure(scipIndex).data...)
 }
 
 func lintMainPure(scipIndex *scip.Index) errorSet {

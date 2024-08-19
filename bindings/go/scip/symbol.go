@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sourcegraph/sourcegraph/lib/errors"
+	"github.com/cockroachdb/errors"
 )
 
 // IsGlobalSymbol returns true if the symbol is obviously not a local symbol.

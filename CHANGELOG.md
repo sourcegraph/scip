@@ -1,5 +1,17 @@
 # ChangeLog
 
+## Unreleased (-> v0.5.0)
+
+CLI:
+
+- Breaking changes:
+  - Removed SCIP to LSIF conversion functionality
+
+Go SCIP bindings
+
+- Breaking changes:
+  - Removed SCIP to LSIF conversion functionality
+
 ## v0.4.0
 
 SCIP schema:

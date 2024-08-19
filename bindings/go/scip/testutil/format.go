@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/sourcegraph/sourcegraph/lib/errors"
+	"github.com/cockroachdb/errors"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
