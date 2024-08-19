@@ -13,7 +13,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/sourcegraph/sourcegraph/lib/errors"
+	"github.com/cockroachdb/errors"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )

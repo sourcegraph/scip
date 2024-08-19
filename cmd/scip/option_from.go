@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/scip/bindings/go/scip"
-	"github.com/sourcegraph/sourcegraph/lib/errors"
 	"google.golang.org/protobuf/proto"
 )
 

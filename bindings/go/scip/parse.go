@@ -3,10 +3,9 @@ package scip
 import (
 	"io"
 
+	"github.com/cockroachdb/errors"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/proto"
-
-	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
 // IndexVisitor is a struct of functions rather than an interface since Go

@@ -7,9 +7,9 @@ import (
 
 	"github.com/urfave/cli/v2"
 
+	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
-	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
 type snapshotFlags struct {
