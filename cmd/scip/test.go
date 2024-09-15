@@ -69,8 +69,9 @@ func testMain(directory string, flags testFlags) error {
 
 			attributes := attributesForOccurrencesAtLine(lineNumber, document.Occurrences)
 			for _, testCase := range testCasesAtLine {
-				if !isValidTestCase(testCase, attributes) {
-					failures = append(failures, formatFailure(lineNumber, testCase, attributes))
+				filteredAttrs := filterAttributesForTestCase(testCase, attributes)
+				if !isValidTestCase(testCase, filteredAttrs) {
+					failures = append(failures, formatFailure(lineNumber, testCase, filteredAttrs))
 				} else {
 					successCount++
 				}
@@ -160,6 +161,16 @@ func testCasesForLine(lineNumber int, lines []string, commentSyntax string) ([]*
 	}
 
 	return testLines, usedLines
+}
+
+func filterAttributesForTestCase(testCase *symbolAttributeTestCase, attributes []*symbolAttribute) []*symbolAttribute {
+	filteredAttrs := []*symbolAttribute{}
+	for _, attr := range attributes {
+		if testCase.attribute.start >= attr.start && testCase.attribute.start <= (attr.start+attr.length)-1 {
+			filteredAttrs = append(filteredAttrs, attr)
+		}
+	}
+	return filteredAttrs
 }
 
 func attributesForOccurrencesAtLine(lineNumber int, occurrences []*scip.Occurrence) []*symbolAttribute {
@@ -325,10 +336,14 @@ func formatFailure(lineNumber int, testCase *symbolAttributeTestCase, attributes
 	}
 
 	failureDesc = append(failureDesc, "  Actual:")
-	for _, attr := range attributesAtLine {
-		failureDesc = append(failureDesc, fmt.Sprintf("    - '%s %s'", attr.kind, attr.data))
-		for _, add := range attr.additionalData {
-			failureDesc = append(failureDesc, indent(fmt.Sprintf("'%s'", add), 6))
+	if (len(attributesAtLine)) == 0 {
+		failureDesc = append(failureDesc, "    - No attributes found")
+	} else {
+		for _, attr := range attributesAtLine {
+			failureDesc = append(failureDesc, fmt.Sprintf("    - '%s %s'", attr.kind, attr.data))
+			for _, add := range attr.additionalData {
+				failureDesc = append(failureDesc, indent(fmt.Sprintf("'%s'", add), 6))
+			}
 		}
 	}
 	return strings.Join(failureDesc, "\n")
