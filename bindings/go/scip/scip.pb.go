@@ -1742,10 +1742,11 @@ func (x *Document) GetPositionEncoding() PositionEncoding {
 // interchangeably with `Symbol`. The syntax for Symbol is the following:
 // ```
 // # (<x>)+ stands for one or more repetitions of <x>
+// # (<x>)? stands for zero or one occurrence of <x>
 // <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>
 // <package>              ::= <manager> ' ' <package-name> ' ' <version>
-// <scheme>               ::= any UTF-8, escape spaces with double space.
-// <manager>              ::= same as above, use the placeholder '.' to indicate an empty value
+// <scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor start with 'local'
+// <manager>              ::= any UTF-8, escape spaces with double space. Use the placeholder '.' to indicate an empty value
 // <package-name>         ::= same as above
 // <version>              ::= same as above
 // <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta> | <macro>
@@ -1754,7 +1755,7 @@ func (x *Document) GetPositionEncoding() PositionEncoding {
 // <term>                 ::= <name> '.'
 // <meta>                 ::= <name> ':'
 // <macro>                ::= <name> '!'
-// <method>               ::= <name> '(' <method-disambiguator> ').'
+// <method>               ::= <name> '(' (<method-disambiguator>)? ').'
 // <type-parameter>       ::= '[' <name> ']'
 // <parameter>            ::= '(' <name> ')'
 // <name>                 ::= <identifier>
@@ -1762,8 +1763,8 @@ func (x *Document) GetPositionEncoding() PositionEncoding {
 // <identifier>           ::= <simple-identifier> | <escaped-identifier>
 // <simple-identifier>    ::= (<identifier-character>)+
 // <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit
-// <escaped-identifier>   ::= '`' (<escaped-character>)+ '`'
-// <escaped-characters>   ::= any UTF-8 character, escape backticks with double backtick.
+// <escaped-identifier>   ::= '`' (<escaped-character>)+ '`', must contain at least one non-<identifier-character>
+// <escaped-characters>   ::= any UTF-8, escape backticks with double backtick.
 // <local-id>             ::= <simple-identifier>
 // ```
 //
@@ -2253,12 +2254,14 @@ type Occurrence struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Source position of this occurrence. Must be exactly three or four
+	// Half-open [start, end) range of this occurrence. Must be exactly three or four
 	// elements:
 	//
 	//   - Four elements: `[startLine, startCharacter, endLine, endCharacter]`
 	//   - Three elements: `[startLine, startCharacter, endCharacter]`. The end line
 	//     is inferred to have the same value as the start line.
+	//
+	// It is allowed for the range to be empty (i.e. start==end).
 	//
 	// Line numbers and characters are always 0-based. Make sure to increment the
 	// line/character values before displaying them in an editor-like UI because
@@ -2294,8 +2297,8 @@ type Occurrence struct {
 	SyntaxKind SyntaxKind `protobuf:"varint,5,opt,name=syntax_kind,json=syntaxKind,proto3,enum=scip.SyntaxKind" json:"syntax_kind,omitempty"`
 	// (optional) Diagnostics that have been reported for this specific range.
 	Diagnostics []*Diagnostic `protobuf:"bytes,6,rep,name=diagnostics,proto3" json:"diagnostics,omitempty"`
-	// (optional) Using the same encoding as the sibling `range` field, source
-	// position of the nearest non-trivial enclosing AST node. This range must
+	// (optional) Using the same encoding as the sibling `range` field, half-open
+	// source range of the nearest non-trivial enclosing AST node. This range must
 	// enclose the `range` field. Example applications that make use of the
 	// enclosing_range field:
 	//

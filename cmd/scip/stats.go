@@ -9,9 +9,11 @@ import (
 	"path/filepath"
 
 	"github.com/hhatto/gocloc"
+	"github.com/montanaflynn/stats"
 	"github.com/urfave/cli/v2"
+	"google.golang.org/protobuf/proto"
 
-	"github.com/sourcegraph/sourcegraph/lib/errors"
+	"github.com/cockroachdb/errors"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
@@ -59,33 +61,93 @@ func statsMain(flags statsFlags) error {
 	return nil
 }
 
+type Stats struct {
+	Percentiles struct {
+		Fifty               int32 `json:"50"`
+		Ninety              int32 `json:"90"`
+		NinetyFive          int32 `json:"95"`
+		NinetyNine          int32 `json:"99"`
+		NinetyNinePointNine int32 `json:"99.9"`
+	}
+	Mean    int32  `json:"mean"`
+	Stddev  int32  `json:"stddev"`
+	Max     int32  `json:"max"`
+	Sum     int32  `json:"sum"`
+	Comment string `json:"comment"`
+}
+
+func NewStats(values []float64) Stats {
+	s := Stats{}
+	s.Percentiles.Fifty = percentile(values, 50)
+	s.Percentiles.Ninety = percentile(values, 90)
+	s.Percentiles.NinetyFive = percentile(values, 95)
+	s.Percentiles.NinetyNine = percentile(values, 99)
+	s.Percentiles.NinetyNinePointNine = percentile(values, 99.9)
+	mean, _ := stats.Mean(values)
+	s.Mean = int32(mean)
+	stddev, _ := stats.StandardDeviation(values)
+	s.Stddev = int32(stddev)
+	max, _ := stats.Max(values)
+	s.Max = int32(max)
+	sum, _ := stats.Sum(values)
+	s.Sum = int32(sum)
+	return s
+}
+
 type indexStatistics struct {
-	Documents   int32 `json:"documents"`
-	LinesOfCode int32 `json:"linesOfCode"`
-	Occurrences int32 `json:"occurrences"`
-	Definitions int32 `json:"definitions"`
+	Documents        int32 `json:"documents"`
+	DocumentSizes    Stats `json:"documentSizes"`
+	LinesOfCode      int32 `json:"linesOfCode"`
+	Occurrences      int32 `json:"occurrences"`
+	OccurrenceCounts Stats `json:"occurrenceCounts"`
+	Definitions      int32 `json:"definitions"`
+	DefinitionCounts Stats `json:"definitionCounts"`
 }
 
 func countStatistics(index *scip.Index, customProjectRoot string) (*indexStatistics, error) {
 	loc, err := countLinesOfCode(index, customProjectRoot)
+	var linesOfCode int32
 	if err != nil {
-		return nil, err
+		// Keep this a non-fatal error so that we can measure other index stats
+		// even if the project is not cloned locally (e.g. if it's a huge
+		// project like Chromium or the Linux kernel).
+		log.Printf("Couldn't count lines of code: %s", err)
+	} else {
+		linesOfCode = loc.Total.Code
 	}
 	stats := &indexStatistics{
 		Documents:   int32(len(index.Documents)),
-		LinesOfCode: loc.Total.Code,
+		LinesOfCode: linesOfCode,
 		Occurrences: 0,
 		Definitions: 0,
 	}
+	documentSizes := []float64{}
+	occurrenceCounts := []float64{}
+	definitionCounts := []float64{}
 	for _, document := range index.Documents {
+		bytes, _ := proto.Marshal(document)
+		documentSizes = append(documentSizes, float64(len(bytes)))
+		stats.Occurrences += int32(len(document.Occurrences))
+		occurrenceCounts = append(occurrenceCounts, float64(len(document.Occurrences)))
+		definitionCounts = append(definitionCounts, 0)
 		for _, occurrence := range document.Occurrences {
-			stats.Occurrences += 1
 			if scip.SymbolRole_Definition.Matches(occurrence) {
 				stats.Definitions += 1
+				definitionCounts[len(definitionCounts)-1] += 1
 			}
 		}
 	}
+	stats.DocumentSizes = NewStats(documentSizes)
+	stats.DocumentSizes.Comment = "sizes are in bytes"
+	stats.OccurrenceCounts = NewStats(occurrenceCounts)
+	stats.DefinitionCounts = NewStats(definitionCounts)
+	stats.DefinitionCounts.Comment = "counted using occurrences"
 	return stats, nil
+}
+
+func percentile(buf []float64, percent float64) int32 {
+	res, _ := stats.Percentile(buf, percent)
+	return int32(res)
 }
 
 func countLinesOfCode(index *scip.Index, customProjectRoot string) (*gocloc.Result, error) {

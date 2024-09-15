@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
 	"os"
@@ -10,8 +9,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-
-	"github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol/reader"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
@@ -101,16 +98,6 @@ func TestSCIPSnapshots(t *testing.T) {
 		} else {
 			index.Metadata.ProjectRoot = "file:/root"
 		}
-		lsif, err := scip.ConvertSCIPToLSIF(index)
-		require.Nil(t, err)
-		var obtained bytes.Buffer
-		err = reader.WriteNDJSON(reader.ElementsToJsonElements(lsif), &obtained)
-		require.Nil(t, err)
-		snapshots = append(snapshots, scip.NewSourceFile(
-			filepath.Join(outputDirectory, "dump.lsif"),
-			"dump.lsif",
-			obtained.String(),
-		))
 		return snapshots
 	})
 }

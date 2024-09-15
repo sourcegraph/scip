@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -8,7 +9,6 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
-	"github.com/sourcegraph/sourcegraph/lib/errors"
 )
 
 func lintCommand() cli.Command {
@@ -34,10 +34,7 @@ func lintMain(indexPath string) error {
 	if err != nil {
 		return err
 	}
-	var errOut errors.MultiError
-	errSet := lintMainPure(scipIndex)
-	errOut = errors.Append(errOut, errSet.Unique()...)
-	return errOut
+	return errors.Join(lintMainPure(scipIndex).data...)
 }
 
 func lintMainPure(scipIndex *scip.Index) errorSet {
@@ -113,7 +110,7 @@ type occurrenceKey struct {
 }
 
 func scipOccurrenceKey(occ *scip.Occurrence) occurrenceKey {
-	return occurrenceKey{*scip.NewRange(occ.Range), occ.SymbolRoles}
+	return occurrenceKey{scip.NewRangeUnchecked(occ.Range), occ.SymbolRoles}
 }
 
 type occurrenceMap = map[occurrenceKey]*scip.Occurrence
@@ -201,17 +198,21 @@ func (st *symbolTable) addRelationship(sym string, path string, rel *scip.Relati
 }
 
 func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
-	if occ.Symbol == "" {
-		return emptyStringError{what: "symbol", context: fmt.Sprintf("occurrence at %s @ %s", path, scipRangeToString(*scip.NewRange(occ.Range)))}
+	err := lintSymbolString(
+		occ.Symbol,
+		fmt.Sprintf("occurrence at %s @ %s", path, scipRangeToString(scip.NewRangeUnchecked(occ.Range))),
+	)
+	if err != nil {
+		return err
 	}
 	if scip.SymbolRole_Definition.Matches(occ) && scip.SymbolRole_ForwardDefinition.Matches(occ) {
-		return forwardDefIsDefinitionError{occ.Symbol, path, *scip.NewRange(occ.Range)}
+		return forwardDefIsDefinitionError{occ.Symbol, path, scip.NewRangeUnchecked(occ.Range)}
 	}
 	tryInsertOccurrence := func(occMap fileOccurrenceMap) error {
 		occKey := scipOccurrenceKey(occ)
 		if fileOccs, ok := occMap[path]; ok {
 			if _, ok := fileOccs[occKey]; ok {
-				return duplicateOccurrenceWarning{occ.Symbol, path, *scip.NewRange(occ.Range), occ.SymbolRoles}
+				return duplicateOccurrenceWarning{occ.Symbol, path, scip.NewRangeUnchecked(occ.Range), occ.SymbolRoles}
 			} else {
 				fileOccs[occKey] = occ
 			}
@@ -231,7 +232,28 @@ func (st *symbolTable) addOccurrence(path string, occ *scip.Occurrence) error {
 			return err
 		}
 	} else {
-		return missingSymbolForOccurrenceError{occ.Symbol, path, *scip.NewRange(occ.Range)}
+		return missingSymbolForOccurrenceError{occ.Symbol, path, scip.NewRangeUnchecked(occ.Range)}
+	}
+	return nil
+}
+
+// SkipLintSymbolParseTest is only set to true in the tests to allow using more succinct symbols
+var SkipLintSymbolParseTest = false
+
+func lintSymbolString(symbol string, context string) error {
+	if symbol == "" {
+		return emptyStringError{what: "symbol", context: context}
+	}
+	sym, err := scip.ParseSymbol(symbol)
+	if err != nil {
+		if SkipLintSymbolParseTest {
+			return nil
+		}
+		return err
+	}
+	formatted := scip.VerboseSymbolFormatter.FormatSymbol(sym)
+	if symbol != formatted {
+		return nonCanonicalSymbolError{symbol, formatted, context}
 	}
 	return nil
 }
@@ -264,6 +286,16 @@ type emptyStringError struct {
 
 func (e emptyStringError) Error() string {
 	return fmt.Sprintf("error: found empty %s in %s", e.what, e.context)
+}
+
+type nonCanonicalSymbolError struct {
+	original  string
+	canonical string
+	context   string
+}
+
+func (e nonCanonicalSymbolError) Error() string {
+	return fmt.Sprintf("error: found non-canonical symbol '%s' should be formatted as '%s'", e.original, e.canonical)
 }
 
 type duplicateDocumentWarning struct {

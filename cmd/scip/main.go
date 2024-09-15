@@ -19,13 +19,12 @@ func main() {
 }
 
 func commands() []*cli.Command {
-	convert := convertCommand()
 	lint := lintCommand()
 	print := printCommand()
 	snapshot := snapshotCommand()
 	test := testCommand()
 	stats := statsCommand()
-	return []*cli.Command{&convert, &lint, &print, &snapshot, &test, &stats}
+	return []*cli.Command{&lint, &print, &snapshot, &test, &stats}
 }
 
 //go:embed version.txt

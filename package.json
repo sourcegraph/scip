@@ -6,9 +6,9 @@
   "author": "SCIP authors",
   "license": "MIT",
   "scripts": {
-    "build": "./node_modules/.bin/tsc --build --force bindings/typescript",
-    "prettier": "./node_modules/prettier/bin-prettier.js --write --list-different '**/*.{ts,js(on)?,md,yml}'",
-    "prettier-check": "./node_modules/prettier/bin-prettier.js --check '**/*.{ts,js(on)?,md,yml}'"
+    "build": "tsc --build --force bindings/typescript",
+    "prettier": "prettier --write --list-different '**/*.{ts,js(on)?,md,yml}'",
+    "prettier-check": "prettier --check '**/*.{ts,js(on)?,md,yml}'"
   },
   "workspaces": {
     "packages": [
@@ -17,6 +17,6 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^3.2.5"
+    "prettier": "^3.3.3"
   }
 }

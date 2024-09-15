@@ -1,6 +1,14 @@
 package scip
 
-// CanonicalizeDocument deterministically re-orders the fields of the given document.
+// CanonicalizeDocument deterministically sorts and merges fields of the given document.
+//
+// Post-conditions:
+//  1. The Occurrences field only contains those with well-formed ranges
+//     (length 3 or 4, potentially empty).
+//  2. The Occurrences field is sorted in ascending order of ranges based on
+//     Range.CompareStrict
+//  3. The Symbols field is sorted in ascending order based on the symbol name,
+//     and SymbolInformation values for the same name will have been merged.
 func CanonicalizeDocument(document *Document) *Document {
 	document.Occurrences = CanonicalizeOccurrences(document.Occurrences)
 	document.Symbols = CanonicalizeSymbols(document.Symbols)
@@ -36,7 +44,7 @@ func RemoveIllegalOccurrences(occurrences []*Occurrence) []*Occurrence {
 // CanonicalizeOccurrence deterministically re-orders the fields of the given occurrence.
 func CanonicalizeOccurrence(occurrence *Occurrence) *Occurrence {
 	// Express ranges as three-components if possible
-	occurrence.Range = NewRange(occurrence.Range).SCIPRange()
+	occurrence.Range = NewRangeUnchecked(occurrence.Range).SCIPRange()
 	occurrence.Diagnostics = CanonicalizeDiagnostics(occurrence.Diagnostics)
 	return occurrence
 }

@@ -27,10 +27,15 @@
 ## Code generation
 
 1. Regenerating definitions after changing the schema in [scip.proto](./scip.proto).
-   ```
-   ./dev/proto-generate.sh
-   ```
-   For the Haskell bindings, see `bindings/haskell/README.md`.
+
+   `./dev/generate-all-in-docker.sh`
+
+   We provide a script that sets up the correct build environment in Docker
+   and runs the necessary regeneration steps.
+
+   Both the proto bindings and reprolang parser are generated.
+   The only dependency you need is Docker.
+
 2. Regenerating snapshots after making changes to the CLI.
    ```
    go test ./cmd/scip -update-snapshots

@@ -1,6 +1,6 @@
 bindings/typescript/scip.ts linguist-generated=true
 bindings/go/scip/scip.pb.go linguist-generated=true
-bindings/rust/src/scip.rs linguist-generated=true
+bindings/rust/src/generated/scip.rs linguist-generated=true
 bindings/haskell/src/Proto/**.hs linguist-generated=true
 docs/scip.md linguist-generated=true
 yarn.lock linguist-generated=true

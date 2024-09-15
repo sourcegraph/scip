@@ -3,7 +3,6 @@
 <!--toc:start-->
 
 - [SCIP CLI Reference](#scip-cli-reference)
-  - [`scip convert`](#scip-convert)
   - [`scip lint`](#scip-lint)
   - [`scip print`](#scip-print)
   - [`scip snapshot`](#scip-snapshot)
@@ -18,7 +17,7 @@ USAGE:
    scip [global options] command [command options] [arguments...]
 
 VERSION:
-   v0.3.3
+   v0.4.0
 
 DESCRIPTION:
    For more details, see the project README at:
@@ -26,7 +25,6 @@ DESCRIPTION:
      https://github.com/sourcegraph/scip
 
 COMMANDS:
-   convert   Convert a SCIP index to an LSIF index
    lint      Flag potential issues with a SCIP index
    print     Print a SCIP index for debugging
    snapshot  Generate snapshot files for golden testing
@@ -36,20 +34,6 @@ COMMANDS:
 GLOBAL OPTIONS:
    --help, -h     show help
    --version, -v  print the version
-```
-
-## `scip convert`
-
-```
-NAME:
-   scip convert - Convert a SCIP index to an LSIF index
-
-USAGE:
-   scip convert [command options] [arguments...]
-
-OPTIONS:
-   --from value  Path to SCIP index file (default: index.scip)
-   --to value    Output path for LSIF index (default: dump.lsif)
 ```
 
 ## `scip lint`

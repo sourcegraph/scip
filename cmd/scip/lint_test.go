@@ -96,6 +96,7 @@ type testCase struct {
 }
 
 func TestErrors(t *testing.T) {
+	SkipLintSymbolParseTest = true
 	var testCases []testCase
 
 	testCases = []testCase{
@@ -117,6 +118,13 @@ func TestErrors(t *testing.T) {
 				emptyStringError{"symbol", "occurrence at c @ 0:0-0:0"},
 				emptyStringError{"symbol", "relationships for h"},
 				emptyStringError{"symbol", "relationships for external symbol k"},
+			},
+		},
+		{
+			"nonCanonicalSymbol",
+			makeIndex([]string{}, stringMap{}, stringMap{"c": {". . . . `simple`#"}}),
+			[]error{
+				nonCanonicalSymbolError{". . . . `simple`#", ". . . . simple#", ""},
 			},
 		},
 		{
@@ -167,15 +175,15 @@ func TestErrors(t *testing.T) {
 			"missingSymbolForOccurrence",
 			makeIndex(nil, nil, stringMap{"f": {"a"}}),
 			[]error{
-				missingSymbolForOccurrenceError{"a", "f", *scip.NewRange(placeholderRange)},
+				missingSymbolForOccurrenceError{"a", "f", scip.NewRangeUnchecked(placeholderRange)},
 			},
 		},
 		{
 			"duplicateOccurrence",
 			makeIndex([]string{"a"}, stringMap{"f": {"b"}}, stringMap{"f": {"a", "a", "b", "b"}}),
 			[]error{
-				duplicateOccurrenceWarning{"a", "f", *scip.NewRange(placeholderRange), placeholderRole},
-				duplicateOccurrenceWarning{"b", "f", *scip.NewRange(placeholderRange), placeholderRole},
+				duplicateOccurrenceWarning{"a", "f", scip.NewRangeUnchecked(placeholderRange), placeholderRole},
+				duplicateOccurrenceWarning{"b", "f", scip.NewRangeUnchecked(placeholderRange), placeholderRole},
 			},
 		},
 	}

@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	"github.com/sourcegraph/sourcegraph/lib/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func printCommand() cli.Command {

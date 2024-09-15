@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/sourcegraph/sourcegraph/lib/errors"
+	"github.com/cockroachdb/errors"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
@@ -94,7 +94,7 @@ func FormatSnapshot(
 		b.WriteString("\n")
 		for i < len(document.Occurrences) && document.Occurrences[i].Range[0] == int32(lineNumber) {
 			occ := document.Occurrences[i]
-			pos := scip.NewRange(occ.Range)
+			pos := scip.NewRangeUnchecked(occ.Range)
 			if !pos.IsSingleLine() {
 				i++
 				continue

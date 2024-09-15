@@ -17,20 +17,20 @@ nan@^2.15.0:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
   integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
 
-prettier@^3.2.5:
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.2.5.tgz#e52bc3090586e824964a8813b09aba6233b28368"
-  integrity sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==
+prettier@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.3.3.tgz#30c54fe0be0d8d12e6ae61dbb10109ea00d53105"
+  integrity sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==
 
 protoc-gen-ts@0.8.6:
   version "0.8.6"
   resolved "https://registry.yarnpkg.com/protoc-gen-ts/-/protoc-gen-ts-0.8.6.tgz#e789a6fc3fbe09bdc119acecc349b9554ec5940e"
   integrity sha512-66oeorGy4QBvYjQGd/gaeOYyFqKyRmRgTpofmnw8buMG0P7A0jQjoKSvKJz5h5tNUaVkIzvGBUTRVGakrhhwpA==
 
-tree-sitter-cli@^0.20.4:
-  version "0.20.6"
-  resolved "https://registry.yarnpkg.com/tree-sitter-cli/-/tree-sitter-cli-0.20.6.tgz#2a7202190d7bd64e112b451f94573dbe40a04f04"
-  integrity sha512-tjbAeuGSMhco/EnsThjWkQbDIYMDmdkWsTPsa/NJAW7bjaki9P7oM9TkLxfdlnm4LXd1wR5wVSM2/RTLtZbm6A==
+tree-sitter-cli@0.21.0:
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/tree-sitter-cli/-/tree-sitter-cli-0.21.0.tgz#563f0a387a62c6ca57ce8dc94849e3ad7bbb0abc"
+  integrity sha512-wA7wT5724fNQW82XDH6zT6ZcYonjrAKLCHHuhLsPcAKULrhp3rNuMvlgBdB5FUBvmjHNhtTZF/qpHenMoRJPBw==
 
 typescript@^4.9.0:
   version "4.9.5"
