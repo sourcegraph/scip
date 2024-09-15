@@ -1,0 +1,8 @@
+definition deprecatedMethod.
+#          ^ diagnostic Warning
+#          > deprecated identifier
+
+reference deprecatedMethod.
+#         ^ diagnostic Warning
+#         > deprecated identifier
+

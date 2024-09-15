@@ -1,0 +1,2 @@
+definition hello().
+#         ^ definition passes.repro/hello().

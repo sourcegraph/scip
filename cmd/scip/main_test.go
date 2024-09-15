@@ -101,3 +101,44 @@ func TestSCIPSnapshots(t *testing.T) {
 		return snapshots
 	})
 }
+
+func TestSCIPTests(t *testing.T) {
+	cwd, err := os.Getwd()
+	require.Nil(t, err)
+
+	testDir := filepath.Join(cwd, "tests", "test_cmd")
+	testCases, _ := os.ReadDir(testDir)
+	for _, testCase := range testCases {
+		if !testCase.IsDir() {
+			t.Fatalf("not a directory: %v", testCase.Name())
+		}
+		t.Run(testCase.Name(), func(t *testing.T) {
+
+			baseDirectory := filepath.Join(testDir, testCase.Name())
+			sources, err := scip.NewSourcesFromDirectory(baseDirectory)
+			require.Nil(t, err)
+
+			index, err := repro.Index("file:/"+baseDirectory, testCase.Name(), sources, []*repro.Dependency{})
+
+			passFiles := []string{}
+			failFiles := []string{}
+
+			testFiles, _ := os.ReadDir(baseDirectory)
+			for _, testFile := range testFiles {
+				if strings.HasPrefix(testFile.Name(), "passes") {
+					passFiles = append(passFiles, testFile.Name())
+				} else if strings.HasPrefix(testFile.Name(), "fails") {
+					failFiles = append(failFiles, testFile.Name())
+				} else {
+					t.Fatalf("Test files must start with 'passes' or 'fails'. Received %v", testFile.Name())
+				}
+			}
+
+			passRes := ExecuteTestCommand(baseDirectory, passFiles, index, "#")
+			require.Equal(t, nil, passRes, "Test case %v failed", testCase.Name())
+
+			failRes := ExecuteTestCommand(baseDirectory, failFiles, index, "#")
+			require.NotEqual(t, nil, failRes, "Test case %v failed", testCase.Name())
+		})
+	}
+}

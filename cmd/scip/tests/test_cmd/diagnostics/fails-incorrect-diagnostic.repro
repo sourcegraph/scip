@@ -1,0 +1,3 @@
+definition deprecatedMethod.
+#          ^ diagnostic Warning:
+#          > THIS IS NOT CORRECT

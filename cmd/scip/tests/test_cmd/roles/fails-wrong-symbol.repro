@@ -1,0 +1,2 @@
+definition hello().
+#            ^ definition reprolang repro_manager roles 1.0.0 fails-wrong-role.repro/hello2().
