@@ -23,8 +23,9 @@ func testCommand() cli.Command {
 		Name:  "test",
 		Usage: "Validate subsets of snapshot files",
 		Description: `The test subcommand validates whether a provided SCIP index
-file matches manually specified symbol fields within an index. This can be used in
-conjunction with snapshot to provide a cohesive testing framework for SCIP indexers.`,
+matches manually specified symbol fields. Refer to
+https://github.com/sourcegraph/scip/blob/main/docs/test_command.md for documentation
+on the expected file format of the test files.`,
 		Flags: []cli.Flag{
 			fromFlag(&testFlags.from),
 			commentSyntaxFlag(&testFlags.commentSyntax),
@@ -165,7 +166,7 @@ func attributesForOccurrencesAtLine(lineNumber int, occurrences []*scip.Occurren
 	result := []*symbolAttribute{}
 	for _, occ := range occurrences {
 		if occ.Range[0] == int32(lineNumber) {
-			pos := scip.NewRange(occ.Range)
+			pos, _ := scip.NewRange(occ.Range)
 
 			start := int(pos.Start.Character)
 			length := int(pos.End.Character - pos.Start.Character)

@@ -1,4 +1,4 @@
-golang 1.20.14
+golang 1.23.1
 nodejs 16.20.2
 shellcheck 0.7.1
 yarn 1.22.17

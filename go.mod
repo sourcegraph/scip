@@ -1,10 +1,11 @@
 module github.com/sourcegraph/scip
 
-go 1.20
+go 1.23
 
 require (
 	github.com/bufbuild/buf v1.25.0
 	github.com/cockroachdb/errors v1.8.9
+	github.com/fatih/color v1.15.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/gofuzz v1.1.0
 	github.com/hexops/autogold/v2 v2.2.1
@@ -43,7 +44,6 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/envoyproxy/protoc-gen-validate v0.3.0-java // indirect
-	github.com/fatih/color v1.15.0 // indirect
 	github.com/felixge/fgprof v0.9.3 // indirect
 	github.com/getsentry/sentry-go v0.12.0 // indirect
 	github.com/go-chi/chi/v5 v5.0.10 // indirect
