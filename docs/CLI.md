@@ -28,6 +28,7 @@ COMMANDS:
    lint      Flag potential issues with a SCIP index
    print     Print a SCIP index for debugging
    snapshot  Generate snapshot files for golden testing
+   test      Validate subsets of snapshot files
    stats     Output useful statistics about a SCIP index
    help, h   Shows a list of commands or help for one command
 
@@ -106,14 +107,16 @@ USAGE:
    scip test [command options] [arguments...]
 
 DESCRIPTION:
-   The test subcommand validates whether a provided scip index
-   file matches manually specified symbol fields within an index. This can be used in
-   conjunction with snapshot to provide a cohesive testing framework for scip indexers.
+   The test subcommand validates whether a provided SCIP index
+   matches manually specified symbol fields. Refer to
+   https://github.com/sourcegraph/scip/blob/main/docs/test_command.md for documentation
+   on the expected file format of the test files.
 
 OPTIONS:
-   --from value            Path to SCIP index file (default: "index.scip")
-   --comment-syntax value  Comment syntax to use for snapshot files (default: "//")
-   --help, -h              show help
+   --from value                                           Path to SCIP index file (default: "index.scip")
+   --comment-syntax value                                 Comment syntax to use for snapshot files (default: "//")
+   --filter value, -f value [ --filter value, -f value ]  Filter the test files to run. Only test files that match the provided filter(s).
+   --help, -h                                             show help
 ```
 
 ## `scip stats`
