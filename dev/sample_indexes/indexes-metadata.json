@@ -1,0 +1,40 @@
+{
+  "indexes": [
+    {
+      "name": "django-1.scip",
+      "sha256": "93fb1d73db532f1d61404220bb2d9443e42fc25f5a69246d13a13cb47feb1176"
+    },
+    {
+      "name": "flink-1.scip",
+      "sha256": "d400dac9055bfe3260da6a9d87eab5e2e8e912424ee483baec2eecb4c11714f0"
+    },
+    {
+      "name": "kubernetes-1.scip",
+      "sha256": "c717d08ff69470b6984dcfba12e271282bd4132f3416b9e395d9c95fd9202b87"
+    },
+    {
+      "name": "llvm-project-1.scip",
+      "sha256": "81110140699c76cd131842ae2f6d76484ecca49786930f6efe08d75e6678b4f7"
+    },
+    {
+      "name": "materialize-1.scip",
+      "sha256": "fac6c26746569a67ec5c9675606881f3dd0dd69c6c397893bb2ad74629a4f0f5"
+    },
+    {
+      "name": "postgres-1.scip",
+      "sha256": "9c7ee3d7d6dc6ab9c9e2e53375ce8dd8d91c37c1f408e09d5b0fe914b1e4f384"
+    },
+    {
+      "name": "rust-1.scip",
+      "sha256": "1b59754bd055a8022cf6c803a0fb3c2412eecb93ff5c07070f2d18994d7aecbd"
+    },
+    {
+      "name": "shopify-api-ruby-1.scip",
+      "sha256": "a4f6543a3ab798ebd4e0a75818d3de8a818a01af68d12aa1e8d210af66736f44"
+    },
+    {
+      "name": "typescript-1.scip",
+      "sha256": "0132ed92a82f0a41cf4378582538139917e6100f3cf5095c8a1168e634c4041f"
+    }
+  ]
+}

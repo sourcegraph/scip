@@ -224,6 +224,8 @@ message Descriptor {
   string name = 1;
   string disambiguator = 2;
   Suffix suffix = 3;
+  // NOTE: If you add new fields here, make sure to update the prepareSlot()
+  // function responsible for parsing symbols.
 }
 
 // SymbolInformation defines metadata about a symbol, such as the symbol's
