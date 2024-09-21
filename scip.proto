@@ -319,6 +319,8 @@ message SymbolInformation {
       MethodSpecification = 67;
       // For Protobuf
       Message = 28;
+      // For Dart
+      Mixin = 85;
       // For Solidity
       Modifier = 65;
       Module = 29;
@@ -396,7 +398,7 @@ message SymbolInformation {
       Union = 59;
       Value = 60;
       Variable = 61;
-      // Next = 84;
+      // Next = 86;
       // Feel free to open a PR proposing new language-specific kinds.
   }
   // (optional) The name of this symbol as it should be displayed to the user.
