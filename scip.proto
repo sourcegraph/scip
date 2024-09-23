@@ -519,7 +519,9 @@ enum SymbolRole {
   // Applies to forward declarations for languages like C, C++
   // and Objective-C, as well as `val` declarations in interface
   // files in languages like SML and OCaml.
-  ForwardDefinition = 0x40;
+  ForwardDefinition = 0x40;  
+  // Is the symbol called here?
+  CallSite = 0x80;
 }
 
 enum SyntaxKind {
