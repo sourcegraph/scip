@@ -422,6 +422,7 @@ Since Kind is more fine-grained than Suffix:
 | 12     | EnumMember          |
 | 63     | Error               |
 | 13     | Event               |
+| 84     | Extension           | For Dart                                                                                                                         |
 | 14     | Fact                | For Alloy                                                                                                                        |
 | 15     | Field               |
 | 16     | File                |
@@ -440,6 +441,7 @@ Since Kind is more fine-grained than Suffix:
 | 27     | MethodReceiver      | Analogous to 'ThisParameter' and 'SelfParameter', but for languages like Go where the receiver doesn't have a conventional name. |
 | 67     | MethodSpecification | Analogous to 'AbstractMethod', for Go.                                                                                           |
 | 28     | Message             | For Protobuf                                                                                                                     |
+| 85     | Mixin               | For Dart                                                                                                                         |
 | 65     | Modifier            | For Solidity                                                                                                                     |
 | 29     | Module              |
 | 30     | Namespace           |
@@ -485,7 +487,7 @@ Since Kind is more fine-grained than Suffix:
 | 58     | TypeParameter       |
 | 59     | Union               | For C, C++, Capn Proto                                                                                                           |
 | 60     | Value               |
-| 61     | Variable            | Next = 83; Feel free to open a PR proposing new language-specific kinds.                                                         |
+| 61     | Variable            | Next = 86; Feel free to open a PR proposing new language-specific kinds.                                                         |
 
 ### ToolInfo
 
