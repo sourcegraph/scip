@@ -1,6 +1,6 @@
 module github.com/sourcegraph/scip
 
-go 1.23
+go 1.20
 
 require (
 	github.com/bufbuild/buf v1.25.0

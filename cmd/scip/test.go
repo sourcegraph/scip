@@ -6,12 +6,12 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"slices"
 	"strings"
 
 	"github.com/fatih/color"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/urfave/cli/v2"
+	"golang.org/x/exp/slices"
 )
 
 type testFlags struct {
