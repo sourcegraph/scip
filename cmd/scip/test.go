@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"slices"
@@ -45,7 +46,7 @@ on the expected file format of the test files.`,
 				return err
 			}
 
-			return testMain(dir, testFlags.pathFilters.Value(), index, testFlags.commentSyntax)
+			return testMain(dir, testFlags.pathFilters.Value(), index, testFlags.commentSyntax, os.Stdout)
 		},
 	}
 	return test
@@ -56,6 +57,7 @@ func testMain(
 	fileFilters []string,
 	index *scip.Index,
 	commentSyntax string,
+	output io.Writer,
 ) error {
 	hasFailure := false
 
@@ -102,14 +104,14 @@ func testMain(
 		if len(failures) > 0 {
 			hasFailure = true
 			red := color.New(color.FgRed)
-			red.Printf("✗ %s\n", document.RelativePath)
+			red.Fprintf(output, "✗ %s\n", document.RelativePath)
 
 			for _, failure := range failures {
-				fmt.Println(indent(failure, 4))
+				fmt.Fprintf(output, indent(failure, 4))
 			}
 		} else {
 			green := color.New(color.FgGreen)
-			green.Printf("✓ %s (%d assertions)\n", document.RelativePath, successCount)
+			green.Fprintf(output, "✓ %s (%d assertions)\n", document.RelativePath, successCount)
 		}
 	}
 
