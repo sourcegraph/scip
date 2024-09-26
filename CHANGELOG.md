@@ -1,16 +1,32 @@
 # ChangeLog
 
-## Unreleased (-> v0.5.0)
+## Unreleased
+
+Nothing so far.
+
+## v0.5.0
 
 CLI:
 
+- Added a `test` command for targeted testing of specific occurrences.
+  See the [CLI](docs/CLI.md) and [test file syntax reference](docs/test_file_format.md) for details.
+  (https://github.com/sourcegraph/scip/pull/236)
 - Breaking changes:
-  - Removed SCIP to LSIF conversion functionality
+  - Removed the `convert` subcommand for SCIP to LSIF conversion.
+    (https://github.com/sourcegraph/scip/pull/275)
+
+Schema:
+
+- Added two new `SymbolKind` variants: `Extension` and `Mixin`.
+  (https://github.com/sourcegraph/scip/pull/277)
 
 Go SCIP bindings
 
+- Added clearer documentation around document canonicalization.
+  (https://github.com/sourcegraph/scip/pull/273)
 - Breaking changes:
-  - Removed SCIP to LSIF conversion functionality
+  - Removed SCIP to LSIF conversion functionality.
+    (https://github.com/sourcegraph/scip/pull/275)
 
 ## v0.4.0
 
