@@ -72,11 +72,14 @@ jobs:
           mkdir -p /tmp/digests
           digest="${{ steps.build.outputs.digest }}"
           touch "/tmp/digests/${digest#sha256:}"
+          DIGEST_SUFFIX=${{ matrix.platform }}
+          DIGEST_SUFFIX="${DIGEST_SUFFIX//\//_}"
+          echo "DIGEST_SUFFIX=$DIGEST_SUFFIX" >> $GITHUB_ENV
 
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ matrix.runs-on }}
+          name: digests-${{ env.DIGEST_SUFFIX }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
