@@ -192,8 +192,7 @@ func TestSCIPTests(t *testing.T) {
 			sources := unwrap(scip.NewSourcesFromDirectory(subtestDir))(t)
 			index := unwrap(repro.Index("file:/"+subtestDir, dirEntry.Name(), sources, []*repro.Dependency{}))(t)
 
-			passFiles := []string{}
-			failFiles := []string{}
+			var passFiles, failFiles []string
 			testFiles := unwrap(os.ReadDir(subtestDir))(t)
 			for _, testFile := range testFiles {
 				if strings.HasPrefix(testFile.Name(), "passes") {
