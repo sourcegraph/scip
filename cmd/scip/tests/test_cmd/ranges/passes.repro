@@ -1,0 +1,4 @@
+definition hello().
+#          ^^^^^^^^ definition reprolang repro_manager ranges 1.0.0 passes.repro/hello().
+#            ^ definition reprolang repro_manager ranges 1.0.0 passes.repro/hello().
+            # <- definition reprolang repro_manager ranges 1.0.0 passes.repro/hello().

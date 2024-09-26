@@ -28,7 +28,12 @@ func snapshotCommand() cli.Command {
 		Description: `The snapshot subcommand generates snapshot files which
 can be use for inspecting the output of an index in a
 visual way. Occurrences are marked with caret signs (^)
-and symbol information.`,
+and symbol information.
+
+For testing a SCIP indexer, you can either use this subcommand
+along with 'git diff' or equivalent, or you can use the dedicated
+'test' subcommand for more targeted checks.
+`,
 		Flags: []cli.Flag{
 			fromFlag(&snapshotFlags.from),
 			&cli.StringFlag{
@@ -44,12 +49,7 @@ and symbol information.`,
 				Destination: &snapshotFlags.strict,
 				Value:       true,
 			},
-			&cli.StringFlag{
-				Name:        "comment-syntax",
-				Usage:       "Comment syntax to use for snapshot files",
-				Destination: &snapshotFlags.commentSyntax,
-				Value:       "//",
-			},
+			commentSyntaxFlag(&snapshotFlags.commentSyntax),
 		},
 		Action: func(c *cli.Context) error {
 			return snapshotMain(snapshotFlags)

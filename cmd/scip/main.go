@@ -23,7 +23,8 @@ func commands() []*cli.Command {
 	print := printCommand()
 	snapshot := snapshotCommand()
 	stats := statsCommand()
-	return []*cli.Command{&lint, &print, &snapshot, &stats}
+	test := testCommand()
+	return []*cli.Command{&lint, &print, &snapshot, &stats, &test}
 }
 
 //go:embed version.txt
@@ -71,6 +72,15 @@ func fromFlag(storage *string) *cli.StringFlag {
 		Usage:       "Path to SCIP index file",
 		Destination: storage,
 		Value:       "index.scip",
+	}
+}
+
+func commentSyntaxFlag(storage *string) *cli.StringFlag {
+	return &cli.StringFlag{
+		Name:        "comment-syntax",
+		Usage:       "Comment syntax to use for snapshot files",
+		Destination: storage,
+		Value:       "//",
 	}
 }
 

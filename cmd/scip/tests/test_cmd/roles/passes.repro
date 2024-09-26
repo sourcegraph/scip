@@ -1,0 +1,9 @@
+definition hello().
+#            ^ definition reprolang repro_manager roles 1.0.0 passes.repro/hello().
+
+reference hello().
+#           ^ reference reprolang repro_manager roles 1.0.0 passes.repro/hello().
+
+definition abc#
+reference forward_definition abc#
+#                             ^ forward_definition reprolang repro_manager roles 1.0.0 passes.repro/abc#
