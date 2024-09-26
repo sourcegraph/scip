@@ -24,18 +24,26 @@ func testCommand() cli.Command {
 	var testFlags testFlags
 	test := cli.Command{
 		Name:  "test",
-		Usage: "Validate subsets of snapshot files",
-		Description: `The test subcommand validates whether a provided SCIP index
-matches manually specified symbol fields. Refer to
-https://github.com/sourcegraph/scip/blob/main/docs/test_command.md for documentation
-on the expected file format of the test files.`,
+		Usage: "Validate a SCIP index against test files",
+		Description: fmt.Sprintf(`Validates whether the SCIP data present in an index
+matches that specified in human-readable test files, using syntax
+similar to the 'snapshot' subcommand. Test file syntax reference:
+
+    https://github.com/sourcegraph/scip/blob/v%s/docs/test_file_format.md
+
+The test files are located based on the relative_path field
+in the SCIP document, interpreted relative to the the directory
+the CLI is invoked in.
+
+If you want to instead check all the data in a SCIP index,
+use the 'snapshot' subcommand.`, version),
 		Flags: []cli.Flag{
 			fromFlag(&testFlags.from),
 			commentSyntaxFlag(&testFlags.commentSyntax),
 			&cli.StringSliceFlag{
 				Name:        "filter",
 				Aliases:     []string{"f"},
-				Usage:       "Filter the test files to run. Only test files that match the provided filter(s).",
+				Usage:       "Explicit list of test files to check. Can be specified multiple times. If not specified, all files are tested.",
 				Destination: &testFlags.pathFilters,
 			},
 		},

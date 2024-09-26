@@ -28,7 +28,7 @@ COMMANDS:
    lint      Flag potential issues with a SCIP index
    print     Print a SCIP index for debugging
    snapshot  Generate snapshot files for golden testing
-   test      Validate subsets of snapshot files
+   test      Validate a SCIP index against test files
    stats     Output useful statistics about a SCIP index
    help, h   Shows a list of commands or help for one command
 
@@ -88,6 +88,10 @@ DESCRIPTION:
    can be use for inspecting the output of an index in a
    visual way. Occurrences are marked with caret signs (^)
    and symbol information.
+   
+   For testing a SCIP indexer, you can either use this subcommand
+   along with 'git diff' or equivalent, or you can use the dedicated
+   'test' subcommand for more targeted checks.
 
 OPTIONS:
    --from value            Path to SCIP index file (default: "index.scip")
@@ -101,21 +105,29 @@ OPTIONS:
 
 ```
 NAME:
-   scip test - Validate subsets of snapshot files
+   scip test - Validate a SCIP index against test files
 
 USAGE:
    scip test [command options] [arguments...]
 
 DESCRIPTION:
-   The test subcommand validates whether a provided SCIP index
-   matches manually specified symbol fields. Refer to
-   https://github.com/sourcegraph/scip/blob/main/docs/test_command.md for documentation
-   on the expected file format of the test files.
+   Validates whether the SCIP data as
+   in a given SCIP index matches that specified in human-readable test files,
+   using syntax similar to the 'snapshot subcommand'. Test file syntax reference:
+
+       https://github.com/sourcegraph/scip/blob/v0.4.0/docs/test_file_format.md
+
+   The test files are located based on the relative_path field
+   in the SCIP document, interpreted relative to the the directory
+   the CLI is invoked in.
+
+   If you want to instead check all the data in a SCIP index,
+   use the 'snapshot' subcommand.
 
 OPTIONS:
    --from value                                           Path to SCIP index file (default: "index.scip")
    --comment-syntax value                                 Comment syntax to use for snapshot files (default: "//")
-   --filter value, -f value [ --filter value, -f value ]  Filter the test files to run. Only test files that match the provided filter(s).
+   --filter value, -f value [ --filter value, -f value ]  Explicit list of test files to check. Can be specified multiple times. If not specified, all files are tested.
    --help, -h                                             show help
 ```
 
