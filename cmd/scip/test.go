@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"slices"
@@ -61,6 +62,31 @@ func testMain(
 ) error {
 	hasFailure := false
 
+	fileFilterSet := map[string]struct{}{}
+	for _, file := range fileFilters {
+		fileFilterSet[file] = struct{}{}
+	}
+
+	allTestFilesSet := map[string]struct{}{}
+	if err := filepath.WalkDir(directory, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if filepath.Ext(path) == ".scip" {
+			return nil
+		}
+		if len(fileFilterSet) > 0 {
+			if _, ok := fileFilterSet[path]; ok {
+				allTestFilesSet[path] = struct{}{}
+			}
+		} else if !d.IsDir() {
+			allTestFilesSet[path] = struct{}{}
+		}
+		return nil
+	}); err != nil {
+		return err
+	}
+
 	for _, document := range index.Documents {
 		sourceFilePath := filepath.Join(directory, document.RelativePath)
 
@@ -74,6 +100,7 @@ func testMain(
 		if err != nil {
 			return err
 		}
+		delete(allTestFilesSet, sourceFilePath)
 
 		failures := []string{}
 		successCount := 0
@@ -113,6 +140,20 @@ func testMain(
 			green := color.New(color.FgGreen)
 			green.Fprintf(output, "✓ %s (%d assertions)\n", document.RelativePath, successCount)
 		}
+	}
+
+	if len(allTestFilesSet) > 0 {
+		sortedFiles := []string{}
+		for f, _ := range allTestFilesSet {
+			sortedFiles = append(sortedFiles, f)
+		}
+		slices.Sort(sortedFiles)
+		red := color.New(color.FgRed)
+		red.Fprintf(output, "✗ Missing documents in SCIP index\n")
+		for _, path := range sortedFiles {
+			fmt.Fprintf(output, "    %s\n", path)
+		}
+		hasFailure = true
 	}
 
 	if hasFailure {
