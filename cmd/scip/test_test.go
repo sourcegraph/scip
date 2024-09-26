@@ -34,6 +34,9 @@ func TestTestCasesForLine(t *testing.T) {
 	// only the first test case has enforceLength = true
 	require.True(t, actual[0].enforceLength)
 	require.Equal(t, 3, actual[0].attribute.length)
+	require.False(t, actual[1].enforceLength)
+	require.False(t, actual[2].enforceLength)
+	require.False(t, actual[3].enforceLength)
 
 	// all test cases should have the same start
 	require.Equal(t, 8, actual[0].attribute.start)
