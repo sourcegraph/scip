@@ -102,28 +102,29 @@ func TestSCIPSnapshots(t *testing.T) {
 	})
 }
 
+func unwrap[T any](v T, err error) func(*testing.T) T {
+	return func(t *testing.T) T {
+		require.NoError(t, err)
+		return v
+	}
+}
+
 func TestSCIPTests(t *testing.T) {
-	cwd, err := os.Getwd()
-	require.Nil(t, err)
-
+	cwd := unwrap(os.Getwd())(t)
 	testDir := filepath.Join(cwd, "tests", "test_cmd")
-	testCases, _ := os.ReadDir(testDir)
+	testCases := unwrap(os.ReadDir(testDir))(t)
+	require.Truef(t, len(testCases) >= 1, "Expected at least one test case in directory: %v", testDir)
+
 	for _, testCase := range testCases {
-		if !testCase.IsDir() {
-			t.Fatalf("not a directory: %v", testCase.Name())
-		}
+		require.Truef(t, testCase.IsDir(), "not a directory: %v", testCase.Name())
 		t.Run(testCase.Name(), func(t *testing.T) {
-
-			baseDirectory := filepath.Join(testDir, testCase.Name())
-			sources, err := scip.NewSourcesFromDirectory(baseDirectory)
-			require.Nil(t, err)
-
-			index, err := repro.Index("file:/"+baseDirectory, testCase.Name(), sources, []*repro.Dependency{})
+			subtestDir := filepath.Join(testDir, testCase.Name())
+			sources := unwrap(scip.NewSourcesFromDirectory(subtestDir))(t)
+			index := unwrap(repro.Index("file:/"+subtestDir, testCase.Name(), sources, []*repro.Dependency{}))(t)
 
 			passFiles := []string{}
 			failFiles := []string{}
-
-			testFiles, _ := os.ReadDir(baseDirectory)
+			testFiles := unwrap(os.ReadDir(subtestDir))(t)
 			for _, testFile := range testFiles {
 				if strings.HasPrefix(testFile.Name(), "passes") {
 					passFiles = append(passFiles, testFile.Name())
@@ -134,11 +135,8 @@ func TestSCIPTests(t *testing.T) {
 				}
 			}
 
-			passRes := ExecuteTestCommand(baseDirectory, passFiles, index, "#")
-			require.Equal(t, nil, passRes, "Test case %v failed", testCase.Name())
-
-			failRes := ExecuteTestCommand(baseDirectory, failFiles, index, "#")
-			require.NotEqual(t, nil, failRes, "Test case %v failed", testCase.Name())
+			require.NoError(t, testMain(subtestDir, passFiles, index, "#"))
+			require.Error(t, testMain(subtestDir, failFiles, index, "#"))
 		})
 	}
 }

@@ -45,13 +45,13 @@ on the expected file format of the test files.`,
 				return err
 			}
 
-			return ExecuteTestCommand(dir, testFlags.pathFilters.Value(), index, testFlags.commentSyntax)
+			return testMain(dir, testFlags.pathFilters.Value(), index, testFlags.commentSyntax)
 		},
 	}
 	return test
 }
 
-func ExecuteTestCommand(
+func testMain(
 	directory string,
 	fileFilters []string,
 	index *scip.Index,
