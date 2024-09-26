@@ -28,8 +28,8 @@ COMMANDS:
    lint      Flag potential issues with a SCIP index
    print     Print a SCIP index for debugging
    snapshot  Generate snapshot files for golden testing
-   test      Validate a SCIP index against test files
    stats     Output useful statistics about a SCIP index
+   test      Validate a SCIP index against test files
    help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
