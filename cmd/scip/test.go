@@ -429,7 +429,7 @@ func formatFailure(lineNumber int, testCase symbolAttributeTestCase, attributesA
 	}
 
 	if (len(attributesAtLine)) == 0 {
-		failureDesc = append(failureDesc, "    Actual: <No attributes found>")
+		failureDesc = append(failureDesc, "    Actual: <no attributes found>")
 	} else {
 		for i, attr := range attributesAtLine {
 			prefix := "       "
