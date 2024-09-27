@@ -142,7 +142,7 @@ func testMain(
 			red.Fprintf(output, "✗ %s\n", document.RelativePath)
 
 			for _, failure := range failures {
-				fmt.Fprintf(output, indent(failure, 4))
+				fmt.Fprintf(output, indent(failure, 4)+"\n")
 			}
 		} else {
 			green := color.New(color.FgGreen)
@@ -421,21 +421,31 @@ func (s symbolAttributeTestCase) check(attr symbolAttribute) bool {
 
 func formatFailure(lineNumber int, testCase symbolAttributeTestCase, attributesAtLine []symbolAttribute) string {
 	failureDesc := []string{
-		fmt.Sprintf("Failure - row: %d, column: %d", lineNumber, testCase.attribute.start),
+		fmt.Sprintf("Failure [Ln: %d, Col: %d]", lineNumber+1, testCase.attribute.start),
 		fmt.Sprintf("  Expected: '%s %s'", testCase.attribute.kind, testCase.attribute.data),
 	}
 	for _, add := range testCase.attribute.additionalData {
 		failureDesc = append(failureDesc, indent(fmt.Sprintf("'%s'", add), 12))
 	}
 
-	failureDesc = append(failureDesc, "  Actual:")
 	if (len(attributesAtLine)) == 0 {
-		failureDesc = append(failureDesc, "    - No attributes found")
+		failureDesc = append(failureDesc, "    Actual: <no attributes found>")
 	} else {
-		for _, attr := range attributesAtLine {
-			failureDesc = append(failureDesc, fmt.Sprintf("    - '%s %s'", attr.kind, attr.data))
+		for i, attr := range attributesAtLine {
+			prefix := "       "
+			if i == 0 {
+				prefix = "Actual:"
+			}
+
+			if len(attributesAtLine) > 1 {
+				prefix += " *"
+			} else {
+				prefix += "  "
+			}
+
+			failureDesc = append(failureDesc, fmt.Sprintf("  %s '%s %s'", prefix, attr.kind, attr.data))
 			for _, add := range attr.additionalData {
-				failureDesc = append(failureDesc, indent(fmt.Sprintf("'%s'", add), 6))
+				failureDesc = append(failureDesc, indent(fmt.Sprintf("'%s'", add), 12))
 			}
 		}
 	}
