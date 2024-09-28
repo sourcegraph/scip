@@ -20,7 +20,7 @@ rust-version = "1.60.0"
 protobuf = "=3.2.0"
 
 [dev-dependencies]
-pretty_assertions = "1.2.1"
+pretty_assertions = "1.4.1"
 
 [lib]
 name = "scip"
