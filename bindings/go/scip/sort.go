@@ -1,9 +1,9 @@
 package scip
 
 import (
+	"cmp"
+	"slices"
 	"sort"
-
-	"golang.org/x/exp/slices"
 )
 
 // FindSymbol returns the symbol with the given name in the given document. If there is no symbol by
@@ -24,12 +24,7 @@ func FindSymbol(document *Document, symbolName string) *SymbolInformation {
 // and SymbolInformation values must be merged. This guarantee is upheld by CanonicalizeDocument.
 func FindSymbolBinarySearch(canonicalizedDocument *Document, symbolName string) *SymbolInformation {
 	i, found := slices.BinarySearchFunc(canonicalizedDocument.Symbols, symbolName, func(sym *SymbolInformation, lookup string) int {
-		if sym.Symbol < lookup {
-			return -1
-		} else if sym.Symbol == lookup {
-			return 0
-		}
-		return 1
+		return cmp.Compare(sym.Symbol, lookup)
 	})
 	if found {
 		return canonicalizedDocument.Symbols[i]
