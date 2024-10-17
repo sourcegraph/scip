@@ -134,38 +134,38 @@ func TestSCIPTests(t *testing.T) {
 		{"roles",
 			autogold.Expect("✓ passes.repro (3 assertions)\n"),
 			autogold.Expect(`✗ fails-wrong-role.repro
-    Failure - row: 0, column: 13
+    Failure [Ln: 1, Col: 13]
       Expected: 'reference reprolang repro_manager roles 1.0.0 fails-wrong-role.repro/hello().'
-      Actual:
-        - 'definition reprolang repro_manager roles 1.0.0 fails-wrong-role.repro/hello().'✗ fails-wrong-symbol.repro
-    Failure - row: 0, column: 13
+      Actual:   'definition reprolang repro_manager roles 1.0.0 fails-wrong-role.repro/hello().'
+✗ fails-wrong-symbol.repro
+    Failure [Ln: 1, Col: 13]
       Expected: 'definition reprolang repro_manager roles 1.0.0 fails-wrong-role.repro/hello2().'
-      Actual:
-        - 'definition reprolang repro_manager roles 1.0.0 fails-wrong-symbol.repro/hello().'`),
+      Actual:   'definition reprolang repro_manager roles 1.0.0 fails-wrong-symbol.repro/hello().'
+`),
 		},
 		{"ranges",
 			autogold.Expect("✓ passes.repro (3 assertions)\n"),
 			autogold.Expect(`✗ fails.repro
-    Failure - row: 0, column: 10
+    Failure [Ln: 1, Col: 10]
       Expected: 'definition passes.repro/hello().'
-      Actual:
-        - No attributes found`),
+        Actual: <no attributes found>
+`),
 		},
 		{"diagnostics",
 			autogold.Expect("✓ passes.repro (2 assertions)\n"),
 			autogold.Expect(`✗ fails-incorrect-diagnostic.repro
-    Failure - row: 0, column: 11
+    Failure [Ln: 1, Col: 11]
       Expected: 'diagnostic Warning:'
                 'THIS IS NOT CORRECT'
-      Actual:
-        - 'definition reprolang repro_manager diagnostics 1.0.0 fails-incorrect-diagnostic.repro/deprecatedMethod.'
-        - 'diagnostic Warning'
-          'deprecated identifier'✗ fails-no-diagnostic.repro
-    Failure - row: 0, column: 11
+      Actual: * 'definition reprolang repro_manager diagnostics 1.0.0 fails-incorrect-diagnostic.repro/deprecatedMethod.'
+              * 'diagnostic Warning'
+                'deprecated identifier'
+✗ fails-no-diagnostic.repro
+    Failure [Ln: 1, Col: 11]
       Expected: 'diagnostic Warning:'
                 'deprecated identifier'
-      Actual:
-        - 'definition reprolang repro_manager diagnostics 1.0.0 fails-no-diagnostic.repro/hello().'`),
+      Actual:   'definition reprolang repro_manager diagnostics 1.0.0 fails-no-diagnostic.repro/hello().'
+`),
 		},
 	}
 
