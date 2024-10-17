@@ -2,7 +2,18 @@
 
 ## Unreleased
 
-Nothing so far.
+## v0.5.1
+
+CLI:
+
+- Cleaned up the formatting for the `test` command.
+  (https://github.com/sourcegraph/scip/pull/281)
+
+Rust SCIP bindings:
+
+- Bumped the pinned version of the `protobuf` crate to
+  the latest release v3.7.1.
+  (https://github.com/sourcegraph/scip/pull/287)
 
 ## v0.5.0
 
@@ -20,7 +31,7 @@ Schema:
 - Added two new `SymbolKind` variants: `Extension` and `Mixin`.
   (https://github.com/sourcegraph/scip/pull/277)
 
-Go SCIP bindings
+Go SCIP bindings:
 
 - Added clearer documentation around document canonicalization.
   (https://github.com/sourcegraph/scip/pull/273)
