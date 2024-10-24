@@ -1,22 +1,24 @@
 # Design rationale for SCIP
 
-Sourcegraph supports viewing and navigation code.
+Sourcegraph supports viewing and navigating code for
+many different programming languages.
 This is similar to an IDE, except for the actual "editor" part.
 
 The design of SCIP is based on this primary motivating use case,
 as well as for fixing the pain points we encountered with using LSIF.[^1]
 
-SCIP is meant to be _transmission_ format for sending
+SCIP is meant to be a _transmission_ format for sending
 data from some producers to some consumers
 -- it is not meant as a _storage_ format for querying.
 Ideally, producers should be able to directly output SCIP
 instead of going through an intermediate format
 and then converting to SCIP for transmission.
 
-[^1]: Sourcegraph historically supported LSIF uploads
-as well as maintained our own LSIF indexers,
-but we ran into issues of development velocity,
-debugging, as well as indexer performance bottlenecks.
+[^1]:
+    Sourcegraph historically supported LSIF uploads
+    as well as maintained our own LSIF indexers,
+    but we ran into issues of development velocity,
+    debugging, as well as indexer performance bottlenecks.
 
 ## Goals
 
@@ -33,6 +35,10 @@ debugging, as well as indexer performance bottlenecks.
     - Why: Scaling for large monorepos.
   - Making the indexer parallel should be easy
     - Why: Scaling for large monorepos.
+  - Writing indexers in different languages should be feasible
+    - Why: Generally, tooling for a language tends to be implemented
+      in the same language or an adjacent one; it would be impractical
+      to expect indexers to settle on a common implementation language.
 - Robustness against indexer bugs: Incorrect code nav data for a certain entity
   should have a limited blast radius.
 - Ease of debugging.
@@ -43,15 +49,18 @@ debugging, as well as indexer performance bottlenecks.
   - Why: Sourcegraph's code search and navigation has historically
     focused on read-only use cases. Adding support for code modifications
     introduces more complexity.
+    While the same data can be used for tools for refactoring tools
+    and IDE tooling, supporting those is not the focus of SCIP.
 - Ease of writing consumers.
   - Why: We expect the number of SCIP producers to be much higher
     than the number of consumers,
     so it makes sense to optimize for producers.
-- Be as compact as possible in uncompressed form.
+- Be as compact as possible in uncompressed form.[^2]
   - Why: Modern general-purpose compression formats like gzip
     and zstd are already very good in terms of both compression
-    speed and compression ratio.
+    speed and compression ratio.[^3]
 - Support efficient code navigation by itself.
+
   - Why: Code navigation fundamentally requires some form of bidirectional
     lookup which is best served by a query engine.
 
@@ -60,6 +69,10 @@ debugging, as well as indexer performance bottlenecks.
     requires some way of connecting the data together anyways.
     However, if the consumer is capable of supporting that,
     then recording bidirectional links in index data is not useful.
+
+[^2]: The only compromise on this decision is in the choice of representation of source ranges, where benchmarks showed that using a variable length integer array encoding provided significant savings compared to a message-based encoding, even after compression.
+
+[^3]: In practice, SCIP data tends to be have a compression ratio around in the range of 10%-20%, as modern compressors are very good at de-duplicating away the repetitive textual symbols.
 
 ## Core design decisions
 
