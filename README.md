@@ -7,7 +7,7 @@ such as Go to definition, Find references, and Find implementations.
 
 This repository includes:
 
-- A [protobuf schema for SCIP](./scip.proto).
+- A [Protobuf schema for SCIP](./scip.proto).
 - Rich Go and Rust bindings for SCIP: These include many utility functions
   to help build tooling on top of SCIP.
 - Auto-generated bindings for TypeScript and Haskell.
@@ -15,7 +15,7 @@ This repository includes:
   a breeze to work with.
 
 If you're interested in better understanding the motivation behind SCIP,
-check out the [announcement blog post](https://about.sourcegraph.com/blog/announcing-scip).
+check out the [announcement blog post](https://about.sourcegraph.com/blog/announcing-scip) and the [design doc](./DESIGN.md).
 
 If you're interested in writing a new indexer that emits SCIP,
 check out our documentation on
@@ -24,8 +24,8 @@ Also, check out the [Debugging section][] in the Development docs.
 
 If you're interested in consuming SCIP data,
 you can either use one of the [provided language bindings](https://github.com/sourcegraph/scip/tree/main/bindings),
-or generate code for the [SCIP protobuf schema](./scip.proto)
-using the protobuf toolchain for your language ecosystem.
+or generate code for the [SCIP Protobuf schema](./scip.proto)
+using the Protobuf toolchain for your language ecosystem.
 Also, check out the [Debugging section][] in the Development docs.
 
 [debugging section]: ./Development.md#debugging
