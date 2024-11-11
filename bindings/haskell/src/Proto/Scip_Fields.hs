@@ -38,6 +38,13 @@ code ::
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "code" a) =>
   Lens.Family2.LensLike' f s a
 code = Data.ProtoLens.Field.field @"code"
+crossRelationships ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "crossRelationships" a) =>
+  Lens.Family2.LensLike' f s a
+crossRelationships
+  = Data.ProtoLens.Field.field @"crossRelationships"
 descriptors ::
   forall f s a.
   (Prelude.Functor f,
@@ -144,6 +151,13 @@ maybe'package ::
    Data.ProtoLens.Field.HasField s "maybe'package" a) =>
   Lens.Family2.LensLike' f s a
 maybe'package = Data.ProtoLens.Field.field @"maybe'package"
+maybe'relationship ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "maybe'relationship" a) =>
+  Lens.Family2.LensLike' f s a
+maybe'relationship
+  = Data.ProtoLens.Field.field @"maybe'relationship"
 maybe'signatureDocumentation ::
   forall f s a.
   (Prelude.Functor f,
@@ -208,6 +222,12 @@ range ::
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "range" a) =>
   Lens.Family2.LensLike' f s a
 range = Data.ProtoLens.Field.field @"range"
+relationship ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "relationship" a) =>
+  Lens.Family2.LensLike' f s a
+relationship = Data.ProtoLens.Field.field @"relationship"
 relationships ::
   forall f s a.
   (Prelude.Functor f,
@@ -243,6 +263,12 @@ source ::
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "source" a) =>
   Lens.Family2.LensLike' f s a
 source = Data.ProtoLens.Field.field @"source"
+sourceSymbol ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "sourceSymbol" a) =>
+  Lens.Family2.LensLike' f s a
+sourceSymbol = Data.ProtoLens.Field.field @"sourceSymbol"
 suffix ::
   forall f s a.
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "suffix" a) =>
@@ -299,6 +325,13 @@ vec'arguments ::
    Data.ProtoLens.Field.HasField s "vec'arguments" a) =>
   Lens.Family2.LensLike' f s a
 vec'arguments = Data.ProtoLens.Field.field @"vec'arguments"
+vec'crossRelationships ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "vec'crossRelationships" a) =>
+  Lens.Family2.LensLike' f s a
+vec'crossRelationships
+  = Data.ProtoLens.Field.field @"vec'crossRelationships"
 vec'descriptors ::
   forall f s a.
   (Prelude.Functor f,

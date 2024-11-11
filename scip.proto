@@ -25,11 +25,7 @@ message Index {
   Metadata metadata = 1;
   // Documents that belong to this index.
   repeated Document documents = 2;
-  // (optional) Symbols that are referenced from this index but are defined in
-  // an external package (a separate `Index` message). Leave this field empty
-  // if you assume the external package will get indexed separately. If the
-  // external package won't get indexed for some reason then you can use this
-  // field to provide hover documentation for those external symbols.
+  // (DEPRECATED): Use Document.external_symbols instead.
   repeated SymbolInformation external_symbols = 3;
   // IMPORTANT: When adding a new field to `Index` here, add a matching
   // function in `IndexVisitor` and update `ParseStreaming`.
@@ -115,6 +111,91 @@ message Document {
   // - For an indexer implemented in Go, Rust or C++,
   //   use UTF8ByteOffsetFromLineStart.
   PositionEncoding position_encoding = 6;
+
+  // (optional) Symbols that are referenced from this Document but are defined in
+  // an external package (a separate `Index` message). This field can be used
+  // for the following purposes:
+  // - Provide hover documentation for external symbols.
+  // - Mark relationships from an external symbol to a global symbol defined
+  //   in the current document.
+  //
+  // Example 1: In Go, if a file defines a new interface I and there is a standard
+  // library type T which is imported in the file and implements I,
+  // the indexer can add an external symbol for T with an is_implementation
+  // relationship to I.
+  //
+  // Example 2: In Rust, if a file defines a new trait T and add impls for a
+  // type X defined in another Index, the indexer can add an external symbol
+  // for X with an is_implementation relationship to T.
+  //
+  // Example 3: If the code references a third-party type X whose definition
+  // site may or may not be indexed, the indexer can emit an external symbol
+  // for X including its hover documentation.
+  repeated SymbolInformation external_symbols = 7;
+
+  // (optional) Relationships that affect code navigation in this Document
+  // but are not and cannot be defined in the Document(s) defining
+  // source_symbol or the target symbol (relationship.symbol).
+  //
+  // Example 1: In the case of structurally typed interfaces (or more generally
+  // structural subtyping), such as Go, it is possible for one Go package P1
+  // to define an interface I, a second Go package P2 to have a type T which
+  // implements the interface I without importing P1, and a third Go package P3
+  // to import both P1 and P2. If P3 has a conversion of a value from
+  // P2.T to P1.I, then the indexer can emit a cross-relationship from
+  // P2.T to P1.I.
+  //
+  // This same example carries over to languages like TypeScript which support
+  // structural subtyping.
+  //
+  // Example 2: Rust allows for blanket trait implementations. Consider the
+  // following code:
+  //
+  // ```rust
+  // // t1.rs
+  // pub trait T1 {}
+  //
+  // // s.rs
+  // use m1::T1;
+  // pub struct S;
+  // impl T1 for S {}
+  //
+  // // t2.rs
+  // use m1::T1;
+  // trait T2 {}
+  // impl<T: T1> T2 for T {} // <- blanket implementation that covers S
+  //
+  // // cross.rs
+  // use m3::T2;
+  // use m2::S;
+  //
+  // fn f(s : S) -> Box<dyn T2> { Box::new(s) } // derives that S implements T2
+  // ```
+  //
+  // If all of these modules correspond to Documents in different SCIP indexes,
+  // it is not possible for the indexer to emit an is_implementation relationship
+  // from S to T2 in the Documents for t1.rs, s.rs or t2.rs. In this case,
+  // the indexer can emit a cross-relationship from S to T2 in the Document for cross.rs.
+  //
+  // Example 3: Swift allows for retroactive conformances (aka orphan instances
+  // in Haskell). Consider the following code:
+  //
+  // ```swift
+  // // P.swift
+  // protocol P {}
+  //
+  // // S.swift
+  // struct S {}
+  //
+  // // cross.swift
+  // extension S: P {}
+  // ```
+  //
+  // If all of these files correspond to Documents in different SCIP indexes,
+  // it is not possible for the indexer to emit an is_implementation relationship
+  // from S to P in the Documents for P.swift, or S.swift. In this case,
+  // the indexer can emit a cross-relationship from S to P in the Document for cross.swift.
+  repeated FullRelationship cross_relationships = 8;
 }
 
 // Encoding used to interpret the 'character' value in source ranges.
@@ -185,7 +266,12 @@ enum PositionEncoding {
 // the file and the node corresponding to the symbol.
 //
 // Local symbols MUST only be used for entities which are local to a Document,
-// and cannot be accessed from outside the Document.
+// and cannot be accessed from outside the Document via code navigation.
+//
+// Example 1: If the indexer supports emitting 'is_implementation' relationships,
+// then a subclass of a global class, even if declared within a function,
+// must have a global symbol.
+//
 message Symbol {
   string scheme = 1;
   Package package = 2;
@@ -240,6 +326,12 @@ message SymbolInformation {
   // include non-code documentation in this field, for example docstrings.
   repeated string documentation = 3;
   // (optional) Relationships to other symbols (e.g., implements, type definition).
+  //
+  // Relationships follow one direction. To represent the other direction:
+  // - If the source symbol is defined in the same Index, attach the relationship to
+  //   its SymbolInformation.
+  // - If the source symbol is defined in a different Index, use Document.external_symbols's
+  //   relationships field.
   repeated Relationship relationships = 4;
   // The kind of this symbol. Use this field instead of
   // `SymbolDescriptor.Suffix` to determine whether something is, for example, a
@@ -438,6 +530,14 @@ message SymbolInformation {
   string enclosing_symbol = 8;
 }
 
+// NOTE: FullRelationship reuses Relationship instead of a more symmetric representation
+// to reduce the risk of divergence when adding new fields to Relationships.
+message FullRelationship {
+  // Represents the symbol that this relationship is about.
+  string source_symbol = 1;
+  // Represents the symbol + the relationship that this symbol links to.
+  Relationship relationship = 2;
+}
 
 message Relationship {
   string symbol = 1;
@@ -466,16 +566,27 @@ message Relationship {
   // references" on the `Dog#sound()` method should include references to the
   // `Animal#sound()` method as well.
   bool is_reference = 2;
-  // Similar to `is_reference` but for "Find implementations".
+  // Similar to `is_reference` but for "Find implementations" and "Find supers".
+  //
   // It's common for `is_implementation` and `is_reference` to both be true but
-  // it's not always the case.
-  // In the TypeScript example above, observe that `Dog#` has an
-  // `is_implementation` relationship with `"Animal#"` but not `is_reference`.
-  // This is because "Find references" on the "Animal#" symbol should not return
-  // "Dog#". We only want "Dog#" to return as a result for "Find
-  // implementations" on the "Animal#" symbol.
+  // it's not always the case. In the TypeScript example above, observe that
+  // `Dog#` has an `is_implementation` relationship with `"Animal#"` but not
+  // `is_reference`. This is because "Find references" on the "Animal#" symbol
+  // should not return "Dog#". We only want "Dog#" to return as a result for
+  // "Find implementations" on the "Animal#" symbol.
   bool is_implementation = 3;
-  // Similar to `references_symbols` but for "Go to type definition".
+  // Represents that "Go to type definition" from the (outer) symbol should go
+  // to the (relationship's) symbol for a particular type.
+  //
+  // A less confusing name for this field would be "has_type", but we
+  // cannot change this to avoid breaking generated code.
+  //
+  // NOTE: In Sourcegraph, this field will not be used for code navigation like
+  // "Go to type references" (i.e. identifying all places where there is a
+  // variable with a given type, even when type is not mentioned explicitly),
+  // since that would mean that an indexer could only utilize local symbols
+  // in very limited contexts, since most local variables could be potential
+  // targets of such a navigation action.
   bool is_type_definition = 4;
   // Allows overriding the behavior of "Go to definition" and "Find references"
   // for symbols which do not have a definition of their own or could

@@ -573,9 +573,11 @@ export namespace scip {
             symbols?: SymbolInformation[];
             text?: string;
             position_encoding?: PositionEncoding;
+            external_symbols?: SymbolInformation[];
+            cross_relationships?: FullRelationship[];
         }) {
             super();
-            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3], this.#one_of_decls);
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2, 3, 7, 8], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("language" in data && data.language != undefined) {
                     this.language = data.language;
@@ -594,6 +596,12 @@ export namespace scip {
                 }
                 if ("position_encoding" in data && data.position_encoding != undefined) {
                     this.position_encoding = data.position_encoding;
+                }
+                if ("external_symbols" in data && data.external_symbols != undefined) {
+                    this.external_symbols = data.external_symbols;
+                }
+                if ("cross_relationships" in data && data.cross_relationships != undefined) {
+                    this.cross_relationships = data.cross_relationships;
                 }
             }
         }
@@ -633,6 +641,18 @@ export namespace scip {
         set position_encoding(value: PositionEncoding) {
             pb_1.Message.setField(this, 6, value);
         }
+        get external_symbols() {
+            return pb_1.Message.getRepeatedWrapperField(this, SymbolInformation, 7) as SymbolInformation[];
+        }
+        set external_symbols(value: SymbolInformation[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 7, value);
+        }
+        get cross_relationships() {
+            return pb_1.Message.getRepeatedWrapperField(this, FullRelationship, 8) as FullRelationship[];
+        }
+        set cross_relationships(value: FullRelationship[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 8, value);
+        }
         static fromObject(data: {
             language?: string;
             relative_path?: string;
@@ -640,6 +660,8 @@ export namespace scip {
             symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
             text?: string;
             position_encoding?: PositionEncoding;
+            external_symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
+            cross_relationships?: ReturnType<typeof FullRelationship.prototype.toObject>[];
         }): Document {
             const message = new Document({});
             if (data.language != null) {
@@ -660,6 +682,12 @@ export namespace scip {
             if (data.position_encoding != null) {
                 message.position_encoding = data.position_encoding;
             }
+            if (data.external_symbols != null) {
+                message.external_symbols = data.external_symbols.map(item => SymbolInformation.fromObject(item));
+            }
+            if (data.cross_relationships != null) {
+                message.cross_relationships = data.cross_relationships.map(item => FullRelationship.fromObject(item));
+            }
             return message;
         }
         toObject() {
@@ -670,6 +698,8 @@ export namespace scip {
                 symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
                 text?: string;
                 position_encoding?: PositionEncoding;
+                external_symbols?: ReturnType<typeof SymbolInformation.prototype.toObject>[];
+                cross_relationships?: ReturnType<typeof FullRelationship.prototype.toObject>[];
             } = {};
             if (this.language != null) {
                 data.language = this.language;
@@ -689,6 +719,12 @@ export namespace scip {
             if (this.position_encoding != null) {
                 data.position_encoding = this.position_encoding;
             }
+            if (this.external_symbols != null) {
+                data.external_symbols = this.external_symbols.map((item: SymbolInformation) => item.toObject());
+            }
+            if (this.cross_relationships != null) {
+                data.cross_relationships = this.cross_relationships.map((item: FullRelationship) => item.toObject());
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -707,6 +743,10 @@ export namespace scip {
                 writer.writeString(5, this.text);
             if (this.position_encoding != PositionEncoding.UnspecifiedPositionEncoding)
                 writer.writeEnum(6, this.position_encoding);
+            if (this.external_symbols.length)
+                writer.writeRepeatedMessage(7, this.external_symbols, (item: SymbolInformation) => item.serialize(writer));
+            if (this.cross_relationships.length)
+                writer.writeRepeatedMessage(8, this.cross_relationships, (item: FullRelationship) => item.serialize(writer));
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -733,6 +773,12 @@ export namespace scip {
                         break;
                     case 6:
                         message.position_encoding = reader.readEnum();
+                        break;
+                    case 7:
+                        reader.readMessage(message.external_symbols, () => pb_1.Message.addToRepeatedWrapperField(message, 7, SymbolInformation.deserialize(reader), SymbolInformation));
+                        break;
+                    case 8:
+                        reader.readMessage(message.cross_relationships, () => pb_1.Message.addToRepeatedWrapperField(message, 8, FullRelationship.deserialize(reader), FullRelationship));
                         break;
                     default: reader.skipField();
                 }
@@ -1399,6 +1445,99 @@ export namespace scip {
             Union = 59,
             Value = 60,
             Variable = 61
+        }
+    }
+    export class FullRelationship extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            source_symbol?: string;
+            relationship?: Relationship;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("source_symbol" in data && data.source_symbol != undefined) {
+                    this.source_symbol = data.source_symbol;
+                }
+                if ("relationship" in data && data.relationship != undefined) {
+                    this.relationship = data.relationship;
+                }
+            }
+        }
+        get source_symbol() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set source_symbol(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get relationship() {
+            return pb_1.Message.getWrapperField(this, Relationship, 2) as Relationship;
+        }
+        set relationship(value: Relationship) {
+            pb_1.Message.setWrapperField(this, 2, value);
+        }
+        get has_relationship() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        static fromObject(data: {
+            source_symbol?: string;
+            relationship?: ReturnType<typeof Relationship.prototype.toObject>;
+        }): FullRelationship {
+            const message = new FullRelationship({});
+            if (data.source_symbol != null) {
+                message.source_symbol = data.source_symbol;
+            }
+            if (data.relationship != null) {
+                message.relationship = Relationship.fromObject(data.relationship);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                source_symbol?: string;
+                relationship?: ReturnType<typeof Relationship.prototype.toObject>;
+            } = {};
+            if (this.source_symbol != null) {
+                data.source_symbol = this.source_symbol;
+            }
+            if (this.relationship != null) {
+                data.relationship = this.relationship.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.source_symbol.length)
+                writer.writeString(1, this.source_symbol);
+            if (this.has_relationship)
+                writer.writeMessage(2, this.relationship, () => this.relationship.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): FullRelationship {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new FullRelationship();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.source_symbol = reader.readString();
+                        break;
+                    case 2:
+                        reader.readMessage(message.relationship, () => message.relationship = Relationship.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): FullRelationship {
+            return FullRelationship.deserialize(bytes);
         }
     }
     export class Relationship extends pb_1.Message {

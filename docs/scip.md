@@ -50,14 +50,16 @@ reported for a document.
 
 Document defines the metadata about a source file on disk.
 
-| Name                     | Type              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **language**             | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming language, including ones that are not specified by the `Language` enum.                                                                                                                                                                                                                |
-| **relative_path**        | string            | (Required) Unique path to the text document.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| repeated **occurrences** | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| repeated **symbols**     | SymbolInformation | Symbols that are "defined" within this document.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| **text**                 | string            | (optional) Text contents of the this document. Indexers are not expected to include the text by default. It's preferrable that clients read the text contents from the file system by resolving the absolute path from joining `Index.metadata.project_root` and `Document.relative_path`. This field was introduced to support `SymbolInformation.signature_documentation`, but it can be used for other purposes as well, for example testing or when working with virtual/in-memory documents. |
-| **position_encoding**    | PositionEncoding  | Specifies the encoding used for source ranges in this Document.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Name                             | Type              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| -------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **language**                     | string            | The string ID for the programming language this file is written in. The `Language` enum contains the names of most common programming languages. This field is typed as a string to permit any programming language, including ones that are not specified by the `Language` enum.                                                                                                                                                                                                                |
+| **relative_path**                | string            | (Required) Unique path to the text document.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| repeated **occurrences**         | Occurrence        | Occurrences that appear in this file.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| repeated **symbols**             | SymbolInformation | Symbols that are "defined" within this document.                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| **text**                         | string            | (optional) Text contents of the this document. Indexers are not expected to include the text by default. It's preferrable that clients read the text contents from the file system by resolving the absolute path from joining `Index.metadata.project_root` and `Document.relative_path`. This field was introduced to support `SymbolInformation.signature_documentation`, but it can be used for other purposes as well, for example testing or when working with virtual/in-memory documents. |
+| **position_encoding**            | PositionEncoding  | Specifies the encoding used for source ranges in this Document.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| repeated **external_symbols**    | SymbolInformation | (optional) Symbols that are referenced from this Document but are defined in an external package (a separate `Index` message). This field can be used for the following purposes: - Provide hover documentation for external symbols. - Mark relationships from an external symbol to a global symbol defined in the current document.                                                                                                                                                            |
+| repeated **cross_relationships** | FullRelationship  | (optional) Relationships that affect code navigation in this Document but are not and cannot be defined in the Document(s) defining source_symbol or the target symbol (relationship.symbol).                                                                                                                                                                                                                                                                                                     |
 
 Additional notes on **relative_path**:
 
@@ -93,6 +95,104 @@ in the indexer's implementation language in O(1) time.
 - For an indexer implemented in Go, Rust or C++,
   use UTF8ByteOffsetFromLineStart.
 
+Additional notes on **external_symbols**:
+
+(optional) Symbols that are referenced from this Document but are defined in
+an external package (a separate `Index` message). This field can be used
+for the following purposes:
+
+- Provide hover documentation for external symbols.
+- Mark relationships from an external symbol to a global symbol defined
+  in the current document.
+
+Example 1: In Go, if a file defines a new interface I and there is a standard
+library type T which is imported in the file and implements I,
+the indexer can add an external symbol for T with an is_implementation
+relationship to I.
+
+Example 2: In Rust, if a file defines a new trait T and add impls for a
+type X defined in another Index, the indexer can add an external symbol
+for X with an is_implementation relationship to T.
+
+Example 3: If the code references a third-party type X whose definition
+site may or may not be indexed, the indexer can emit an external symbol
+for X including its hover documentation.
+
+Additional notes on **cross_relationships**:
+
+(optional) Relationships that affect code navigation in this Document
+but are not and cannot be defined in the Document(s) defining
+source_symbol or the target symbol (relationship.symbol).
+
+Example 1: In the case of structurally typed interfaces (or more generally
+structural subtyping), such as Go, it is possible for one Go package P1
+to define an interface I, a second Go package P2 to have a type T which
+implements the interface I without importing P1, and a third Go package P3
+to import both P1 and P2. If P3 has a conversion of a value from
+P2.T to P1.I, then the indexer can emit a cross-relationship from
+P2.T to P1.I.
+
+This same example carries over to languages like TypeScript which support
+structural subtyping.
+
+Example 2: Rust allows for blanket trait implementations. Consider the
+following code:
+
+```rust
+// t1.rs
+pub trait T1 {}
+
+// s.rs
+use m1::T1;
+pub struct S;
+impl T1 for S {}
+
+// t2.rs
+use m1::T1;
+trait T2 {}
+impl<T: T1> T2 for T {} // <- blanket implementation that covers S
+
+// cross.rs
+use m3::T2;
+use m2::S;
+
+fn f(s : S) -> Box<dyn T2> { Box::new(s) } // derives that S implements T2
+```
+
+If all of these modules correspond to Documents in different SCIP indexes,
+it is not possible for the indexer to emit an is_implementation relationship
+from S to T2 in the Documents for t1.rs, s.rs or t2.rs. In this case,
+the indexer can emit a cross-relationship from S to T2 in the Document for cross.rs.
+
+Example 3: Swift allows for retroactive conformances (aka orphan instances
+in Haskell). Consider the following code:
+
+```swift
+// P.swift
+protocol P {}
+
+// S.swift
+struct S {}
+
+// cross.swift
+extension S: P {}
+```
+
+If all of these files correspond to Documents in different SCIP indexes,
+it is not possible for the indexer to emit an is_implementation relationship
+from S to P in the Documents for P.swift, or S.swift. In this case,
+the indexer can emit a cross-relationship from S to P in the Document for cross.swift.
+
+### FullRelationship
+
+NOTE: FullRelationship reuses Relationship instead of a more symmetric representation
+to reduce the risk of divergence when adding new fields to Relationships.
+
+| Name              | Type         | Description                                                         |
+| ----------------- | ------------ | ------------------------------------------------------------------- |
+| **source_symbol** | string       | Represents the symbol that this relationship is about.              |
+| **relationship**  | Relationship | Represents the symbol + the relationship that this symbol links to. |
+
 ### Index
 
 Index represents a complete SCIP index for a workspace this is rooted at a
@@ -102,19 +202,15 @@ value at a time. To permit streaming consumption of an Index payload, the
 `metadata` field must appear at the start of the stream and must only appear
 once in the stream. Other field values may appear in any order.
 
-| Name                          | Type              | Description                                                                                                                                                                                                                                                                                                                                                         |
-| ----------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **metadata**                  | Metadata          | Metadata about this index.                                                                                                                                                                                                                                                                                                                                          |
-| repeated **documents**        | Document          | Documents that belong to this index.                                                                                                                                                                                                                                                                                                                                |
-| repeated **external_symbols** | SymbolInformation | (optional) Symbols that are referenced from this index but are defined in an external package (a separate `Index` message). Leave this field empty if you assume the external package will get indexed separately. If the external package won't get indexed for some reason then you can use this field to provide hover documentation for those external symbols. |
+| Name                          | Type              | Description                                          |
+| ----------------------------- | ----------------- | ---------------------------------------------------- |
+| **metadata**                  | Metadata          | Metadata about this index.                           |
+| repeated **documents**        | Document          | Documents that belong to this index.                 |
+| repeated **external_symbols** | SymbolInformation | (DEPRECATED): Use Document.external_symbols instead. |
 
 Additional notes on **external_symbols**:
 
-(optional) Symbols that are referenced from this index but are defined in
-an external package (a separate `Index` message). Leave this field empty
-if you assume the external package will get indexed separately. If the
-external package won't get indexed for some reason then you can use this
-field to provide hover documentation for those external symbols.
+(DEPRECATED): Use Document.external_symbols instead.
 
 IMPORTANT: When adding a new field to `Index` here, add a matching
 function in `IndexVisitor` and update `ParseStreaming`.
@@ -258,9 +354,35 @@ NOTE: This corresponds to a module in Go and JVM languages.
 | ---------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **symbol**             | string |
 | **is_reference**       | bool   | When resolving "Find references", this field documents what other symbols should be included together with this symbol. For example, consider the following TypeScript code that defines two symbols `Animal#sound()` and `Dog#sound()`: `ts interface Animal {           ^^^^^^ definition Animal#   sound(): string   ^^^^^ definition Animal#sound() } class Dog implements Animal {       ^^^ definition Dog#, relationships = [{symbol: "Animal#", is_implementation: true}]   public sound(): string { return "woof" }          ^^^^^ definition Dog#sound(), references_symbols = Animal#sound(), relationships = [{symbol: "Animal#sound()", is_implementation:true, is_reference: true}] } const animal: Animal = new Dog()               ^^^^^^ reference Animal# console.log(animal.sound())                    ^^^^^ reference Animal#sound() ` Doing "Find references" on the symbol `Animal#sound()` should return references to the `Dog#sound()` method as well. Vice-versa, doing "Find references" on the `Dog#sound()` method should include references to the `Animal#sound()` method as well. |
-| **is_implementation**  | bool   | Similar to `is_reference` but for "Find implementations". It's common for `is_implementation` and `is_reference` to both be true but it's not always the case. In the TypeScript example above, observe that `Dog#` has an `is_implementation` relationship with `"Animal#"` but not `is_reference`. This is because "Find references" on the "Animal#" symbol should not return "Dog#". We only want "Dog#" to return as a result for "Find implementations" on the "Animal#" symbol.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| **is_type_definition** | bool   | Similar to `references_symbols` but for "Go to type definition".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| **is_implementation**  | bool   | Similar to `is_reference` but for "Find implementations" and "Find supers".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| **is_type_definition** | bool   | Represents that "Go to type definition" from the (outer) symbol should go to the (relationship's) symbol for a particular type.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | **is_definition**      | bool   | Allows overriding the behavior of "Go to definition" and "Find references" for symbols which do not have a definition of their own or could potentially have multiple definitions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+
+Additional notes on **is_implementation**:
+
+Similar to `is_reference` but for "Find implementations" and "Find supers".
+
+It's common for `is_implementation` and `is_reference` to both be true but
+it's not always the case. In the TypeScript example above, observe that
+`Dog#` has an `is_implementation` relationship with `"Animal#"` but not
+`is_reference`. This is because "Find references" on the "Animal#" symbol
+should not return "Dog#". We only want "Dog#" to return as a result for
+"Find implementations" on the "Animal#" symbol.
+
+Additional notes on **is_type_definition**:
+
+Represents that "Go to type definition" from the (outer) symbol should go
+to the (relationship's) symbol for a particular type.
+
+A less confusing name for this field would be "has_type", but we
+cannot change this to avoid breaking generated code.
+
+NOTE: In Sourcegraph, this field will not be used for code navigation like
+"Go to type references" (i.e. identifying all places where there is a
+variable with a given type, even when type is not mentioned explicitly),
+since that would mean that an indexer could only utilize local symbols
+in very limited contexts, since most local variables could be potential
+targets of such a navigation action.
 
 Additional notes on **is_definition**:
 
@@ -327,7 +449,11 @@ for every node in the AST (along the ancestry path) between the root of
 the file and the node corresponding to the symbol.
 
 Local symbols MUST only be used for entities which are local to a Document,
-and cannot be accessed from outside the Document.
+and cannot be accessed from outside the Document via code navigation.
+
+Example 1: If the indexer supports emitting 'is_implementation' relationships,
+then a subclass of a global class, even if declared within a function,
+must have a global symbol.
 
 | Name                     | Type       | Description |
 | ------------------------ | ---------- | ----------- |
@@ -349,6 +475,17 @@ docstring or what package it's defined it.
 | **display_name**            | string       | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:                                                                                                                                                                        |
 | **signature_documentation** | Document     | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers this would have `Document.language = "java"` and `Document.text = "void add(int a, int b)". The `language`and`text`fields are required while other fields such as`Documentation.occurrences` can be optionally included to support hyperlinking referenced symbols in the signature. |
 | **enclosing_symbol**        | string       | (optional) The enclosing symbol if this is a local symbol. For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.                                                                                                                                                                                                                                                            |
+
+Additional notes on **relationships**:
+
+(optional) Relationships to other symbols (e.g., implements, type definition).
+
+Relationships follow one direction. To represent the other direction:
+
+- If the source symbol is defined in the same Index, attach the relationship to
+  its SymbolInformation.
+- If the source symbol is defined in a different Index, use Document.external_symbols's
+  relationships field.
 
 Additional notes on **display_name**:
 
