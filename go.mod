@@ -1,6 +1,6 @@
 module github.com/sourcegraph/scip
 
-go 1.20
+go 1.23
 
 require (
 	github.com/bufbuild/buf v1.25.0
@@ -13,8 +13,10 @@ require (
 	github.com/hhatto/gocloc v0.4.2
 	github.com/k0kubun/pp/v3 v3.1.0
 	github.com/montanaflynn/stats v0.7.1
+	github.com/pierrec/lz4/v4 v4.1.21
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/smacker/go-tree-sitter v0.0.0-20220209044044-0d3022e933c3
+	github.com/sourcegraph/conc v0.3.0
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
