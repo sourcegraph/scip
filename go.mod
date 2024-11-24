@@ -15,6 +15,7 @@ require (
 	github.com/montanaflynn/stats v0.7.1
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/smacker/go-tree-sitter v0.0.0-20220209044044-0d3022e933c3
+	github.com/sourcegraph/conc v0.3.0
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
