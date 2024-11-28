@@ -635,6 +635,8 @@ enum SymbolRole {
   // and Objective-C, as well as `val` declarations in interface
   // files in languages like SML and OCaml.
   ForwardDefinition = 0x40;
+  // Does this occurrence correspond to a function call?
+  Call = 0x80;
 }
 
 enum SyntaxKind {
