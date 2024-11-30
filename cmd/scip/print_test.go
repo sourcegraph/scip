@@ -47,10 +47,10 @@ func TestJSONPrinting(t *testing.T) {
 
 	type JsonIndex struct {
 		Metadata struct {
-			ProjectRoot string `json:"projectRoot"`
+			ProjectRoot string `json:"project_root"`
 		}
 		Documents []struct {
-			RelativePath string `json:"relativePath"`
+			RelativePath string `json:"relative_path"`
 		} `json:"documents"`
 	}
 
@@ -63,7 +63,7 @@ func TestJSONPrinting(t *testing.T) {
 		log.Fatal(jsonErr)
 	}
 
-	require.Equal(t, roundtripResult.Metadata.ProjectRoot, "howdy")
-	require.Equal(t, len(roundtripResult.Documents), 1)
-	require.Equal(t, roundtripResult.Documents[0].RelativePath, "f")
+	require.Equal(t, "howdy", roundtripResult.Metadata.ProjectRoot)
+	require.Equal(t, 1, len(roundtripResult.Documents))
+	require.Equal(t, "f", roundtripResult.Documents[0].RelativePath)
 }

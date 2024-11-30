@@ -2,15 +2,13 @@ package main
 
 import (
 	"io"
-	"math"
 	"os"
 	"strings"
 
+	"github.com/bytedance/sonic"
+	"github.com/cockroachdb/errors"
 	"github.com/k0kubun/pp/v3"
 	"github.com/urfave/cli/v2"
-	"google.golang.org/protobuf/encoding/protojson"
-
-	"github.com/cockroachdb/errors"
 )
 
 func printCommand() cli.Command {
@@ -62,13 +60,8 @@ func printMain(indexPath string, colorOutput bool, json bool, out io.Writer) err
 		return err
 	}
 	if json {
-		pp.BufferFoldThreshold = math.MaxInt
-
-		options := protojson.MarshalOptions{}
-
-		jsonBytes, err := options.Marshal(index)
-		out.Write(jsonBytes)
-		return err
+		encoder := sonic.ConfigDefault.NewEncoder(out)
+		return encoder.Encode(index)
 	} else {
 		prettyPrinter := pp.New()
 		prettyPrinter.SetColoringEnabled(colorOutput)
