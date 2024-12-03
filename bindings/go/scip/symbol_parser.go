@@ -229,7 +229,7 @@ func (dw *descriptorsWriter) getDisambiguatorForLast() *stringWriter {
 //
 // Pre-condition: This should only be called in the shouldWrite case.
 func (dw *descriptorsWriter) internalPrepareSlot(suffix Descriptor_Suffix) (*string, *Descriptor_Suffix) {
-	assert(dw.shouldWrite, "should call internalPrepareSlot in the shouldWrite case")
+	assert(dw.shouldWrite, "should only call internalPrepareSlot in the shouldWrite case")
 	zeroLastSlot := func() {
 		lastPtr := &dw.descriptors[dw.count]
 		if last := *lastPtr; last == nil {
@@ -258,14 +258,29 @@ func (dw *descriptorsWriter) validDescriptors() []*Descriptor {
 
 // symbolParserV2 parses symbols while minimizing heap allocations.
 type symbolParserV2 struct {
-	SymbolString    string
+	SymbolString string
+	// byteIndex is the index in SymbolString for the first byte of currentRune.
+	// However, at the end of parsing, this can be equal to len(SymbolString);
+	// see advanceOneByte.
 	byteIndex       int
 	currentRune     rune
 	bytesToNextRune int32
 }
 
+// findRuneAtIndex returns the rune at the given index.
+//
 // Pre-condition: string is well-formed UTF-8
 // Pre-condition: byteIndex is in bounds
+//
+// NOTE: We could technically use utf8.DecodeRuneInString here, but that
+// has a more complex implementation which tries to handle invalid UTF-8.
+// Looking at the code itself, it seems like it would be slower given that
+// it is doing more operations.
+//
+// https://sourcegraph.com/github.com/golang/go/-/blob/src/unicode/utf8/utf8.go?L205-243
+//
+// It might be worth benchmarking to see if that's faster/doesn't make
+// a difference.
 func findRuneAtIndex(s string, byteIndex int) (r rune, bytesRead int32) {
 	b1 := s[byteIndex]
 	if b1 < 0x80 {

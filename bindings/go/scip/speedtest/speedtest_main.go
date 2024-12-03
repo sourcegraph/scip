@@ -50,9 +50,9 @@ func benchmark(path string) {
 		for i := 0; i < b.N; i++ {
 			occ := allOccurrences[i]
 			_, err = internal.ParsePartialSymbolV1ToBeDeleted(occ.Symbol, true)
-			if err != nil {
-				//panic(fmt.Sprintf("v1: index path: %v: error: %v", path, err))
-			}
+			// Ignore errors here as error compatibility is handled by TestParseCompat,
+			// Currently, a bunch of indexes use invalid syntax for locals.
+			_ = err
 		}
 	}
 	parserV2Benchmark := func(b *simpleBenchmark) {
@@ -61,9 +61,9 @@ func benchmark(path string) {
 			str := beaut.NewUTF8StringUnchecked(occ.Symbol, knownwf.UTF8DeserializedFromProtobufString)
 			sym := scip.Symbol{}
 			err = scip.ParseSymbolUTF8With(str, scip.ParseSymbolOptions{IncludeDescriptors: true, RecordOutput: &sym})
-			if err != nil {
-				//panic(fmt.Sprintf("v2: index path: %v: error: %v", path, err))
-			}
+			// Ignore errors here as error compatibility is handled by TestParseCompat.
+			// Currently, a bunch of indexes use invalid syntax for locals.
+			_ = err
 		}
 	}
 	parserV2ValidateBenchmark := func(b *simpleBenchmark) {
@@ -71,9 +71,9 @@ func benchmark(path string) {
 			occ := allOccurrences[i]
 			str := beaut.NewUTF8StringUnchecked(occ.Symbol, knownwf.UTF8DeserializedFromProtobufString)
 			err = scip.ValidateSymbolUTF8(str)
-			if err != nil {
-				//panic(fmt.Sprintf("v2: index path: %v: error: %v", path, err))
-			}
+			// Ignore errors here as error compatibility is handled by TestParseCompat.
+			// Currently, a bunch of indexes use invalid syntax for locals.
+			_ = err
 		}
 	}
 	sb := simpleBenchmark{MaxN: 100 * 1000}

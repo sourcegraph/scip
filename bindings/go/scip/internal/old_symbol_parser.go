@@ -27,7 +27,6 @@ func tryParseLocalSymbol(symbol string) (string, error) {
 // reasons. We can remove this in the future once we're confident that the new
 // parser handles everything correctly.
 func ParsePartialSymbolV1ToBeDeleted(symbol string, includeDescriptors bool) (*scip.Symbol, error) {
-	// TODO: Rip out this, and call
 	local, err := tryParseLocalSymbol(symbol)
 	if err != nil {
 		return nil, err
