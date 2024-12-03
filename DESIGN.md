@@ -91,7 +91,7 @@ and then converting to SCIP for transmission.
 Hash tables are a core data type used in compilers and
 hence are likely to be useful in indexers generally.
 
-String types in mainstream languages support equality and hashing.
+String types in mainstream languages support equality and hashing,
 where other objects may not be.
 
 ### Avoid direct encoding of graphs
