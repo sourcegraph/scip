@@ -1,6 +1,6 @@
 module github.com/sourcegraph/scip
 
-go 1.20
+go 1.22
 
 require (
 	github.com/bufbuild/buf v1.25.0
@@ -12,10 +12,13 @@ require (
 	github.com/hexops/autogold/v2 v2.2.1
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/hhatto/gocloc v0.4.2
+	github.com/jedib0t/go-pretty/v6 v6.6.3
 	github.com/k0kubun/pp/v3 v3.1.0
 	github.com/montanaflynn/stats v0.7.1
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/smacker/go-tree-sitter v0.0.0-20220209044044-0d3022e933c3
+	github.com/sourcegraph/beaut v0.0.0-20240611013027-627e4c25335a
+	github.com/sourcegraph/conc v0.3.0
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
@@ -73,6 +76,7 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
+	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/moby/term v0.5.0 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
@@ -85,7 +89,8 @@ require (
 	github.com/pkg/profile v1.7.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/pseudomuto/protokit v0.2.0 // indirect
-	github.com/rogpeppe/go-internal v1.10.0 // indirect
+	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/rs/cors v1.9.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
@@ -107,8 +112,8 @@ require (
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.14.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
-	golang.org/x/term v0.11.0 // indirect
+	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/term v0.17.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
 	google.golang.org/genproto v0.0.0-20220414192740-2d67ff6cf2b4 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

@@ -2,4 +2,5 @@ reprolang/target
 reprolang/src/grammar.json
 reprolang/src/node-types.json
 bindings/typescript
+docs/scip.md
 .bin

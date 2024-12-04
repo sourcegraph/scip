@@ -3,6 +3,7 @@
 - [Project structure](#project-structure)
 - [Code generation](#code-generation)
 - [Debugging](#debugging)
+- [Benchmarking](#benchmarking)
 - [Testing and adding new SCIP semantics](#testing-and-adding-new-scip-semantics)
 - [Release a new version](#release-a-new-version)
 
@@ -68,6 +69,24 @@ and is not recommended for use in other settings.
 ```
 scip lint /path/to/index.scip
 ```
+
+## Benchmarking
+
+For benchmarks, one can put test SCIP indexes under `dev/sample_indexes`.
+
+Sourcegraph teammates can download several large indexes
+from this [Google drive folder](https://drive.google.com/drive/folders/1z62Se7eHaa5T89a16-y7s0Z1qbRY4VCg).
+
+After that you can run:
+
+```bash
+go run ./bindings/go/scip/speedtest
+```
+
+to see the results.
+
+Make sure to share benchmark results when making changes to
+the symbol parsing logic.
 
 ## Testing and adding new SCIP semantics
 

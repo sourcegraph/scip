@@ -1,11 +1,11 @@
 package scip
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/exp/slices"
 	"pgregory.net/rapid"
 )
 

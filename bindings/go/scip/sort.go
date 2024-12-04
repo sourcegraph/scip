@@ -1,10 +1,9 @@
 package scip
 
 import (
+	"slices"
 	"sort"
 	"strings"
-
-	"golang.org/x/exp/slices"
 )
 
 // FindSymbol returns the symbol with the given name in the given document. If there is no symbol by
