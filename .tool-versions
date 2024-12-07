@@ -3,4 +3,4 @@ nodejs     16.20.2
 shellcheck 0.7.1
 yarn       1.22.22
 rust       1.74.0
-python     3.11.9
+python     3.13.1
