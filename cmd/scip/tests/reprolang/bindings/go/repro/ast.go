@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cockroachdb/errors"
 	sitter "github.com/smacker/go-tree-sitter"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
@@ -77,16 +78,17 @@ func NewRangePositionFromNode(node *sitter.Node) *scip.Range {
 	}
 }
 
-func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext) {
+func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext) error {
 	scope := context.globalScope
 	if i.isLocalSymbol() {
 		scope = localScope
 	}
 	symbol, ok := scope.names[i.value]
 	if !ok {
-		symbol = "local ERROR_UNRESOLVED_SYMBOL"
+		return errors.Newf("could not resolve local symbol %q", i.value)
 	}
 	i.symbol = symbol
+	return nil
 }
 
 func (i *identifier) isLocalSymbol() bool {

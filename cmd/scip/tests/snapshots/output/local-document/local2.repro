@@ -1,4 +1,6 @@
+ definition localExample
+#           ^^^^^^^^^^^^ definition local Example
+#           documentation
+#           > signature of localExample
  reference localExample
-#          ^^^^^^^^^^^^ reference local ERROR_UNRESOLVED_SYMBOL
- 
- 
+#          ^^^^^^^^^^^^ reference local Example

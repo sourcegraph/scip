@@ -3,6 +3,7 @@ package repro
 import (
 	"context"
 
+	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
@@ -69,8 +70,14 @@ func Index(
 	}
 
 	// Phase 3: resolve names for references
+	var allErrs error
 	for _, file := range reproSources {
-		file.resolveReferences(ctx)
+		if err := file.resolveReferences(ctx); err != nil {
+			allErrs = errors.CombineErrors(allErrs, errors.Wrapf(err, "file %q", file.Source.AbsolutePath))
+		}
+	}
+	if allErrs != nil {
+		return nil, allErrs
 	}
 
 	// Phase 4: emit SCIP

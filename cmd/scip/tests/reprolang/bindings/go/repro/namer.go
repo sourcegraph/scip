@@ -3,6 +3,7 @@ package repro
 import (
 	"fmt"
 
+	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
@@ -58,13 +59,14 @@ func (s *reproSourceFile) enterDefinitions(context *reproContext) {
 }
 
 // resolveReferences updates the .symbol field for all names of reference identifiers.
-func (s *reproSourceFile) resolveReferences(context *reproContext) {
+func (s *reproSourceFile) resolveReferences(context *reproContext) error {
+	var err error
 	resolveIdents := func(rel relationships) {
 		for _, ident := range rel.identifiers() {
 			if ident == nil {
 				continue
 			}
-			ident.resolveSymbol(s.localScope, context)
+			err = errors.CombineErrors(err, ident.resolveSymbol(s.localScope, context))
 		}
 	}
 	for _, def := range s.definitions {
@@ -74,8 +76,9 @@ func (s *reproSourceFile) resolveReferences(context *reproContext) {
 		resolveIdents(rel.relations)
 	}
 	for _, ref := range s.references {
-		ref.name.resolveSymbol(s.localScope, context)
+		err = errors.CombineErrors(err, ref.name.resolveSymbol(s.localScope, context))
 	}
+	return err
 }
 
 // newGlobalSymbol returns an SCIP symbol for the given definition.
