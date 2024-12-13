@@ -1,7 +1,7 @@
 package main
 
 import (
-	"errors"
+	stderrors "errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -21,7 +21,7 @@ func lintCommand() cli.Command {
 		Action: func(c *cli.Context) error {
 			indexPath := c.Args().Get(0)
 			if indexPath == "" {
-				return errors.New("missing argument for path to SCIP index")
+				return stderrors.New("missing argument for path to SCIP index")
 			}
 			return lintMain(indexPath)
 		},
@@ -34,7 +34,7 @@ func lintMain(indexPath string) error {
 	if err != nil {
 		return err
 	}
-	return errors.Join(lintMainPure(scipIndex).data...)
+	return stderrors.Join(lintMainPure(scipIndex).data...)
 }
 
 func lintMainPure(scipIndex *scip.Index) errorSet {
