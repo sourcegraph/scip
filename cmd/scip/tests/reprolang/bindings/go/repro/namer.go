@@ -9,7 +9,8 @@ import (
 
 // enterGlobalDefinitions inserts the names of the global symbols that are defined in this
 // dependency into the provided global scope.
-func (d *reproDependency) enterGlobalDefinitions(context *reproContext) {
+func (d *reproDependency) enterGlobalDefinitions(context *reproContext) error {
+	var errs error
 	enter := func(file *reproSourceFile, name *identifier) {
 		if name.isLocalSymbol() {
 			return
@@ -17,6 +18,7 @@ func (d *reproDependency) enterGlobalDefinitions(context *reproContext) {
 		symbol := newGlobalSymbol(d.Package, file, name)
 		parsedSymbol, err := scip.ParseSymbol(symbol)
 		if err != nil {
+			errs = errors.CombineErrors(errs, errors.Wrapf(err, "file: %q", file.Source.AbsolutePath))
 			return
 		}
 		newName := newGlobalName(context.pkg, parsedSymbol)
@@ -30,6 +32,7 @@ func (d *reproDependency) enterGlobalDefinitions(context *reproContext) {
 			enter(file, relationship.name)
 		}
 	}
+	return errs
 }
 
 // enterDefinitions inserts the names of the definitions into the appropriate scope (local symbols go into the local scope).

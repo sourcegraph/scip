@@ -62,15 +62,17 @@ func Index(
 	}
 
 	// Phase 2: resolve names for definitions
+	var allErrs error
 	for _, dependency := range reproDependencies {
-		dependency.enterGlobalDefinitions(ctx)
+		if err := dependency.enterGlobalDefinitions(ctx); err != nil {
+			allErrs = errors.CombineErrors(allErrs, errors.Wrapf(err, "package: %v", dependency.Package))
+		}
 	}
 	for _, file := range reproSources {
 		file.enterDefinitions(ctx)
 	}
 
 	// Phase 3: resolve names for references
-	var allErrs error
 	for _, file := range reproSources {
 		if err := file.resolveReferences(ctx); err != nil {
 			allErrs = errors.CombineErrors(allErrs, errors.Wrapf(err, "file %q", file.Source.AbsolutePath))
