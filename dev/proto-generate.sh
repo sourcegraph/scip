@@ -12,7 +12,7 @@ PROTOC_GEN_RUST_VERSION="$(cat bindings/rust/Cargo.toml | grep 'protobuf =' | se
 if ! grep -q "$PROTOC_GEN_RUST_VERSION" "./.bin/PROTOC_GEN_RUST_VERSION" \
    || ! test -f "./.bin/bin/protoc-gen-rs"; then
   rm -rf .bin
-  cargo install --root .bin protobuf-codegen --version 3.7.1
+  cargo install --root .bin protobuf-codegen --version 3.7.1 --locked
   echo "$PROTOC_GEN_RUST_VERSION" > "./.bin/PROTOC_GEN_RUST_VERSION"
 fi
 
