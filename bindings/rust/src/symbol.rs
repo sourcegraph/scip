@@ -30,7 +30,8 @@ pub fn is_local_symbol(sym: &str) -> bool {
 }
 
 pub fn is_simple_identifier(sym: &str) -> bool {
-    sym.chars().all(|c| c.is_alphanumeric() || c == '$' || c == '+' || c == '-' || c == '_')
+    sym.chars()
+        .all(|c| c.is_alphanumeric() || c == '$' || c == '+' || c == '-' || c == '_')
 }
 
 pub fn try_parse_local_symbol(sym: &str) -> Result<Option<&str>, SymbolError> {
@@ -154,7 +155,7 @@ fn escape_name(name: &str) -> String {
     {
         name.to_string()
     } else {
-        format!("`{}`", name)
+        format!("`{}`", name.replace("`", "``"))
     }
 }
 
@@ -180,7 +181,7 @@ pub fn parse_symbol(symbol: &str) -> Result<Symbol, SymbolError> {
     match try_parse_local_symbol(symbol) {
         Ok(Some(s)) => return Ok(internal_local_symbol(s)),
         Err(err) => return Err(err),
-        Ok(None) => {},
+        Ok(None) => {}
     }
 
     let mut parser = SymbolParser::new(symbol);
@@ -615,12 +616,15 @@ mod test {
         let symbol_struct = Symbol {
             scheme: "scip-ctags".to_string(),
             package: None.into(),
-            descriptors: vec![new_descriptor("foo=".to_string(), descriptor::Suffix::Term)],
+            descriptors: vec![new_descriptor(
+                "foo=`bar`".to_string(),
+                descriptor::Suffix::Term,
+            )],
             ..Default::default()
         };
         let symbol = format_symbol(symbol_struct.clone());
 
-        assert_eq!(symbol, "scip-ctags . . . `foo=`.");
+        assert_eq!(symbol, "scip-ctags . . . `foo=``bar```.");
         assert_eq!(parse_symbol(&symbol).expect("to parse"), symbol_struct);
     }
 
