@@ -155,7 +155,7 @@ fn escape_name(name: &str) -> String {
     {
         name.to_string()
     } else {
-        format!("`{}`", name)
+        format!("`{}`", name.replace("`", "``"))
     }
 }
 
@@ -624,7 +624,7 @@ mod test {
         };
         let symbol = format_symbol(symbol_struct.clone());
 
-        assert_eq!(symbol, "scip-ctags . . . `foo=`.");
+        assert_eq!(symbol, "scip-ctags . . . `foo=``bar```.");
         assert_eq!(parse_symbol(&symbol).expect("to parse"), symbol_struct);
     }
 
