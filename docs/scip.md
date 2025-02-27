@@ -451,6 +451,7 @@ Since Kind is more fine-grained than Suffix:
 | 5 | Axiom | For Lean
 | 6 | Boolean | 
 | 7 | Class | 
+| 86 | Concept | For C++
 | 8 | Constant | 
 | 9 | Constructor | 
 | 62 | Contract | For Solidity
@@ -525,7 +526,7 @@ Since Kind is more fine-grained than Suffix:
 | 58 | TypeParameter | 
 | 59 | Union | For C, C++, Capn Proto
 | 60 | Value | 
-| 61 | Variable | Next = 86; Feel free to open a PR proposing new language-specific kinds.
+| 61 | Variable | Next = 87; Feel free to open a PR proposing new language-specific kinds.
 ### ToolInfo
 
 

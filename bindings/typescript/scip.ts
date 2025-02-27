@@ -1324,6 +1324,7 @@ export namespace scip {
             Axiom = 5,
             Boolean = 6,
             Class = 7,
+            Concept = 86,
             Constant = 8,
             Constructor = 9,
             Contract = 62,
