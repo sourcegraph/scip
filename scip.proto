@@ -277,6 +277,8 @@ message SymbolInformation {
       Axiom = 5;
       Boolean = 6;
       Class = 7;
+      // For C++
+      Concept = 86;
       Constant = 8;
       Constructor = 9;
       // For Solidity
@@ -400,7 +402,7 @@ message SymbolInformation {
       Union = 59;
       Value = 60;
       Variable = 61;
-      // Next = 86;
+      // Next = 87;
       // Feel free to open a PR proposing new language-specific kinds.
   }
   // (optional) The name of this symbol as it should be displayed to the user.
