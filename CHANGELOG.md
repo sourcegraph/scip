@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## v0.5.2
+
+SCIP schema:
+
+- Added kind `SymbolInformation.Kind.Concept` for C++ (https://github.com/sourcegraph/scip/pull/305)
+
 ## v0.5.1
 
 CLI:
