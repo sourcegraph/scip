@@ -12,11 +12,23 @@ jobs:
   rust-typecheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/asdf
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Rust environment
+        uses: ./.github/actions/asdf
         with:
           rust: true
-      - run: cargo test
+
+      - name: Check if Cargo.lock needs updating
+        # See: https://users.rust-lang.org/t/check-if-the-cargo-lock-is-up-to-date-without-building-anything/91048/6
+        run: cargo update -w --locked
         working-directory: bindings/rust
-      - run: cargo check
+
+      - name: Run tests
+        run: cargo test
+        working-directory: bindings/rust
+
+      - name: Run cargo check
+        run: cargo check
         working-directory: cmd/scip/tests/reprolang
