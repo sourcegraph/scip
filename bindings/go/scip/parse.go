@@ -1,6 +1,7 @@
 package scip
 
 import (
+	"context"
 	"io"
 
 	"github.com/cockroachdb/errors"
@@ -13,9 +14,9 @@ import (
 // implementations, so adding new functions here for new fields in
 // the SCIP schema would break clients. Individual functions may be nil.
 type IndexVisitor struct {
-	VisitMetadata       func(*Metadata)
-	VisitDocument       func(*Document)
-	VisitExternalSymbol func(*SymbolInformation)
+	VisitMetadata       func(ctx context.Context, m *Metadata) error
+	VisitDocument       func(ctx context.Context, d *Document) error
+	VisitExternalSymbol func(ctx context.Context, si *SymbolInformation) error
 }
 
 // See https://protobuf.dev/programming-guides/encoding/#varints
@@ -24,7 +25,7 @@ const maxVarintBytes = 10
 // ParseStreaming processes an index by incrementally reading input from the io.Reader.
 //
 // Parsing takes place at Document granularity for ease of use.
-func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
+func (pi *IndexVisitor) ParseStreaming(ctx context.Context, r io.Reader) error {
 	// The tag is encoded as a varint with value: (field_number << 3) | wire_type
 	// Varints < 128 fit in 1 byte, which means 4 bits are available for field
 	// numbers. The Index type has less than 15 fields, so the tag will fit in 1 byte.
@@ -84,7 +85,9 @@ func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
 					if err := proto.Unmarshal(dataBuf, &m); err != nil {
 						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 					}
-					pi.VisitMetadata(&m)
+					if err := pi.VisitMetadata(ctx, &m); err != nil {
+						return err
+					}
 				}
 			} else if fieldNumber == documentsFieldNumber {
 				if pi.VisitDocument != nil {
@@ -92,7 +95,9 @@ func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
 					if err := proto.Unmarshal(dataBuf, &d); err != nil {
 						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 					}
-					pi.VisitDocument(&d)
+					if err := pi.VisitDocument(ctx, &d); err != nil {
+						return err
+					}
 				}
 			} else if fieldNumber == externalSymbolsFieldNumber {
 				if pi.VisitExternalSymbol != nil {
@@ -100,7 +105,9 @@ func (pi *IndexVisitor) ParseStreaming(r io.Reader) error {
 					if err := proto.Unmarshal(dataBuf, &s); err != nil {
 						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
 					}
-					pi.VisitExternalSymbol(&s)
+					if err := pi.VisitExternalSymbol(ctx, &s); err != nil {
+						return err
+					}
 				}
 			} else {
 				return errors.Newf(
