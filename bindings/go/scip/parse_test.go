@@ -62,7 +62,7 @@ func TestDocumentsOnly(t *testing.T) {
 		parsedIndex := Index{}
 
 		indexVisitor := IndexVisitor{
-			VisitDocument: func(ctx context.Context, document *Document) error {
+			VisitDocument: func(_ context.Context, document *Document) error {
 				parsedIndex.Documents = append(parsedIndex.Documents, document)
 				return nil
 			},
