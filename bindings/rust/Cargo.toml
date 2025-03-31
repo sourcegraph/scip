@@ -9,9 +9,11 @@ SCIP (pronunciation: "skip") is a language-agnostic protocol for indexing source
 repository = "https://github.com/sourcegraph/scip"
 readme = "../../README.md"
 
-# We need >= 1.60.0 because the generated code uses
-# https://doc.rust-lang.org/std/vec/struct.Vec.html#method.spare_capacity_mut
-rust-version = "1.60.0"
+# We need >= 1.78.0 because: we only test against that
+# in the CI (we use protobuf-codegen in CI, and that
+# has Cargo.lock version 4, which requires Rust >= 1.78.0).
+# https://github.com/solana-foundation/anchor/issues/3392#issuecomment-2508412018
+rust-version = "1.78.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
