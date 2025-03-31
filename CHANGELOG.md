@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Go bindings:
+
+- IndexVisitor now accepts a context object and returns an error.
+
 ## v0.5.2
 
 SCIP schema:
