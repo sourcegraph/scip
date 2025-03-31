@@ -14,6 +14,8 @@ include = [
   "src/*",
 ]
 
+rust-version = "1.81.0"
+
 [lib]
 path = "bindings/rust/lib.rs"
 

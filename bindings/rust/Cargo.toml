@@ -9,15 +9,16 @@ SCIP (pronunciation: "skip") is a language-agnostic protocol for indexing source
 repository = "https://github.com/sourcegraph/scip"
 readme = "../../README.md"
 
-# We need >= 1.60.0 because the generated code uses
-# https://doc.rust-lang.org/std/vec/struct.Vec.html#method.spare_capacity_mut
-rust-version = "1.60.0"
+# We need >= 1.81.0 because: we only test against that
+# in the CI (we use protobuf-codegen in CI, and that
+# has home@0.5.11 as a dependency, which requires Rust >= 1.81.0).
+rust-version = "1.81.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 # Keep in sync with dev/proto-generate.sh
-protobuf = "=3.7.1"
+protobuf = "=3.7.2"
 
 [dev-dependencies]
 pretty_assertions = "1.2.1"

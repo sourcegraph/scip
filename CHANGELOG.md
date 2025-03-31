@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+Rust SCIP bindings:
+
+- Bumped MSRV to Rust 1.81.0 (https://github.com/sourcegraph/scip/pull/316, https://github.com/sourcegraph/scip/pull/313).
+- Bumped the pinned version of the `protobuf` crate to
+  the latest release v3.7.2.
+  (https://github.com/sourcegraph/scip/pull/313)
+
 Go bindings:
 
 - IndexVisitor now accepts a context object and returns an error.
