@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Bumped MSRV to Rust 1.78.0.
+
 ## v0.5.2
 
 SCIP schema:
