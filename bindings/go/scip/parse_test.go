@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/gofuzz"
+	fuzz "github.com/google/gofuzz"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -107,15 +107,15 @@ func parseStreaming(t *testing.T, reader io.Reader) *Index {
 	parsedIndex := Index{}
 
 	indexVisitor := IndexVisitor{
-		VisitMetadata: func(_ctx context.Context, metadata *Metadata) error {
+		VisitMetadata: func(_ context.Context, metadata *Metadata) error {
 			parsedIndex.Metadata = metadata
 			return nil
 		},
-		VisitDocument: func(_ctx context.Context, document *Document) error {
+		VisitDocument: func(_ context.Context, document *Document) error {
 			parsedIndex.Documents = append(parsedIndex.Documents, document)
 			return nil
 		},
-		VisitExternalSymbol: func(_ctx context.Context, extSym *SymbolInformation) error {
+		VisitExternalSymbol: func(_ context.Context, extSym *SymbolInformation) error {
 			parsedIndex.ExternalSymbols = append(parsedIndex.ExternalSymbols, extSym)
 			return nil
 		},

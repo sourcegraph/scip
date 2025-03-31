@@ -54,7 +54,7 @@ func TestLowMemoryParsing(t *testing.T) {
 
 	curDoc := &scip.Document{}
 	indexVisitor := scip.IndexVisitor{
-		VisitDocument: func(_ctx context.Context, d *scip.Document) error {
+		VisitDocument: func(_ context.Context, d *scip.Document) error {
 			curDoc = d
 			return nil
 		},
