@@ -11,7 +11,8 @@ Rust SCIP bindings:
 
 Go bindings:
 
-- IndexVisitor now accepts a context object and returns an error.
+- BREAKING CHANGE: IndexVisitor now accepts a context object and returns an error.
+  When an error is returned, the visitor short-circuits.
 
 ## v0.5.2
 
