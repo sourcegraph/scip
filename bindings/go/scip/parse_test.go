@@ -3,6 +3,7 @@ package scip
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"io"
 	"os"
 	"regexp"
@@ -60,15 +61,18 @@ func TestDocumentsOnly(t *testing.T) {
 
 		parsedIndex := Index{}
 
-		indexVisitor := IndexVisitor{VisitDocument: func(document *Document) {
-			parsedIndex.Documents = append(parsedIndex.Documents, document)
-		}}
+		indexVisitor := IndexVisitor{
+			VisitDocument: func(_ context.Context, document *Document) error {
+				parsedIndex.Documents = append(parsedIndex.Documents, document)
+				return nil
+			},
+		}
 
 		indexBytes, err := proto.Marshal(&index)
 		require.NoError(t, err)
 		bytesReader := bytes.NewReader(indexBytes)
 
-		if err := indexVisitor.ParseStreaming(bytesReader); err != nil {
+		if err := indexVisitor.ParseStreaming(context.Background(), bytesReader); err != nil {
 			t.Fatalf("got error parsing index %v", err)
 		}
 
@@ -102,15 +106,22 @@ func checkRoundtrip(t *testing.T, index *Index) {
 func parseStreaming(t *testing.T, reader io.Reader) *Index {
 	parsedIndex := Index{}
 
-	indexVisitor := IndexVisitor{func(metadata *Metadata) {
-		parsedIndex.Metadata = metadata
-	}, func(document *Document) {
-		parsedIndex.Documents = append(parsedIndex.Documents, document)
-	}, func(extSym *SymbolInformation) {
-		parsedIndex.ExternalSymbols = append(parsedIndex.ExternalSymbols, extSym)
-	}}
+	indexVisitor := IndexVisitor{
+		VisitMetadata: func(_ context.Context, metadata *Metadata) error {
+			parsedIndex.Metadata = metadata
+			return nil
+		},
+		VisitDocument: func(_ context.Context, document *Document) error {
+			parsedIndex.Documents = append(parsedIndex.Documents, document)
+			return nil
+		},
+		VisitExternalSymbol: func(_ context.Context, extSym *SymbolInformation) error {
+			parsedIndex.ExternalSymbols = append(parsedIndex.ExternalSymbols, extSym)
+			return nil
+		},
+	}
 
-	if err := indexVisitor.ParseStreaming(reader); err != nil {
+	if err := indexVisitor.ParseStreaming(context.Background(), reader); err != nil {
 		t.Fatalf("got error parsing index %v", err)
 	}
 	return &parsedIndex

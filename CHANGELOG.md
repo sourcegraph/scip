@@ -9,6 +9,11 @@ Rust SCIP bindings:
   the latest release v3.7.2.
   (https://github.com/sourcegraph/scip/pull/313)
 
+Go bindings:
+
+- BREAKING CHANGE: IndexVisitor now accepts a context object and returns an error.
+  When an error is returned, the visitor short-circuits.
+
 ## v0.5.2
 
 SCIP schema:

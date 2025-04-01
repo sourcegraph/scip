@@ -1,6 +1,7 @@
 package memtest
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -52,12 +53,15 @@ func TestLowMemoryParsing(t *testing.T) {
 	debug.SetMemoryLimit(textSize * maxDocsInMemory)
 
 	curDoc := &scip.Document{}
-	indexVisitor := scip.IndexVisitor{VisitDocument: func(d *scip.Document) {
-		curDoc = d
-	}}
+	indexVisitor := scip.IndexVisitor{
+		VisitDocument: func(_ context.Context, d *scip.Document) error {
+			curDoc = d
+			return nil
+		},
+	}
 
 	// No OOM
-	err = indexVisitor.ParseStreaming(tmpFile)
+	err = indexVisitor.ParseStreaming(context.Background(), tmpFile)
 	_ = curDoc
 	require.NoError(t, err)
 }
