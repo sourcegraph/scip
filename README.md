@@ -3,7 +3,7 @@
 SCIP (pronunciation: "skip") is a language-agnostic protocol
 for indexing source code,
 which can be used to power code navigation functionality
-such as Go to definition, Find references, and Find implementations.
+such as `Go to definition`, `Find references`, and `Find implementations`.
 
 This repository includes:
 
@@ -11,7 +11,7 @@ This repository includes:
 - Rich Go and Rust bindings for SCIP: These include many utility functions
   to help build tooling on top of SCIP.
 - Auto-generated bindings for TypeScript and Haskell.
-- The [`scip` CLI](./docs/CLI.md), which makes SCIP indexes
+- The [scip CLI](./docs/CLI.md), which makes SCIP indexes
   a breeze to work with.
 
 If you're interested in better understanding the motivation behind SCIP,
