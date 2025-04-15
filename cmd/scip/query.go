@@ -109,7 +109,7 @@ type Location struct {
 	EndLine   int    `json:"endLine"`           // 0-based end line
 	EndChar   int    `json:"endChar"`           // 0-based end character
 	Snippet   string `json:"snippet,omitempty"` // Code snippet if available
-	Symbol    string `json:"-"`            		// Symbol at this location
+	Symbol    string `json:"-"`                 // Symbol at this location
 	Role      string `json:"role"`              // Role (definition/reference)
 }
 
@@ -117,7 +117,7 @@ type Location struct {
 type CallHierarchyItem struct {
 	Symbol   string              `json:"symbol"`
 	Location Location            `json:"location,omitempty"`
-	Calls    []CallHierarchyItem `json:"calls,omitempty"`
+	Callers  []CallHierarchyItem `json:"callers,omitempty"`
 }
 
 // openQueryDB opens the SQLite database and registers the virtual table
@@ -236,13 +236,13 @@ func callHierarchyQuery(dbPath string, symbol string, maxDepth int, out io.Write
 		root.Location = definitions[0]
 	}
 
-	// Get calls
+	// Get callers
 	visitedSymbols := make(map[string]bool)
 	visitedSymbols[symbol] = true
 
 	// Debug output to stderr, not out (which needs to have valid JSON)
 	debugOut := os.Stderr
-	
+
 	// Build the call hierarchy
 	err = buildCallHierarchy(db, &root, 0, maxDepth, visitedSymbols, debugOut)
 	if err != nil {
@@ -368,13 +368,13 @@ func findSymbolOccurrences(db *sqlite.Conn, symbol string, definitionsOnly bool)
 				role := stmt.ColumnText(5)
 
 				location := Location{
-				Path:      chunk.FilePath,
-				Line:      int(startLine),
-				Character: int(startChar),
-				EndLine:   int(endLine),
-				EndChar:   int(endChar),
-				Symbol:    symbol, // Use the symbol parameter instead of oSymbol
-				Role:      role,
+					Path:      chunk.FilePath,
+					Line:      int(startLine),
+					Character: int(startChar),
+					EndLine:   int(endLine),
+					EndChar:   int(endChar),
+					Symbol:    symbol, // Use the symbol parameter instead of oSymbol
+					Role:      role,
 				}
 
 				locations = append(locations, location)
@@ -445,7 +445,7 @@ func buildCallHierarchy(db *sqlite.Conn, node *CallHierarchyItem, depth int, max
 		return errors.Wrap(err, "failed to query references")
 	}
 
-	// Process each reference chunk 
+	// Process each reference chunk
 	for _, ref := range references {
 		// Get the occurrences blob for this chunk
 		var occurrencesBlob []byte
@@ -532,9 +532,9 @@ func buildCallHierarchy(db *sqlite.Conn, node *CallHierarchyItem, depth int, max
 					// Add to visited symbols to prevent cycles
 					visitedSymbols[symbolName] = true
 
-					// Add to the calls list - check for duplicates
+					// Add to the callers list - check for duplicates
 					alreadyAdded := false
-					for _, existing := range node.Calls {
+					for _, existing := range node.Callers {
 						if existing.Symbol == symbolName {
 							alreadyAdded = true
 							break
@@ -542,7 +542,7 @@ func buildCallHierarchy(db *sqlite.Conn, node *CallHierarchyItem, depth int, max
 					}
 
 					if !alreadyAdded {
-						node.Calls = append(node.Calls, child)
+						node.Callers = append(node.Callers, child)
 					}
 
 					return nil
@@ -556,8 +556,8 @@ func buildCallHierarchy(db *sqlite.Conn, node *CallHierarchyItem, depth int, max
 	}
 
 	// Now recursively build the hierarchy for each child node
-	for i := range node.Calls {
-		err = buildCallHierarchy(db, &node.Calls[i], depth+1, maxDepth, visitedSymbols, out)
+	for i := range node.Callers {
+		err = buildCallHierarchy(db, &node.Callers[i], depth+1, maxDepth, visitedSymbols, out)
 		if err != nil {
 			return err
 		}

@@ -154,9 +154,9 @@ func TestQueryCommands(t *testing.T) {
 			t.Errorf("Unexpected location: %+v", hierarchy.Location)
 		}
 
-		// We should have bar() in the calls
-		if len(hierarchy.Calls) == 0 {
-			t.Errorf("Expected at least one call, got none")
+		// We should have bar() in the callers
+		if len(hierarchy.Callers) == 0 {
+			t.Errorf("Expected at least one caller, got none")
 		}
 
 		// Check for complete call hierarchy (nested layers)
@@ -166,7 +166,7 @@ func TestQueryCommands(t *testing.T) {
 		var barCall *CallHierarchyItem
 
 		// First layer
-		for _, call := range hierarchy.Calls {
+		for _, call := range hierarchy.Callers {
 			if call.Symbol == "go package main/bar()." {
 				foundBar = true
 				barCall = &call
@@ -174,12 +174,12 @@ func TestQueryCommands(t *testing.T) {
 		}
 
 		// Check second layer (if bar was found)
-		if barCall != nil && len(barCall.Calls) > 0 {
-			for _, call := range barCall.Calls {
+		if barCall != nil && len(barCall.Callers) > 0 {
+			for _, call := range barCall.Callers {
 				if call.Symbol == "go package main/baz()." {
 					foundBaz = true
 					// Check third layer
-					for _, nestedCall := range call.Calls {
+					for _, nestedCall := range call.Callers {
 						if nestedCall.Symbol == "go package main/main()." {
 							foundMain = true
 						}
@@ -189,9 +189,9 @@ func TestQueryCommands(t *testing.T) {
 		}
 
 		// Validate the nested relationships were found
-		t.Logf("Call hierarchy: foo->bar: %v, bar->baz: %v, baz->main: %v", 
+		t.Logf("Call hierarchy: foo->bar: %v, bar->baz: %v, baz->main: %v",
 			foundBar, foundBaz, foundMain)
-		
+
 		// There should be at least the first level of nesting
 		if !foundBar {
 			t.Errorf("Missing bar in call hierarchy")
