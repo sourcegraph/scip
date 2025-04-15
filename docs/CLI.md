@@ -7,6 +7,7 @@
   - [`scip print`](#scip-print)
   - [`scip snapshot`](#scip-snapshot)
   - [`scip stats`](#scip-stats)
+  - [`scip convert`](#scip-convert)
   <!--toc:end-->
 
 ```
@@ -30,6 +31,7 @@ COMMANDS:
    snapshot  Generate snapshot files for golden testing
    stats     Output useful statistics about a SCIP index
    test      Validate a SCIP index against test files
+   convert   Convert a SCIP index to SQLite database
    help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -142,4 +144,28 @@ USAGE:
 
 OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
+```
+
+## `scip convert`
+
+```
+NAME:
+   scip convert - Convert a SCIP index to SQLite database
+
+USAGE:
+   scip convert [command options] [arguments...]
+
+DESCRIPTION:
+   Converts a SCIP index to a SQLite database with optimized settings.
+
+   The SQLite database contains four tables:
+   1. documents: Contains metadata about source files
+   2. chunks: Stores occurrences in chunks of approximately 100 occurrences per chunk
+   3. symbols: Stores symbol information with unique IDs
+   4. mentions: Tracks which chunks contain which symbols with specific roles
+
+OPTIONS:
+   --output value    Path to output SQLite database file (default: "index.db")
+   --chunk-size value  Number of occurrences per chunk (default: 100)
+   --help, -h        show help
 ```
