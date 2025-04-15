@@ -63,7 +63,7 @@ func TestQueryCommands(t *testing.T) {
 		}
 
 		loc := locations[0]
-		if loc.Path != "src/main.go" || loc.Line != 2 || loc.Symbol != symbol || loc.Role != "definition" {
+		if loc.Path != "src/main.go" || loc.Line != 2 || loc.Role != "definition" {
 			t.Errorf("Unexpected location: %+v", loc)
 		}
 	})

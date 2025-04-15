@@ -637,12 +637,14 @@ func (c *Converter) Convert(index *scip.Index) error {
 			chunkID := c.conn.LastInsertRowID()
 
 			// Add entries to the mentions table for each unique symbol in this chunk
-			symbolRoles := make(map[string]int32)
+			symbolRoles := make(map[string]map[int32]struct{})
 			for _, occ := range chunk {
 				if occ.Symbol != "" {
-					// If we have multiple occurrences of the same symbol with different roles,
-					// combine the roles (bitwise OR)
-					symbolRoles[occ.Symbol] |= occ.SymbolRoles
+					// Initialize inner map if it doesn't exist yet
+					if symbolRoles[occ.Symbol] == nil {
+						symbolRoles[occ.Symbol] = make(map[int32]struct{})
+					}
+					symbolRoles[occ.Symbol][occ.SymbolRoles] = struct{}{}
 				}
 			}
 
@@ -666,7 +668,7 @@ func (c *Converter) Convert(index *scip.Index) error {
 			}
 
 			// Add mentions for each symbol in this chunk
-			for symbolName, role := range symbolRoles {
+			for symbolName, roleMap := range symbolRoles {
 				// Look up the symbol ID
 				var symbolID int64
 
@@ -711,15 +713,17 @@ func (c *Converter) Convert(index *scip.Index) error {
 				}
 				symLookupStmt.Reset()
 
-				// Insert mention
-				mentionStmt.Reset()
-				mentionStmt.BindInt64(1, chunkID)
-				mentionStmt.BindInt64(2, symbolID)
-				mentionStmt.BindInt64(3, int64(role))
+				// Insert mention for each unique role
+				for role := range roleMap {
+					mentionStmt.Reset()
+					mentionStmt.BindInt64(1, chunkID)
+					mentionStmt.BindInt64(2, symbolID)
+					mentionStmt.BindInt64(3, int64(role))
 
-				_, err = mentionStmt.Step()
-				if err != nil {
-					return errors.Wrapf(err, "failed to insert mention for symbol %s", symbolName)
+					_, err = mentionStmt.Step()
+					if err != nil {
+						return errors.Wrapf(err, "failed to insert mention for symbol %s with role %d", symbolName, role)
+					}
 				}
 			}
 		}

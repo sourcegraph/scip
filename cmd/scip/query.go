@@ -307,7 +307,7 @@ func findSymbolOccurrences(db *sqlite.Conn, symbol string, definitionsOnly bool)
 		"WHERE m.symbol_id = ?"
 
 	if definitionsOnly {
-		mentionsQuery += " AND m.role & 1 = 1" // SymbolRole_Definition = 1
+		mentionsQuery += " AND m.role = 1" // SymbolRole_Definition = 1
 	}
 
 	err = sqlitex.Execute(db, mentionsQuery, &sqlitex.ExecOptions{
@@ -352,14 +352,15 @@ func findSymbolOccurrences(db *sqlite.Conn, symbol string, definitionsOnly bool)
 			"WHERE blob = ? AND symbol = ?"
 
 		if definitionsOnly {
-			occSQL += " AND roles & 1 = 1" // SymbolRole_Definition = 1
+			occSQL += " AND role = 'definition'" // Filter by role name
 		}
 
 		oErr := sqlitex.Execute(db, occSQL, &sqlitex.ExecOptions{
 			Args: []interface{}{occurrencesBlob, symbol},
 			ResultFunc: func(stmt *sqlite.Stmt) error {
 				// Extract location information
-				oSymbol := stmt.ColumnText(0)
+				// We don't need the symbol from the result as we already have it
+				_ = stmt.ColumnText(0)
 				startLine := stmt.ColumnInt64(1)
 				startChar := stmt.ColumnInt64(2)
 				endLine := stmt.ColumnInt64(3)
@@ -367,13 +368,13 @@ func findSymbolOccurrences(db *sqlite.Conn, symbol string, definitionsOnly bool)
 				role := stmt.ColumnText(5)
 
 				location := Location{
-					Path:      chunk.FilePath,
-					Line:      int(startLine),
-					Character: int(startChar),
-					EndLine:   int(endLine),
-					EndChar:   int(endChar),
-					Symbol:    oSymbol,
-					Role:      role,
+				Path:      chunk.FilePath,
+				Line:      int(startLine),
+				Character: int(startChar),
+				EndLine:   int(endLine),
+				EndChar:   int(endChar),
+				Symbol:    symbol, // Use the symbol parameter instead of oSymbol
+				Role:      role,
 				}
 
 				locations = append(locations, location)
@@ -425,7 +426,7 @@ func buildCallHierarchy(db *sqlite.Conn, node *CallHierarchyItem, depth int, max
 		FROM mentions m
 		JOIN chunks c ON m.chunk_id = c.id
 		JOIN documents d ON c.document_id = d.id
-		WHERE m.symbol_id = ? AND (m.role & 1) = 0
+		WHERE m.symbol_id = ? AND m.role != 1 -- SymbolRole_Definition=1
 	`
 
 	err = sqlitex.Execute(db, query, &sqlitex.ExecOptions{
@@ -470,7 +471,7 @@ func buildCallHierarchy(db *sqlite.Conn, node *CallHierarchyItem, depth int, max
 
 		// Query the occurrences virtual table to find exact reference locations
 		occSQL := "SELECT startLine, startChar FROM scip_occurrences " +
-			"WHERE blob = ? AND symbol = ? AND (roles & 1) = 0" // Exclude definitions
+			"WHERE blob = ? AND symbol = ? AND role != 'definition'" // Exclude definitions
 
 		err = sqlitex.Execute(db, occSQL, &sqlitex.ExecOptions{
 			Args: []interface{}{occurrencesBlob, node.Symbol},
