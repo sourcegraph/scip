@@ -196,6 +196,207 @@ func TestConvert(t *testing.T) {
 	}
 }
 
+func TestSCIPOccurrencesVirtualTable(t *testing.T) {
+	// Create a temporary directory for the test
+	tmpDir, err := os.MkdirTemp("", "scip-vtable-test")
+	if err != nil {
+		t.Fatalf("Failed to create temp directory: %v", err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	// Create a test SQLite database
+	dbPath := filepath.Join(tmpDir, "test.db")
+	db, err := createSQLiteDatabase(dbPath)
+	if err != nil {
+		t.Fatalf("Failed to create SQLite database: %v", err)
+	}
+	defer db.Close()
+
+	// Create test occurrences
+	occurrences := []*scip.Occurrence{
+		{
+			Range:       []int32{1, 0, 1, 5},
+			Symbol:      "go package main/func1",
+			SymbolRoles: int32(scip.SymbolRole_Definition),
+		},
+		{
+			Range:       []int32{2, 10, 2, 15},
+			Symbol:      "go package main/func2",
+			SymbolRoles: int32(scip.SymbolRole_ReadAccess),
+		},
+	}
+
+	// Serialize the occurrences to a protobuf blob
+	occBlob, err := proto.Marshal(&scip.Document{Occurrences: occurrences})
+	if err != nil {
+		t.Fatalf("Failed to marshal occurrences: %v", err)
+	}
+
+	// Create a temporary table for testing
+	err = sqlitex.ExecuteTransient(db, "CREATE TABLE test_occurrences (id INTEGER PRIMARY KEY, blob BLOB)", nil)
+	if err != nil {
+		t.Fatalf("Failed to create test table: %v", err)
+	}
+
+	// Insert the test blob
+	stmt, err := db.Prepare("INSERT INTO test_occurrences (blob) VALUES (?)")
+	if err != nil {
+		t.Fatalf("Failed to prepare insert statement: %v", err)
+	}
+	stmt.BindBytes(1, occBlob)
+	_, err = stmt.Step()
+	if err != nil {
+		stmt.Finalize()
+		t.Fatalf("Failed to insert test blob: %v", err)
+	}
+	stmt.Finalize()
+
+	// Query the virtual table
+	type Result struct {
+		Symbol      string
+		StartLine   int64
+		StartChar   int64
+		EndLine     int64
+		EndChar     int64
+		SymbolRoles int64
+		Role        string
+	}
+
+	results := []Result{}
+
+	err = sqlitex.Execute(db, "SELECT symbol, startLine, startChar, endLine, endChar, roles, role FROM scip_occurrences WHERE blob = (SELECT blob FROM test_occurrences LIMIT 1) ORDER BY startLine", &sqlitex.ExecOptions{
+		ResultFunc: func(stmt *sqlite.Stmt) error {
+			results = append(results, Result{
+				Symbol:      stmt.ColumnText(0),
+				StartLine:   stmt.ColumnInt64(1),
+				StartChar:   stmt.ColumnInt64(2),
+				EndLine:     stmt.ColumnInt64(3),
+				EndChar:     stmt.ColumnInt64(4),
+				SymbolRoles: stmt.ColumnInt64(5),
+				Role:        stmt.ColumnText(6),
+			})
+			return nil
+		},
+	})
+	if err != nil {
+		t.Fatalf("Failed to query virtual table: %v", err)
+	}
+
+	// Verify we have the expected number of rows
+	if len(results) != 2 {
+		t.Fatalf("Expected 2 occurrences, got %d", len(results))
+	}
+
+	// Verify the first occurrence
+	expectedResults := []Result{
+		{
+			Symbol:      "go package main/func1",
+			StartLine:   1,
+			StartChar:   0,
+			EndLine:     1,
+			EndChar:     5,
+			SymbolRoles: int64(scip.SymbolRole_Definition),
+			Role:        "definition",
+		},
+		{
+			Symbol:      "go package main/func2",
+			StartLine:   2,
+			StartChar:   10,
+			EndLine:     2,
+			EndChar:     15,
+			SymbolRoles: int64(scip.SymbolRole_ReadAccess),
+			Role:        "reference",
+		},
+	}
+
+	for i, expected := range expectedResults {
+		actual := results[i]
+		if actual.Symbol != expected.Symbol {
+			t.Errorf("Result %d: expected Symbol='%s', got '%s'", i, expected.Symbol, actual.Symbol)
+		}
+		if actual.StartLine != expected.StartLine {
+			t.Errorf("Result %d: expected StartLine=%d, got %d", i, expected.StartLine, actual.StartLine)
+		}
+		if actual.StartChar != expected.StartChar {
+			t.Errorf("Result %d: expected StartChar=%d, got %d", i, expected.StartChar, actual.StartChar)
+		}
+		if actual.EndLine != expected.EndLine {
+			t.Errorf("Result %d: expected EndLine=%d, got %d", i, expected.EndLine, actual.EndLine)
+		}
+		if actual.EndChar != expected.EndChar {
+			t.Errorf("Result %d: expected EndChar=%d, got %d", i, expected.EndChar, actual.EndChar)
+		}
+		if actual.Role != expected.Role {
+			t.Errorf("Result %d: expected Role='%s', got '%s'", i, expected.Role, actual.Role)
+		}
+	}
+}
+
+func TestDeserializeOccurrencesFromBlob(t *testing.T) {
+	// Create test occurrences
+	occurrences := []*scip.Occurrence{
+		{
+			Range:       []int32{1, 0, 1, 5},
+			Symbol:      "go package main/func1",
+			SymbolRoles: int32(scip.SymbolRole_Definition),
+		},
+		{
+			Range:       []int32{2, 10, 2, 15},
+			Symbol:      "go package main/func2",
+			SymbolRoles: int32(0),
+		},
+	}
+
+	// Serialize the occurrences to a protobuf blob
+	occBlob, err := proto.Marshal(&scip.Document{Occurrences: occurrences})
+	if err != nil {
+		t.Fatalf("Failed to marshal occurrences: %v", err)
+	}
+
+	// Use our utility function to deserialize the blob
+	parsedOccurrences, err := DeserializeOccurrencesFromBlob(occBlob)
+	if err != nil {
+		t.Fatalf("Failed to deserialize occurrences: %v", err)
+	}
+
+	// Verify results
+	if len(parsedOccurrences) != 2 {
+		t.Errorf("Expected 2 occurrences, got %d", len(parsedOccurrences))
+	}
+
+	// Verify first occurrence
+	if parsedOccurrences[0].Symbol != "go package main/func1" {
+		t.Errorf("Expected symbol 'go package main/func1', got '%s'", parsedOccurrences[0].Symbol)
+	}
+	if parsedOccurrences[0].Role != "definition" {
+		t.Errorf("Expected role 'definition', got '%s'", parsedOccurrences[0].Role)
+	}
+	if parsedOccurrences[0].StartLine != 1 || parsedOccurrences[0].StartChar != 0 {
+		t.Errorf("Expected start position (1,0), got (%d,%d)",
+			parsedOccurrences[0].StartLine, parsedOccurrences[0].StartChar)
+	}
+	if parsedOccurrences[0].EndLine != 1 || parsedOccurrences[0].EndChar != 5 {
+		t.Errorf("Expected end position (1,5), got (%d,%d)",
+			parsedOccurrences[0].EndLine, parsedOccurrences[0].EndChar)
+	}
+
+	// Verify second occurrence
+	if parsedOccurrences[1].Symbol != "go package main/func2" {
+		t.Errorf("Expected symbol 'go package main/func2', got '%s'", parsedOccurrences[1].Symbol)
+	}
+	if parsedOccurrences[1].Role != "reference" {
+		t.Errorf("Expected role 'reference', got '%s'", parsedOccurrences[1].Role)
+	}
+	if parsedOccurrences[1].StartLine != 2 || parsedOccurrences[1].StartChar != 10 {
+		t.Errorf("Expected start position (2,10), got (%d,%d)",
+			parsedOccurrences[1].StartLine, parsedOccurrences[1].StartChar)
+	}
+	if parsedOccurrences[1].EndLine != 2 || parsedOccurrences[1].EndChar != 15 {
+		t.Errorf("Expected end position (2,15), got (%d,%d)",
+			parsedOccurrences[1].EndLine, parsedOccurrences[1].EndChar)
+	}
+}
+
 func createTestIndex() *scip.Index {
 	return &scip.Index{
 		Metadata: &scip.Metadata{
@@ -206,9 +407,9 @@ func createTestIndex() *scip.Index {
 		},
 		Documents: []*scip.Document{
 			{
-				RelativePath:    "src/main.go",
-				Language:        "go",
-				Text:            "package main\n\nfunc main() {\n\tfmt.Println(\"Hello, world!\")\n}\n",
+				RelativePath:     "src/main.go",
+				Language:         "go",
+				Text:             "package main\n\nfunc main() {\n\tfmt.Println(\"Hello, world!\")\n}\n",
 				PositionEncoding: scip.PositionEncoding_UTF8CodeUnitOffsetFromLineStart,
 				Occurrences: []*scip.Occurrence{
 					{
@@ -229,19 +430,19 @@ func createTestIndex() *scip.Index {
 					{
 						Range:       []int32{3, 5, 3, 12},
 						Symbol:      "go . fmt/Println().",
-						SymbolRoles: int32(scip.SymbolRole_ReadAccess),
+						SymbolRoles: int32(0),
 					},
 				},
 				Symbols: []*scip.SymbolInformation{
 					{
-						Symbol:      "go package main",
-						DisplayName: "main",
+						Symbol:        "go package main",
+						DisplayName:   "main",
 						Documentation: []string{"Main package"},
 						Kind:          scip.SymbolInformation_Package,
 					},
 					{
-						Symbol:      "go package main/main().",
-						DisplayName: "main",
+						Symbol:        "go package main/main().",
+						DisplayName:   "main",
 						Documentation: []string{"Main function"},
 						Kind:          scip.SymbolInformation_Function,
 					},
@@ -250,14 +451,14 @@ func createTestIndex() *scip.Index {
 		},
 		ExternalSymbols: []*scip.SymbolInformation{
 			{
-				Symbol:      "go . fmt",
-				DisplayName: "fmt",
+				Symbol:        "go . fmt",
+				DisplayName:   "fmt",
 				Documentation: []string{"Formatting package"},
 				Kind:          scip.SymbolInformation_Package,
 			},
 			{
-				Symbol:      "go . fmt/Println().",
-				DisplayName: "Println",
+				Symbol:        "go . fmt/Println().",
+				DisplayName:   "Println",
 				Documentation: []string{"Print to standard output"},
 				Kind:          scip.SymbolInformation_Function,
 			},
