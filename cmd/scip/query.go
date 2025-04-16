@@ -81,11 +81,17 @@ func queryCommand() cli.Command {
 						Usage: "Maximum depth of the call hierarchy",
 						Value: 10,
 					},
+					&cli.StringFlag{
+						Name:  "format",
+						Usage: "Output format: json or dot (GraphViz)",
+						Value: "json",
+					},
 				},
 				Action: func(c *cli.Context) error {
 					symbol := c.String("symbol")
 					maxDepth := c.Int("max-depth")
-					return callHierarchyQuery(dbPath, symbol, maxDepth, c.App.Writer)
+					format := c.String("format")
+					return callHierarchyQuery(dbPath, symbol, maxDepth, format, c.App.Writer)
 				},
 			},
 		},
@@ -227,7 +233,7 @@ func findReferencesQuery(dbPath string, symbol string, out io.Writer) error {
 }
 
 // callHierarchyQuery generates a call hierarchy for a symbol
-func callHierarchyQuery(dbPath string, symbol string, maxDepth int, out io.Writer) error {
+func callHierarchyQuery(dbPath string, symbol string, maxDepth int, format string, out io.Writer) error {
 	db, err := openQueryDB(dbPath)
 	if err != nil {
 		return err
@@ -259,15 +265,33 @@ func callHierarchyQuery(dbPath string, symbol string, maxDepth int, out io.Write
 		return err
 	}
 
-	// Convert to JSON
-	result, err := json.MarshalIndent(entries, "", "  ")
-	if err != nil {
-		return errors.Wrap(err, "failed to marshal result to JSON")
-	}
+	// Handle different output formats
+	switch format {
+	case "json":
+		// Convert to JSON
+		result, err := json.MarshalIndent(entries, "", "  ")
+		if err != nil {
+			return errors.Wrap(err, "failed to marshal result to JSON")
+		}
 
-	// Write the result
-	_, err = fmt.Fprintln(out, string(result))
-	return err
+		// Write the result
+		_, err = fmt.Fprintln(out, string(result))
+		return err
+
+	case "dot":
+		// Generate GraphViz DOT representation
+		dotOutput, err := generateDOTFormat(entries, symbol)
+		if err != nil {
+			return errors.Wrap(err, "failed to generate DOT format")
+		}
+
+		// Write the result
+		_, err = fmt.Fprintln(out, dotOutput)
+		return err
+
+	default:
+		return errors.Errorf("unsupported output format: %s (supported formats: json, dot)", format)
+	}
 }
 
 // findSymbolOccurrences looks up all occurrences of a symbol
@@ -1010,6 +1034,133 @@ func buildCallHierarchy(db *sqlite.Conn, node *CallHierarchyItem, depth int, max
 	}
 
 	return nil
+}
+
+// generateDOTFormat converts a flat call hierarchy to GraphViz DOT format
+func generateDOTFormat(entries []FlatCallHierarchyEntry, rootSymbol string) (string, error) {
+	// Build a map to track all nodes and edges
+	nodes := make(map[string]bool)
+	type edge struct {
+		from string
+		to   string
+		info string // Additional info for the edge (file:line)
+	}
+	var edges []edge
+
+	// Track the symbol display names to make the graph more readable
+	displayNames := make(map[string]string)
+	
+	// Helper to get a shorter display name for a symbol
+	getDisplayName := func(symbol string) string {
+		if display, ok := displayNames[symbol]; ok {
+			return display
+		}
+		
+		// Extract a more readable name from the symbol
+		display := symbol
+		
+		// For symbols like "scip-typescript npm @sourcegraph/scip-typescript v0.3.15 src/`FileIndexer.ts`/FileIndexer#descriptor()."
+		// Just take the last part after the last slash or backtick
+		parts := strings.Split(symbol, "/")
+		if len(parts) > 0 {
+			display = parts[len(parts)-1]
+		}
+		
+		// Further simplify symbols with backticks
+		parts = strings.Split(display, "`")
+		if len(parts) > 1 {
+			display = parts[len(parts)-1]
+		}
+		
+		// If the symbol has a # (method), simplify it
+		if idx := strings.LastIndex(display, "#"); idx >= 0 {
+			display = display[idx+1:]
+		}
+		
+		// Remove trailing dots from method names
+		display = strings.TrimSuffix(display, ".")
+		
+		displayNames[symbol] = display
+		return display
+	}
+	
+	// Process all entries to build the graph
+	for _, entry := range entries {
+		caller := entry.Caller.Symbol
+		callee := entry.Callee
+		
+		// Add nodes to the map
+		nodes[caller] = true
+		nodes[callee] = true
+		
+		// For each call site, add an edge
+		if len(entry.CallSites) > 0 {
+			// We'll use the first call site for the edge label
+			callSite := entry.CallSites[0]
+			
+			// Format the edge info: filename:line
+			fileParts := strings.Split(callSite.RelativePath, "/")
+			filename := callSite.RelativePath
+			if len(fileParts) > 0 {
+				filename = fileParts[len(fileParts)-1]
+			}
+			
+			// Create edge label with file and line info
+			edgeInfo := fmt.Sprintf("%s:%d", filename, callSite.Range.StartLine+1) // +1 for 1-based line numbers
+			
+			// Add additional call sites count if there are more than one
+			if len(entry.CallSites) > 1 {
+				edgeInfo += fmt.Sprintf(" (+%d more)", len(entry.CallSites)-1)
+			}
+			
+			// Add the edge
+			edges = append(edges, edge{
+				from: caller,
+				to:   callee,
+				info: edgeInfo,
+			})
+		}
+	}
+	
+	// Start building DOT output
+	var sb strings.Builder
+	
+	// Write DOT format header
+	sb.WriteString("digraph CallHierarchy {\n")
+	sb.WriteString("  // Graph styling\n")
+	sb.WriteString("  graph [];\n")
+	sb.WriteString("  node [shape=box, style=\"rounded\"];\n")
+	sb.WriteString("  edge [];\n\n")
+	
+	// Add nodes
+	sb.WriteString("  // Nodes\n")
+	for node := range nodes {
+		nodeDisplay := getDisplayName(node)
+		nodeColor := "lightgrey"
+		
+		// Highlight the root node
+		if node == rootSymbol {
+			nodeColor = "lightblue"
+		}
+		
+		// Write node with its ID and label
+		// We use the full symbol as ID and the display name as label
+		sb.WriteString(fmt.Sprintf("  \"%s\" [label=\"%s\", fillcolor=%s];\n", 
+			node, nodeDisplay, nodeColor))
+	}
+	
+	// Add edges
+	sb.WriteString("\n  // Edges\n")
+	for _, e := range edges {
+		// Write edge with from, to, and label
+		sb.WriteString(fmt.Sprintf("  \"%s\" -> \"%s\" [label=\"%s\"];\n", 
+			e.from, e.to, e.info))
+	}
+	
+	// Close the graph
+	sb.WriteString("}\n")
+	
+	return sb.String(), nil
 }
 
 // readBlob reads a blob from a SQLite statement column
