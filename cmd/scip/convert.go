@@ -321,6 +321,21 @@ func DeserializeOccurrencesFromBlob(blob []byte) ([]OccurrenceInfo, error) {
 			endLine, endChar = occ.Range[2], occ.Range[3]
 		}
 
+		// Assert valid range values
+		if endLine < startLine {
+			panic(fmt.Sprintf("Invalid SCIP range: endLine (%d) < startLine (%d) for symbol %s", endLine, startLine, occ.Symbol))
+		}
+
+		// For same-line ranges, ensure endChar >= startChar
+		if endLine == startLine && endChar < startChar {
+			panic(fmt.Sprintf("Invalid SCIP range: endChar (%d) < startChar (%d) for same-line range for symbol %s", endChar, startChar, occ.Symbol))
+		}
+
+		// Ensure endLine is never 0 unless startLine is also 0
+		if endLine == 0 && startLine > 0 {
+			panic(fmt.Sprintf("Invalid SCIP range: endLine is 0 while startLine is %d for symbol %s", startLine, occ.Symbol))
+		}
+
 		// Get role as string
 		role := "unknown"
 		if occ.SymbolRoles&int32(scip.SymbolRole_Definition) != 0 {
@@ -784,6 +799,11 @@ func findLineRange(occurrences []*scip.Occurrence) (int, int) {
 		endLine := startLine
 		if len(occ.Range) >= 4 {
 			endLine = int(occ.Range[2])
+		}
+
+		// Assert endLine is valid (not less than startLine)
+		if endLine < startLine {
+			panic(fmt.Sprintf("Invalid SCIP range in findLineRange: endLine (%d) < startLine (%d)", endLine, startLine))
 		}
 
 		if endLine > maxLine {

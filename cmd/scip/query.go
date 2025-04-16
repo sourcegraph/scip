@@ -377,6 +377,21 @@ func findSymbolOccurrences(db *sqlite.Conn, symbol string, definitionsOnly bool)
 				endChar := stmt.ColumnInt64(4)
 				role := stmt.ColumnText(5)
 
+				// Validate range values
+				if endLine < startLine {
+					panic(fmt.Sprintf("Invalid range in findSymbolOccurrences: endLine (%d) < startLine (%d) for symbol %s", endLine, startLine, symbol))
+				}
+
+				// For same-line ranges, ensure endChar >= startChar
+				if endLine == startLine && endChar < startChar {
+					panic(fmt.Sprintf("Invalid range in findSymbolOccurrences: endChar (%d) < startChar (%d) for same-line range for symbol %s", endChar, startChar, symbol))
+				}
+
+				// Ensure endLine is never 0 unless startLine is also 0
+				if endLine == 0 && startLine > 0 {
+					panic(fmt.Sprintf("Invalid range in findSymbolOccurrences: endLine is 0 while startLine is %d for symbol %s", startLine, symbol))
+				}
+
 				location := Location{
 					Path:      chunk.FilePath,
 					Line:      int(startLine),
@@ -503,6 +518,27 @@ func buildFlatCallHierarchy(db *sqlite.Conn, rootSymbol string, maxDepth int) ([
 				// We don't need the callee location in the new format
 				// but we keep track of it in symbolLocations for possible future use
 
+				// Validate caller range values
+				callerStartLine := callerLocation.Line
+				callerStartChar := callerLocation.Character
+				callerEndLine := callerLocation.EndLine
+				callerEndChar := callerLocation.EndChar
+
+				// Assert valid caller range values
+				if callerEndLine < callerStartLine {
+					panic(fmt.Sprintf("Invalid range in caller: endLine (%d) < startLine (%d) for symbol %s", callerEndLine, callerStartLine, ref.CallerSymbol))
+				}
+
+				// For same-line ranges, ensure endChar >= startChar
+				if callerEndLine == callerStartLine && callerEndChar < callerStartChar {
+					panic(fmt.Sprintf("Invalid range in caller: endChar (%d) < startChar (%d) for same-line range for symbol %s", callerEndChar, callerStartChar, ref.CallerSymbol))
+				}
+
+				// Ensure endLine is never 0 unless startLine is also 0
+				if callerEndLine == 0 && callerStartLine > 0 {
+					panic(fmt.Sprintf("Invalid range in caller: endLine is 0 while startLine is %d for symbol %s", callerStartLine, ref.CallerSymbol))
+				}
+
 				// Create new entry
 				entry = &FlatCallHierarchyEntry{
 					Callee: current.symbol,
@@ -510,10 +546,10 @@ func buildFlatCallHierarchy(db *sqlite.Conn, rootSymbol string, maxDepth int) ([
 						Symbol:       ref.CallerSymbol,
 						RelativePath: ref.FilePath,
 						Range: Range{
-							StartLine: callerLocation.Line,
-							StartChar: callerLocation.Character,
-							EndLine:   callerLocation.EndLine,
-							EndChar:   callerLocation.EndChar,
+							StartLine: callerStartLine,
+							StartChar: callerStartChar,
+							EndLine:   callerEndLine,
+							EndChar:   callerEndChar,
 						},
 					},
 					CallSites: []CallSite{},
@@ -522,14 +558,35 @@ func buildFlatCallHierarchy(db *sqlite.Conn, rootSymbol string, maxDepth int) ([
 				relationshipMap[pair] = entry
 			}
 
+			// Validate range values
+			refStartLine := ref.RefLocation.Line
+			refStartChar := ref.RefLocation.Character
+			refEndLine := ref.RefLocation.EndLine
+			refEndChar := ref.RefLocation.EndChar
+
+			// Assert valid range values
+			if refEndLine < refStartLine {
+				panic(fmt.Sprintf("Invalid range in call site: endLine (%d) < startLine (%d) for symbol %s", refEndLine, refStartLine, ref.CallerSymbol))
+			}
+
+			// For same-line ranges, ensure endChar >= startChar
+			if refEndLine == refStartLine && refEndChar < refStartChar {
+				panic(fmt.Sprintf("Invalid range in call site: endChar (%d) < startChar (%d) for same-line range for symbol %s", refEndChar, refStartChar, ref.CallerSymbol))
+			}
+
+			// Ensure endLine is never 0 unless startLine is also 0
+			if refEndLine == 0 && refStartLine > 0 {
+				panic(fmt.Sprintf("Invalid range in call site: endLine is 0 while startLine is %d for symbol %s", refStartLine, ref.CallerSymbol))
+			}
+
 			// Add reference to the entry
 			entry.CallSites = append(entry.CallSites, CallSite{
 				RelativePath: ref.FilePath,
 				Range: Range{
-					StartLine: ref.RefLocation.Line,
-					StartChar: ref.RefLocation.Character,
-					EndLine:   ref.RefLocation.EndLine,
-					EndChar:   ref.RefLocation.EndChar,
+					StartLine: refStartLine,
+					StartChar: refStartChar,
+					EndLine:   refEndLine,
+					EndChar:   refEndChar,
 				},
 			})
 
@@ -642,7 +699,9 @@ func findReferencesWithCallers(db *sqlite.Conn, symbol string) ([]SymbolReferenc
 					-- Get all reference locations from chunks in this document
 					SELECT 
 						o.startLine, 
-						o.startChar
+						o.startChar,
+						o.endLine,
+						o.endChar
 					FROM chunks c
 					JOIN mentions m ON c.id = m.chunk_id
 					CROSS JOIN scip_occurrences o ON o.blob = c.occurrences 
@@ -661,7 +720,9 @@ func findReferencesWithCallers(db *sqlite.Conn, symbol string) ([]SymbolReferenc
 					d.end_line,
 					d.end_char,
 					r.startLine,
-					r.startChar
+					r.startChar,
+					r.endLine,
+					r.endChar
 				FROM reference_locations r
 				JOIN defn_trees d ON d.document_id = ?
 				                  AND d.start_line <= r.startLine 
@@ -682,12 +743,35 @@ func findReferencesWithCallers(db *sqlite.Conn, symbol string) ([]SymbolReferenc
 					callerEndChar := int(stmt.ColumnInt64(4))
 					refLine := int(stmt.ColumnInt64(5))
 					refChar := int(stmt.ColumnInt64(6))
+					refEndLine := int(stmt.ColumnInt64(7))
+					refEndChar := int(stmt.ColumnInt64(8))
+
+					// Validate reference range values
+					if refEndLine < refLine {
+						panic(fmt.Sprintf("Invalid reference range: endLine (%d) < startLine (%d) for symbol %s", refEndLine, refLine, symbol))
+					}
+
+					// For same-line ranges, ensure endChar >= startChar
+					if refEndLine == refLine && refEndChar < refChar {
+						panic(fmt.Sprintf("Invalid reference range: endChar (%d) < startChar (%d) for same-line range for symbol %s", refEndChar, refChar, symbol))
+					}
+
+					// Ensure endLine is never 0 unless startLine is also 0
+					if refEndLine == 0 && refLine > 0 {
+						panic(fmt.Sprintf("Invalid reference range: endLine is 0 while startLine is %d for symbol %s", refLine, symbol))
+					}
+
+					// We're missing endLine and endChar in the current query
+					// For references, we'll need to go back to get those from the occurrences blob
+					// Let's assert that we should never get here if we can't get all the range info
 
 					// Create reference location
 					refLocation := Location{
 						Path:      filePath,
 						Line:      refLine,
 						Character: refChar,
+						EndLine:   refEndLine,
+						EndChar:   refEndChar,
 						Role:      "reference",
 					}
 
