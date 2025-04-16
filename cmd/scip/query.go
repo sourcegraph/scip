@@ -120,6 +120,34 @@ type CallHierarchyItem struct {
 	Callers  []CallHierarchyItem `json:"callers,omitempty"`
 }
 
+// CallSite represents a single location where one function calls another
+type CallSite struct {
+	RelativePath string `json:"relativePath"` // File path containing the call
+	Range        Range  `json:"range"`        // Source range of the call site
+}
+
+// CallerInfo represents information about a calling function
+type CallerInfo struct {
+	Symbol       string `json:"symbol"`       // Symbol of the calling function
+	RelativePath string `json:"relativePath"` // File path containing the caller
+	Range        Range  `json:"range"`        // Source range of the caller definition
+}
+
+// Range represents a source code range
+type Range struct {
+	StartLine int `json:"startLine"` // Start line (0-based)
+	StartChar int `json:"startChar"` // Start character (0-based)
+	EndLine   int `json:"endLine"`   // End line (0-based)
+	EndChar   int `json:"endChar"`   // End character (0-based)
+}
+
+// FlatCallHierarchyEntry represents a single relationship in a call hierarchy
+type FlatCallHierarchyEntry struct {
+	Callee    string     `json:"callee"`    // Symbol being called (just the symbol name)
+	Caller    CallerInfo `json:"caller"`    // Information about the caller
+	CallSites []CallSite `json:"callSites"` // Locations where the callee is called by the caller
+}
+
 // openQueryDB opens the SQLite database and registers the virtual table
 func openQueryDB(dbPath string) (*sqlite.Conn, error) {
 	// Open a connection to the database
@@ -225,32 +253,14 @@ func callHierarchyQuery(dbPath string, symbol string, maxDepth int, out io.Write
 		return errors.Errorf("symbol not found: %s", symbol)
 	}
 
-	// Start with the root symbol
-	root := CallHierarchyItem{
-		Symbol: symbol,
-	}
-
-	// Try to find location info for the symbol (not required, but helpful)
-	definitions, err := findSymbolOccurrences(db, symbol, true)
-	if err == nil && len(definitions) > 0 {
-		root.Location = definitions[0]
-	}
-
-	// Get callers
-	visitedSymbols := make(map[string]bool)
-	visitedSymbols[symbol] = true
-
-	// Debug output to stderr, not out (which needs to have valid JSON)
-	debugOut := os.Stderr
-
-	// Build the call hierarchy
-	err = buildCallHierarchy(db, &root, 0, maxDepth, visitedSymbols, debugOut)
+	// Get flat call hierarchy
+	entries, err := buildFlatCallHierarchy(db, symbol, maxDepth)
 	if err != nil {
 		return err
 	}
 
 	// Convert to JSON
-	result, err := json.MarshalIndent(root, "", "  ")
+	result, err := json.MarshalIndent(entries, "", "  ")
 	if err != nil {
 		return errors.Wrap(err, "failed to marshal result to JSON")
 	}
@@ -388,6 +398,358 @@ func findSymbolOccurrences(db *sqlite.Conn, symbol string, definitionsOnly bool)
 	}
 
 	return locations, nil
+}
+
+// getSymbolDefinitionLocation returns the definition location for a symbol
+func getSymbolDefinitionLocation(db *sqlite.Conn, symbol string) (Location, error) {
+	var location Location
+
+	// Find the definition occurrence
+	definitions, err := findSymbolOccurrences(db, symbol, true)
+	if err != nil {
+		return location, errors.Wrapf(err, "failed to find definition for %s", symbol)
+	}
+
+	if len(definitions) == 0 {
+		return location, errors.Errorf("no definition found for symbol: %s", symbol)
+	}
+
+	return definitions[0], nil
+}
+
+// buildFlatCallHierarchy builds a flat call hierarchy for a symbol using efficient SQL joins
+func buildFlatCallHierarchy(db *sqlite.Conn, rootSymbol string, maxDepth int) ([]FlatCallHierarchyEntry, error) {
+	// Get the definition location of the root symbol
+	rootLocation, err := getSymbolDefinitionLocation(db, rootSymbol)
+	if err != nil {
+		return nil, err
+	}
+
+	// Keep track of symbols we've already processed to avoid cycles
+	processedSymbols := make(map[string]bool)
+	processedSymbols[rootSymbol] = true
+
+	// Queue for breadth-first search
+	type queueItem struct {
+		symbol string
+		depth  int
+	}
+
+	queue := []queueItem{{symbol: rootSymbol, depth: 0}}
+	result := []FlatCallHierarchyEntry{}
+
+	// Map to store symbol definition locations for reuse
+	symbolLocations := make(map[string]Location)
+	symbolLocations[rootSymbol] = rootLocation
+
+	// Map to efficiently group references by caller-callee-file pair
+	type callerCalleePair struct {
+		caller   string
+		callee   string
+		filePath string
+	}
+
+	relationshipMap := make(map[callerCalleePair]*FlatCallHierarchyEntry)
+
+	// Process queue until empty or max depth reached
+	for len(queue) > 0 {
+		// Pop from queue
+		current := queue[0]
+		queue = queue[1:]
+
+		// Skip if already at max depth
+		if current.depth >= maxDepth {
+			continue
+		}
+
+		// Find references to this symbol
+		references, err := findReferencesWithCallers(db, current.symbol)
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to find references for %s", current.symbol)
+		}
+
+		// Group references by caller
+		for _, ref := range references {
+			// Caller filtering (for method/function symbols) is done in SQL
+			// Allow self-references for recursive functions
+			// We deliberately don't skip self-references to support recursive calls
+
+			// Create key for caller-callee-file pair
+			pair := callerCalleePair{
+				caller:   ref.CallerSymbol,
+				callee:   current.symbol,
+				filePath: ref.FilePath,
+			}
+
+			// Get or create entry in the map
+			entry, exists := relationshipMap[pair]
+			if !exists {
+				// Get caller definition location
+				var callerLocation Location
+				if loc, ok := symbolLocations[ref.CallerSymbol]; ok {
+					callerLocation = loc
+				} else {
+					// Find the definition location
+					loc, err := getSymbolDefinitionLocation(db, ref.CallerSymbol)
+					if err != nil {
+						// Use placeholder if no definition found
+						callerLocation = ref.CallerLocation
+					} else {
+						callerLocation = loc
+						symbolLocations[ref.CallerSymbol] = loc
+					}
+				}
+
+				// We don't need the callee location in the new format
+				// but we keep track of it in symbolLocations for possible future use
+
+				// Create new entry
+				entry = &FlatCallHierarchyEntry{
+				Callee: current.symbol,
+				Caller: CallerInfo{
+				 Symbol:       ref.CallerSymbol,
+				 RelativePath: ref.FilePath,
+				 Range: Range{
+				  StartLine: callerLocation.Line,
+				   StartChar: callerLocation.Character,
+								EndLine:   callerLocation.EndLine,
+								EndChar:   callerLocation.EndChar,
+							},
+						},
+						CallSites: []CallSite{},
+					}
+
+				relationshipMap[pair] = entry
+			}
+
+			// Add reference to the entry
+			entry.CallSites = append(entry.CallSites, CallSite{
+				RelativePath: ref.FilePath,
+				Range: Range{
+					StartLine: ref.RefLocation.Line,
+					StartChar: ref.RefLocation.Character,
+					EndLine:   ref.RefLocation.EndLine,
+					EndChar:   ref.RefLocation.EndChar,
+				},
+			})
+
+			// Add caller to queue if not already processed
+			if !processedSymbols[ref.CallerSymbol] {
+				queue = append(queue, queueItem{symbol: ref.CallerSymbol, depth: current.depth + 1})
+				processedSymbols[ref.CallerSymbol] = true
+			}
+		}
+	}
+
+	// Convert map to slice and sort in BFS order
+	// Track the symbols in BFS order to ensure proper ordering
+	orderedSymbols := []string{rootSymbol} // Start with root symbol
+	
+	// Add remaining symbols in the order they were discovered
+	for i := 0; i < len(orderedSymbols); i++ {
+		symbol := orderedSymbols[i]
+		
+		// First, add entries where this symbol is the callee
+		for pair, entry := range relationshipMap {
+			// Caller filtering (for method/function symbols) is done in SQL
+			if pair.callee == symbol {
+				result = append(result, *entry)
+				
+				// Add caller to ordered symbols if not already there
+				alreadyAdded := false
+				for _, s := range orderedSymbols {
+					if s == pair.caller {
+						alreadyAdded = true
+						break
+					}
+				}
+				
+				if !alreadyAdded {
+					orderedSymbols = append(orderedSymbols, pair.caller)
+				}
+			}
+		}
+	}
+	
+	return result, nil
+}
+
+// SymbolReference represents a reference to a symbol along with its enclosing definition
+type SymbolReference struct {
+	CallerSymbol   string   // The enclosing definition's symbol
+	CallerLocation Location // Location of the caller definition
+	RefLocation    Location // Location of the reference
+	FilePath       string   // File path containing the reference
+}
+
+// findReferencesWithCallers finds all references to a symbol and their enclosing definitions
+// Groups results by (caller, callee) pairs directly in SQL for better performance
+func findReferencesWithCallers(db *sqlite.Conn, symbol string) ([]SymbolReference, error) {
+	// Get the symbol ID
+	var symbolID int64
+	var found bool
+
+	err := sqlitex.Execute(db, "SELECT id FROM symbols WHERE symbol = ?", &sqlitex.ExecOptions{
+		Args: []interface{}{symbol},
+		ResultFunc: func(stmt *sqlite.Stmt) error {
+			symbolID = stmt.ColumnInt64(0)
+			found = true
+			return nil
+		},
+	})
+
+	if err != nil || !found {
+		return nil, errors.Wrap(err, "failed to query symbols table")
+	}
+
+	// Data structure to store grouped references
+	type callerGroup struct {
+		callerSymbol    string
+		callerStartLine int
+		callerStartChar int
+		callerEndLine   int
+		callerEndChar   int
+		filePath        string
+		references      []Location
+	}
+
+	// Map to store grouped references by (caller, callee, filepath)
+	type groupKey struct {
+		caller   string
+		filePath string
+	}
+	groupedRefs := make(map[groupKey]*callerGroup)
+
+	// Query documents with references
+	docQuery := `
+		SELECT DISTINCT d.id, d.relative_path
+		FROM mentions m
+		JOIN chunks c ON m.chunk_id = c.id
+		JOIN documents d ON c.document_id = d.id
+		WHERE m.symbol_id = ? AND m.role != 1 -- Exclude definitions
+	`
+
+	err = sqlitex.Execute(db, docQuery, &sqlitex.ExecOptions{
+		Args: []interface{}{symbolID},
+		ResultFunc: func(stmt *sqlite.Stmt) error {
+			documentID := stmt.ColumnInt64(0)
+			filePath := stmt.ColumnText(1)
+
+			// For each document, find references and group by caller
+			// Using a Common Table Expression (CTE) for better readability and performance
+			combinedQuery := `
+				WITH reference_locations AS (
+					-- Get all reference locations from chunks in this document
+					SELECT 
+						o.startLine, 
+						o.startChar
+					FROM chunks c
+					JOIN mentions m ON c.id = m.chunk_id
+					CROSS JOIN scip_occurrences o ON o.blob = c.occurrences 
+					                          AND o.symbol = ? 
+					                          AND o.role != 'definition'
+					WHERE c.document_id = ? 
+					  AND m.symbol_id = ? 
+					  AND m.role != 1
+				)
+				-- Join with defn_trees to find enclosing definition for each reference
+				-- Group by caller symbol to aggregate references under the same caller
+				SELECT 
+					s.symbol AS caller_symbol,
+					d.start_line,
+					d.start_char,
+					d.end_line,
+					d.end_char,
+					r.startLine,
+					r.startChar
+				FROM reference_locations r
+				JOIN defn_trees d ON d.document_id = ?
+				                  AND d.start_line <= r.startLine 
+				                  AND d.end_line >= r.startLine
+				JOIN symbols s ON d.symbol_id = s.id
+				-- Only include method/function callers (must end with ").") and allow self-referential calls
+				WHERE s.symbol LIKE '%).'
+				ORDER BY s.symbol, r.startLine, r.startChar
+			`
+
+			err := sqlitex.Execute(db, combinedQuery, &sqlitex.ExecOptions{
+				Args: []interface{}{symbol, documentID, symbolID, documentID},
+				ResultFunc: func(stmt *sqlite.Stmt) error {
+					callerSymbol := stmt.ColumnText(0)
+					callerStartLine := int(stmt.ColumnInt64(1))
+					callerStartChar := int(stmt.ColumnInt64(2))
+					callerEndLine := int(stmt.ColumnInt64(3))
+					callerEndChar := int(stmt.ColumnInt64(4))
+					refLine := int(stmt.ColumnInt64(5))
+					refChar := int(stmt.ColumnInt64(6))
+
+					// Create reference location
+					refLocation := Location{
+						Path:      filePath,
+						Line:      refLine,
+						Character: refChar,
+						Role:      "reference",
+					}
+
+					// Group by caller+file
+					key := groupKey{caller: callerSymbol, filePath: filePath}
+					group, exists := groupedRefs[key]
+
+					if !exists {
+						// Create a new group
+						group = &callerGroup{
+							callerSymbol:    callerSymbol,
+							callerStartLine: callerStartLine,
+							callerStartChar: callerStartChar,
+							callerEndLine:   callerEndLine,
+							callerEndChar:   callerEndChar,
+							filePath:        filePath,
+							references:      []Location{},
+						}
+						groupedRefs[key] = group
+					}
+
+					// Add reference to group
+					group.references = append(group.references, refLocation)
+					return nil
+				},
+			})
+
+			if err != nil {
+				return errors.Wrapf(err, "failed to query references in document %s", filePath)
+			}
+			return nil
+		},
+	})
+
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to query documents")
+	}
+
+	// Convert grouped references to SymbolReference array
+	var references []SymbolReference
+
+	for _, group := range groupedRefs {
+		callerLocation := Location{
+			Path:      group.filePath,
+			Line:      group.callerStartLine,
+			Character: group.callerStartChar,
+			EndLine:   group.callerEndLine,
+			EndChar:   group.callerEndChar,
+			Role:      "definition",
+		}
+
+		for _, refLoc := range group.references {
+			references = append(references, SymbolReference{
+				CallerSymbol:   group.callerSymbol,
+				CallerLocation: callerLocation,
+				RefLocation:    refLoc,
+				FilePath:       group.filePath,
+			})
+		}
+	}
+
+	return references, nil
 }
 
 // buildCallHierarchy recursively builds a call hierarchy for a symbol
