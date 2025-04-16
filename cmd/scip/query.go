@@ -505,19 +505,19 @@ func buildFlatCallHierarchy(db *sqlite.Conn, rootSymbol string, maxDepth int) ([
 
 				// Create new entry
 				entry = &FlatCallHierarchyEntry{
-				Callee: current.symbol,
-				Caller: CallerInfo{
-				 Symbol:       ref.CallerSymbol,
-				 RelativePath: ref.FilePath,
-				 Range: Range{
-				  StartLine: callerLocation.Line,
-				   StartChar: callerLocation.Character,
-								EndLine:   callerLocation.EndLine,
-								EndChar:   callerLocation.EndChar,
-							},
+					Callee: current.symbol,
+					Caller: CallerInfo{
+						Symbol:       ref.CallerSymbol,
+						RelativePath: ref.FilePath,
+						Range: Range{
+							StartLine: callerLocation.Line,
+							StartChar: callerLocation.Character,
+							EndLine:   callerLocation.EndLine,
+							EndChar:   callerLocation.EndChar,
 						},
-						CallSites: []CallSite{},
-					}
+					},
+					CallSites: []CallSite{},
+				}
 
 				relationshipMap[pair] = entry
 			}
@@ -544,17 +544,17 @@ func buildFlatCallHierarchy(db *sqlite.Conn, rootSymbol string, maxDepth int) ([
 	// Convert map to slice and sort in BFS order
 	// Track the symbols in BFS order to ensure proper ordering
 	orderedSymbols := []string{rootSymbol} // Start with root symbol
-	
+
 	// Add remaining symbols in the order they were discovered
 	for i := 0; i < len(orderedSymbols); i++ {
 		symbol := orderedSymbols[i]
-		
+
 		// First, add entries where this symbol is the callee
 		for pair, entry := range relationshipMap {
 			// Caller filtering (for method/function symbols) is done in SQL
 			if pair.callee == symbol {
 				result = append(result, *entry)
-				
+
 				// Add caller to ordered symbols if not already there
 				alreadyAdded := false
 				for _, s := range orderedSymbols {
@@ -563,14 +563,14 @@ func buildFlatCallHierarchy(db *sqlite.Conn, rootSymbol string, maxDepth int) ([
 						break
 					}
 				}
-				
+
 				if !alreadyAdded {
 					orderedSymbols = append(orderedSymbols, pair.caller)
 				}
 			}
 		}
 	}
-	
+
 	return result, nil
 }
 

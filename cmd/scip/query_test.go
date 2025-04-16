@@ -354,7 +354,7 @@ func TestCallerFilteringCallHierarchy(t *testing.T) {
 	// Run call hierarchy query for target symbol
 	var output strings.Builder
 	symbol := "go package example/targetFunc()."
-	
+
 	// Use the direct query function
 	err = callHierarchyQuery(dbPath, symbol, 3, &output)
 	if err != nil {

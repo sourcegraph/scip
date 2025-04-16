@@ -316,7 +316,7 @@ func DeserializeOccurrencesFromBlob(blob []byte) ([]OccurrenceInfo, error) {
 	for i, occ := range doc.Occurrences {
 		// Extract range information
 		startLine, startChar := occ.Range[0], occ.Range[1]
-		endLine, endChar := startLine, startChar
+		endLine, endChar := startLine, occ.Range[2]
 		if len(occ.Range) >= 4 {
 			endLine, endChar = occ.Range[2], occ.Range[3]
 		}
