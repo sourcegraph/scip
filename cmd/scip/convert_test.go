@@ -1,204 +1,160 @@
 package main
 
 import (
-	"strings"
+	"bytes"
+	"cmp"
+	"path/filepath"
 	"testing"
 
+	"github.com/klauspost/compress/zstd"
+	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/slices"
+	"zombiezen.com/go/sqlite"
+	"zombiezen.com/go/sqlite/sqlitex"
+
 	"github.com/sourcegraph/scip/bindings/go/scip"
-	"google.golang.org/protobuf/proto"
 )
 
-func TestDeserializeOccurrencesFromBlob_ValidRanges(t *testing.T) {
-	// Create a test document with valid occurrences
-	testDoc := &scip.Document{
-		Occurrences: []*scip.Occurrence{
-			// Case 1: 3-element range [line, startChar, endChar]
+func TestConvert_SmokeTest(t *testing.T) {
+	// Create temp directory for test DB
+	tempDir := t.TempDir()
+
+	sqliteDBPath := filepath.Join(tempDir, "index.db")
+
+	pkg1S1Sym := "scip-go go . . pkg1/S1#"
+	index := &scip.Index{
+		Documents: []*scip.Document{
 			{
-				Range:       []int32{100, 10, 20},
-				Symbol:      "test-symbol-1",
-				SymbolRoles: int32(scip.SymbolRole_Definition),
+				RelativePath: "a.go",
+				Occurrences: []*scip.Occurrence{
+					{Symbol: pkg1S1Sym, Range: []int32{10, 3, 6}, SymbolRoles: int32(scip.SymbolRole_Definition)},
+				},
+				Symbols: []*scip.SymbolInformation{
+					{Symbol: pkg1S1Sym},
+				},
 			},
-			// Case 2: 4-element range [startLine, startChar, endLine, endChar]
 			{
-				Range:       []int32{200, 5, 200, 15},
-				Symbol:      "test-symbol-2",
-				SymbolRoles: int32(scip.SymbolRole_Reference),
-			},
-			// Case 3: Multi-line range
-			{
-				Range:       []int32{300, 8, 301, 10},
-				Symbol:      "test-symbol-3",
-				SymbolRoles: int32(scip.SymbolRole_Reference),
+				RelativePath: "b.go",
+				Occurrences: []*scip.Occurrence{
+					{Symbol: pkg1S1Sym, Range: []int32{15, 9, 12}},
+				},
 			},
 		},
 	}
 
-	// Serialize the document
-	blob, err := proto.Marshal(testDoc)
-	if err != nil {
-		t.Fatalf("Failed to marshal test document: %v", err)
+	db, err := createSQLiteDatabase(sqliteDBPath)
+	require.NoError(t, err)
+	defer func() { require.NoError(t, db.Close()) }()
+
+	writer, err := zstd.NewWriter(nil)
+	require.NoError(t, err)
+	converter := NewConverter(db, chunkSizeHint, writer)
+	err = converter.Convert(index)
+	require.NoError(t, err)
+
+	checkDocuments := func(db *sqlite.Conn) {
+		query := "SELECT relative_path FROM documents"
+		var dbPaths []string
+		err := sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
+			ResultFunc: func(stmt *sqlite.Stmt) error {
+				dbPaths = append(dbPaths, stmt.ColumnText(0))
+				return nil
+			},
+		})
+		require.NoError(t, err)
+		var expectedPaths []string
+		for _, doc := range index.Documents {
+			expectedPaths = append(expectedPaths, doc.RelativePath)
+		}
+		slices.Sort(expectedPaths)
+		expectedPaths = slices.Compact(expectedPaths)
+		slices.Sort(dbPaths)
+
+		require.Equal(t, expectedPaths, dbPaths)
 	}
 
-	// Deserialize and check the results
-	occurrences, err := DeserializeOccurrencesFromBlob(blob)
-	if err != nil {
-		t.Fatalf("DeserializeOccurrencesFromBlob failed: %v", err)
+	checkSymbols := func(db *sqlite.Conn) {
+		query := "SELECT symbol FROM global_symbols"
+		var dbSymbols []string
+		err := sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
+			ResultFunc: func(stmt *sqlite.Stmt) error {
+				dbSymbols = append(dbSymbols, stmt.ColumnText(0))
+				return nil
+			},
+		})
+		require.NoError(t, err)
+
+		var expectedSymbols []string
+		for _, doc := range index.Documents {
+			for _, occ := range doc.Occurrences {
+				expectedSymbols = append(expectedSymbols, occ.Symbol)
+			}
+			for _, sym := range doc.Symbols {
+				expectedSymbols = append(expectedSymbols, sym.Symbol)
+			}
+		}
+		slices.Sort(expectedSymbols)
+		expectedSymbols = slices.Compact(expectedSymbols)
+		slices.Sort(dbSymbols)
+
+		require.Equal(t, expectedSymbols, dbSymbols)
 	}
 
-	// Verify that we got all the occurrences
-	if len(occurrences) != 3 {
-		t.Errorf("Expected 3 occurrences, got %d", len(occurrences))
+	zstdReader, err := zstd.NewReader(bytes.NewBuffer(nil))
+	require.NoError(t, err)
+
+	checkOccurrences := func(db *sqlite.Conn) {
+		query := `SELECT d.relative_path, occurrences
+				  FROM documents d
+				  JOIN chunks c ON c.document_id = d.id`
+		dbOccurrences := []occurrenceData{}
+		err := sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
+			ResultFunc: func(stmt *sqlite.Stmt) error {
+				var c Chunk
+				err = c.fromDBFormat(stmt.ColumnReader(1), zstdReader)
+				require.NoError(t, err)
+				for _, occ := range c.Occurrences {
+					dbOccurrences = append(dbOccurrences, occurrenceData{
+						DocumentPath: stmt.ColumnText(0),
+						Symbol:       occ.Symbol,
+						Role:         occ.SymbolRoles,
+						Range:        scip.NewRangeUnchecked(occ.Range),
+					})
+				}
+				return nil
+			},
+		})
+		require.NoError(t, err)
+		cmpFn := func(a, b occurrenceData) int {
+			return cmp.Or(cmp.Compare(a.DocumentPath, b.DocumentPath),
+				a.Range.CompareStrict(b.Range))
+		}
+		slices.SortFunc(dbOccurrences, cmpFn)
+
+		var expectedOccurrences []occurrenceData
+		for _, doc := range index.Documents {
+			for _, occ := range doc.Occurrences {
+				expectedOccurrences = append(expectedOccurrences, occurrenceData{
+					DocumentPath: doc.RelativePath,
+					Symbol:       occ.Symbol,
+					Role:         occ.SymbolRoles,
+					Range:        scip.NewRangeUnchecked(occ.Range),
+				})
+			}
+		}
+		slices.SortFunc(expectedOccurrences, cmpFn)
+
+		require.Equal(t, expectedOccurrences, dbOccurrences)
 	}
 
-	// Test case 1: 3-element range
-	if occurrences[0].StartLine != 100 || occurrences[0].StartChar != 10 ||
-		occurrences[0].EndLine != 100 || occurrences[0].EndChar != 20 {
-		t.Errorf("Case 1 failed: got range [%d,%d,%d,%d], expected [100,10,100,20]",
-			occurrences[0].StartLine, occurrences[0].StartChar,
-			occurrences[0].EndLine, occurrences[0].EndChar)
-	}
-
-	// Test case 2: 4-element range
-	if occurrences[1].StartLine != 200 || occurrences[1].StartChar != 5 ||
-		occurrences[1].EndLine != 200 || occurrences[1].EndChar != 15 {
-		t.Errorf("Case 2 failed: got range [%d,%d,%d,%d], expected [200,5,200,15]",
-			occurrences[1].StartLine, occurrences[1].StartChar,
-			occurrences[1].EndLine, occurrences[1].EndChar)
-	}
-
-	// Test case 3: Multi-line range
-	if occurrences[2].StartLine != 300 || occurrences[2].StartChar != 8 ||
-		occurrences[2].EndLine != 301 || occurrences[2].EndChar != 10 {
-		t.Errorf("Case 3 failed: got range [%d,%d,%d,%d], expected [300,8,301,10]",
-			occurrences[2].StartLine, occurrences[2].StartChar,
-			occurrences[2].EndLine, occurrences[2].EndChar)
-	}
+	checkDocuments(db)
+	checkSymbols(db)
+	checkOccurrences(db)
 }
 
-func TestDeserializeOccurrencesFromBlob_InvalidRanges(t *testing.T) {
-	// Test 1: endLine < startLine
-	testInvalidEndLine := func(t *testing.T) {
-		testDoc := &scip.Document{
-			Occurrences: []*scip.Occurrence{
-				{
-					Range:       []int32{300, 8, 200, 10}, // endLine < startLine
-					Symbol:      "test-symbol",
-					SymbolRoles: int32(scip.SymbolRole_Reference),
-				},
-			},
-		}
-
-		blob, _ := proto.Marshal(testDoc)
-
-		// This should panic
-		DeserializeOccurrencesFromBlob(blob)
-	}
-
-	// Test 2: endLine == startLine but endChar < startChar
-	testInvalidEndChar := func(t *testing.T) {
-		testDoc := &scip.Document{
-			Occurrences: []*scip.Occurrence{
-				{
-					Range:       []int32{300, 20, 300, 10}, // endChar < startChar
-					Symbol:      "test-symbol",
-					SymbolRoles: int32(scip.SymbolRole_Reference),
-				},
-			},
-		}
-
-		blob, _ := proto.Marshal(testDoc)
-
-		// This should panic
-		DeserializeOccurrencesFromBlob(blob)
-	}
-
-	// Test 3: endLine == 0 but startLine > 0
-	testZeroEndLine := func(t *testing.T) {
-		testDoc := &scip.Document{
-			Occurrences: []*scip.Occurrence{
-				{
-					Range:       []int32{300, 8, 0, 0}, // endLine is 0
-					Symbol:      "test-symbol",
-					SymbolRoles: int32(scip.SymbolRole_Reference),
-				},
-			},
-		}
-
-		blob, _ := proto.Marshal(testDoc)
-
-		// This should panic
-		DeserializeOccurrencesFromBlob(blob)
-	}
-
-	// Run each test inside a recovery block
-	t.Run("EndLineLessThanStartLine", func(t *testing.T) {
-		defer func() {
-			r := recover()
-			if r == nil {
-				t.Error("Expected panic for endLine < startLine, but no panic occurred")
-			} else {
-				errMsg, ok := r.(string)
-				if !ok || !strings.Contains(errMsg, "endLine") {
-					t.Errorf("Expected panic message about endLine, got: %v", r)
-				}
-			}
-		}()
-		testInvalidEndLine(t)
-	})
-
-	t.Run("EndCharLessThanStartChar", func(t *testing.T) {
-		defer func() {
-			r := recover()
-			if r == nil {
-				t.Error("Expected panic for endChar < startChar, but no panic occurred")
-			} else {
-				errMsg, ok := r.(string)
-				if !ok || !strings.Contains(errMsg, "endChar") {
-					t.Errorf("Expected panic message about endChar, got: %v", r)
-				}
-			}
-		}()
-		testInvalidEndChar(t)
-	})
-
-	t.Run("ZeroEndLineWithNonzeroStartLine", func(t *testing.T) {
-		defer func() {
-			r := recover()
-			if r == nil {
-				t.Error("Expected panic for endLine=0 with startLine>0, but no panic occurred")
-			} else {
-				errMsg, ok := r.(string)
-				if !ok || !strings.Contains(errMsg, "endLine is 0") {
-					t.Errorf("Expected panic message about zero endLine, got: %v", r)
-				}
-			}
-		}()
-		testZeroEndLine(t)
-	})
-}
-
-func TestFindLineRange_InvalidRanges(t *testing.T) {
-	// Test case where endLine < startLine should panic
-	t.Run("EndLineLessThanStartLine", func(t *testing.T) {
-		defer func() {
-			r := recover()
-			if r == nil {
-				t.Error("Expected panic for endLine < startLine in findLineRange, but no panic occurred")
-			} else {
-				errMsg, ok := r.(string)
-				if !ok || !strings.Contains(errMsg, "findLineRange") {
-					t.Errorf("Expected panic from findLineRange, got: %v", r)
-				}
-			}
-		}()
-
-		occurrences := []*scip.Occurrence{
-			{
-				Range: []int32{200, 8, 100, 10}, // endLine < startLine
-			},
-		}
-
-		// This should panic
-		findLineRange(occurrences)
-	})
+type occurrenceData struct {
+	DocumentPath string
+	Symbol       string
+	Role         int32
+	Range        scip.Range
 }
