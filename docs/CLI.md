@@ -7,6 +7,7 @@
   - [`scip print`](#scip-print)
   - [`scip snapshot`](#scip-snapshot)
   - [`scip stats`](#scip-stats)
+  - [`scip expt-convert`](#scip-convert)
   <!--toc:end-->
 
 ```
@@ -25,12 +26,13 @@ DESCRIPTION:
      https://github.com/sourcegraph/scip
 
 COMMANDS:
-   lint      Flag potential issues with a SCIP index
-   print     Print a SCIP index for debugging
-   snapshot  Generate snapshot files for golden testing
-   stats     Output useful statistics about a SCIP index
-   test      Validate a SCIP index against test files
-   help, h   Shows a list of commands or help for one command
+   lint          Flag potential issues with a SCIP index
+   print         Print a SCIP index for debugging
+   snapshot      Generate snapshot files for golden testing
+   stats         Output useful statistics about a SCIP index
+   test          Validate a SCIP index against test files
+   expt-convert  [EXPERIMENTAL] Convert a SCIP index to a SQLite database
+   help, h       Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h     show help
@@ -142,4 +144,27 @@ USAGE:
 
 OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
+```
+
+## `scip expt-convert`
+
+```
+NAME:
+   scip expt-convert - [EXPERIMENTAL] Convert a SCIP index to a SQLite database
+
+USAGE:
+   scip expt-convert [command options] [arguments...]
+
+DESCRIPTION:
+   Converts a SCIP index to a SQLite database.
+
+   For inspecting the data, use the SQLite CLI.
+   For inspecting the schema, use .schema.
+
+   Occurrences are stored opaquely as a blob to prevent the DB size from growing very quickly.
+
+OPTIONS:
+   --output value       Path to output SQLite database file (default: "index.db")
+   --cpu-profile value  Path to output prof file
+   --help, -h           show help
 ```
