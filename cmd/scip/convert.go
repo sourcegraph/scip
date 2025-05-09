@@ -29,7 +29,7 @@ func convertCommand() cli.Command {
 	var indexPath, outputPath, cpuProfilePath string
 
 	command := cli.Command{
-		Name:  "convert",
+		Name:  "expt-convert",
 		Usage: "[EXPERIMENTAL] Convert a SCIP index to a SQLite database",
 		Description: `Converts a SCIP index to a SQLite database.
 

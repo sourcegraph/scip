@@ -7,7 +7,7 @@
   - [`scip print`](#scip-print)
   - [`scip snapshot`](#scip-snapshot)
   - [`scip stats`](#scip-stats)
-  - [`scip convert`](#scip-convert)
+  - [`scip expt-convert`](#scip-convert)
   <!--toc:end-->
 
 ```
@@ -26,13 +26,13 @@ DESCRIPTION:
      https://github.com/sourcegraph/scip
 
 COMMANDS:
-   lint      Flag potential issues with a SCIP index
-   print     Print a SCIP index for debugging
-   snapshot  Generate snapshot files for golden testing
-   stats     Output useful statistics about a SCIP index
-   test      Validate a SCIP index against test files
-   convert   [EXPERIMENTAL] Convert a SCIP index to a SQLite database
-   help, h   Shows a list of commands or help for one command
+   lint          Flag potential issues with a SCIP index
+   print         Print a SCIP index for debugging
+   snapshot      Generate snapshot files for golden testing
+   stats         Output useful statistics about a SCIP index
+   test          Validate a SCIP index against test files
+   expt-convert  [EXPERIMENTAL] Convert a SCIP index to a SQLite database
+   help, h       Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h     show help
@@ -146,14 +146,14 @@ OPTIONS:
    --from value  Path to SCIP index file (default: index.scip)
 ```
 
-## `scip convert`
+## `scip expt-convert`
 
 ```
 NAME:
-   scip convert - [EXPERIMENTAL] Convert a SCIP index to a SQLite database
+   scip expt-convert - [EXPERIMENTAL] Convert a SCIP index to a SQLite database
 
 USAGE:
-   scip convert [command options] [arguments...]
+   scip expt-convert [command options] [arguments...]
 
 DESCRIPTION:
    Converts a SCIP index to a SQLite database.
