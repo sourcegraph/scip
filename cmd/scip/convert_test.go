@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"cmp"
 	"path/filepath"
 	"testing"
@@ -122,17 +121,14 @@ func checkSymbols(t *testing.T, index *scip.Index, db *sqlite.Conn) {
 }
 
 func checkOccurrences(t *testing.T, index *scip.Index, db *sqlite.Conn) {
-	zstdReader, err := zstd.NewReader(bytes.NewBuffer(nil))
-	require.NoError(t, err)
-
 	query := `SELECT d.relative_path, occurrences
 				  FROM documents d
 				  JOIN chunks c ON c.document_id = d.id`
 	dbOccurrences := []occurrenceData{}
-	err = sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
+	err := sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
 		ResultFunc: func(stmt *sqlite.Stmt) error {
 			var c Chunk
-			err = c.fromDBFormat(stmt.ColumnReader(1), zstdReader)
+			err := c.fromDBFormat(stmt.ColumnText(1))
 			require.NoError(t, err)
 			for _, occ := range c.Occurrences {
 				dbOccurrences = append(dbOccurrences, occurrenceData{
@@ -183,36 +179,31 @@ func checkQuerySymbolAtPosition(t *testing.T, index *scip.Index, db *sqlite.Conn
 	targetChar := int32(3)
 	targetDoc := "a.go"
 
-	// This query attempts to use JSON operators on the occurrences column
-	// which should fail since it's currently a compressed binary blob
+	// This query uses -> / ->> operators on the occurrences column to find the symbol at the specified position
+	// The occurrences column now contains a direct JSON array of occurrence objects
+	// Uses -> for object access and ->> for final text extraction
 	query := `
-		SELECT gs.symbol 
+		SELECT occ.value ->> 'symbol' as symbol
 		FROM documents d
-		JOIN chunks c ON c.document_id = d.id
-		JOIN global_symbols gs ON gs.id IN (
-			SELECT json_extract(occ.value, '$.symbol_id')
-			FROM json_each(c.occurrences) AS occ
-			WHERE json_extract(occ.value, '$.range[0]') = ?
-			AND json_extract(occ.value, '$.range[1]') = ?
-		)
+		JOIN chunks c ON c.document_id = d.id,
+		json_each(c.occurrences) AS occ
 		WHERE d.relative_path = ?
+		AND json_extract(occ.value -> 'range', '$[0]') = ?
+		AND json_extract(occ.value -> 'range', '$[1]') = ?
 		AND ? BETWEEN c.start_line AND c.end_line
 	`
 
 	var foundSymbol string
 	err := sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
-		Args: []any{targetLine, targetChar, targetDoc, targetLine},
+		Args: []any{targetDoc, targetLine, targetChar, targetLine},
 		ResultFunc: func(stmt *sqlite.Stmt) error {
 			foundSymbol = stmt.ColumnText(0)
 			return nil
 		},
 	})
 
-	// This test should fail because the occurrences column is currently
-	// a compressed binary blob, not JSON. This is a failing test that demonstrates
-	// the need to change the storage format to enable JSON queries.
 	require.NoError(t, err, "Query should succeed once occurrences are stored as JSON")
-	require.Equal(t, expectedSymbol, foundSymbol, 
-		"Expected to find symbol %s at position %d:%d in document %s", 
+	require.Equal(t, expectedSymbol, foundSymbol,
+		"Expected to find symbol %s at position %d:%d in document %s",
 		expectedSymbol, targetLine, targetChar, targetDoc)
 }
