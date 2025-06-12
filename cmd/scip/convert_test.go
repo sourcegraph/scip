@@ -40,6 +40,7 @@ func TestConvert_SmokeTest(t *testing.T) {
 		{"documents", checkDocuments},
 		{"symbols", checkSymbols},
 		{"occurrences", checkOccurrences},
+		{"query_symbol_at_position", checkQuerySymbolAtPosition},
 	}
 
 	for _, check := range checks {
@@ -172,4 +173,46 @@ type occurrenceData struct {
 	Symbol       string
 	Role         int32
 	Range        scip.Range
+}
+
+func checkQuerySymbolAtPosition(t *testing.T, index *scip.Index, db *sqlite.Conn) {
+	// Query for the symbol at line 10, character 3 in document "a.go"
+	// This should return pkg1S1Sym according to our test data
+	expectedSymbol := "scip-go go . . pkg1/S1#"
+	targetLine := int32(10)
+	targetChar := int32(3)
+	targetDoc := "a.go"
+
+	// This query attempts to use JSON operators on the occurrences column
+	// which should fail since it's currently a compressed binary blob
+	query := `
+		SELECT gs.symbol 
+		FROM documents d
+		JOIN chunks c ON c.document_id = d.id
+		JOIN global_symbols gs ON gs.id IN (
+			SELECT json_extract(occ.value, '$.symbol_id')
+			FROM json_each(c.occurrences) AS occ
+			WHERE json_extract(occ.value, '$.range[0]') = ?
+			AND json_extract(occ.value, '$.range[1]') = ?
+		)
+		WHERE d.relative_path = ?
+		AND ? BETWEEN c.start_line AND c.end_line
+	`
+
+	var foundSymbol string
+	err := sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
+		Args: []any{targetLine, targetChar, targetDoc, targetLine},
+		ResultFunc: func(stmt *sqlite.Stmt) error {
+			foundSymbol = stmt.ColumnText(0)
+			return nil
+		},
+	})
+
+	// This test should fail because the occurrences column is currently
+	// a compressed binary blob, not JSON. This is a failing test that demonstrates
+	// the need to change the storage format to enable JSON queries.
+	require.NoError(t, err, "Query should succeed once occurrences are stored as JSON")
+	require.Equal(t, expectedSymbol, foundSymbol, 
+		"Expected to find symbol %s at position %d:%d in document %s", 
+		expectedSymbol, targetLine, targetChar, targetDoc)
 }
