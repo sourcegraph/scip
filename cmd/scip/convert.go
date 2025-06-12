@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -13,7 +12,6 @@ import (
 	"strings"
 
 	"github.com/cockroachdb/errors"
-	"github.com/klauspost/compress/zstd"
 	"github.com/urfave/cli/v2"
 	"google.golang.org/protobuf/encoding/protojson"
 	"zombiezen.com/go/sqlite"
@@ -109,12 +107,8 @@ func convertMain(indexPath, sqliteDBPath, cpuProfilePath string, chunkSize int, 
 		err = errors.CombineErrors(err, db.Close())
 	}()
 
-	writer, err := zstd.NewWriter(bytes.NewBuffer(nil))
-	if err != nil {
-		return errors.Wrap(err, "zstd writer creation")
-	}
 	// Convert the SCIP index to the SQLite database
-	converter := NewConverter(db, chunkSize, writer)
+	converter := NewConverter(db, chunkSize)
 	if err := converter.Convert(index); err != nil {
 		return err
 	}
@@ -232,17 +226,15 @@ func executeAll(conn *sqlite.Conn, statements []string) error {
 
 // Converter handles the conversion from SCIP to SQLite
 type Converter struct {
-	conn       *sqlite.Conn
-	chunkSize  int
-	zstdWriter *zstd.Encoder
+	conn      *sqlite.Conn
+	chunkSize int
 }
 
 // NewConverter creates a new converter instance
-func NewConverter(conn *sqlite.Conn, chunkSize int, writer *zstd.Encoder) *Converter {
+func NewConverter(conn *sqlite.Conn, chunkSize int) *Converter {
 	return &Converter{
-		conn,
-		chunkSize,
-		writer,
+		conn:      conn,
+		chunkSize: chunkSize,
 	}
 }
 
@@ -461,7 +453,7 @@ func (c *Converter) insertGlobalSymbols(symbol *scip.SymbolInformation) (symbolI
 	return symbolID, err
 }
 
-func (c *Chunk) toDBFormat(_ *zstd.Encoder) (string, error) {
+func (c *Chunk) toDBFormat() (string, error) {
 	// Serialize the occurrences slice directly as a JSON array
 	// We'll marshal each occurrence individually using protobuf JSON and combine them
 	marshaler := protojson.MarshalOptions{
@@ -511,7 +503,7 @@ func (c *Chunk) fromDBFormat(jsonData string) error {
 }
 
 func (c *Converter) insertChunk(chunk Chunk, docID int64, chunkIndex int) (chunkID int64, err error) {
-	jsonOccurrences, err := chunk.toDBFormat(c.zstdWriter)
+	jsonOccurrences, err := chunk.toDBFormat()
 	if err != nil {
 		return 0, errors.Wrap(err, "failed to serialize chunk")
 	}

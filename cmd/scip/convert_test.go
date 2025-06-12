@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/klauspost/compress/zstd"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/exp/slices"
 	"zombiezen.com/go/sqlite"
@@ -26,9 +25,7 @@ func TestConvert_SmokeTest(t *testing.T) {
 	require.NoError(t, err)
 	defer func() { require.NoError(t, db.Close()) }()
 
-	writer, err := zstd.NewWriter(nil)
-	require.NoError(t, err)
-	converter := NewConverter(db, chunkSizeHint, writer)
+	converter := NewConverter(db, chunkSizeHint)
 	err = converter.Convert(index)
 	require.NoError(t, err)
 
@@ -49,8 +46,9 @@ func TestConvert_SmokeTest(t *testing.T) {
 	}
 }
 
+const pkg1S1Sym = "scip-go go . . pkg1/S1#"
+
 func testIndex1() *scip.Index {
-	pkg1S1Sym := "scip-go go . . pkg1/S1#"
 	return &scip.Index{
 		Documents: []*scip.Document{
 			{
@@ -174,14 +172,10 @@ type occurrenceData struct {
 func checkQuerySymbolAtPosition(t *testing.T, index *scip.Index, db *sqlite.Conn) {
 	// Query for the symbol at line 10, character 3 in document "a.go"
 	// This should return pkg1S1Sym according to our test data
-	expectedSymbol := "scip-go go . . pkg1/S1#"
 	targetLine := int32(10)
 	targetChar := int32(3)
 	targetDoc := "a.go"
 
-	// This query uses -> / ->> operators on the occurrences column to find the symbol at the specified position
-	// The occurrences column now contains a direct JSON array of occurrence objects
-	// Uses -> for object access and ->> for final text extraction
 	query := `
 		SELECT occ.value ->> 'symbol' as symbol
 		FROM documents d
@@ -203,7 +197,7 @@ func checkQuerySymbolAtPosition(t *testing.T, index *scip.Index, db *sqlite.Conn
 	})
 
 	require.NoError(t, err, "Query should succeed once occurrences are stored as JSON")
-	require.Equal(t, expectedSymbol, foundSymbol,
+	require.Equal(t, pkg1S1Sym, foundSymbol,
 		"Expected to find symbol %s at position %d:%d in document %s",
-		expectedSymbol, targetLine, targetChar, targetDoc)
+		pkg1S1Sym, targetLine, targetChar, targetDoc)
 }
