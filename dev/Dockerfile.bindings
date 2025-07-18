@@ -1,4 +1,4 @@
-FROM ubuntu@sha256:19478ce7fc2ffbce89df29fea5725a8d12e57de52eb9ea570890dc5852aac1ac
+FROM ubuntu@sha256:a08e551cb33850e4740772b38217fc1796a66da2506d312abe51acda354ff061
 
 ENV DEBIAN_FRONTEND noninteractive
 
