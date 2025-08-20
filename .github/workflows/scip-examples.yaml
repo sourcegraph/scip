@@ -11,7 +11,8 @@ permissions:
 jobs:
   index-k8s:
     if: github.repository == 'sourcegraph/scip' # Skip running on forks
-    runs-on: ubuntu-latest-4core-ci-scip-graph-team
+    # runs-on: ubuntu-latest-4cores
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     concurrency:
       group: index-k8s
@@ -25,8 +26,8 @@ jobs:
           ref: master
           fetch-depth: 1
 
-      - name: Configure git safe.directory
-        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+      # - name: Configure git safe.directory
+      #   run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
       - name: Get src-cli
         run: |
