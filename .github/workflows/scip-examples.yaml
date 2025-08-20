@@ -12,7 +12,7 @@ jobs:
   index-k8s:
     if: github.repository == 'sourcegraph/scip' # Skip running on forks
     runs-on: ubuntu-latest-4core-ci-scip-graph-team
-    timeout-minutes: 180
+    timeout-minutes: 30
     concurrency:
       group: index-k8s
       cancel-in-progress: true
@@ -28,15 +28,6 @@ jobs:
       - name: Configure git safe.directory
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
-      - name: Restore Go cache
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-go-
-
       - name: Get src-cli
         run: |
           curl -L https://sourcegraph.com/.api/src-cli/src_linux_amd64 \
@@ -44,16 +35,15 @@ jobs:
           chmod +x /usr/local/bin/src
 
       - name: Install Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with: { go-version-file: 'go.mod' }
 
       - name: Run scip-go
         run: |
-          export GOWORK=off
           scip-go --version
           scip-go --verbose
 
-      - name: Validate SCIP dump size
+      - name: Validate SCIP index size
         run: |
           if [ $(stat -c%s index.scip) -lt 10000000 ]; then
             echo "ERROR: SCIP dump suspiciously small (< 10MB)"
