@@ -1,0 +1,63 @@
+name: SCIP index uploading
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run every day at midnight UTC
+  workflow_dispatch: # Allow manual triggering
+
+permissions:
+  contents: read
+
+jobs:
+  index-k8s:
+    if: github.repository == 'sourcegraph/scip' # Skip running on forks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: index-k8s
+      cancel-in-progress: true
+    container: sourcegraph/scip-go:latest
+    steps:
+      - name: Checkout kubernetes/kubernetes
+        uses: actions/checkout@v5
+        with:
+          repository: kubernetes/kubernetes
+          ref: master
+          fetch-depth: 1
+
+      - name: Configure git safe.directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Get src-cli
+        run: |
+          curl -L https://sourcegraph.com/.api/src-cli/src_linux_amd64 \
+            -o /usr/local/bin/src
+          chmod +x /usr/local/bin/src
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with: { go-version-file: 'go.mod' }
+
+      - name: Run scip-go
+        run: |
+          scip-go --version
+          scip-go --verbose
+
+      - name: Validate SCIP index size
+        run: |
+          if [ $(stat -c%s index.scip) -lt 10000000 ]; then
+            echo "ERROR: SCIP dump suspiciously small (< 10MB)"
+            exit 1
+          fi
+          echo "SCIP dump size: $(du -h index.scip)"
+
+      - name: Upload SCIP dump to Sourcegraph
+        run: |
+          src code-intel upload -no-progress \
+            -repo=github.com/kubernetes/kubernetes \
+            -file=index.scip
+        env:
+          SRC_ENDPOINT: https://sourcegraph.com/
+          # A repo-local secret with access token for a Service Account
+          # that has a role allowing SCIP index upload.
+          SRC_ACCESS_TOKEN: ${{ secrets.SRC_ACCESS_TOKEN_DOTCOM_SCIP_SA }}
