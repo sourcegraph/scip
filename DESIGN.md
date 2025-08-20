@@ -60,7 +60,6 @@ and then converting to SCIP for transmission.
     and zstd are already very good in terms of both compression
     speed and compression ratio.[^3]
 - Support efficient code navigation by itself.
-
   - Why: Code navigation fundamentally requires some form of bidirectional
     lookup which is best served by a query engine.
 
