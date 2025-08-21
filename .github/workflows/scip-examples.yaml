@@ -37,6 +37,16 @@ jobs:
           ref: master
           fetch-depth: 1
 
+      - name: Cache Maven dependencies
+        if: ${{ matrix.target.scip_binary == 'scip-java' }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ matrix.target.id }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ matrix.target.id }}-
+            ${{ runner.os }}-maven-
+
       - name: Install Go
         if: ${{ matrix.target.scip_binary == 'scip-go' }}
         uses: actions/setup-go@v5
