@@ -1,6 +1,6 @@
 golang     1.22.0
 nodejs     22.17.0
-shellcheck 0.7.1
+shellcheck 0.11.0
 yarn       1.22.22
 rust       1.81.0
 python     3.11.9
