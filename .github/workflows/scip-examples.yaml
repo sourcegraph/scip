@@ -15,25 +15,23 @@ jobs:
     timeout-minutes: 30
 
     strategy:
-      fail-fast: false
+      fail-fast: false # If a job fails allow others to continue
       matrix:
         target:
-          - id: k8s
-            checkout_repo: kubernetes/kubernetes
+          - repository: kubernetes/kubernetes
             scip_binary: scip-go
-          - id: guava
-            checkout_repo: google/guava
+          - repository: google/guava
             scip_binary: scip-java
 
     container: sourcegraph/${{ matrix.target.scip_binary }}:latest
     concurrency:
-      group: index-${{ matrix.target.id }}
+      group: index-${{ matrix.target.repository }}
       cancel-in-progress: true
     steps:
-      - name: Checkout ${{ matrix.target.checkout_repo }}
+      - name: Checkout ${{ matrix.target.repository }}
         uses: actions/checkout@v5
         with:
-          repository: ${{ matrix.target.checkout_repo }}
+          repository: ${{ matrix.target.repository }}
           ref: master
           fetch-depth: 1
 
@@ -42,9 +40,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ matrix.target.id }}-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ matrix.target.repository }}-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-maven-${{ matrix.target.id }}-
+            ${{ runner.os }}-maven-${{ matrix.target.repository }}-
             ${{ runner.os }}-maven-
 
       - name: Install Go
@@ -55,7 +53,14 @@ jobs:
       - name: Run SCIP
         run: |
           ${{ matrix.target.scip_binary }} --version
-          ${{ matrix.target.scip_binary }} index --verbose
+          case "${{ matrix.target.scip_binary }}" in
+            scip-go)
+              ${{ matrix.target.scip_binary }} --verbose
+              ;;
+            scip-java)
+              ${{ matrix.target.scip_binary }} index --verbose
+              ;;
+          esac
 
       - name: Validate SCIP index size
         run: |
@@ -77,7 +82,7 @@ jobs:
       - name: Upload SCIP dump to Sourcegraph
         run: |
           src code-intel upload -no-progress \
-            -repo=github.com/${{ matrix.target.checkout_repo }} \
+            -repo=github.com/${{ matrix.target.repository }} \
             -file=index.scip
         env:
           SRC_ENDPOINT: https://sourcegraph.com/
