@@ -61,3 +61,52 @@ jobs:
           # A repo-local secret with access token for a Service Account
           # that has a role allowing SCIP index upload.
           SRC_ACCESS_TOKEN: ${{ secrets.SRC_ACCESS_TOKEN_DOTCOM_SCIP_SA }}
+
+  index-guava:
+    if: github.repository == 'sourcegraph/scip' # Skip running on forks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: index-guava
+      cancel-in-progress: true
+    container: sourcegraph/scip-java:latest
+    steps:
+      - name: Checkout google/guava
+        uses: actions/checkout@v5
+        with:
+          repository: google/guava
+          ref: master
+          fetch-depth: 1
+
+      - name: Configure git safe.directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Get src-cli
+        run: |
+          curl -L https://sourcegraph.com/.api/src-cli/src_linux_amd64 \
+            -o /usr/local/bin/src
+          chmod +x /usr/local/bin/src
+
+      - name: Run scip-java
+        run: |
+          scip-java --version
+          scip-java index --verbose
+
+      - name: Validate SCIP index size
+        run: |
+          if [ $(stat -c%s index.scip) -lt 10000000 ]; then
+            echo "ERROR: SCIP dump suspiciously small (< 10MB)"
+            exit 1
+          fi
+          echo "SCIP dump size: $(du -h index.scip)"
+
+      - name: Upload SCIP dump to Sourcegraph
+        run: |
+          src code-intel upload -no-progress \
+            -repo=github.com/google/guava \
+            -file=index.scip
+        env:
+          SRC_ENDPOINT: https://sourcegraph.com/
+          # A repo-local secret with access token for a Service Account
+          # that has a role allowing SCIP index upload.
+          SRC_ACCESS_TOKEN: ${{ secrets.SRC_ACCESS_TOKEN_DOTCOM_SCIP_SA }}
