@@ -9,21 +9,70 @@ permissions:
   contents: read
 
 jobs:
-  index-k8s:
+  index:
     if: github.repository == 'sourcegraph/scip' # Skip running on forks
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
+    strategy:
+      fail-fast: false # If a job fails allow others to continue
+      matrix:
+        target:
+          - repository: kubernetes/kubernetes
+            scip_binary: scip-go
+          - repository: google/guava
+            scip_binary: scip-java
+          # scip-java has problems with indexing Kotlin codebase
+          # - repository: arrow-kt/arrow
+          #   scip_binary: scip-java
+          - repository: apache/pekko
+            scip_binary: scip-java
+
+    container: sourcegraph/${{ matrix.target.scip_binary }}:latest
     concurrency:
-      group: index-k8s
+      group: index-${{ matrix.target.repository }}
       cancel-in-progress: true
-    container: sourcegraph/scip-go:latest
     steps:
-      - name: Checkout kubernetes/kubernetes
+      - name: Checkout ${{ matrix.target.repository }}
         uses: actions/checkout@v5
         with:
-          repository: kubernetes/kubernetes
-          ref: master
+          repository: ${{ matrix.target.repository }}
           fetch-depth: 1
+
+      - name: Cache Maven dependencies
+        if: ${{ matrix.target.scip_binary == 'scip-java' }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ matrix.target.repository }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ matrix.target.repository }}-
+            ${{ runner.os }}-maven-
+
+      - name: Install Go
+        if: ${{ matrix.target.scip_binary == 'scip-go' }}
+        uses: actions/setup-go@v5
+        with: { go-version-file: 'go.mod' }
+
+      - name: Run SCIP
+        run: |
+          ${{ matrix.target.scip_binary }} --version
+          case "${{ matrix.target.scip_binary }}" in
+            scip-go)
+              ${{ matrix.target.scip_binary }} --verbose
+              ;;
+            scip-java)
+              ${{ matrix.target.scip_binary }} index --verbose
+              ;;
+          esac
+
+      - name: Validate SCIP index size
+        run: |
+          if [ $(stat -c%s index.scip) -lt 10000000 ]; then
+            echo "ERROR: SCIP dump suspiciously small (< 10MB)"
+            exit 1
+          fi
+          echo "SCIP dump size: $(du -h index.scip)"
 
       - name: Configure git safe.directory
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
@@ -34,27 +83,10 @@ jobs:
             -o /usr/local/bin/src
           chmod +x /usr/local/bin/src
 
-      - name: Install Go
-        uses: actions/setup-go@v5
-        with: { go-version-file: 'go.mod' }
-
-      - name: Run scip-go
-        run: |
-          scip-go --version
-          scip-go --verbose
-
-      - name: Validate SCIP index size
-        run: |
-          if [ $(stat -c%s index.scip) -lt 10000000 ]; then
-            echo "ERROR: SCIP dump suspiciously small (< 10MB)"
-            exit 1
-          fi
-          echo "SCIP dump size: $(du -h index.scip)"
-
       - name: Upload SCIP dump to Sourcegraph
         run: |
           src code-intel upload -no-progress \
-            -repo=github.com/kubernetes/kubernetes \
+            -repo=github.com/${{ matrix.target.repository }} \
             -file=index.scip
         env:
           SRC_ENDPOINT: https://sourcegraph.com/
