@@ -20,13 +20,34 @@ jobs:
         target:
           - repository: kubernetes/kubernetes
             scip_binary: scip-go
+            scip_args: "--verbose"
           - repository: google/guava
             scip_binary: scip-java
+            scip_args: "index --verbose"
           # scip-java has problems with indexing Kotlin codebase
           # - repository: arrow-kt/arrow
           #   scip_binary: scip-java
+          #   scip_args: "index --verbose"
           - repository: apache/pekko
             scip_binary: scip-java
+            scip_args: "index --verbose"
+          - repository: Textualize/rich
+            scip_binary: scip-python
+            scip_args: "index ."
+          - repository: vuejs/core
+            scip_binary: scip-typescript
+            scip_args: "index"
+          # scip-ruby does not have a Docker container image that we can use
+          # out of the box. The existing one is for autoindexing purposes only.
+          # - repository: Homebrew/brew
+          #   scip_binary: scip-ruby
+          #   scip_args: ""
+          - repository: serde-rs/serde
+            scip_binary: scip-rust
+            scip_args: ""
+          - repository: fmtlib/fmt
+            scip_binary: scip-clang
+            scip_args: ""
 
     container: sourcegraph/${{ matrix.target.scip_binary }}:latest
     concurrency:
@@ -39,6 +60,19 @@ jobs:
           repository: ${{ matrix.target.repository }}
           fetch-depth: 1
 
+      - name: Generate compile_commands.json
+        if: ${{ matrix.target.scip_binary == 'scip-clang' }}
+        run: |
+          apt-get update
+          apt-get install -y bear cmake make g++
+          cmake -S . -B build
+          bear -- make -C build
+
+      - name: Install Go
+        if: ${{ matrix.target.scip_binary == 'scip-go' }}
+        uses: actions/setup-go@v5
+        with: { go-version-file: 'go.mod' }
+
       - name: Cache Maven dependencies
         if: ${{ matrix.target.scip_binary == 'scip-java' }}
         uses: actions/cache@v4
@@ -49,27 +83,25 @@ jobs:
             ${{ runner.os }}-maven-${{ matrix.target.repository }}-
             ${{ runner.os }}-maven-
 
-      - name: Install Go
-        if: ${{ matrix.target.scip_binary == 'scip-go' }}
-        uses: actions/setup-go@v5
-        with: { go-version-file: 'go.mod' }
+      - name: Setup Rust toolchain
+        if: ${{ matrix.target.scip_binary == 'scip-rust' }}
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rust-analyzer
 
       - name: Run SCIP
         run: |
           ${{ matrix.target.scip_binary }} --version
-          case "${{ matrix.target.scip_binary }}" in
-            scip-go)
-              ${{ matrix.target.scip_binary }} --verbose
-              ;;
-            scip-java)
-              ${{ matrix.target.scip_binary }} index --verbose
-              ;;
-          esac
+          ${{ matrix.target.scip_binary }} ${{ matrix.target.scip_args }}
 
       - name: Validate SCIP index size
         run: |
-          if [ $(stat -c%s index.scip) -lt 10000000 ]; then
-            echo "ERROR: SCIP dump suspiciously small (< 10MB)"
+          size=$(stat -c%s index.scip) || {
+            echo "ERROR: Failed to get SCIP index size"
+            exit 1
+          }
+          if [ "$size" -lt 1000000 ]; then
+            echo "ERROR: SCIP dump suspiciously small (< 1MB)"
             exit 1
           fi
           echo "SCIP dump size: $(du -h index.scip)"
