@@ -48,6 +48,9 @@ jobs:
           - repository: fmtlib/fmt
             scip_binary: scip-clang
             scip_args: ""
+          - repository: serilog/serilog
+            scip_binary: scip-dotnet
+            scip_args: "index"
 
     container: sourcegraph/${{ matrix.target.scip_binary }}:latest
     concurrency:
