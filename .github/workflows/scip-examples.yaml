@@ -17,6 +17,9 @@ jobs:
     strategy:
       fail-fast: false # If a job fails allow others to continue
       matrix:
+        # If this list of targets changes, update the list of
+        # precise code navigation examples at:
+        # https://github.com/sourcegraph/docs/blob/main/docs/code-search/code-navigation/precise_code_navigation.mdx#precise-navigation-examples
         target:
           - repository: kubernetes/kubernetes
             scip_binary: scip-go
