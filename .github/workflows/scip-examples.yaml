@@ -37,11 +37,11 @@ jobs:
           - repository: vuejs/core
             scip_binary: scip-typescript
             scip_args: "index"
-          # scip-ruby does not have a Docker container image that we can use
-          # out of the box. The existing one is for autoindexing purposes only.
-          # - repository: Homebrew/brew
-          #   scip_binary: scip-ruby
-          #   scip_args: ""
+          - repository: Homebrew/brew
+            scip_binary: scip-ruby
+            # We pass gem-metadata as an easy alternative to directly
+            # linking to brew/Library/Homebrew/Gemfile.lock.
+            scip_args: "--gem-metadata homebrew@latest ."
           - repository: serde-rs/serde
             scip_binary: scip-rust
             scip_args: ""
@@ -85,6 +85,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-${{ matrix.target.repository }}-
             ${{ runner.os }}-maven-
+
+      - name: Install curl
+        if: ${{ matrix.target.scip_binary == 'scip-ruby' }}
+        run: |
+          apk add --no-cache curl
 
       - name: Setup Rust toolchain
         if: ${{ matrix.target.scip_binary == 'scip-rust' }}
