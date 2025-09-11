@@ -108,6 +108,19 @@ func TestParseSymbol(t *testing.T) {
 				},
 			},
 		},
+		{
+			Symbol: "a b c d `F⃗`.", Expected: &Symbol{
+				Scheme: "a",
+				Package: &Package{
+					Manager: "b",
+					Name:    "c",
+					Version: "d",
+				},
+				Descriptors: []*Descriptor{{
+					Name: "F⃗", Suffix: Descriptor_Term,
+				}},
+			},
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.Symbol, func(t *testing.T) {
@@ -127,6 +140,8 @@ func TestParseSymbolError(t *testing.T) {
 		"lsif-java maven package 1.0.0 java/io/File#Entry.trailingstring",
 		"lsif-java maven package 1.0.0 java/io/File#Entry.unrecognizedSuffix@",
 		"lsif-java maven package 1.0.0 java/io/File#Entry.nonSimpλeIdentifier.",
+		"lsif-java maven package 1.0.0 java/io/File#Entry.`unterminatedEscapedIdentifier",
+		"lsif-java maven package 1.0.0 java/io/File#Entry.[UnterminatedDescriptorSuffix",
 		"local 🧠",
 		"local ",
 		"local &&&",
