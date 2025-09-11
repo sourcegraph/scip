@@ -108,6 +108,19 @@ func TestParseSymbol(t *testing.T) {
 				},
 			},
 		},
+		{
+			Symbol: "a b c d `F⃗`.", Expected: &Symbol{
+				Scheme: "a",
+				Package: &Package{
+					Manager: "b",
+					Name:    "c",
+					Version: "d",
+				},
+				Descriptors: []*Descriptor{{
+					Name: "F⃗", Suffix: Descriptor_Term,
+				}},
+			},
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.Symbol, func(t *testing.T) {

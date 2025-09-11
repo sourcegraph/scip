@@ -479,7 +479,7 @@ func (z *symbolParserV2) advanceOneByte(b byte) {
 
 func (z *symbolParserV2) advanceRune() {
 	nextRune, nextRuneByteLength := z.peekNext()
-	z.advance(nextRune, min(nextRuneByteLength, 1))
+	z.advance(nextRune, nextRuneByteLength)
 }
 
 func (z *symbolParserV2) acceptOneByte(b byte, what parseCtx) error {
