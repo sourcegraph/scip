@@ -15,13 +15,15 @@ import (
 )
 
 type testFlags struct {
-	from          string // default: 'index.scip'
-	commentSyntax string // default: '//'
-	pathFilters   cli.StringSlice
+	from           string // default: 'index.scip'
+	commentSyntax  string // default: '//'
+	pathFilters    cli.StringSlice
+	checkDocuments bool // default: false
 }
 
 func testCommand() cli.Command {
 	var testFlags testFlags
+
 	test := cli.Command{
 		Name:  "test",
 		Usage: "Validate a SCIP index against test files",
@@ -46,6 +48,12 @@ use the 'snapshot' subcommand.`, version),
 				Usage:       "Explicit list of test files to check. Can be specified multiple times. If not specified, all files are tested.",
 				Destination: &testFlags.pathFilters,
 			},
+			&cli.BoolFlag{
+				Name:        "check-documents",
+				Usage:       "Whether or not to validate whether every file in the test directory has a correlating document in the SCIP index.",
+				Destination: &testFlags.checkDocuments,
+				Value:       false,
+			},
 		},
 		Action: func(c *cli.Context) error {
 			dir := c.Args().Get(0)
@@ -55,7 +63,7 @@ use the 'snapshot' subcommand.`, version),
 				return err
 			}
 
-			return testMain(dir, testFlags.pathFilters.Value(), index, testFlags.commentSyntax, os.Stdout)
+			return testMain(dir, testFlags.pathFilters.Value(), testFlags.checkDocuments, index, testFlags.commentSyntax, os.Stdout)
 		},
 	}
 	return test
@@ -64,6 +72,7 @@ use the 'snapshot' subcommand.`, version),
 func testMain(
 	directory string,
 	fileFilters []string,
+	checkDocuments bool,
 	index *scip.Index,
 	commentSyntax string,
 	output io.Writer,
@@ -150,7 +159,7 @@ func testMain(
 		}
 	}
 
-	if len(allTestFilesSet) > 0 {
+	if checkDocuments && len(allTestFilesSet) > 0 {
 		sortedFiles := []string{}
 		for f, _ := range allTestFilesSet {
 			sortedFiles = append(sortedFiles, f)
