@@ -1,6 +1,6 @@
 # ChangeLog
 
-## Unreleased
+## v0.6.0
 
 Rust SCIP bindings:
 
@@ -11,8 +11,13 @@ Rust SCIP bindings:
 
 Go bindings:
 
+- Symbol parsing logic doesn't panic on multibyte code points.
 - BREAKING CHANGE: IndexVisitor now accepts a context object and returns an error.
   When an error is returned, the visitor short-circuits.
+
+CLI:
+
+- The `test` command now has a `--check-documents` flag.
 
 ## v0.5.2
 
