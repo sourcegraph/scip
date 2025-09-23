@@ -3,7 +3,6 @@ package scip
 import (
 	"fmt"
 	"strings"
-	"unicode"
 
 	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/beaut"
@@ -469,10 +468,6 @@ func (e unrecognizedDescriptorError) Error() string {
 	return fmt.Sprintf("unrecognized descriptor %q", e.value)
 }
 
-func isIdentifierCharacter(r rune) bool {
-	return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '-' || r == '+' || r == '$' || r == '_'
-}
-
 func (z *symbolParserV2) advanceOneByte(b byte) {
 	assert(z.currentRune == rune(b), "passed in byte does not match current rune")
 	nextRune, nextRuneByteLength := z.peekNext()
@@ -484,7 +479,7 @@ func (z *symbolParserV2) advanceOneByte(b byte) {
 
 func (z *symbolParserV2) advanceRune() {
 	nextRune, nextRuneByteLength := z.peekNext()
-	z.advance(nextRune, min(nextRuneByteLength, 1))
+	z.advance(nextRune, nextRuneByteLength)
 }
 
 func (z *symbolParserV2) acceptOneByte(b byte, what parseCtx) error {
@@ -503,7 +498,7 @@ func (z *symbolParserV2) acceptIdentifier(what parseCtx, sw *stringWriter) error
 	start := z.byteIndex
 	slen := len(z.SymbolString)
 	for z.byteIndex < slen {
-		if !isIdentifierCharacter(z.currentRune) {
+		if !shared.IsSimpleIdentifierCharacter(z.currentRune) {
 			break
 		}
 		z.advanceRune()
