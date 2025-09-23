@@ -205,12 +205,12 @@ func TestSCIPTests(t *testing.T) {
 			}
 
 			var passOutput bytes.Buffer
-			err := testMain(subtestDir, passFiles, index, "#", &passOutput)
+			err := testMain(subtestDir, passFiles, false, index, "#", &passOutput)
 			require.NoError(t, err)
 			testCase.passOutput.Equal(t, passOutput.String())
 
 			var failOutput bytes.Buffer
-			err = testMain(subtestDir, failFiles, index, "#", &failOutput)
+			err = testMain(subtestDir, failFiles, false, index, "#", &failOutput)
 			require.Error(t, err)
 			testCase.failOutput.Equal(t, failOutput.String())
 		})
