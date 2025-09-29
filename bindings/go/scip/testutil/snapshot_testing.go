@@ -74,7 +74,7 @@ func snapshotTestSources(t *testing.T, outputDirectory string, obtainedSnapshots
 						string(expected),
 						edits,
 					))
-					t.Fatalf("\n" + diff)
+					t.Fatalf("\n%s", diff)
 				}
 			}
 		})

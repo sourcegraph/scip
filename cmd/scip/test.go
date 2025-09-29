@@ -151,7 +151,7 @@ func testMain(
 			red.Fprintf(output, "✗ %s\n", document.RelativePath)
 
 			for _, failure := range failures {
-				fmt.Fprintf(output, indent(failure, 4)+"\n")
+				fmt.Fprintf(output, "%s\n", indent(failure, 4))
 			}
 		} else {
 			green := color.New(color.FgGreen)
