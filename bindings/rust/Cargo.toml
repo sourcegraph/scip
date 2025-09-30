@@ -21,7 +21,7 @@ rust-version = "1.81.0"
 protobuf = "=3.7.2"
 
 [dev-dependencies]
-pretty_assertions = "1.2.1"
+pretty_assertions = "1.4.1"
 
 [lib]
 name = "scip"
