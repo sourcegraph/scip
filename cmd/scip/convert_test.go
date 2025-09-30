@@ -1,12 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"cmp"
 	"path/filepath"
 	"testing"
 
-	"github.com/klauspost/compress/zstd"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/exp/slices"
 	"zombiezen.com/go/sqlite"
@@ -27,9 +25,7 @@ func TestConvert_SmokeTest(t *testing.T) {
 	require.NoError(t, err)
 	defer func() { require.NoError(t, db.Close()) }()
 
-	writer, err := zstd.NewWriter(nil)
-	require.NoError(t, err)
-	converter := NewConverter(db, chunkSizeHint, writer)
+	converter := NewConverter(db, chunkSizeHint)
 	err = converter.Convert(index)
 	require.NoError(t, err)
 
@@ -40,6 +36,7 @@ func TestConvert_SmokeTest(t *testing.T) {
 		{"documents", checkDocuments},
 		{"symbols", checkSymbols},
 		{"occurrences", checkOccurrences},
+		{"query_symbol_at_position", checkQuerySymbolAtPosition},
 	}
 
 	for _, check := range checks {
@@ -49,8 +46,9 @@ func TestConvert_SmokeTest(t *testing.T) {
 	}
 }
 
+const pkg1S1Sym = "scip-go go . . pkg1/S1#"
+
 func testIndex1() *scip.Index {
-	pkg1S1Sym := "scip-go go . . pkg1/S1#"
 	return &scip.Index{
 		Documents: []*scip.Document{
 			{
@@ -121,17 +119,14 @@ func checkSymbols(t *testing.T, index *scip.Index, db *sqlite.Conn) {
 }
 
 func checkOccurrences(t *testing.T, index *scip.Index, db *sqlite.Conn) {
-	zstdReader, err := zstd.NewReader(bytes.NewBuffer(nil))
-	require.NoError(t, err)
-
 	query := `SELECT d.relative_path, occurrences
 				  FROM documents d
 				  JOIN chunks c ON c.document_id = d.id`
 	dbOccurrences := []occurrenceData{}
-	err = sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
+	err := sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
 		ResultFunc: func(stmt *sqlite.Stmt) error {
 			var c Chunk
-			err = c.fromDBFormat(stmt.ColumnReader(1), zstdReader)
+			err := c.fromDBFormat(stmt.ColumnText(1))
 			require.NoError(t, err)
 			for _, occ := range c.Occurrences {
 				dbOccurrences = append(dbOccurrences, occurrenceData{
@@ -172,4 +167,37 @@ type occurrenceData struct {
 	Symbol       string
 	Role         int32
 	Range        scip.Range
+}
+
+func checkQuerySymbolAtPosition(t *testing.T, index *scip.Index, db *sqlite.Conn) {
+	// Query for the symbol at line 10, character 3 in document "a.go"
+	// This should return pkg1S1Sym according to our test data
+	targetLine := int32(10)
+	targetChar := int32(3)
+	targetDoc := "a.go"
+
+	query := `
+		SELECT occ.value ->> 'symbol' as symbol
+		FROM documents d
+		JOIN chunks c ON c.document_id = d.id,
+		json_each(c.occurrences) AS occ
+		WHERE d.relative_path = ?
+		AND json_extract(occ.value -> 'range', '$[0]') = ?
+		AND json_extract(occ.value -> 'range', '$[1]') = ?
+		AND ? BETWEEN c.start_line AND c.end_line
+	`
+
+	var foundSymbol string
+	err := sqlitex.ExecuteTransient(db, query, &sqlitex.ExecOptions{
+		Args: []any{targetDoc, targetLine, targetChar, targetLine},
+		ResultFunc: func(stmt *sqlite.Stmt) error {
+			foundSymbol = stmt.ColumnText(0)
+			return nil
+		},
+	})
+
+	require.NoError(t, err, "Query should succeed once occurrences are stored as JSON")
+	require.Equal(t, pkg1S1Sym, foundSymbol,
+		"Expected to find symbol %s at position %d:%d in document %s",
+		pkg1S1Sym, targetLine, targetChar, targetDoc)
 }
