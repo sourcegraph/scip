@@ -128,6 +128,12 @@ func FormatSnapshot(
 			}
 
 			if info, ok := symtab[occ.Symbol]; ok && isDefinition {
+				if info.Kind != scip.SymbolInformation_UnspecifiedKind {
+					b.WriteString(prefix)
+					b.WriteString("kind ")
+					b.WriteString(info.Kind.String())
+				}
+
 				for _, documentation := range info.Documentation {
 					// At least get the first line of documentation if there is leading whitespace
 					documentation = strings.TrimSpace(documentation)
