@@ -86,8 +86,21 @@ func FormatSnapshot(
 		}
 		return formatted
 	}
+	enclosingRanges := enclosingRanges(document.Occurrences)
+	enclosingByStartLine := enclosingRangesByStartLine(enclosingRanges)
+	enclosingByEndLine := enclosingRangesByEndLine(enclosingRanges)
 	i := 0
 	for lineNumber, line := range strings.Split(string(data), "\n") {
+		for _, er := range enclosingByStartLine[int32(lineNumber)] {
+			b.WriteString(commentSyntax)
+			for indent := int32(0); indent < er.Range.Start.Character; indent++ {
+				b.WriteRune(' ')
+			}
+			b.WriteString("⌄ enclosing_range_start ")
+			b.WriteString(formatSymbol(er.Symbol))
+			b.WriteString("\n")
+		}
+
 		line = strings.TrimSuffix(line, "\r")
 		b.WriteString(strings.Repeat(" ", len(commentSyntax)))
 		b.WriteString(strings.ReplaceAll(line, "\t", " "))
@@ -166,6 +179,15 @@ func FormatSnapshot(
 			b.WriteString("\n")
 			i++
 		}
+		for _, er := range enclosingByEndLine[int32(lineNumber)] {
+			b.WriteString(commentSyntax)
+			for indent := int32(0); indent < er.Range.End.Character-1; indent++ {
+				b.WriteRune(' ')
+			}
+			b.WriteString("⌃ enclosing_range_end ")
+			b.WriteString(formatSymbol(er.Symbol))
+			b.WriteString("\n")
+		}
 	}
 	return b.String(), formattingError
 }
@@ -215,4 +237,48 @@ func isSCIPRangeLess(a []int32, b []int32) bool {
 		return a[3] < b[3]
 	}
 	return false
+}
+
+type enclosingRange struct {
+	Range  scip.Range
+	Symbol string
+}
+
+func enclosingRanges(occurrences []*scip.Occurrence) []enclosingRange {
+	var enclosingRanges []enclosingRange
+	for _, occ := range occurrences {
+		if len(occ.EnclosingRange) > 0 {
+			enclosingRanges = append(enclosingRanges, enclosingRange{
+				Range:  scip.NewRangeUnchecked(occ.EnclosingRange),
+				Symbol: occ.Symbol,
+			})
+		}
+	}
+	return enclosingRanges
+}
+
+func enclosingRangesByStartLine(ranges []enclosingRange) map[int32][]enclosingRange {
+	result := map[int32][]enclosingRange{}
+	for _, r := range ranges {
+		result[r.Range.Start.Line] = append(result[r.Range.Start.Line], r)
+	}
+	for _, ers := range result {
+		sort.SliceStable(ers, func(i, j int) bool {
+			return ers[i].Range.Start.Character < ers[j].Range.Start.Character
+		})
+	}
+	return result
+}
+
+func enclosingRangesByEndLine(ranges []enclosingRange) map[int32][]enclosingRange {
+	result := map[int32][]enclosingRange{}
+	for _, r := range ranges {
+		result[r.Range.End.Line] = append(result[r.Range.End.Line], r)
+	}
+	for _, ers := range result {
+		sort.SliceStable(ers, func(i, j int) bool {
+			return ers[i].Range.End.Character < ers[j].Range.End.Character
+		})
+	}
+	return result
 }
