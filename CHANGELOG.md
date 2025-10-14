@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v0.6.1
+
+Go bindings:
+
+- Added support for enclosing ranges
+- Added syntax kinds to testutil output
+
 ## v0.6.0
 
 Rust SCIP bindings:
