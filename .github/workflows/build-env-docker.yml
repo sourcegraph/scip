@@ -57,7 +57,7 @@ jobs:
 
       - name: Build and push by digest
         id: build
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        uses: docker/build-push-action@9e436ba9f2d7bcd1d038c8e55d039d37896ddc5d
         with:
           file: dev/Dockerfile.bindings
           push: true
