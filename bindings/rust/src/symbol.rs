@@ -237,6 +237,7 @@ fn new_descriptor_with_disambiguator(
 #[derive(Debug)]
 struct SymbolParser {
     sym: String,
+    sym_len: usize,
     index: usize,
 }
 
@@ -244,6 +245,7 @@ impl SymbolParser {
     fn new(sym: &str) -> Self {
         Self {
             sym: sym.to_string(),
+            sym_len: sym.chars().count(),
             index: 0,
         }
     }
@@ -273,8 +275,7 @@ impl SymbolParser {
         escape_char: char,
     ) -> Result<String, SymbolError> {
         let mut chars = vec![];
-        let len = self.sym.len();
-        while self.index < len {
+        while self.index < self.sym_len {
             let ch = self.current()?;
             if ch == escape_char {
                 self.index += 1;
@@ -345,7 +346,7 @@ impl SymbolParser {
 
     fn accept_descriptors(&mut self) -> Result<Vec<Descriptor>, SymbolError> {
         let mut v = Vec::new();
-        while self.index < self.sym.len() {
+        while self.index < self.sym_len {
             v.push(self.accept_one_descriptor()?)
         }
 
@@ -374,7 +375,7 @@ impl SymbolParser {
             }
             _ => {
                 let name = self.accept_identifier(
-                    format!("descriptor name: {:?} / {}", self, self.sym.len()).as_str(),
+                    format!("descriptor name: {:?} / {}", self, self.sym_len).as_str(),
                 )?;
 
                 let suffix = self.current()?;
@@ -638,5 +639,21 @@ mod test {
         for test_case in test_cases {
             assert!(parse_symbol(test_case).is_err());
         }
+    }
+
+    #[test]
+    fn parses_non_ascii() {
+        assert_eq!(
+            parse_symbol("rust-analyzer cargo files 0.1.0 `Α`#").expect("to parse local"),
+            Symbol {
+                scheme: "rust-analyzer".to_string(),
+                package: Package::new_with_values("cargo", "files", "0.1.0"),
+                descriptors: vec![new_descriptor(
+                    "Α".to_string(),
+                    descriptor::Suffix::Type
+                ),],
+                special_fields: SpecialFields::default(),
+            }
+        );
     }
 }
