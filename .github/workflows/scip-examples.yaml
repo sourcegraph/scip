@@ -61,7 +61,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Checkout ${{ matrix.target.repository }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: ${{ matrix.target.repository }}
           fetch-depth: 1
