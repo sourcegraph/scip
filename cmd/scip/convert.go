@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -12,9 +12,8 @@ import (
 	"strings"
 
 	"github.com/cockroachdb/errors"
-	"github.com/klauspost/compress/zstd"
 	"github.com/urfave/cli/v2"
-	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/encoding/protojson"
 	"zombiezen.com/go/sqlite"
 	"zombiezen.com/go/sqlite/sqlitex"
 
@@ -36,7 +35,7 @@ func convertCommand() cli.Command {
 For inspecting the data, use the SQLite CLI.
 For inspecting the schema, use .schema.
 
-Occurrences are stored opaquely as a blob to prevent the DB size from growing very quickly.`,
+Occurrences are stored as a JSON array of serialized Occurrence messages.`,
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:        "output",
@@ -67,7 +66,7 @@ Occurrences are stored opaquely as a blob to prevent the DB size from growing ve
 	return command
 }
 
-func convertMain(indexPath, sqliteDBPath, cpuProfilePath string, chunkSize int, out io.Writer) (err error) {
+func convertMain(indexPath, sqliteDBPath, cpuProfilePath string, chunkSize int, _ io.Writer) (err error) {
 	index, err := readFromOption(indexPath)
 	if err != nil {
 		return err
@@ -108,12 +107,8 @@ func convertMain(indexPath, sqliteDBPath, cpuProfilePath string, chunkSize int, 
 		err = errors.CombineErrors(err, db.Close())
 	}()
 
-	writer, err := zstd.NewWriter(bytes.NewBuffer(nil))
-	if err != nil {
-		return errors.Wrap(err, "zstd writer creation")
-	}
 	// Convert the SCIP index to the SQLite database
-	converter := NewConverter(db, chunkSize, writer)
+	converter := NewConverter(db, chunkSize)
 	if err := converter.Convert(index); err != nil {
 		return err
 	}
@@ -182,7 +177,7 @@ func createSQLiteDatabase(path string) (conn *sqlite.Conn, err error) {
 			chunk_index INTEGER NOT NULL,
 			start_line INTEGER NOT NULL,
 			end_line INTEGER NOT NULL,
-			occurrences BLOB NOT NULL,
+			occurrences TEXT NOT NULL,
 			FOREIGN KEY (document_id) REFERENCES documents(id)
 		);`,
 		`CREATE TABLE global_symbols (
@@ -231,17 +226,15 @@ func executeAll(conn *sqlite.Conn, statements []string) error {
 
 // Converter handles the conversion from SCIP to SQLite
 type Converter struct {
-	conn       *sqlite.Conn
-	chunkSize  int
-	zstdWriter *zstd.Encoder
+	conn      *sqlite.Conn
+	chunkSize int
 }
 
 // NewConverter creates a new converter instance
-func NewConverter(conn *sqlite.Conn, chunkSize int, writer *zstd.Encoder) *Converter {
+func NewConverter(conn *sqlite.Conn, chunkSize int) *Converter {
 	return &Converter{
-		conn,
-		chunkSize,
-		writer,
+		conn:      conn,
+		chunkSize: chunkSize,
 	}
 }
 
@@ -460,44 +453,57 @@ func (c *Converter) insertGlobalSymbols(symbol *scip.SymbolInformation) (symbolI
 	return symbolID, err
 }
 
-func (c *Chunk) toDBFormat(encoder *zstd.Encoder) ([]byte, error) {
-	occurrencesBlob, err := proto.Marshal(&scip.Document{
-		Occurrences: c.Occurrences,
-	})
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to serialize occurrences")
+func (c *Chunk) toDBFormat() (string, error) {
+	// Serialize the occurrences slice directly as a JSON array
+	// We'll marshal each occurrence individually using protobuf JSON and combine them
+	marshaler := protojson.MarshalOptions{
+		UseProtoNames:   true,
+		EmitUnpopulated: false,
 	}
 
-	var buf bytes.Buffer
-	encoder.Reset(&buf)
-	if _, err = encoder.Write(occurrencesBlob); err != nil {
-		return nil, errors.Wrap(err, "compression error")
+	if len(c.Occurrences) == 0 {
+		return "[]", nil
 	}
-	if err = encoder.Close(); err != nil {
-		return nil, errors.Wrap(err, "flushing encoder")
+
+	var occurrenceJSONs []string
+	for _, occ := range c.Occurrences {
+		jsonData, err := marshaler.Marshal(occ)
+		if err != nil {
+			return "", errors.Wrap(err, "failed to serialize occurrence as protobuf JSON")
+		}
+		occurrenceJSONs = append(occurrenceJSONs, string(jsonData))
 	}
-	return buf.Bytes(), nil
+
+	// Combine into a JSON array
+	return "[" + strings.Join(occurrenceJSONs, ",") + "]", nil
 }
 
-func (c *Chunk) fromDBFormat(reader *bytes.Reader, decoder *zstd.Decoder) error {
-	if err := decoder.Reset(reader); err != nil {
-		return errors.Wrap(err, "resetting zstd Decoder")
-	}
-	protoBytes, err := io.ReadAll(decoder)
-	if err != nil {
-		return errors.Wrap(err, "reading compressed data")
+func (c *Chunk) fromDBFormat(jsonData string) error {
+	// Parse the JSON array directly
+	var rawArray []json.RawMessage
+	if err := json.Unmarshal([]byte(jsonData), &rawArray); err != nil {
+		return errors.Wrap(err, "failed to parse JSON array")
 	}
 
-	var tmpDoc scip.Document
-	if err = proto.Unmarshal(protoBytes, &tmpDoc); err != nil {
-		return errors.Wrap(err, "failed to unmarshal occurrences")
+	// Use protobuf JSON unmarshaling for each occurrence
+	unmarshaler := protojson.UnmarshalOptions{
+		DiscardUnknown: true,
 	}
-	c.Occurrences = tmpDoc.Occurrences
+
+	c.Occurrences = make([]*scip.Occurrence, len(rawArray))
+	for i, rawOcc := range rawArray {
+		var occ scip.Occurrence
+		if err := unmarshaler.Unmarshal(rawOcc, &occ); err != nil {
+			return errors.Wrapf(err, "failed to unmarshal occurrence at index %d", i)
+		}
+		c.Occurrences[i] = &occ
+	}
+
 	return nil
 }
 
 func (c *Converter) insertChunk(chunk Chunk, docID int64, chunkIndex int) (chunkID int64, err error) {
-	compressedOccurrences, err := chunk.toDBFormat(c.zstdWriter)
+	jsonOccurrences, err := chunk.toDBFormat()
 	if err != nil {
 		return 0, errors.Wrap(err, "failed to serialize chunk")
 	}
@@ -513,7 +519,7 @@ func (c *Converter) insertChunk(chunk Chunk, docID int64, chunkIndex int) (chunk
 	chunkStmt.BindInt64(2, int64(chunkIndex))
 	chunkStmt.BindInt64(3, int64(chunk.StartLine))
 	chunkStmt.BindInt64(4, int64(chunk.EndLine))
-	chunkStmt.BindBytes(5, compressedOccurrences)
+	chunkStmt.BindText(5, jsonOccurrences)
 
 	_, err = chunkStmt.Step()
 	if err != nil {
