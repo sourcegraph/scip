@@ -45,7 +45,7 @@ jobs:
             # We pass gem-metadata as an easy alternative to directly
             # linking to brew/Library/Homebrew/Gemfile.lock.
             scip_args: "--gem-metadata homebrew@latest ."
-          - repository: serde-rs/serde
+          - repository: BurntSushi/ripgrep
             scip_binary: scip-rust
             scip_args: ""
           - repository: fmtlib/fmt
