@@ -29,13 +29,12 @@
 
 1. Regenerating definitions after changing the schema in [scip.proto](./scip.proto).
 
-   `./dev/generate-all-in-docker.sh`
-
-   We provide a script that sets up the correct build environment in Docker
-   and runs the necessary regeneration steps.
+   ```bash
+   nix develop -c ./dev/proto-generate.sh
+   ```
 
    Both the proto bindings and reprolang parser are generated.
-   The only dependency you need is Docker.
+   The only dependency you need is Nix.
 
 2. Regenerating snapshots after making changes to the CLI.
    ```

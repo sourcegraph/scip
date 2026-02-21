@@ -8,11 +8,10 @@ jobs:
   release-crate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/asdf
-        with:
-          rust: true
-      - run: cargo publish --token '${{ secrets.CRATES_TOKEN }}'
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - run: nix develop -c cargo publish --token '${{ secrets.CRATES_TOKEN }}'
         working-directory: bindings/rust
 
   build-go-binaries:

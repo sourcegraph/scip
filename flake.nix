@@ -48,7 +48,12 @@
             inherit version;
             src = ./.;
             vendorHash = "sha256-8HgeG/SXkM7ptOwKSi/PUH3VySxFqqoIpXI7bZtbO4A=";
-            subPackages = [ "bindings/go/scip" ];
+            buildTags = [ "asserts" ];
+            subPackages = [
+              "bindings/go/scip"
+              "bindings/go/scip/memtest"
+              "bindings/go/scip/testutil"
+            ];
             installPhase = "touch $out";
           };
 
