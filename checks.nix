@@ -9,7 +9,7 @@
     pname = "scip-bindings-go";
     inherit version;
     src = ./.;
-    vendorHash = "sha256-8HgeG/SXkM7ptOwKSi/PUH3VySxFqqoIpXI7bZtbO4A=";
+    vendorHash = "sha256-PFsYDl9hlrokHLw0pSYUpLzkz9j2ArffVVNAkSPb+x0=";
     buildTags = [ "asserts" ];
     subPackages = [
       "bindings/go/scip"
@@ -46,11 +46,30 @@
     pname = "scip-reprolang";
     inherit version;
     src = ./.;
-    vendorHash = "sha256-8HgeG/SXkM7ptOwKSi/PUH3VySxFqqoIpXI7bZtbO4A=";
+    vendorHash = "sha256-PFsYDl9hlrokHLw0pSYUpLzkz9j2ArffVVNAkSPb+x0=";
     subPackages = [
       "cmd/scip/tests/reprolang/src"
       "cmd/scip/tests/reprolang/bindings/go/repro"
     ];
+    installPhase = "touch $out";
+  };
+
+  reprolang-generated = pkgs.stdenv.mkDerivation {
+    pname = "scip-reprolang-generated";
+    inherit version;
+    src = ./.;
+    nativeBuildInputs = with pkgs; [
+      tree-sitter
+      nodejs
+      nodePackages.prettier
+    ];
+    buildPhase = ''
+      cd cmd/scip/tests/reprolang
+      cp -r src src-before
+      tree-sitter generate --abi 14
+      prettier --write 'src/grammar.json' 'src/node-types.json'
+      diff -rq src-before src
+    '';
     installPhase = "touch $out";
   };
 
@@ -69,7 +88,7 @@
     src = ./.;
     yarnOfflineCache = pkgs.fetchYarnDeps {
       yarnLock = ./yarn.lock;
-      hash = "sha256-NF533Kx6/YnQO7wNKX1IEHbIYETWhqPYgdyX8nV9RkE=";
+      hash = "sha256-CIzfhl3V7yybc/nqp/z7xlzQPLm3zxBCYnbRmWAiKzo=";
     };
     nativeBuildInputs = with pkgs; [
       yarnConfigHook

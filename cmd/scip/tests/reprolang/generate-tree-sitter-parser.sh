@@ -2,8 +2,8 @@
 set -eux
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "$SCRIPT_DIR"
-yarn install
 
-./node_modules/.bin/tree-sitter generate --abi 14
+# Requires tree-sitter from nix dev shell (nix develop --impure)
+tree-sitter generate --abi 14
 
 yarn --cwd ../../../.. run prettier

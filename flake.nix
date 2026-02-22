@@ -28,7 +28,7 @@
             inherit version;
 
             src = ./.;
-            vendorHash = "sha256-8HgeG/SXkM7ptOwKSi/PUH3VySxFqqoIpXI7bZtbO4A=";
+            vendorHash = "sha256-PFsYDl9hlrokHLw0pSYUpLzkz9j2ArffVVNAkSPb+x0=";
 
             subPackages = [ "cmd/scip" ];
 
@@ -47,7 +47,7 @@
             inherit version;
 
             src = ./.;
-            vendorHash = "sha256-8HgeG/SXkM7ptOwKSi/PUH3VySxFqqoIpXI7bZtbO4A=";
+            vendorHash = "sha256-PFsYDl9hlrokHLw0pSYUpLzkz9j2ArffVVNAkSPb+x0=";
 
             subPackages = [ "bindings/go/scip/speedtest" ];
 
@@ -128,6 +128,7 @@
               go
               nodejs
               rustc
+              tree-sitter
               yarn
             ]
             ++ (with pkgs.haskellPackages; [

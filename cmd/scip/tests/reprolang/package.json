@@ -6,8 +6,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "tree-sitter-cli": "0.25.10"
-  }
+  "license": "ISC"
 }
