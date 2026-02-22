@@ -33,6 +33,15 @@
     '';
   };
 
+  prettier = pkgs.stdenv.mkDerivation {
+    pname = "scip-prettier";
+    inherit version;
+    src = ./.;
+    nativeBuildInputs = [ pkgs.nodePackages.prettier ];
+    buildPhase = "prettier --check '**/*.{ts,js(on)?,md,yml}'";
+    installPhase = "touch $out";
+  };
+
   reprolang = pkgs.buildGoModule {
     pname = "scip-reprolang";
     inherit version;
