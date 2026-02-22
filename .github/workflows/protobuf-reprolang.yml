@@ -10,7 +10,6 @@ on:
       - 'buf**'
       - 'flake.nix'
       - 'flake.lock'
-      - 'dev/proto-generate.sh'
       - 'cmd/scip/tests/reprolang/**'
 
 jobs:
@@ -20,6 +19,6 @@ jobs:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
       - uses: DeterminateSystems/magic-nix-cache-action@v13
-      - name: Regenerate protobuf bindings and reprolang parser
-        run: nix develop -c ./dev/proto-generate.sh
+      - name: Regenerate protobuf bindings
+        run: nix run .#proto-generate
       - run: git diff --exit-code

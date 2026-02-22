@@ -17,7 +17,7 @@ rust-version = "1.81.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# Keep in sync with dev/proto-generate.sh
+# Must match the protoc-gen-rust version used for code generation (see flake.nix)
 protobuf = "=3.7.2"
 
 [dev-dependencies]

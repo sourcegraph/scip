@@ -19,6 +19,7 @@
         license = pkgs.lib.licenses.asl20;
         version = pkgs.lib.fileContents ./cmd/scip/version.txt;
         sampleIndexes = import ./sample-indexes.nix { inherit pkgs; };
+
       in
       {
         packages = {
@@ -63,6 +64,45 @@
               mainProgram = "speedtest";
             };
           };
+
+          proto-generate =
+            let
+              protoc-gen-rs = pkgs.rustPlatform.buildRustPackage {
+                pname = "protoc-gen-rs";
+                version = "3.7.2";
+                src = pkgs.fetchCrate {
+                  pname = "protobuf-codegen";
+                  version = "3.7.2";
+                  hash = "sha256-0d+xjYXpl87Sq/DdE8K2olnKa5bNpEHX7RTjp/2xza4=";
+                };
+                cargoHash = "sha256-xxw1WSP0Qatf5QT+JBUQPi8HFOPRMGbnFMVLOiKnTNk=";
+                cargoBuildFlags = [
+                  "--bin"
+                  "protoc-gen-rs"
+                ];
+                nativeBuildInputs = [ pkgs.protobuf ];
+              };
+            in
+            pkgs.writeShellApplication {
+              name = "proto-generate";
+              runtimeInputs = with pkgs; [
+                buf
+                protoc-gen-doc
+                protoc-gen-go
+                gotools
+                protoc-gen-rs
+                haskellPackages.proto-lens-protoc
+                nodejs
+                yarn
+                nodePackages.prettier
+              ];
+              text = ''
+                yarn --cwd ./bindings/typescript install --frozen-lockfile
+                buf generate
+                goimports -w ./bindings/go/scip/scip.pb.go
+                prettier --write --list-different '**/*.{ts,js(on)?,md,yml}'
+              '';
+            };
 
           default = self.packages.${system}.scip;
         };

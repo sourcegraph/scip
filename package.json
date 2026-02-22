@@ -6,17 +6,12 @@
   "author": "SCIP authors",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build --force bindings/typescript",
-    "prettier": "prettier --write --list-different '**/*.{ts,js(on)?,md,yml}'",
-    "prettier-check": "prettier --check '**/*.{ts,js(on)?,md,yml}'"
+    "build": "tsc --build --force bindings/typescript"
   },
   "workspaces": {
     "packages": [
       "cmd/scip/tests/reprolang",
       "bindings/typescript"
     ]
-  },
-  "devDependencies": {
-    "prettier": "^3.8.1"
   }
 }

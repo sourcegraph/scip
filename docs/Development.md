@@ -30,10 +30,9 @@
 1. Regenerating definitions after changing the schema in [scip.proto](./scip.proto).
 
    ```bash
-   nix develop -c ./dev/proto-generate.sh
+   nix run .#proto-generate
    ```
 
-   Both the proto bindings and reprolang parser are generated.
    The only dependency you need is Nix.
 
 2. Regenerating snapshots after making changes to the CLI.
