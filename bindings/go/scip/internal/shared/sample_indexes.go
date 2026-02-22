@@ -16,7 +16,7 @@ import (
 // The directory is determined by the SCIP_SAMPLE_INDEXES_DIR environment variable
 // if set, otherwise by walking up from the working directory to find dev/sample_indexes.
 func SampleIndexes() []string {
-	indexesDir, dirEntries := getSampleIndexesDir()
+        indexesDir, dirEntries := getSampleIndexesDir()
 	metadataPath := filepath.Join(indexesDir, "indexes-metadata.json")
 	indexMetadataContents, err := os.ReadFile(metadataPath)
 	if err != nil {

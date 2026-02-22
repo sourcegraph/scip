@@ -15,10 +15,10 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        lib = pkgs.lib;
-        license = lib.licenses.asl20;
         pkgs = nixpkgs.legacyPackages.${system};
-        version = lib.fileContents ./cmd/scip/version.txt;
+        license = pkgs.lib.licenses.asl20;
+        version = pkgs.lib.fileContents ./cmd/scip/version.txt;
+        sampleIndexes = import ./sample-indexes.nix { inherit pkgs; };
       in
       {
         packages = {
@@ -39,70 +39,39 @@
             };
           };
 
+          speedtest = pkgs.buildGoModule {
+            pname = "scip-speedtest";
+            inherit version;
+
+            src = ./.;
+            vendorHash = "sha256-8HgeG/SXkM7ptOwKSi/PUH3VySxFqqoIpXI7bZtbO4A=";
+
+            subPackages = [ "bindings/go/scip/speedtest" ];
+
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            postFixup = ''
+              wrapProgram $out/bin/speedtest \
+                --set SCIP_SAMPLE_INDEXES_DIR ${sampleIndexes}
+            '';
+
+            meta = {
+              description = "SCIP symbol parser benchmark";
+              homepage = "https://github.com/sourcegraph/scip";
+              inherit license;
+              mainProgram = "speedtest";
+            };
+          };
+
           default = self.packages.${system}.scip;
         };
 
-        checks = {
-          go-bindings = pkgs.buildGoModule {
-            pname = "scip-bindings-go";
-            inherit version;
-            src = ./.;
-            vendorHash = "sha256-8HgeG/SXkM7ptOwKSi/PUH3VySxFqqoIpXI7bZtbO4A=";
-            buildTags = [ "asserts" ];
-            subPackages = [
-              "bindings/go/scip"
-              "bindings/go/scip/memtest"
-              "bindings/go/scip/testutil"
-            ];
-            installPhase = "touch $out";
-          };
-
-          haskell-bindings = pkgs.haskellPackages.mkDerivation {
-            pname = "scip-bindings-haskell";
-            inherit license version;
-            src = ./bindings/haskell;
-            libraryHaskellDepends = with pkgs.haskellPackages; [ proto-lens-runtime ];
-            prePatch = ''
-              cp --remove-destination ${./LICENSE} LICENSE
-            '';
-          };
-
-          reprolang = pkgs.buildGoModule {
-            pname = "scip-reprolang";
-            inherit version;
-            src = ./.;
-            vendorHash = "sha256-8HgeG/SXkM7ptOwKSi/PUH3VySxFqqoIpXI7bZtbO4A=";
-            subPackages = [
-              "cmd/scip/tests/reprolang/src"
-              "cmd/scip/tests/reprolang/bindings/go/repro"
-            ];
-            installPhase = "touch $out";
-          };
-
-          rust-bindings = pkgs.rustPlatform.buildRustPackage {
-            pname = "scip-bindings-rust";
-            inherit version;
-            src = ./bindings/rust;
-            cargoLock = {
-              lockFile = ./bindings/rust/Cargo.lock;
-            };
-          };
-
-          typescript-bindings = pkgs.stdenv.mkDerivation {
-            pname = "scip-bindings-typescript";
-            inherit version;
-            src = ./.;
-            yarnOfflineCache = pkgs.fetchYarnDeps {
-              yarnLock = ./yarn.lock;
-              hash = "sha256-NF533Kx6/YnQO7wNKX1IEHbIYETWhqPYgdyX8nV9RkE=";
-            };
-            nativeBuildInputs = with pkgs; [
-              yarnConfigHook
-              nodejs
-            ];
-            buildPhase = "node_modules/.bin/tsc --noEmit -p bindings/typescript";
-            installPhase = "touch $out";
-          };
+        checks = import ./checks.nix {
+          inherit
+            pkgs
+            version
+            license
+            sampleIndexes
+            ;
         };
 
         formatter = pkgs.nixfmt-rfc-style;
