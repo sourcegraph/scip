@@ -15,23 +15,35 @@ jobs:
         working-directory: bindings/rust
 
   build-go-binaries:
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        goos: [linux, darwin]
-        goarch: [amd64, arm64]
+        include:
+          - runner: ubuntu-latest
+            asset_name: scip-linux-amd64
+          - runner: ubuntu-latest-arm
+            asset_name: scip-linux-arm64
+          - runner: macos-13
+            asset_name: scip-darwin-amd64
+          - runner: macos-latest
+            asset_name: scip-darwin-arm64
+
+    runs-on: ${{ matrix.runner }}
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: wangyoucao577/go-release-action@v1.40
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: ${{ matrix.goos }}
-          goarch: ${{ matrix.goarch }}
-          sha256sum: true
-          project_path: cmd/scip
-          binary_name: scip
-          ldflags: "-X 'main.Reproducible=true'"
-          asset_name: scip-${{ matrix.goos }}-${{ matrix.goarch }}
-          extra_files: LICENSE
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - name: Build
+        run: nix build .#scip
+      - name: Package
+        env:
+          ASSET: ${{ matrix.asset_name }}
+        run: |
+          tar czf "$ASSET.tar.gz" -C result/bin scip -C "$GITHUB_WORKSPACE" LICENSE
+          sha256sum "$ASSET.tar.gz" > "$ASSET.tar.gz.sha256" 2>/dev/null || \
+            shasum -a 256 "$ASSET.tar.gz" > "$ASSET.tar.gz.sha256"
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ASSET: ${{ matrix.asset_name }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "$ASSET.tar.gz" "$ASSET.tar.gz.sha256"

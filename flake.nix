@@ -31,6 +31,8 @@
 
             subPackages = [ "cmd/scip" ];
 
+            ldflags = [ "-X main.Reproducible=true" ];
+
             meta = {
               description = "SCIP Code Intelligence Protocol";
               homepage = "https://github.com/sourcegraph/scip";
