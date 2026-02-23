@@ -171,7 +171,10 @@ func (r Range) Compare(other Range) int {
 //
 // r.Compare(other) < 0 iff r.Less(other).
 func (r Range) Less(other Range) bool {
-	return r.End.Compare(other.Start) <= 0
+	if r.Intersects(other) {
+		return false
+	}
+	return r.Start.Less(other.Start)
 }
 
 // CompareStrict compares two ranges.
