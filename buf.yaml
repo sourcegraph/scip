@@ -3,6 +3,7 @@ version: v1
 build:
   excludes:
     - .direnv
+    - node_modules
 lint:
   use:
     - DEFAULT
