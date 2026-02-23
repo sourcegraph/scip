@@ -85,16 +85,16 @@
   typescript-bindings = pkgs.stdenv.mkDerivation {
     pname = "scip-bindings-typescript";
     inherit version;
-    src = ./.;
+    src = ./bindings/typescript;
     yarnOfflineCache = pkgs.fetchYarnDeps {
-      yarnLock = ./yarn.lock;
-      hash = "sha256-YA6qr2sZoW/VCWzHEVsHyIhV1hdhnll0vya8V7j1NFI=";
+      yarnLock = ./bindings/typescript/yarn.lock;
+      hash = "sha256-Ej75Mgn7ifARz1R2VzhbjegsMH9msIn+pXAcDtXSmAQ=";
     };
     nativeBuildInputs = with pkgs; [
       yarnConfigHook
       nodejs
     ];
-    buildPhase = "node_modules/.bin/tsc --noEmit -p bindings/typescript";
+    buildPhase = "node_modules/.bin/tsc --noEmit";
     installPhase = "touch $out";
   };
 }
