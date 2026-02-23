@@ -1,13 +1,18 @@
 # Configuration file for https://buf.build/, which we use for Protobuf code generation.
 version: v1
+build:
+  excludes:
+    - .direnv
 lint:
   use:
     - DEFAULT
   except:
     - PACKAGE_VERSION_SUFFIX
+    - PACKAGE_DIRECTORY_MATCH
     - ENUM_VALUE_PREFIX
     - ENUM_VALUE_UPPER_SNAKE_CASE
     - ENUM_ZERO_VALUE_SUFFIX
+    - ENUM_NO_ALLOW_ALIAS
 breaking:
   use:
     - FILE
