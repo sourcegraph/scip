@@ -17,7 +17,9 @@ import (
 )
 
 func TestParseCompat(t *testing.T) {
-	for _, path := range shared.SampleIndexes() {
+	paths := shared.SampleIndexes()
+	require.NotEmpty(t, paths, "no sample indexes found; set SCIP_SAMPLE_INDEXES_DIR or populate dev/sample_indexes")
+	for _, path := range paths {
 		t.Run(filepath.Base(path), func(t *testing.T) {
 			t.Parallel()
 			scipReader, err := os.Open(path)

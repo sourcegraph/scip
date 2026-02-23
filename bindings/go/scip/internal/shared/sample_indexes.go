@@ -12,39 +12,48 @@ import (
 )
 
 // SampleIndexes returns a list of paths to SCIP indexes for testing/benchmarking.
+//
+// The directory is determined by the SCIP_SAMPLE_INDEXES_DIR environment variable
+// if set, otherwise by walking up from the working directory to find dev/sample_indexes.
 func SampleIndexes() []string {
-	workDir, err := os.Getwd()
-	if err != nil {
-		panic(fmt.Sprintf("failed to get working directory: %v", err))
-	}
-	components := strings.Split(workDir, "/")
-	fmt.Printf("")
+	indexesDir := os.Getenv("SCIP_SAMPLE_INDEXES_DIR")
 	var dirEntries []os.DirEntry
-	var indexesDir string
-	var metadataPath string
-	var allMetadata indexesMetadata
-	for i := 0; i < len(components); i++ {
-		if components[i] != "scip" {
-			continue
-		}
-		indexesDir = filepath.Join("/", filepath.Join(components[:i+1]...), "dev", "sample_indexes")
+	var err error
+	if indexesDir != "" {
 		dirEntries, err = os.ReadDir(indexesDir)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Could not locate sample indexes directory at: %v\n", err.Error())
-			continue
+			panic(fmt.Sprintf("SCIP_SAMPLE_INDEXES_DIR=%q: %v", indexesDir, err))
 		}
-		metadataPath = filepath.Join(indexesDir, "indexes-metadata.json")
-		indexMetadataContents, err := os.ReadFile(metadataPath)
+	} else {
+		workDir, err := os.Getwd()
 		if err != nil {
-			panic(fmt.Sprintf("Failed to find metadata file for verifying SHAs: %s\n", err.Error()))
+			panic(fmt.Sprintf("failed to get working directory: %v", err))
 		}
-		if err = json.Unmarshal(indexMetadataContents, &allMetadata); err != nil {
-			panic(fmt.Sprintf("Failed to parse metadata file: %s (path: %q)\n", err.Error(), metadataPath))
+		components := strings.Split(workDir, "/")
+		for i := 0; i < len(components); i++ {
+			if components[i] != "scip" {
+				continue
+			}
+			indexesDir = filepath.Join("/", filepath.Join(components[:i+1]...), "dev", "sample_indexes")
+			dirEntries, err = os.ReadDir(indexesDir)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Could not locate sample indexes directory at: %v\n", err.Error())
+				continue
+			}
+			break
 		}
-		break
+		if len(dirEntries) == 0 {
+			panic(fmt.Sprintf("could not locate sample indexes directory starting from parents of working directory: %q", workDir))
+		}
 	}
-	if len(dirEntries) == 0 {
-		panic(fmt.Sprintf("could not locate sample indexes directory starting from parents of working directory: %q", workDir))
+	metadataPath := filepath.Join(indexesDir, "indexes-metadata.json")
+	indexMetadataContents, err := os.ReadFile(metadataPath)
+	if err != nil {
+		panic(fmt.Sprintf("Failed to find metadata file for verifying SHAs: %s\n", err.Error()))
+	}
+	var allMetadata indexesMetadata
+	if err = json.Unmarshal(indexMetadataContents, &allMetadata); err != nil {
+		panic(fmt.Sprintf("Failed to parse metadata file: %s (path: %q)\n", err.Error(), metadataPath))
 	}
 	out := []string{}
 	for _, entry := range dirEntries {
