@@ -14,8 +14,18 @@ jobs:
 
   checks:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        check:
+          - go-bindings
+          - haskell-bindings
+          - prettier
+          - reprolang
+          - reprolang-generated
+          - rust-bindings
+          - typescript-bindings
     steps:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
       - uses: DeterminateSystems/magic-nix-cache-action@v13
-      - run: nix flake check
+      - run: nix build .#checks.x86_64-linux.${{ matrix.check }}

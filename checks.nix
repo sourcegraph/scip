@@ -20,9 +20,6 @@
     preCheck = ''
       export SCIP_SAMPLE_INDEXES_DIR=${sampleIndexes}
     '';
-    # Limit parallel test execution to avoid OOM when loading large
-    # sample indexes concurrently in TestParseCompat.
-    checkFlags = [ "-parallel=2" ];
     installPhase = "touch $out";
   };
 
