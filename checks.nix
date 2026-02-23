@@ -9,7 +9,7 @@
     pname = "scip-bindings-go";
     inherit version;
     src = ./.;
-    vendorHash = "sha256-PFsYDl9hlrokHLw0pSYUpLzkz9j2ArffVVNAkSPb+x0=";
+    vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
     buildTags = [ "asserts" ];
     subPackages = [
       "bindings/go/scip"
@@ -46,7 +46,7 @@
     pname = "scip-reprolang";
     inherit version;
     src = ./.;
-    vendorHash = "sha256-PFsYDl9hlrokHLw0pSYUpLzkz9j2ArffVVNAkSPb+x0=";
+    vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
     subPackages = [
       "cmd/scip/tests/reprolang/src"
       "cmd/scip/tests/reprolang/bindings/go/repro"
@@ -88,7 +88,7 @@
     src = ./.;
     yarnOfflineCache = pkgs.fetchYarnDeps {
       yarnLock = ./yarn.lock;
-      hash = "sha256-CIzfhl3V7yybc/nqp/z7xlzQPLm3zxBCYnbRmWAiKzo=";
+      hash = "sha256-YA6qr2sZoW/VCWzHEVsHyIhV1hdhnll0vya8V7j1NFI=";
     };
     nativeBuildInputs = with pkgs; [
       yarnConfigHook

@@ -28,7 +28,7 @@
             inherit version;
 
             src = ./.;
-            vendorHash = "sha256-PFsYDl9hlrokHLw0pSYUpLzkz9j2ArffVVNAkSPb+x0=";
+            vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
 
             subPackages = [ "cmd/scip" ];
 
@@ -47,7 +47,7 @@
             inherit version;
 
             src = ./.;
-            vendorHash = "sha256-PFsYDl9hlrokHLw0pSYUpLzkz9j2ArffVVNAkSPb+x0=";
+            vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
 
             subPackages = [ "bindings/go/scip/speedtest" ];
 
