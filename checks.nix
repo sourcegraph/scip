@@ -92,19 +92,16 @@
     };
   };
 
-  typescript-bindings = pkgs.stdenv.mkDerivation {
+  typescript-bindings = pkgs.buildNpmPackage {
     pname = "scip-bindings-typescript";
     inherit version;
     src = ./bindings/typescript;
-    yarnOfflineCache = pkgs.fetchYarnDeps {
-      yarnLock = ./bindings/typescript/yarn.lock;
-      hash = "sha256-Ej75Mgn7ifARz1R2VzhbjegsMH9msIn+pXAcDtXSmAQ=";
-    };
-    nativeBuildInputs = with pkgs; [
-      yarnConfigHook
-      nodejs
-    ];
-    buildPhase = "node_modules/.bin/tsc --noEmit";
+    npmDepsHash = "sha256-DbZlv/5IdqBqcij5B0uv58NW99f/VPo6I3dQcCtv/uY=";
+    buildPhase = ''
+      runHook preBuild
+      npx tsc --noEmit
+      runHook postBuild
+    '';
     installPhase = "touch $out";
   };
 }

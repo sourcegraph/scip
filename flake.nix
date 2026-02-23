@@ -88,15 +88,13 @@
                 buf
                 gotools
                 haskellPackages.proto-lens-protoc
-                nodejs
                 prettier
                 protoc-gen-doc
+                protoc-gen-es
                 protoc-gen-go
                 protoc-gen-rs
-                yarn
               ];
               text = ''
-                yarn --cwd ./bindings/typescript install --frozen-lockfile
                 buf generate
                 goimports -w ./bindings/go/scip/scip.pb.go
                 prettier --write --list-different '**/*.{ts,js(on)?,md,yml}'
@@ -128,7 +126,6 @@
               nodejs
               rustc
               tree-sitter
-              yarn
             ]
             ++ (with pkgs.haskellPackages; [
               cabal-install
