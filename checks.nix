@@ -41,7 +41,7 @@
       nodePackages.prettier
       go
       gotools
-      nixfmt-rfc-style
+      nixfmt
     ];
     buildPhase = ''
       prettier --check '**/*.{ts,js(on)?,md,yml}'

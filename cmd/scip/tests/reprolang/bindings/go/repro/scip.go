@@ -12,7 +12,7 @@ func (i *identifier) occurrence(roles scip.SymbolRole) *scip.Occurrence {
 	if strings.HasPrefix(i.value, "deprecated") {
 		diagnostics = []*scip.Diagnostic{{
 			Severity: scip.Severity_Warning,
-			Message: "deprecated identifier",
+			Message:  "deprecated identifier",
 		}}
 	}
 
