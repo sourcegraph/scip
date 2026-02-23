@@ -33,12 +33,22 @@
     '';
   };
 
-  prettier = pkgs.stdenv.mkDerivation {
-    pname = "scip-prettier";
+  formatting = pkgs.stdenv.mkDerivation {
+    pname = "scip-formatting";
     inherit version;
     src = ./.;
-    nativeBuildInputs = [ pkgs.nodePackages.prettier ];
-    buildPhase = "prettier --check '**/*.{ts,js(on)?,md,yml}'";
+    nativeBuildInputs = with pkgs; [
+      nodePackages.prettier
+      go
+      gotools
+      nixfmt-rfc-style
+    ];
+    buildPhase = ''
+      prettier --check '**/*.{ts,js(on)?,md,yml}'
+      gofmt -d . | tee /dev/stderr | diff /dev/null -
+      goimports -d . | tee /dev/stderr | diff /dev/null -
+      nixfmt --check *.nix
+    '';
     installPhase = "touch $out";
   };
 
