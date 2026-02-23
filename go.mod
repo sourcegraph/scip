@@ -17,7 +17,7 @@ require (
 	github.com/klauspost/compress v1.18.0
 	github.com/montanaflynn/stats v0.7.1
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
-	github.com/smacker/go-tree-sitter v0.0.0-20220209044044-0d3022e933c3
+	github.com/smacker/go-tree-sitter v0.0.0-20240827094217-dd81d9e9be82
 	github.com/sourcegraph/beaut v0.0.0-20240611013027-627e4c25335a
 	github.com/sourcegraph/conc v0.3.0
 	github.com/stretchr/testify v1.10.0
