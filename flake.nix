@@ -19,7 +19,6 @@
         license = pkgs.lib.licenses.asl20;
         version = pkgs.lib.fileContents ./cmd/scip/version.txt;
         sampleIndexes = import ./sample-indexes.nix { inherit pkgs; };
-
       in
       {
         packages = {
