@@ -38,7 +38,7 @@
     inherit version;
     src = ./.;
     nativeBuildInputs = with pkgs; [
-      nodePackages.prettier
+      prettier
       go
       gotools
       nixfmt
@@ -71,7 +71,7 @@
     nativeBuildInputs = with pkgs; [
       tree-sitter
       nodejs
-      nodePackages.prettier
+      prettier
     ];
     buildPhase = ''
       cd cmd/scip/tests/reprolang

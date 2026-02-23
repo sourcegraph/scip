@@ -93,7 +93,7 @@
                 haskellPackages.proto-lens-protoc
                 nodejs
                 yarn
-                nodePackages.prettier
+                prettier
               ];
               text = ''
                 yarn --cwd ./bindings/typescript install --frozen-lockfile
