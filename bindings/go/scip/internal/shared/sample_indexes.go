@@ -16,36 +16,7 @@ import (
 // The directory is determined by the SCIP_SAMPLE_INDEXES_DIR environment variable
 // if set, otherwise by walking up from the working directory to find dev/sample_indexes.
 func SampleIndexes() []string {
-	indexesDir := os.Getenv("SCIP_SAMPLE_INDEXES_DIR")
-	var dirEntries []os.DirEntry
-	var err error
-	if indexesDir != "" {
-		dirEntries, err = os.ReadDir(indexesDir)
-		if err != nil {
-			panic(fmt.Sprintf("SCIP_SAMPLE_INDEXES_DIR=%q: %v", indexesDir, err))
-		}
-	} else {
-		workDir, err := os.Getwd()
-		if err != nil {
-			panic(fmt.Sprintf("failed to get working directory: %v", err))
-		}
-		components := strings.Split(workDir, "/")
-		for i := 0; i < len(components); i++ {
-			if components[i] != "scip" {
-				continue
-			}
-			indexesDir = filepath.Join("/", filepath.Join(components[:i+1]...), "dev", "sample_indexes")
-			dirEntries, err = os.ReadDir(indexesDir)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Could not locate sample indexes directory at: %v\n", err.Error())
-				continue
-			}
-			break
-		}
-		if len(dirEntries) == 0 {
-			panic(fmt.Sprintf("could not locate sample indexes directory starting from parents of working directory: %q", workDir))
-		}
-	}
+	indexesDir, dirEntries := getSampleIndexesDir()
 	metadataPath := filepath.Join(indexesDir, "indexes-metadata.json")
 	indexMetadataContents, err := os.ReadFile(metadataPath)
 	if err != nil {
@@ -66,6 +37,38 @@ func SampleIndexes() []string {
 		}
 	}
 	return out
+}
+
+// getSampleIndexesDir returns the path to the sample indexes directory and its entries.
+// It first checks the SCIP_SAMPLE_INDEXES_DIR environment variable, then walks up
+// from the working directory to find dev/sample_indexes.
+func getSampleIndexesDir() (string, []os.DirEntry) {
+	if envDir := os.Getenv("SCIP_SAMPLE_INDEXES_DIR"); envDir != "" {
+		dirEntries, err := os.ReadDir(envDir)
+		if err != nil {
+			panic(fmt.Sprintf("SCIP_SAMPLE_INDEXES_DIR=%q: %v", envDir, err))
+		}
+		return envDir, dirEntries
+	}
+
+	workDir, err := os.Getwd()
+	if err != nil {
+		panic(fmt.Sprintf("failed to get working directory: %v", err))
+	}
+	components := strings.Split(workDir, "/")
+	for i := 0; i < len(components); i++ {
+		if components[i] != "scip" {
+			continue
+		}
+		indexesDir := filepath.Join("/", filepath.Join(components[:i+1]...), "dev", "sample_indexes")
+		dirEntries, err := os.ReadDir(indexesDir)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Could not locate sample indexes directory at: %v\n", err.Error())
+			continue
+		}
+		return indexesDir, dirEntries
+	}
+	panic(fmt.Sprintf("could not locate sample indexes directory starting from parents of working directory: %q", workDir))
 }
 
 type indexesMetadata struct {
