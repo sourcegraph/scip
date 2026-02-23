@@ -5,6 +5,25 @@
   sampleIndexes,
 }:
 {
+  formatting = pkgs.stdenv.mkDerivation {
+    pname = "scip-formatting";
+    inherit version;
+    src = ./.;
+    nativeBuildInputs = with pkgs; [
+      go
+      gotools
+      nixfmt
+      prettier
+    ];
+    buildPhase = ''
+      prettier --check '**/*.{ts,js(on)?,md,yml}'
+      gofmt -d . | tee /dev/stderr | diff /dev/null -
+      goimports -d . | tee /dev/stderr | diff /dev/null -
+      nixfmt --check *.nix
+    '';
+    installPhase = "touch $out";
+  };
+
   go-bindings = pkgs.buildGoModule {
     pname = "scip-bindings-go";
     inherit version;
@@ -33,25 +52,6 @@
     '';
   };
 
-  formatting = pkgs.stdenv.mkDerivation {
-    pname = "scip-formatting";
-    inherit version;
-    src = ./.;
-    nativeBuildInputs = with pkgs; [
-      prettier
-      go
-      gotools
-      nixfmt
-    ];
-    buildPhase = ''
-      prettier --check '**/*.{ts,js(on)?,md,yml}'
-      gofmt -d . | tee /dev/stderr | diff /dev/null -
-      goimports -d . | tee /dev/stderr | diff /dev/null -
-      nixfmt --check *.nix
-    '';
-    installPhase = "touch $out";
-  };
-
   reprolang = pkgs.buildGoModule {
     pname = "scip-reprolang";
     inherit version;
@@ -69,9 +69,9 @@
     inherit version;
     src = ./.;
     nativeBuildInputs = with pkgs; [
-      tree-sitter
       nodejs
       prettier
+      tree-sitter
     ];
     buildPhase = ''
       cd cmd/scip/tests/reprolang
