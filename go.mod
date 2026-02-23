@@ -24,7 +24,7 @@ require (
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/exp v0.0.0-20231108232855-2478ac86f678
 	golang.org/x/tools v0.37.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.36.6
 	pgregory.net/rapid v1.1.0
 	zombiezen.com/go/sqlite v1.0.0
 )
