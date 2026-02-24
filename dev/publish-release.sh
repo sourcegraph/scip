@@ -37,8 +37,10 @@ fi
 } >&2
 
 TAG="v$NEW_VERSION"
+BINDINGS_TAG="bindings/go/scip/$TAG"
 git tag "$TAG"
-git push origin "$TAG"
+git tag "$BINDINGS_TAG"
+git push origin "$TAG" "$BINDINGS_TAG"
 
 {
   echo "See the [CHANGELOG](https://github.com/sourcegraph/scip/blob/main/CHANGELOG.md) to see what's new in scip v$NEW_VERSION."
