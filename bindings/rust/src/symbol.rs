@@ -154,7 +154,7 @@ fn escape_name(name: &str) -> String {
     {
         name.to_string()
     } else {
-        format!("`{}`", name)
+        format!("`{}`", name.replace('`', "``"))
     }
 }
 
@@ -621,6 +621,23 @@ mod test {
         let symbol = format_symbol(symbol_struct.clone());
 
         assert_eq!(symbol, "scip-ctags . . . `foo=`.");
+        assert_eq!(parse_symbol(&symbol).expect("to parse"), symbol_struct);
+    }
+
+    #[test]
+    fn test_roundtrip_backtick_in_name() {
+        let symbol_struct = Symbol {
+            scheme: "scip-ctags".to_string(),
+            package: None.into(),
+            descriptors: vec![new_descriptor(
+                "foo`bar".to_string(),
+                descriptor::Suffix::Term,
+            )],
+            ..Default::default()
+        };
+        let symbol = format_symbol(symbol_struct.clone());
+
+        assert_eq!(symbol, "scip-ctags . . . `foo``bar`.");
         assert_eq!(parse_symbol(&symbol).expect("to parse"), symbol_struct);
     }
 
