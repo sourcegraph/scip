@@ -2,8 +2,6 @@ package scip
 
 import (
 	"strings"
-
-	"github.com/sourcegraph/scip/bindings/go/scip/internal/shared"
 )
 
 // SymbolFormatter configures how to format an SCIP symbol.
@@ -141,7 +139,7 @@ func writeEscapedPackage(b *strings.Builder, name string) {
 func writeSuffixedDescriptor(b *strings.Builder, identifier string, suffixes ...rune) {
 	escape := false
 	for _, ch := range identifier {
-		if !shared.IsSimpleIdentifierCharacter(ch) {
+		if !isSimpleIdentifierCharacter(ch) {
 			escape = true
 			break
 		}

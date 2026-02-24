@@ -6,7 +6,6 @@ import (
 
 	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/beaut"
-	"github.com/sourcegraph/scip/bindings/go/scip/internal/shared"
 )
 
 // stringWriter is a wrapper around a pair of (strings.Builder, *string)
@@ -124,7 +123,7 @@ func tryParseLocalSymbolV2(s string, out *Symbol) (bool, error) {
 	if len(suffix) == len(s) {
 		return false, nil
 	}
-	if len(suffix) == 0 || !shared.IsSimpleIdentifier(suffix) {
+	if len(suffix) == 0 || !isSimpleIdentifier(suffix) {
 		return false, expectedSimpleIdentifierError{""}
 	}
 	if out != nil {
@@ -498,7 +497,7 @@ func (z *symbolParserV2) acceptIdentifier(what parseCtx, sw *stringWriter) error
 	start := z.byteIndex
 	slen := len(z.SymbolString)
 	for z.byteIndex < slen {
-		if !shared.IsSimpleIdentifierCharacter(z.currentRune) {
+		if !isSimpleIdentifierCharacter(z.currentRune) {
 			break
 		}
 		z.advanceRune()

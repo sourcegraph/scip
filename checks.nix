@@ -1,7 +1,6 @@
 {
   pkgs,
   version,
-  sampleIndexes,
 }:
 {
   formatting = pkgs.stdenv.mkDerivation {
@@ -28,18 +27,14 @@
     inherit version;
     src = ./.;
     modRoot = "./bindings/go/scip";
-    vendorHash = "sha256-pCYfH/CvzwCh13twl1Xq2Ma+jUNgFFrdGpQH+i3y6u8=";
+    vendorHash = "sha256-l2AcFUUmO44/Q2nwtOVuGu3ffP/dpIYaa1AlKHoHSq8=";
     env.GOWORK = "off";
     buildTags = [ "asserts" ];
     subPackages = [
       "."
-      "internal"
       "memtest"
       "testutil"
     ];
-    preCheck = ''
-      export SCIP_SAMPLE_INDEXES_DIR=${sampleIndexes}
-    '';
     installPhase = "touch $out";
   };
 

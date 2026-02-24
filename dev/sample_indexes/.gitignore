@@ -1,3 +1,0 @@
-# Ignore any SCIP indexes as well as any files with statistics data.
-*.scip
-*.json

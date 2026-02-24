@@ -28,7 +28,6 @@ jobs:
       matrix:
         package:
           - scip
-          - speedtest
           - proto-generate
     steps:
       - uses: actions/checkout@v6

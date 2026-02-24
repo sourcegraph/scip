@@ -17,7 +17,6 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         version = pkgs.lib.fileContents ./cmd/scip/version.txt;
-        sampleIndexes = import ./sample-indexes.nix { inherit pkgs; };
       in
       {
         packages = {
@@ -40,26 +39,6 @@
               license = pkgs.lib.licenses.asl20;
               mainProgram = "scip";
             };
-          };
-
-          speedtest = pkgs.buildGoModule {
-            pname = "scip-speedtest";
-            inherit version;
-
-            src = ./.;
-            modRoot = "./bindings/go/scip";
-            vendorHash = "sha256-pCYfH/CvzwCh13twl1Xq2Ma+jUNgFFrdGpQH+i3y6u8=";
-            env.GOWORK = "off";
-
-            subPackages = [ "speedtest" ];
-
-            nativeBuildInputs = [ pkgs.makeWrapper ];
-            postFixup = ''
-              wrapProgram $out/bin/speedtest \
-                --set SCIP_SAMPLE_INDEXES_DIR ${sampleIndexes}
-            '';
-
-            meta.mainProgram = "speedtest";
           };
 
           proto-generate =
@@ -103,11 +82,7 @@
         };
 
         checks = import ./checks.nix {
-          inherit
-            pkgs
-            version
-            sampleIndexes
-            ;
+          inherit pkgs version;
         };
 
         formatter = pkgs.nixfmt;
