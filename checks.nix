@@ -1,7 +1,6 @@
 {
   pkgs,
   version,
-  license,
   sampleIndexes,
 }:
 {
@@ -42,27 +41,37 @@
     installPhase = "touch $out";
   };
 
-  haskell-bindings = pkgs.haskellPackages.mkDerivation {
-    pname = "scip-bindings-haskell";
-    inherit license version;
-    src = ./bindings/haskell;
-    libraryHaskellDepends = with pkgs.haskellPackages; [ proto-lens-runtime ];
-    prePatch = ''
-      cp --remove-destination ${./LICENSE} LICENSE
-    '';
-  };
+  haskell-bindings =
+    let
+      cabal = pkgs.haskellPackages.callCabal2nix "scip" ./bindings/haskell { };
+    in
+    assert pkgs.lib.assertMsg (
+      cabal.version == version
+    ) "Version mismatch in bindings/haskell/scip.cabal: expected ${version}, got ${cabal.version}";
+    cabal.overrideAttrs {
+      prePatch = ''
+        cp --remove-destination ${./LICENSE} LICENSE
+      '';
+    };
 
-  reprolang = pkgs.buildGoModule {
-    pname = "scip-reprolang";
-    inherit version;
-    src = ./.;
-    vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
-    subPackages = [
-      "cmd/scip/tests/reprolang/src"
-      "cmd/scip/tests/reprolang/bindings/go/repro"
-    ];
-    installPhase = "touch $out";
-  };
+  reprolang =
+    let
+      reprolangVersion =
+        (builtins.fromJSON (builtins.readFile ./cmd/scip/tests/reprolang/package.json)).version;
+    in
+    assert pkgs.lib.assertMsg (reprolangVersion == version)
+      "Version mismatch in cmd/scip/tests/reprolang/package.json: expected ${version}, got ${reprolangVersion}";
+    pkgs.buildGoModule {
+      pname = "scip-reprolang";
+      inherit version;
+      src = ./.;
+      vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
+      subPackages = [
+        "cmd/scip/tests/reprolang/src"
+        "cmd/scip/tests/reprolang/bindings/go/repro"
+      ];
+      installPhase = "touch $out";
+    };
 
   reprolang-generated = pkgs.stdenv.mkDerivation {
     pname = "scip-reprolang-generated";
@@ -83,25 +92,40 @@
     installPhase = "touch $out";
   };
 
-  rust-bindings = pkgs.rustPlatform.buildRustPackage {
-    pname = "scip-bindings-rust";
-    inherit version;
-    src = ./bindings/rust;
-    cargoLock = {
-      lockFile = ./bindings/rust/Cargo.lock;
+  rust-bindings =
+    let
+      cargoTomlVersion =
+        (builtins.fromTOML (builtins.readFile ./bindings/rust/Cargo.toml)).package.version;
+    in
+    assert pkgs.lib.assertMsg (
+      cargoTomlVersion == version
+    ) "Version mismatch in bindings/rust/Cargo.toml: expected ${version}, got ${cargoTomlVersion}";
+    pkgs.rustPlatform.buildRustPackage {
+      pname = "scip-bindings-rust";
+      inherit version;
+      src = ./bindings/rust;
+      cargoLock = {
+        lockFile = ./bindings/rust/Cargo.lock;
+      };
     };
-  };
 
-  typescript-bindings = pkgs.buildNpmPackage {
-    pname = "scip-bindings-typescript";
-    inherit version;
-    src = ./bindings/typescript;
-    npmDepsHash = "sha256-8ARcCJUUHebhvjL55X6+9h9JxLSoCe0VC51z7HZI4aE=";
-    buildPhase = ''
-      runHook preBuild
-      npx tsc --noEmit
-      runHook postBuild
-    '';
-    installPhase = "touch $out";
-  };
+  typescript-bindings =
+    let
+      packageJsonVersion =
+        (builtins.fromJSON (builtins.readFile ./bindings/typescript/package.json)).version;
+    in
+    assert pkgs.lib.assertMsg (packageJsonVersion == version)
+      "Version mismatch in bindings/typescript/package.json: expected ${version}, got ${packageJsonVersion}";
+    pkgs.buildNpmPackage {
+      pname = "scip-bindings-typescript";
+      inherit version;
+      src = ./bindings/typescript;
+      npmDepsHash = "sha256-8ARcCJUUHebhvjL55X6+9h9JxLSoCe0VC51z7HZI4aE=";
+      buildPhase = ''
+        runHook preBuild
+        npx tsc --noEmit
+        runHook postBuild
+      '';
+      installPhase = "touch $out";
+    };
 }

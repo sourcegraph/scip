@@ -16,7 +16,6 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        license = pkgs.lib.licenses.asl20;
         version = pkgs.lib.fileContents ./cmd/scip/version.txt;
         sampleIndexes = import ./sample-indexes.nix { inherit pkgs; };
       in
@@ -36,7 +35,7 @@
             meta = {
               description = "SCIP Code Intelligence Protocol";
               homepage = "https://github.com/sourcegraph/scip";
-              inherit license;
+              license = pkgs.lib.licenses.asl20;
               mainProgram = "scip";
             };
           };
@@ -55,13 +54,6 @@
               wrapProgram $out/bin/speedtest \
                 --set SCIP_SAMPLE_INDEXES_DIR ${sampleIndexes}
             '';
-
-            meta = {
-              description = "SCIP symbol parser benchmark";
-              homepage = "https://github.com/sourcegraph/scip";
-              inherit license;
-              mainProgram = "speedtest";
-            };
           };
 
           proto-generate =
@@ -108,7 +100,6 @@
           inherit
             pkgs
             version
-            license
             sampleIndexes
             ;
         };
