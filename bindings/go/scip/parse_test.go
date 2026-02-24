@@ -2,11 +2,11 @@ package scip
 
 import (
 	"bytes"
-	"compress/gzip"
 	"context"
+	"fmt"
 	"io"
-	"os"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -32,24 +32,43 @@ func TestFuzz(t *testing.T) {
 	}
 }
 
-func getTestIndex(t *testing.T) *gzip.Reader {
-	// Copied from the Sourcegraph monorepo, which triggered a bug
-	// where Reader.read() didn't actually fill a buffer completely,
-	// due to the presence of large documents.
-	gzipped, err := os.Open("./testdata/index1.scip.gz")
-	if err != nil {
-		t.Fatalf("unexpected error reading test file: %s", err)
-	}
-	reader, err := gzip.NewReader(gzipped)
-	if err != nil {
-		t.Fatalf("unexpected error unzipping test file: %s", err)
-	}
-	return reader
-}
-
 func TestLargeDocuments(t *testing.T) {
-	reader := getTestIndex(t)
-	_ = parseStreaming(t, reader)
+	// Regression test: the streaming parser must handle documents
+	// large enough that a single io.Reader.Read call may not fill
+	// the buffer completely.
+	const textSize = 128 * 1024
+	const docCount = 10
+	const occurrencesPerDoc = 200
+	index := Index{
+		Metadata: &Metadata{
+			Version:              ProtocolVersion_UnspecifiedProtocolVersion,
+			ToolInfo:             &ToolInfo{Name: "test-indexer", Version: "1.0.0"},
+			ProjectRoot:          "file:///test/project",
+			TextDocumentEncoding: TextEncoding_UTF8,
+		},
+	}
+	for i := 0; i < docCount; i++ {
+		doc := Document{
+			RelativePath: fmt.Sprintf("src/file%d.ts", i),
+			Text:         strings.Repeat(fmt.Sprintf("%d", i), textSize),
+		}
+		for j := 0; j < occurrencesPerDoc; j++ {
+			doc.Occurrences = append(doc.Occurrences, &Occurrence{
+				Range:  []int32{int32(j), 0, 10},
+				Symbol: fmt.Sprintf("test . pkg v1 File%d#method%d().", i, j),
+			})
+		}
+		index.Documents = append(index.Documents, &doc)
+	}
+	index.ExternalSymbols = append(index.ExternalSymbols, &SymbolInformation{
+		Symbol:        "test . dep v2 ExternalType#",
+		Documentation: []string{"An external type"},
+	})
+	indexBytes, err := proto.Marshal(&index)
+	require.NoError(t, err)
+
+	parsed := parseStreaming(t, bytes.NewReader(indexBytes))
+	checkIndexEqual(t, &index, parsed)
 }
 
 func TestDocumentsOnly(t *testing.T) {
