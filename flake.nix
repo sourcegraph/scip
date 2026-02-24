@@ -58,6 +58,8 @@
               wrapProgram $out/bin/speedtest \
                 --set SCIP_SAMPLE_INDEXES_DIR ${sampleIndexes}
             '';
+
+            meta.mainProgram = "speedtest";
           };
 
           proto-generate =

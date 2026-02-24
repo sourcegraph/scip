@@ -21,3 +21,17 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v21
       - uses: DeterminateSystems/magic-nix-cache-action@v13
       - run: nix build .#checks.x86_64-linux.${{ matrix.check }}
+
+  packages:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - scip
+          - speedtest
+          - proto-generate
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - run: nix build .#${{ matrix.package }}
