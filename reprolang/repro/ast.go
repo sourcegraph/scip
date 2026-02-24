@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/cockroachdb/errors"
-	sitter "github.com/smacker/go-tree-sitter"
+	sitter "github.com/tree-sitter/go-tree-sitter"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
@@ -42,8 +42,8 @@ func newIdentifier(s *reproSourceFile, n *sitter.Node) *identifier {
 	if n == nil {
 		return nil
 	}
-	if n.Type() != "identifier" {
-		panic("expected identifier, obtained " + n.Type())
+	if n.Kind() != "identifier" {
+		panic("expected identifier, obtained " + n.Kind())
 	}
 	value := s.nodeText(n)
 	globalIdentifier := n.ChildByFieldName("global")
@@ -68,12 +68,12 @@ type relationshipsStatement struct {
 func NewRangePositionFromNode(node *sitter.Node) *scip.Range {
 	return &scip.Range{
 		Start: scip.Position{
-			Line:      int32(node.StartPoint().Row),
-			Character: int32(node.StartPoint().Column),
+			Line:      int32(node.StartPosition().Row),
+			Character: int32(node.StartPosition().Column),
 		},
 		End: scip.Position{
-			Line:      int32(node.EndPoint().Row),
-			Character: int32(node.EndPoint().Column),
+			Line:      int32(node.EndPosition().Row),
+			Character: int32(node.EndPosition().Column),
 		},
 	}
 }

@@ -7,9 +7,9 @@ replace github.com/sourcegraph/scip => ../
 require (
 	github.com/cockroachdb/errors v1.12.0
 	github.com/hexops/autogold/v2 v2.3.1
-	github.com/smacker/go-tree-sitter v0.0.0-20240827094217-dd81d9e9be82
 	github.com/sourcegraph/scip v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.11.1
+	github.com/tree-sitter/go-tree-sitter v0.25.0
 	golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa
 )
 
@@ -27,6 +27,7 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/nightlyone/lockfile v1.0.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

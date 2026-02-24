@@ -1,33 +1,33 @@
 package repro
 
 import (
-	"context"
+	sitter "github.com/tree-sitter/go-tree-sitter"
 
 	reproGrammar "github.com/sourcegraph/scip/reprolang/grammar"
-
-	sitter "github.com/smacker/go-tree-sitter"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
-func parseSourceFile(ctx context.Context, source *scip.SourceFile) (*reproSourceFile, error) {
-	tree, err := sitter.ParseCtx(ctx, []byte(source.Text), reproGrammar.GetLanguage())
-	if err != nil {
+func parseSourceFile(source *scip.SourceFile) (*reproSourceFile, error) {
+	parser := sitter.NewParser()
+	defer parser.Close()
+	if err := parser.SetLanguage(sitter.NewLanguage(reproGrammar.Language())); err != nil {
 		return nil, err
 	}
-	reproSource := newSourceFile(source, tree)
+	tree := parser.Parse([]byte(source.Text), nil)
+	reproSource := newSourceFile(source, tree.RootNode(), tree)
 	reproSource.loadStatements()
 	return reproSource, nil
 }
 
 func (s *reproSourceFile) loadStatements() {
-	for i := uint32(0); i < s.node.ChildCount(); i++ {
-		child := s.node.Child(int(i))
+	for i := uint(0); i < s.node.ChildCount(); i++ {
+		child := s.node.Child(i)
 		name := child.ChildByFieldName("name")
 		if name == nil {
 			continue
 		}
-		switch child.Type() {
+		switch child.Kind() {
 		case "relationships_statement", "definition_statement":
 			docstring := ""
 			docstringNode := child.ChildByFieldName("docstring")
@@ -36,9 +36,9 @@ func (s *reproSourceFile) loadStatements() {
 			}
 			name := newIdentifier(s, child.ChildByFieldName("name"))
 			relations := relationships{}
-			for i := uint32(0); i < child.NamedChildCount(); i++ {
-				relation := child.NamedChild(int(i))
-				switch relation.Type() {
+			for i := uint(0); i < child.NamedChildCount(); i++ {
+				relation := child.NamedChild(i)
+				switch relation.Kind() {
 				case "implementation_relation":
 					relations.implementsRelation = newIdentifier(s, relation.ChildByFieldName("name"))
 				case "type_definition_relation":
@@ -49,7 +49,7 @@ func (s *reproSourceFile) loadStatements() {
 					relations.definedByRelation = newIdentifier(s, relation.ChildByFieldName("name"))
 				}
 			}
-			if child.Type() == "definition_statement" {
+			if child.Kind() == "definition_statement" {
 				s.definitions = append(s.definitions, &definitionStatement{
 					docstring: docstring,
 					name:      name,

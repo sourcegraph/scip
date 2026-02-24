@@ -1,8 +1,6 @@
 package repro
 
 import (
-	"context"
-
 	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
@@ -42,7 +40,7 @@ func Index(
 	// Phase 1: parse sources
 	var reproSources []*reproSourceFile
 	for _, source := range sources {
-		reproSource, err := parseSourceFile(context.Background(), source)
+		reproSource, err := parseSourceFile(source)
 		if err != nil {
 			return nil, err
 		}
@@ -53,7 +51,7 @@ func Index(
 		dep := &reproDependency{Package: dependency.Package}
 		reproDependencies = append(reproDependencies, dep)
 		for _, source := range dependency.Sources {
-			reproSource, err := parseSourceFile(context.Background(), source)
+			reproSource, err := parseSourceFile(source)
 			if err != nil {
 				return nil, err
 			}
