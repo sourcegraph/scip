@@ -1177,10 +1177,6 @@ export type Relationship = Message<"scip.Relationship"> & {
    * matching symbol in ancestor classes, and is_reference to relate the
    * symbol to the matching symbol in mixins.
    *
-   * NOTE: At the moment, due to limitations of the SCIP to LSIF conversion,
-   * only global symbols in an index are allowed to use is_definition.
-   * The relationship may not get recorded if either symbol is local.
-   *
    * Update registerInverseRelationships on adding a new field here.
    *
    * @generated from field: bool is_definition = 5;
