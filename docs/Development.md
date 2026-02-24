@@ -18,11 +18,11 @@
     [Sourcegraph CLI](https://github.com/sourcegraph/src-cli).
 - [cmd/scip](./cmd/scip): CLI for SCIP.
   - [cmd/scip/tests/](./cmd/scip/tests/): Test data and packages for SCIP.
-    - [cmd/scip/tests/reprolang/](./cmd/scip/tests/reprolang/): A verbose, small language
-      which consists of declarations, references, imports and other minor bits
-      of functionality, which is used to test the SCIP CLI. The language is
-      defined using a [tree-sitter grammar](cmd/scip/tests/reprolang/grammar.js).
-      This functionality not meant for use outside of this repository.
+- [reprolang/](./reprolang/): A verbose, small language
+  which consists of declarations, references, imports and other minor bits
+  of functionality, which is used to test the SCIP CLI. The language is
+  defined using a [tree-sitter grammar](reprolang/grammar.js).
+  This functionality is not meant for use outside of this repository.
 - [docs/](./docs/): Auto-generated documentation.
 
 ## Code generation
@@ -41,7 +41,7 @@
    ```
 3. Regenerating parser for Repro after editing its grammar.
    ```
-   cd cmd/scip/tests/reprolang
+   cd reprolang
    ./generate-tree-sitter-parser.sh
    ```
 

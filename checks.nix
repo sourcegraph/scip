@@ -56,19 +56,19 @@
 
   reprolang =
     let
-      reprolangVersion =
-        (builtins.fromJSON (builtins.readFile ./cmd/scip/tests/reprolang/package.json)).version;
+      reprolangVersion = (builtins.fromJSON (builtins.readFile ./reprolang/package.json)).version;
     in
-    assert pkgs.lib.assertMsg (reprolangVersion == version)
-      "Version mismatch in cmd/scip/tests/reprolang/package.json: expected ${version}, got ${reprolangVersion}";
+    assert pkgs.lib.assertMsg (
+      reprolangVersion == version
+    ) "Version mismatch in reprolang/package.json: expected ${version}, got ${reprolangVersion}";
     pkgs.buildGoModule {
       pname = "scip-reprolang";
       inherit version;
       src = ./.;
       vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
       subPackages = [
-        "cmd/scip/tests/reprolang/src"
-        "cmd/scip/tests/reprolang/bindings/go/repro"
+        "reprolang/src"
+        "reprolang/bindings/go/repro"
       ];
       installPhase = "touch $out";
     };
@@ -83,7 +83,7 @@
       tree-sitter
     ];
     buildPhase = ''
-      cd cmd/scip/tests/reprolang
+      cd reprolang
       cp -r src src-before
       tree-sitter generate --abi 14
       prettier --write 'src/grammar.json' 'src/node-types.json'

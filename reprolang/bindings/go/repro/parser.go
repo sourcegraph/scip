@@ -3,7 +3,7 @@ package repro
 import (
 	"context"
 
-	reproGrammar "github.com/sourcegraph/scip/cmd/scip/tests/reprolang/src"
+	reproGrammar "github.com/sourcegraph/scip/reprolang/src"
 
 	sitter "github.com/smacker/go-tree-sitter"
 
