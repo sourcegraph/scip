@@ -1,20 +1,79 @@
 name: release
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 0.6.1)'
+        required: true
+        type: string
 
 jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Validate CHANGELOG entry
+        run: |
+          if ! grep -q "## v${{ inputs.version }}" CHANGELOG.md; then
+            echo "::error::Missing CHANGELOG entry for v${{ inputs.version }}"
+            exit 1
+          fi
+
+      - name: Validate version.txt
+        run: |
+          if ! grep -q "${{ inputs.version }}" cmd/scip/version.txt; then
+            echo "::error::cmd/scip/version.txt doesn't match version ${{ inputs.version }}"
+            exit 1
+          fi
+
+      - name: Create and push tags
+        run: |
+          TAG="v${{ inputs.version }}"
+          BINDINGS_TAG="bindings/go/scip/$TAG"
+          git tag "$TAG"
+          git tag "$BINDINGS_TAG"
+          git push origin "$TAG" "$BINDINGS_TAG"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="v${{ inputs.version }}"
+          {
+            echo "See the [CHANGELOG](https://github.com/sourcegraph/scip/blob/main/CHANGELOG.md) to see what's new in scip $TAG."
+            echo ''
+            echo 'Download the CLI for your current platform using:'
+            echo ''
+            echo '```bash'
+            echo 'env \'
+            echo "  TAG=\"$TAG\" \\"
+            echo '  OS="$(uname -s | tr '"'"'[:upper:]'"'"' '"'"'[:lower:]'"'"')" \'
+            echo '  ARCH="$(uname -m | sed -e '"'"'s/x86_64/amd64/'"'"')" \'
+            echo '  bash -c '"'"'curl -L "https://github.com/sourcegraph/scip/releases/download/$TAG/scip-$OS-$ARCH.tar.gz"'"'"' \'
+            echo '| tar xzf - scip'
+            echo '```'
+          } | gh release create "$TAG" --title "scip $TAG" --notes-file -
+
   release-crate:
+    needs: publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: v${{ inputs.version }}
       - uses: DeterminateSystems/nix-installer-action@v21
       - uses: DeterminateSystems/magic-nix-cache-action@v13
       - run: nix develop -c cargo publish --token '${{ secrets.CRATES_TOKEN }}'
         working-directory: bindings/rust
 
   build-go-binaries:
+    needs: publish
     strategy:
       matrix:
         include:
@@ -31,6 +90,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: v${{ inputs.version }}
       - uses: DeterminateSystems/nix-installer-action@v21
       - uses: DeterminateSystems/magic-nix-cache-action@v13
       - name: Build
@@ -46,4 +107,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ASSET: ${{ matrix.asset_name }}
-        run: gh release upload "${{ github.event.release.tag_name }}" "$ASSET.tar.gz" "$ASSET.tar.gz.sha256"
+        run: gh release upload "v${{ inputs.version }}" "$ASSET.tar.gz" "$ASSET.tar.gz.sha256"
