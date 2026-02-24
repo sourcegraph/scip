@@ -36,15 +36,19 @@ jobs:
         run: |
           TAG="v${{ inputs.version }}"
           BINDINGS_TAG="bindings/go/scip/$TAG"
-          git tag "$TAG"
-          git tag "$BINDINGS_TAG"
-          git push origin "$TAG" "$BINDINGS_TAG"
+          git tag "$TAG" 2>/dev/null || echo "Tag $TAG already exists"
+          git tag "$BINDINGS_TAG" 2>/dev/null || echo "Tag $BINDINGS_TAG already exists"
+          git push origin "$TAG" "$BINDINGS_TAG" 2>/dev/null || echo "Tags already pushed"
 
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="v${{ inputs.version }}"
+          if gh release view "$TAG" &>/dev/null; then
+            echo "Release $TAG already exists, skipping creation"
+            exit 0
+          fi
           {
             echo "See the [CHANGELOG](https://github.com/sourcegraph/scip/blob/main/CHANGELOG.md) to see what's new in scip $TAG."
             echo ''
@@ -69,7 +73,15 @@ jobs:
           ref: v${{ inputs.version }}
       - uses: DeterminateSystems/nix-installer-action@v21
       - uses: DeterminateSystems/magic-nix-cache-action@v13
-      - run: nix develop -c cargo publish --token '${{ secrets.CRATES_TOKEN }}'
+      - name: Publish crate
+        run: |
+          OUTPUT=$(nix develop -c cargo publish --token '${{ secrets.CRATES_TOKEN }}' 2>&1) && exit 0
+          if echo "$OUTPUT" | grep -q "already uploaded"; then
+            echo "Crate version already published, skipping"
+          else
+            echo "$OUTPUT"
+            exit 1
+          fi
         working-directory: bindings/rust
 
   build-go-binaries:
@@ -107,4 +119,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ASSET: ${{ matrix.asset_name }}
-        run: gh release upload "v${{ inputs.version }}" "$ASSET.tar.gz" "$ASSET.tar.gz.sha256"
+        run: gh release upload "v${{ inputs.version }}" "$ASSET.tar.gz" "$ASSET.tar.gz.sha256" --clobber

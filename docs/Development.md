@@ -113,12 +113,9 @@ First, add release notes to the [CHANGELOG](../CHANGELOG.md). Next, update the
 version in `cmd/scip/version.txt`, `bindings/rust/Cargo.toml`,
 `bindings/rust/Cargo.lock`, and `docs/CLI.md`
 
-After landing a commit with those two changes, run the release script:
-(requires the [GitHub CLI](https://cli.github.com/))
-
-```bash
-NEW_VERSION="M.N.P" ./dev/publish-release.sh
-```
-
-Once the release is created, the artifacts will be built and uploaded
-automatically by the [release action](/.github/workflows/release.yml).
+After landing a commit with those two changes, trigger the
+[release workflow](/.github/workflows/release.yml) from the
+Actions tab on GitHub, providing the version number (e.g. `0.6.1`).
+The workflow will validate the CHANGELOG and version.txt, create and push
+tags, create the GitHub release, publish the Rust crate, and build and
+upload CLI binaries.
