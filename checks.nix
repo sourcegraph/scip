@@ -27,7 +27,7 @@
     pname = "scip-bindings-go";
     inherit version;
     src = ./.;
-    vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
+    vendorHash = "sha256-JuGh7/CnpCWABK6WYE+Mo7P8X0glFrFa9ve9eO//1v8=";
     buildTags = [ "asserts" ];
     subPackages = [
       "bindings/go/scip"
@@ -65,10 +65,11 @@
       pname = "scip-reprolang";
       inherit version;
       src = ./.;
-      vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
+      modRoot = "./reprolang";
+      vendorHash = "sha256-LFbUiwY1gbgUTknP+YhK4SBBRv0TMyg946aLA6tJzMg=";
       subPackages = [
-        "reprolang/src"
-        "reprolang/bindings/go/repro"
+        "grammar"
+        "repro"
       ];
       installPhase = "touch $out";
     };
@@ -84,10 +85,10 @@
     ];
     buildPhase = ''
       cd reprolang
-      cp -r src src-before
-      tree-sitter generate --abi 14
-      prettier --write 'src/grammar.json' 'src/node-types.json'
-      diff -rq src-before src
+      cp -r grammar grammar-before
+      tree-sitter generate --abi 14 --output grammar
+      prettier --write 'grammar/grammar.json' 'grammar/node-types.json'
+      diff -rq grammar-before grammar
     '';
     installPhase = "touch $out";
   };

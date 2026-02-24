@@ -24,7 +24,7 @@ func unwrap[T any](v T, err error) func(*testing.T) T {
 
 func TestSCIPTests(t *testing.T) {
 	cwd := unwrap(os.Getwd())(t)
-	testDir := filepath.Join(cwd, "..", "..", "..", "tests", "test_cmd")
+	testDir := filepath.Join(cwd, "..", "testdata", "test_cmd")
 	testPaths := unwrap(os.ReadDir(testDir))(t)
 	require.Truef(t, len(testPaths) >= 1, "Expected at least one test case in directory: %v", testDir)
 
@@ -39,7 +39,7 @@ func TestSCIPTests(t *testing.T) {
 		failOutput autogold.Value
 	}
 
-	// To update the snapshot values, run 'go test ./reprolang/bindings/go/repro -update'.
+	// To update the snapshot values, run 'go test ./reprolang/repro -update'.
 	testCases := []TestCase{
 		{"roles",
 			autogold.Expect("✓ passes.repro (3 assertions)\n"),

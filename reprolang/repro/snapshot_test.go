@@ -18,7 +18,7 @@ var debugSnapshotAbspaths = flag.Bool("debug-snapshot-abspaths", false, "use abs
 func TestSCIPSnapshots(t *testing.T) {
 	cwd, err := os.Getwd()
 	require.Nil(t, err)
-	testDir := filepath.Join(cwd, "..", "..", "..", "tests")
+	testDir := filepath.Join(cwd, "..", "testdata")
 	testutil.SnapshotTest(t, testDir, func(inputDirectory, outputDirectory string, sources []*scip.SourceFile) []*scip.SourceFile {
 		testName := filepath.Base(inputDirectory)
 		var dependencies []*Dependency
