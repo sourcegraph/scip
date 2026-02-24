@@ -8,6 +8,7 @@
     inherit version;
     src = ./.;
     nativeBuildInputs = with pkgs; [
+      buf
       go
       gotools
       nixfmt
@@ -15,6 +16,7 @@
     ];
     buildPhase = ''
       prettier --check '**/*.{ts,js(on)?,md,yml}'
+      BUF_CACHE_DIR=$(mktemp -d) buf format --diff --exit-code scip.proto
       gofmt -d . | tee /dev/stderr | diff /dev/null -
       goimports -d . | tee /dev/stderr | diff /dev/null -
       nixfmt --check *.nix
