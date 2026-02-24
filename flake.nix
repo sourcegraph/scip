@@ -26,10 +26,12 @@
             inherit version;
 
             src = ./.;
-            vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
+            vendorHash = "sha256-ag3r00bqP1x+HX6o8W99RTmk/RARRCJIDloIYO6syOw=";
+            proxyVendor = true;
 
             subPackages = [ "cmd/scip" ];
 
+            env.GOWORK = "off";
             ldflags = [ "-X main.Reproducible=true" ];
 
             meta = {
@@ -45,9 +47,11 @@
             inherit version;
 
             src = ./.;
-            vendorHash = "sha256-ywSR9yRysnm2E6kI8UJS6XcpuqKJF8wJpHcYS7TGmjI=";
+            modRoot = "./bindings/go/scip";
+            vendorHash = "sha256-pCYfH/CvzwCh13twl1Xq2Ma+jUNgFFrdGpQH+i3y6u8=";
+            env.GOWORK = "off";
 
-            subPackages = [ "bindings/go/scip/speedtest" ];
+            subPackages = [ "speedtest" ];
 
             nativeBuildInputs = [ pkgs.makeWrapper ];
             postFixup = ''

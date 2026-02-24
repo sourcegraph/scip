@@ -27,13 +27,15 @@
     pname = "scip-bindings-go";
     inherit version;
     src = ./.;
-    vendorHash = "sha256-JuGh7/CnpCWABK6WYE+Mo7P8X0glFrFa9ve9eO//1v8=";
+    modRoot = "./bindings/go/scip";
+    vendorHash = "sha256-pCYfH/CvzwCh13twl1Xq2Ma+jUNgFFrdGpQH+i3y6u8=";
+    env.GOWORK = "off";
     buildTags = [ "asserts" ];
     subPackages = [
-      "bindings/go/scip"
-      "bindings/go/scip/internal"
-      "bindings/go/scip/memtest"
-      "bindings/go/scip/testutil"
+      "."
+      "internal"
+      "memtest"
+      "testutil"
     ];
     preCheck = ''
       export SCIP_SAMPLE_INDEXES_DIR=${sampleIndexes}
@@ -66,8 +68,9 @@
       inherit version;
       src = ./.;
       modRoot = "./reprolang";
-      vendorHash = "sha256-H6RLXmQsufwKtI5BujsUEibVuCMpILqtX3W0Wg9m3T8=";
+      vendorHash = "sha256-tOTxbCRFjCJYfCrICY74mrh9Tfqzx/rG77MiZXrRRok=";
       proxyVendor = true;
+      env.GOWORK = "off";
       buildInputs = [ pkgs.tree-sitter ];
       subPackages = [
         "grammar"

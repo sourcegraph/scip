@@ -28,3 +28,5 @@ dist-newstyle/
 
 # Nix output
 /result
+
+vendor/
