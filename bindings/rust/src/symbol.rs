@@ -236,27 +236,27 @@ fn new_descriptor_with_disambiguator(
 
 #[derive(Debug)]
 struct SymbolParser {
-    sym: String,
+    sym: Vec<char>,
     index: usize,
 }
 
 impl SymbolParser {
     fn new(sym: &str) -> Self {
         Self {
-            sym: sym.to_string(),
+            sym: sym.chars().collect(),
             index: 0,
         }
     }
 
     fn current(&self) -> Result<char, SymbolError> {
         self.sym
-            .chars()
-            .nth(self.index)
+            .get(self.index)
+            .cloned()
             .ok_or(SymbolError::InvalidIndex)
     }
 
     fn peek_next(&self) -> Option<char> {
-        self.sym.chars().nth(self.index + 1)
+        self.sym.get(self.index + 1).cloned()
     }
 
     fn accept_space_escaped_identifier(&mut self, what: &str) -> Result<String, SymbolError> {
@@ -317,12 +317,7 @@ impl SymbolParser {
                 if start == self.index {
                     Err(SymbolError::InvalidIdentifier(what.to_string()))
                 } else {
-                    Ok(self
-                        .sym
-                        .chars()
-                        .skip(start)
-                        .take(self.index - start)
-                        .collect())
+                    Ok(self.sym[start..self.index].iter().collect())
                 }
             }
         }
@@ -345,7 +340,8 @@ impl SymbolParser {
 
     fn accept_descriptors(&mut self) -> Result<Vec<Descriptor>, SymbolError> {
         let mut v = Vec::new();
-        while self.index < self.sym.len() {
+        let len = self.sym.len();
+        while self.index < len {
             v.push(self.accept_one_descriptor()?)
         }
 
@@ -638,5 +634,21 @@ mod test {
         for test_case in test_cases {
             assert!(parse_symbol(test_case).is_err());
         }
+    }
+
+    #[test]
+    fn parses_non_ascii() {
+        assert_eq!(
+            parse_symbol("rust-analyzer cargo files 0.1.0 `Α`#").expect("to parse local"),
+            Symbol {
+                scheme: "rust-analyzer".to_string(),
+                package: Package::new_with_values("cargo", "files", "0.1.0"),
+                descriptors: vec![new_descriptor(
+                    "Α".to_string(),
+                    descriptor::Suffix::Type
+                ),],
+                special_fields: SpecialFields::default(),
+            }
+        );
     }
 }
