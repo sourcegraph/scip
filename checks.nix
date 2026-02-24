@@ -66,7 +66,9 @@
       inherit version;
       src = ./.;
       modRoot = "./reprolang";
-      vendorHash = "sha256-LFbUiwY1gbgUTknP+YhK4SBBRv0TMyg946aLA6tJzMg=";
+      vendorHash = "sha256-H6RLXmQsufwKtI5BujsUEibVuCMpILqtX3W0Wg9m3T8=";
+      proxyVendor = true;
+      buildInputs = [ pkgs.tree-sitter ];
       subPackages = [
         "grammar"
         "repro"

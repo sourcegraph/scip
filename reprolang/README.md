@@ -38,7 +38,7 @@ go test ./...
 Update snapshots after making changes:
 
 ```bash
-go test ./... -update-snapshots
+go test ./repro -update-snapshots
 ```
 
 ## Regenerating the parser

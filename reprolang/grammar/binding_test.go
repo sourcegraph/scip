@@ -3,8 +3,8 @@ package grammar
 import (
 	"testing"
 
-	sitter "github.com/tree-sitter/go-tree-sitter"
 	"github.com/stretchr/testify/assert"
+	sitter "github.com/tree-sitter/go-tree-sitter"
 )
 
 func TestParse(t *testing.T) {
