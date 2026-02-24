@@ -12,8 +12,7 @@
   bindings for different languages.
   - The TypeScript, Rust and Haskell bindings are auto-generated.
   - The Go bindings include protoc-generated code as well as extra
-    functionality, such as for converting a SCIP index into an LSIF index.
-    This is used by the CLI below as well as the
+    functionality. This is used by the CLI below as well as the
     [Sourcegraph CLI](https://github.com/sourcegraph/src-cli).
 - [cmd/scip](./cmd/scip): CLI for SCIP.
   - [cmd/scip/tests/](./cmd/scip/tests/): Test data and packages for SCIP.
@@ -69,23 +68,14 @@ scip lint /path/to/index.scip
 
 ## Testing and adding new SCIP semantics
 
-It is helpful to use reprolang to check the existing code navigation behavior,
-to design new code navigation behavior,
-or to investigate the effect of the SCIP to LSIF desugaring.
-The LSIF index for reprolang code is much smaller,
-which aids debugging.
+It is helpful to use reprolang to check the existing code navigation behavior
+or to design new code navigation behavior.
 
 To do this, add a test file (and implement any new functionality) first.
-Then, regenerate the LSIF index with absolute paths.
+Then, regenerate the snapshots.
 
 ```bash
-go test ./cmd/scip -update-snapshots -debug-snapshot-abspaths
-```
-
-The LSIF index can be uploaded to a local Sourcegraph instance using:
-
-```bash
-PACKAGE=MY_PACKAGE_NAME SRC_ACCESS_TOKEN=MY_TOKEN SRC_ENDPOINT=https://sourcegraph.test:3443 src code-intel upload -file="cmd/scip/tests/snapshots/output/$PACKAGE/dump.lsif" -root="cmd/scip/tests/snapshots/input/$PACKAGE"
+go test ./cmd/scip -update-snapshots
 ```
 
 ## Release a new version

@@ -16,9 +16,10 @@ and then converting to SCIP for transmission.
 
 [^1]:
     Sourcegraph historically supported LSIF uploads
-    as well as maintained our own LSIF indexers,
-    but we ran into issues of development velocity,
+    as well as maintained LSIF indexers,
+    but ran into issues of development velocity,
     debugging, as well as indexer performance bottlenecks.
+    LSIF support has since been fully deprecated and removed.
 
 ## Goals
 

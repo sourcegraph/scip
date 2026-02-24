@@ -17,7 +17,7 @@ func readFromOption(fromPath string) (*scip.Index, error) {
 	var scipReader io.Reader
 	if fromPath == "-" {
 		scipReader = os.Stdin
-	} else if !strings.HasSuffix(fromPath, ".scip") && !strings.HasSuffix(fromPath, ".lsif-typed") {
+	} else if !strings.HasSuffix(fromPath, ".scip") {
 		return nil, errors.Newf("expected file with .scip extension but found %s", fromPath)
 	} else {
 		scipFile, err := os.Open(fromPath)

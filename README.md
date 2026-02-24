@@ -44,7 +44,7 @@ Several indexers currently emit SCIP data:
 - [scip-dart](https://github.com/Workiva/scip-dart): Dart
 - [scip-php](https://github.com/davidrjenni/scip-php): PHP
 
-For more details about indexers, including LSIF-based indexers,
+For more details about indexers,
 see the [Sourcegraph documentation](https://docs.sourcegraph.com/code_navigation/references/indexers).
 
 Other tools which use SCIP include the [Sourcegraph CLI](https://github.com/sourcegraph/src-cli),

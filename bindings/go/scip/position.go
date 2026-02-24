@@ -3,11 +3,6 @@ package scip
 import "fmt"
 
 // Range represents [start, end) between two offset positions.
-//
-// NOTE: the github.com/sourcegraph/sourcegraph/lib/codeintel/lsif/protocol package
-// contains similarly shaped structs but this one exists primarily to make it
-// easier to work with SCIP encoded positions, which have the type []int32
-// in Protobuf payloads.
 type Range struct {
 	Start Position
 	End   Position
