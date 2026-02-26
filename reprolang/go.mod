@@ -2,8 +2,6 @@ module github.com/sourcegraph/scip/reprolang
 
 go 1.25.0
 
-replace github.com/sourcegraph/scip => ../
-
 replace github.com/sourcegraph/scip/bindings/go/scip => ../bindings/go/scip
 
 require (
@@ -34,7 +32,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/sourcegraph/beaut v0.0.0-20240611013027-627e4c25335a // indirect
-	golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa // indirect
 	golang.org/x/mod v0.33.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
