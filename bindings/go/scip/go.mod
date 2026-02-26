@@ -6,7 +6,6 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/sourcegraph/beaut v0.0.0-20240611013027-627e4c25335a
-	golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa
 	google.golang.org/protobuf v1.36.6
 )
 

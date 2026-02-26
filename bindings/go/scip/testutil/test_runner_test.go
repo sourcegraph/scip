@@ -1,9 +1,8 @@
 package testutil
 
 import (
+	"slices"
 	"testing"
-
-	"golang.org/x/exp/slices"
 
 	"github.com/stretchr/testify/require"
 )

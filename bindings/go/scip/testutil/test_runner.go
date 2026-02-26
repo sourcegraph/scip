@@ -7,10 +7,10 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/fatih/color"
-	"golang.org/x/exp/slices"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
