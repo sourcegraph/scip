@@ -1,18 +1,18 @@
 package main
 
 import (
+	"encoding/json"
 	"io"
 	"os"
 	"strings"
 
-	"github.com/bytedance/sonic"
 	"github.com/cockroachdb/errors"
 	"github.com/k0kubun/pp/v3"
 	"github.com/urfave/cli/v2"
 )
 
 func printCommand() cli.Command {
-	var json, colorOutput bool
+	var jsonOutput, colorOutput bool
 	snapshot := cli.Command{
 		Name:  "print",
 		Usage: "Print a SCIP index for debugging",
@@ -22,7 +22,7 @@ Do not rely on non-JSON output in scripts`,
 			&cli.BoolFlag{
 				Name:        "json",
 				Usage:       "Output in JSON format",
-				Destination: &json,
+				Destination: &jsonOutput,
 			},
 			&cli.BoolFlag{
 				Name:        "color",
@@ -48,19 +48,19 @@ Do not rely on non-JSON output in scripts`,
 					colorOutput = true
 				}
 			}
-			return printMain(indexPath, colorOutput, json, c.App.Writer)
+			return printMain(indexPath, colorOutput, jsonOutput, c.App.Writer)
 		},
 	}
 	return snapshot
 }
 
-func printMain(indexPath string, colorOutput bool, json bool, out io.Writer) error {
+func printMain(indexPath string, colorOutput bool, jsonOutput bool, out io.Writer) error {
 	index, err := readFromOption(indexPath)
 	if err != nil {
 		return err
 	}
-	if json {
-		encoder := sonic.ConfigDefault.NewEncoder(out)
+	if jsonOutput {
+		encoder := json.NewEncoder(out)
 		return encoder.Encode(index)
 	} else {
 		prettyPrinter := pp.New()
