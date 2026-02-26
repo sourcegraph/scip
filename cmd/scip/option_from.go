@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"strings"
 
-	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"google.golang.org/protobuf/proto"
 )
@@ -18,7 +18,7 @@ func readFromOption(fromPath string) (*scip.Index, error) {
 	if fromPath == "-" {
 		scipReader = os.Stdin
 	} else if !strings.HasSuffix(fromPath, ".scip") {
-		return nil, errors.Newf("expected file with .scip extension but found %s", fromPath)
+		return nil, fmt.Errorf("expected file with .scip extension but found %s", fromPath)
 	} else {
 		scipFile, err := os.Open(fromPath)
 		defer scipFile.Close()
@@ -30,13 +30,13 @@ func readFromOption(fromPath string) (*scip.Index, error) {
 
 	scipBytes, err := io.ReadAll(scipReader)
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to read SCIP index at path %s", fromPath)
+		return nil, fmt.Errorf("failed to read SCIP index at path %s: %w", fromPath, err)
 	}
 
 	scipIndex := scip.Index{}
 	err = proto.Unmarshal(scipBytes, &scipIndex)
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to parse SCIP index at path %s", fromPath)
+		return nil, fmt.Errorf("failed to parse SCIP index at path %s: %w", fromPath, err)
 	}
 	return &scipIndex, nil
 }

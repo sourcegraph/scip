@@ -8,12 +8,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"errors"
+
 	"github.com/hhatto/gocloc"
 	"github.com/montanaflynn/stats"
 	"github.com/urfave/cli/v2"
 	"google.golang.org/protobuf/proto"
-
-	"github.com/cockroachdb/errors"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
@@ -43,19 +43,19 @@ func statsMain(flags statsFlags) error {
 	from := flags.from
 	index, err := readFromOption(from)
 	if err != nil {
-		return errors.Wrap(err, "error reading SCIP file")
+		return fmt.Errorf("error reading SCIP file: %w", err)
 	}
 	if index.Metadata == nil {
-		return errors.Errorf("Index.Metadata is nil (--from=%s)", from)
+		return fmt.Errorf("Index.Metadata is nil (--from=%s)", from)
 	}
 	output := map[string]interface{}{}
 	indexStats, err := countStatistics(index, flags.customProjectRoot)
 	if err != nil {
-		return errors.Wrap(err, "error counting stats")
+		return fmt.Errorf("error counting stats: %w", err)
 	}
 	jsonBytes, err := json.MarshalIndent(indexStats, "", "  ")
 	if err != nil {
-		return errors.Wrapf(err, "failed to marshall into JSON %s", output)
+		return fmt.Errorf("failed to marshall into JSON %s: %w", output, err)
 	}
 	fmt.Println(string(jsonBytes))
 	return nil
@@ -154,7 +154,7 @@ func countLinesOfCode(index *scip.Index, customProjectRoot string) (*gocloc.Resu
 	var localSource string
 	root, err := url.Parse(index.Metadata.ProjectRoot)
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to parse Index.Metadata.ProjectRoot as a URI %s", index.Metadata.ProjectRoot)
+		return nil, fmt.Errorf("failed to parse Index.Metadata.ProjectRoot as a URI %s: %w", index.Metadata.ProjectRoot, err)
 	}
 	if customProjectRoot != "" {
 		localSource = customProjectRoot
@@ -175,7 +175,7 @@ func countLinesOfCode(index *scip.Index, customProjectRoot string) (*gocloc.Resu
 		return nil, err
 	}
 	if !stat.IsDir() {
-		return nil, errors.Errorf("Project root [%s] is not a directory", localSource)
+		return nil, fmt.Errorf("Project root [%s] is not a directory", localSource)
 	}
 	processor := gocloc.NewProcessor(gocloc.NewDefinedLanguages(), gocloc.NewClocOptions())
 	var paths []string

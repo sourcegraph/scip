@@ -1,9 +1,9 @@
 package repro
 
 import (
+	"errors"
 	"fmt"
 
-	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
@@ -18,7 +18,7 @@ func (d *reproDependency) enterGlobalDefinitions(context *reproContext) error {
 		symbol := newGlobalSymbol(d.Package, file, name)
 		parsedSymbol, err := scip.ParseSymbol(symbol)
 		if err != nil {
-			errs = errors.CombineErrors(errs, errors.Wrapf(err, "file: %q", file.Source.AbsolutePath))
+			errs = errors.Join(errs, fmt.Errorf("file: %q: %w", file.Source.AbsolutePath, err))
 			return
 		}
 		newName := newGlobalName(context.pkg, parsedSymbol)
@@ -69,7 +69,7 @@ func (s *reproSourceFile) resolveReferences(context *reproContext) error {
 			if ident == nil {
 				continue
 			}
-			err = errors.CombineErrors(err, ident.resolveSymbol(s.localScope, context))
+			err = errors.Join(err, ident.resolveSymbol(s.localScope, context))
 		}
 	}
 	for _, def := range s.definitions {
@@ -79,7 +79,7 @@ func (s *reproSourceFile) resolveReferences(context *reproContext) error {
 		resolveIdents(rel.relations)
 	}
 	for _, ref := range s.references {
-		err = errors.CombineErrors(err, ref.name.resolveSymbol(s.localScope, context))
+		err = errors.Join(err, ref.name.resolveSymbol(s.localScope, context))
 	}
 	return err
 }

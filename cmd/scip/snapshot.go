@@ -7,7 +7,6 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/scip/bindings/go/scip"
 	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
 )
@@ -73,7 +72,7 @@ func snapshotMain(flags snapshotFlags) error {
 	if flags.strict {
 		symbolFormatter = scip.VerboseSymbolFormatter
 		symbolFormatter.OnError = func(err error) error {
-			return errors.Wrap(err, "use --strict=false to ignore this error")
+			return fmt.Errorf("use --strict=false to ignore this error: %w", err)
 		}
 	}
 	snapshots, err := testutil.FormatSnapshots(index, flags.commentSyntax, symbolFormatter, flags.customProjectRoot)

@@ -6,7 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cockroachdb/errors"
+	"errors"
+
 	"github.com/k0kubun/pp/v3"
 	"github.com/urfave/cli/v2"
 )

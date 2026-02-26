@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -11,7 +12,6 @@ import (
 	"runtime/pprof"
 	"strings"
 
-	"github.com/cockroachdb/errors"
 	"github.com/klauspost/compress/zstd"
 	"github.com/urfave/cli/v2"
 	"google.golang.org/protobuf/proto"
@@ -77,7 +77,7 @@ func convertMain(indexPath, sqliteDBPath, cpuProfilePath string, chunkSize int, 
 	outputDir := filepath.Dir(sqliteDBPath)
 	if outputDir != "." {
 		if err := os.MkdirAll(outputDir, 0755); err != nil {
-			return errors.Wrapf(err, "failed to create output directory %s", outputDir)
+			return fmt.Errorf("failed to create output directory %s: %w", outputDir, err)
 		}
 	}
 	file, err := os.Create(sqliteDBPath) // truncates file if present
@@ -105,12 +105,12 @@ func convertMain(indexPath, sqliteDBPath, cpuProfilePath string, chunkSize int, 
 		return err
 	}
 	defer func() {
-		err = errors.CombineErrors(err, db.Close())
+		err = errors.Join(err, db.Close())
 	}()
 
 	writer, err := zstd.NewWriter(bytes.NewBuffer(nil))
 	if err != nil {
-		return errors.Wrap(err, "zstd writer creation")
+		return fmt.Errorf("zstd writer creation: %w", err)
 	}
 	// Convert the SCIP index to the SQLite database
 	converter := NewConverter(db, chunkSize, writer)
@@ -143,12 +143,12 @@ func createSQLiteDatabase(path string) (conn *sqlite.Conn, err error) {
 	// Open a new SQLite database connection
 	conn, err = sqlite.OpenConn(path, sqlite.OpenCreate|sqlite.OpenReadWrite|sqlite.OpenWAL)
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to open SQLite database at %s", path)
+		return nil, fmt.Errorf("failed to open SQLite database at %s: %w", path, err)
 	}
 
 	defer func() {
 		if err != nil {
-			err = errors.CombineErrors(err, conn.Close())
+			err = errors.Join(err, conn.Close())
 		}
 	}()
 
@@ -165,7 +165,7 @@ func createSQLiteDatabase(path string) (conn *sqlite.Conn, err error) {
 	}
 
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to start transaction")
+		return nil, fmt.Errorf("failed to start transaction: %w", err)
 	}
 
 	txStatements := []string{
@@ -223,7 +223,7 @@ func createSQLiteDatabase(path string) (conn *sqlite.Conn, err error) {
 func executeAll(conn *sqlite.Conn, statements []string) error {
 	for _, stmt := range statements {
 		if err := sqlitex.ExecuteTransient(conn, stmt, nil); err != nil {
-			return errors.Wrapf(err, "failed to execute statement: %s", stmt)
+			return fmt.Errorf("failed to execute statement: %s: %w", stmt, err)
 		}
 	}
 	return nil
@@ -254,7 +254,7 @@ type DocPosition struct {
 func (c *Converter) Convert(index *scip.Index) (err error) {
 	endFn, err := sqlitex.ImmediateTransaction(c.conn)
 	if err != nil {
-		return errors.Wrap(err, "failed to begin transaction")
+		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
 	defer endFn(&err)
 
@@ -274,13 +274,13 @@ func (c *Converter) Convert(index *scip.Index) (err error) {
 
 		docID, err := c.insertDocument(doc)
 		if err != nil {
-			return errors.Wrapf(err, "document at index %d", i)
+			return fmt.Errorf("document at index %d: %w", i, err)
 		}
 		docPositions[doc.RelativePath] = DocPosition{i, docID}
 
 		for _, symbol := range doc.Symbols {
 			if symbol.Symbol == "" {
-				return errors.Newf("empty symbol in SymbolInformation for document %q", doc.RelativePath)
+				return fmt.Errorf("empty symbol in SymbolInformation for document %q", doc.RelativePath)
 			}
 			if scip.IsLocalSymbol(symbol.Symbol) {
 				continue
@@ -290,7 +290,7 @@ func (c *Converter) Convert(index *scip.Index) (err error) {
 			}
 			symbolID, err := c.insertGlobalSymbols(symbol)
 			if err != nil {
-				return errors.Wrapf(err, "in document %q", doc.RelativePath)
+				return fmt.Errorf("in document %q: %w", doc.RelativePath, err)
 			}
 			symbolToID[symbol.Symbol] = symbolID
 		}
@@ -300,7 +300,7 @@ func (c *Converter) Convert(index *scip.Index) (err error) {
 		doc := index.Documents[docPosition.Index]
 		docID := docPosition.ID
 		if err = c.insertEnclosingRangeData(symbolToID, doc.Occurrences, docID); err != nil {
-			return errors.Wrapf(err, "in document %q", doc.RelativePath)
+			return fmt.Errorf("in document %q: %w", doc.RelativePath, err)
 		}
 
 		if err = c.insertOccurrenceData(doc, docID, symbolToID); err != nil {
@@ -318,13 +318,13 @@ func (c *Converter) insertOccurrenceData(doc *scip.Document, docID int64, symbol
 
 	mentionStmt, err := c.conn.Prepare("INSERT INTO mentions (chunk_id, symbol_id, role) VALUES (?, ?, ?)")
 	if err != nil {
-		return errors.Wrap(err, "failed to prepare mention statement")
+		return fmt.Errorf("failed to prepare mention statement: %w", err)
 	}
 
 	for chunkIndex, chunk := range chunkedOccurrences {
 		chunkID, err := c.insertChunk(chunk, docID, chunkIndex)
 		if err != nil {
-			return errors.Wrapf(err, "failed to insert chunk %d", chunkIndex)
+			return fmt.Errorf("failed to insert chunk %d: %w", chunkIndex, err)
 		}
 
 		// Prepare data for entry into mentions table
@@ -340,7 +340,7 @@ func (c *Converter) insertOccurrenceData(doc *scip.Document, docID int64, symbol
 			if _, ok := symbolToID[occ.Symbol]; !ok {
 				symbolToID[occ.Symbol], err = c.insertGlobalSymbols(&scip.SymbolInformation{Symbol: occ.Symbol})
 				if err != nil {
-					return errors.Wrapf(err, "inserting symbol %q for occurrence", occ.Symbol)
+					return fmt.Errorf("inserting symbol %q for occurrence: %w", occ.Symbol, err)
 				}
 			}
 		}
@@ -360,10 +360,10 @@ func (c *Converter) insertOccurrenceData(doc *scip.Document, docID int64, symbol
 				mentionStmt.BindInt64(3, int64(role))
 
 				if _, err = mentionStmt.Step(); err != nil {
-					return errors.Wrapf(err, "failed to insert mention for symbol %q with role %d", symbol, role)
+					return fmt.Errorf("failed to insert mention for symbol %q with role %d: %w", symbol, role, err)
 				}
 				if err = mentionStmt.Reset(); err != nil {
-					return errors.Wrap(err, "resetting insert into mentions statement")
+					return fmt.Errorf("resetting insert into mentions statement: %w", err)
 				}
 			}
 		}
@@ -374,7 +374,7 @@ func (c *Converter) insertOccurrenceData(doc *scip.Document, docID int64, symbol
 func (c *Converter) insertEnclosingRangeData(symbolToID map[string]int64, occs []*scip.Occurrence, docID int64) error {
 	defnEnclRangesStmt, err := c.conn.Prepare("INSERT INTO defn_enclosing_ranges (document_id, symbol_id, start_line, start_char, end_line, end_char) VALUES (?, ?, ?, ?, ?, ?)")
 	if err != nil {
-		return errors.Wrap(err, "failed to prepare defn_enclosing_ranges insert statement")
+		return fmt.Errorf("failed to prepare defn_enclosing_ranges insert statement: %w", err)
 	}
 
 	// Look for definition occurrences with enclosing ranges
@@ -388,11 +388,11 @@ func (c *Converter) insertEnclosingRangeData(symbolToID map[string]int64, occs [
 		}
 		symbolID, ok := symbolToID[occ.Symbol]
 		if !ok {
-			return errors.Newf("symbol %q has definition occurrence, but no SymbolInformation", occ.Symbol)
+			return fmt.Errorf("symbol %q has definition occurrence, but no SymbolInformation", occ.Symbol)
 		}
 		enclRange, err := scip.NewRange(occ.EnclosingRange)
 		if err != nil {
-			return errors.Wrapf(err, "bad enclosing range %v for symbol %q", occ.EnclosingRange, occ.Symbol)
+			return fmt.Errorf("bad enclosing range %v for symbol %q: %w", occ.EnclosingRange, occ.Symbol, err)
 		}
 
 		defnEnclRangesStmt.BindInt64(1, docID)
@@ -404,11 +404,11 @@ func (c *Converter) insertEnclosingRangeData(symbolToID map[string]int64, occs [
 
 		_, err = defnEnclRangesStmt.Step()
 		if err != nil {
-			return errors.Wrapf(err, "insert into defn_enclosing_ranges for symbol %q", occ.Symbol)
+			return fmt.Errorf("insert into defn_enclosing_ranges for symbol %q: %w", occ.Symbol, err)
 		}
 
 		if err = defnEnclRangesStmt.Reset(); err != nil {
-			return errors.Wrap(err, "resetting prepared statement for defn_enclosing_ranges")
+			return fmt.Errorf("resetting prepared statement for defn_enclosing_ranges: %w", err)
 		}
 	}
 	return nil
@@ -423,7 +423,7 @@ func (c *Converter) insertGlobalSymbols(symbol *scip.SymbolInformation) (symbolI
 		ON CONFLICT(symbol) DO NOTHING
 		RETURNING id`)
 	if err != nil {
-		return 0, errors.Wrap(err, "failed to prepare symbol insert statement")
+		return 0, fmt.Errorf("failed to prepare symbol insert statement: %w", err)
 	}
 
 	insertStmt.BindText(1, symbol.Symbol)
@@ -449,7 +449,7 @@ func (c *Converter) insertGlobalSymbols(symbol *scip.SymbolInformation) (symbolI
 	}
 
 	if _, err = insertStmt.Step(); err != nil {
-		return 0, errors.Wrapf(err, "failed to insert symbol %s", symbol.Symbol)
+		return 0, fmt.Errorf("failed to insert symbol %s: %w", symbol.Symbol, err)
 	}
 	if c.conn.Changes() == 0 {
 		log.Fatal(fmt.Errorf("expected map to de-duplicate inserts eagerly, but attempted to insert symbol %q"+
@@ -465,32 +465,32 @@ func (c *Chunk) toDBFormat(encoder *zstd.Encoder) ([]byte, error) {
 		Occurrences: c.Occurrences,
 	})
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to serialize occurrences")
+		return nil, fmt.Errorf("failed to serialize occurrences: %w", err)
 	}
 
 	var buf bytes.Buffer
 	encoder.Reset(&buf)
 	if _, err = encoder.Write(occurrencesBlob); err != nil {
-		return nil, errors.Wrap(err, "compression error")
+		return nil, fmt.Errorf("compression error: %w", err)
 	}
 	if err = encoder.Close(); err != nil {
-		return nil, errors.Wrap(err, "flushing encoder")
+		return nil, fmt.Errorf("flushing encoder: %w", err)
 	}
 	return buf.Bytes(), nil
 }
 
 func (c *Chunk) fromDBFormat(reader *bytes.Reader, decoder *zstd.Decoder) error {
 	if err := decoder.Reset(reader); err != nil {
-		return errors.Wrap(err, "resetting zstd Decoder")
+		return fmt.Errorf("resetting zstd Decoder: %w", err)
 	}
 	protoBytes, err := io.ReadAll(decoder)
 	if err != nil {
-		return errors.Wrap(err, "reading compressed data")
+		return fmt.Errorf("reading compressed data: %w", err)
 	}
 
 	var tmpDoc scip.Document
 	if err = proto.Unmarshal(protoBytes, &tmpDoc); err != nil {
-		return errors.Wrap(err, "failed to unmarshal occurrences")
+		return fmt.Errorf("failed to unmarshal occurrences: %w", err)
 	}
 	c.Occurrences = tmpDoc.Occurrences
 	return nil
@@ -499,14 +499,14 @@ func (c *Chunk) fromDBFormat(reader *bytes.Reader, decoder *zstd.Decoder) error 
 func (c *Converter) insertChunk(chunk Chunk, docID int64, chunkIndex int) (chunkID int64, err error) {
 	compressedOccurrences, err := chunk.toDBFormat(c.zstdWriter)
 	if err != nil {
-		return 0, errors.Wrap(err, "failed to serialize chunk")
+		return 0, fmt.Errorf("failed to serialize chunk: %w", err)
 	}
 
 	chunkStmt, err := c.conn.Prepare(
 		`INSERT INTO chunks (document_id, chunk_index, start_line, end_line, occurrences)
 		VALUES (?, ?, ?, ?, ?) RETURNING id`)
 	if err != nil {
-		return 0, errors.Wrap(err, "failed to prepare chunk statement")
+		return 0, fmt.Errorf("failed to prepare chunk statement: %w", err)
 	}
 
 	chunkStmt.BindInt64(1, docID)
@@ -517,7 +517,7 @@ func (c *Converter) insertChunk(chunk Chunk, docID int64, chunkIndex int) (chunk
 
 	_, err = chunkStmt.Step()
 	if err != nil {
-		return 0, errors.Wrap(err, "failed to insert chunk")
+		return 0, fmt.Errorf("failed to insert chunk: %w", err)
 	}
 	chunkID = chunkStmt.ColumnInt64(0)
 	err = chunkStmt.Reset()
@@ -530,7 +530,7 @@ func (c *Converter) insertDocument(doc *scip.Document) (docID int64, err error) 
 		VALUES (?, ?, ?, ?)
 		RETURNING id`)
 	if err != nil {
-		return 0, errors.Wrap(err, "failed to prepare document statement")
+		return 0, fmt.Errorf("failed to prepare document statement: %w", err)
 	}
 
 	if doc.Language == "" {
@@ -552,7 +552,7 @@ func (c *Converter) insertDocument(doc *scip.Document) (docID int64, err error) 
 	case scip.PositionEncoding_UTF32CodeUnitOffsetFromLineStart:
 		docStmt.BindText(3, "UTF-32")
 	default:
-		return 0, errors.Errorf("unknown position encoding %d", doc.PositionEncoding)
+		return 0, fmt.Errorf("unknown position encoding %d", doc.PositionEncoding)
 	}
 	if doc.Text == "" {
 		docStmt.BindNull(4)
@@ -561,7 +561,7 @@ func (c *Converter) insertDocument(doc *scip.Document) (docID int64, err error) 
 	}
 
 	if _, err = docStmt.Step(); err != nil {
-		return 0, errors.Wrapf(err, "failed to insert document %s", doc.RelativePath)
+		return 0, fmt.Errorf("failed to insert document %s: %w", doc.RelativePath, err)
 	}
 	docID = docStmt.ColumnInt64(0)
 	err = docStmt.Reset()

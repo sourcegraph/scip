@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cockroachdb/errors"
 	sitter "github.com/tree-sitter/go-tree-sitter"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
@@ -85,7 +84,7 @@ func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext
 	}
 	symbol, ok := scope.names[i.value]
 	if !ok {
-		return errors.Newf("could not resolve local symbol %q", i.value)
+		return fmt.Errorf("could not resolve local symbol %q", i.value)
 	}
 	i.symbol = symbol
 	return nil

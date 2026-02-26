@@ -1,7 +1,9 @@
 package repro
 
 import (
-	"github.com/cockroachdb/errors"
+	"errors"
+	"fmt"
+
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
 
@@ -63,7 +65,7 @@ func Index(
 	var allErrs error
 	for _, dependency := range reproDependencies {
 		if err := dependency.enterGlobalDefinitions(ctx); err != nil {
-			allErrs = errors.CombineErrors(allErrs, errors.Wrapf(err, "package: %v", dependency.Package))
+			allErrs = errors.Join(allErrs, fmt.Errorf("package: %v: %w", dependency.Package, err))
 		}
 	}
 	for _, file := range reproSources {
@@ -73,7 +75,7 @@ func Index(
 	// Phase 3: resolve names for references
 	for _, file := range reproSources {
 		if err := file.resolveReferences(ctx); err != nil {
-			allErrs = errors.CombineErrors(allErrs, errors.Wrapf(err, "file %q", file.Source.AbsolutePath))
+			allErrs = errors.Join(allErrs, fmt.Errorf("file %q: %w", file.Source.AbsolutePath, err))
 		}
 	}
 	if allErrs != nil {
