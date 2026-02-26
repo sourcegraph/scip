@@ -1,14 +1,14 @@
 package testutil
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"net/url"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
-
-	"github.com/cockroachdb/errors"
 
 	"github.com/sourcegraph/scip/bindings/go/scip"
 )
@@ -43,9 +43,9 @@ func FormatSnapshots(
 		snapshot, err := FormatSnapshot(document, commentSyntax, symbolFormatter, sourceFilePath)
 		err = symbolFormatter.OnError(err)
 		if err != nil {
-			documentErrors = errors.CombineErrors(
+			documentErrors = errors.Join(
 				documentErrors,
-				errors.Wrap(err, document.RelativePath),
+				fmt.Errorf("%s: %w", document.RelativePath, err),
 			)
 		}
 		sourceFile := scip.NewSourceFile(sourceFilePath,
@@ -81,7 +81,7 @@ func FormatSnapshot(
 	formatSymbol := func(symbol string) string {
 		formatted, err := formatter.Format(symbol)
 		if err != nil {
-			formattingError = errors.CombineErrors(formattingError, errors.Wrapf(err, symbol))
+			formattingError = errors.Join(formattingError, fmt.Errorf("%s: %w", symbol, err))
 			return symbol
 		}
 		return formatted

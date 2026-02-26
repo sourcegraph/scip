@@ -2,9 +2,10 @@ package scip
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"io"
 
-	"github.com/cockroachdb/errors"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/proto"
 )
@@ -39,26 +40,26 @@ func (pi *IndexVisitor) ParseStreaming(ctx context.Context, r io.Reader) error {
 			return nil
 		}
 		if err != nil {
-			return errors.Wrapf(err, "failed to read from index reader: %w")
+			return fmt.Errorf("failed to read from index reader: %w", err)
 		}
 		if numRead == 0 {
 			return errors.New("read 0 bytes from index")
 		}
 		fieldNumber, fieldType, errCode := protowire.ConsumeTag(tagBuf)
 		if errCode < 0 {
-			return errors.Wrap(protowire.ParseError(errCode), "failed to consume tag")
+			return fmt.Errorf("failed to consume tag: %w", protowire.ParseError(errCode))
 		}
 		switch fieldNumber {
 		// As per scip.proto, all of Metadata, Document and SymbolInformation are sub-messages
 		case metadataFieldNumber, documentsFieldNumber, externalSymbolsFieldNumber:
 			if fieldType != protowire.BytesType {
-				return errors.Newf("expected LEN type tag for %s", indexFieldName(fieldNumber))
+				return fmt.Errorf("expected LEN type tag for %s", indexFieldName(fieldNumber))
 			}
 			lenBuf = lenBuf[:0]
 			dataLenUint, err := readVarint(r, &lenBuf)
 			dataLen := int(dataLenUint)
 			if err != nil {
-				return errors.Wrapf(err, "failed to read length for %s", indexFieldName(fieldNumber))
+				return fmt.Errorf("failed to read length for %s: %w", indexFieldName(fieldNumber), err)
 			}
 			if dataLen > cap(dataBuf) {
 				dataBuf = make([]byte, dataLen)
@@ -72,10 +73,10 @@ func (pi *IndexVisitor) ParseStreaming(ctx context.Context, r io.Reader) error {
 			if dataLen > 0 {
 				numRead, err := io.ReadAtLeast(r, dataBuf, dataLen)
 				if err != nil {
-					return errors.Wrapf(err, "failed to read data for %s", indexFieldName(fieldNumber))
+					return fmt.Errorf("failed to read data for %s: %w", indexFieldName(fieldNumber), err)
 				}
 				if numRead != dataLen {
-					return errors.Newf(
+					return fmt.Errorf(
 						"expected to read %d bytes based on LEN but read %d bytes", dataLen, numRead)
 				}
 			}
@@ -83,7 +84,7 @@ func (pi *IndexVisitor) ParseStreaming(ctx context.Context, r io.Reader) error {
 				if pi.VisitMetadata != nil {
 					m := Metadata{}
 					if err := proto.Unmarshal(dataBuf, &m); err != nil {
-						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+						return fmt.Errorf("failed to read %s: %w", indexFieldName(fieldNumber), err)
 					}
 					if err := pi.VisitMetadata(ctx, &m); err != nil {
 						return err
@@ -93,7 +94,7 @@ func (pi *IndexVisitor) ParseStreaming(ctx context.Context, r io.Reader) error {
 				if pi.VisitDocument != nil {
 					d := Document{}
 					if err := proto.Unmarshal(dataBuf, &d); err != nil {
-						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+						return fmt.Errorf("failed to read %s: %w", indexFieldName(fieldNumber), err)
 					}
 					if err := pi.VisitDocument(ctx, &d); err != nil {
 						return err
@@ -103,18 +104,18 @@ func (pi *IndexVisitor) ParseStreaming(ctx context.Context, r io.Reader) error {
 				if pi.VisitExternalSymbol != nil {
 					s := SymbolInformation{}
 					if err := proto.Unmarshal(dataBuf, &s); err != nil {
-						return errors.Wrapf(err, "failed to read %s", indexFieldName(fieldNumber))
+						return fmt.Errorf("failed to read %s: %w", indexFieldName(fieldNumber), err)
 					}
 					if err := pi.VisitExternalSymbol(ctx, &s); err != nil {
 						return err
 					}
 				}
 			} else {
-				return errors.Newf(
+				return fmt.Errorf(
 					"added new field with number: %v in scip.Index but missing unmarshaling code", fieldNumber)
 			}
 		default:
-			return errors.Newf(
+			return fmt.Errorf(
 				"added new field with number: %v in scip.Index but forgot to update streaming parser", fieldNumber)
 		}
 	}
@@ -135,10 +136,10 @@ func readVarint(r io.Reader, scratchBuf *[]byte) (uint64, error) {
 	for i := 0; i < cap(*scratchBuf); i++ {
 		numRead, err := r.Read(nextByteBuf)
 		if err != nil {
-			return 0, errors.Wrapf(err, "failed to read %d-th byte of Varint. soFar: %v", i, scratchBuf)
+			return 0, fmt.Errorf("failed to read %d-th byte of Varint. soFar: %v: %w", i, scratchBuf, err)
 		}
 		if numRead == 0 {
-			return 0, errors.Newf("failed to read %d-th byte of Varint. soFar: %v", scratchBuf)
+			return 0, fmt.Errorf("failed to read %d-th byte of Varint. soFar: %v", i, scratchBuf)
 		}
 		nextByte := nextByteBuf[0]
 		*scratchBuf = append(*scratchBuf, nextByte)

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cockroachdb/errors"
 	"github.com/sourcegraph/beaut"
 )
 
@@ -364,9 +363,9 @@ const (
 func (z *symbolParserV2) error(e errorCase, expectedByte byte, what parseCtx) error {
 	switch e {
 	case errorCaseEmptyIdent:
-		return errors.Newf("failed to parse: %q (context: %v)", z.SymbolString, what)
+		return fmt.Errorf("failed to parse: %q (context: %v)", z.SymbolString, what)
 	case errorCaseByteNotFound:
-		return errors.Newf("failed to parse: %q (expected byte: %c, context: %v)", z.SymbolString, rune(expectedByte), what)
+		return fmt.Errorf("failed to parse: %q (expected byte: %c, context: %v)", z.SymbolString, rune(expectedByte), what)
 	default:
 		panic(fmt.Sprintf("unknown error case: %v", e))
 	}
