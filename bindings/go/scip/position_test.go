@@ -3,8 +3,6 @@ package scip
 import (
 	"testing"
 
-	"github.com/hexops/autogold/v2"
-
 	"github.com/stretchr/testify/require"
 	"pgregory.net/rapid"
 )
@@ -160,7 +158,7 @@ func TestCompareReverse(t *testing.T) {
 func TestNewRange_UnitTests(t *testing.T) {
 	type testCase struct {
 		input    []int32
-		expected autogold.Value
+		expected result
 	}
 	type result struct {
 		range_ Range
@@ -169,58 +167,58 @@ func TestNewRange_UnitTests(t *testing.T) {
 	testCases := []testCase{
 		{
 			input:    nil,
-			expected: autogold.Expect(result{err: "incorrect length"}),
+			expected: result{err: "incorrect length"},
 		},
 		{
 			input:    []int32{3},
-			expected: autogold.Expect(result{err: "incorrect length"}),
+			expected: result{err: "incorrect length"},
 		},
 		{
 			input:    []int32{3, 3},
-			expected: autogold.Expect(result{err: "incorrect length"}),
+			expected: result{err: "incorrect length"},
 		},
 		{
 			input: []int32{12, 0, 14},
-			expected: autogold.Expect(result{range_: Range{
+			expected: result{range_: Range{
 				Start: Position{Line: 12},
 				End: Position{
 					Line:      12,
 					Character: 14,
 				},
-			}}),
+			}},
 		},
 		{
 			input:    []int32{12, 14, 0},
-			expected: autogold.Expect(result{err: "end before start"}),
+			expected: result{err: "end before start"},
 		},
 		{
 			input:    []int32{12, 14, 0},
-			expected: autogold.Expect(result{err: "end before start"}),
+			expected: result{err: "end before start"},
 		},
 		{
 			input: []int32{12, 15, 14, 0},
-			expected: autogold.Expect(result{range_: Range{
+			expected: result{range_: Range{
 				Start: Position{
 					Line:      12,
 					Character: 15,
 				},
 				End: Position{Line: 14},
-			}}),
+			}},
 		},
 		{
 			input: []int32{12, 0, 12, 0},
-			expected: autogold.Expect(result{range_: Range{
+			expected: result{range_: Range{
 				Start: Position{Line: 12},
 				End:   Position{Line: 12},
-			}}),
+			}},
 		},
 		{
 			input:    []int32{12, 0, 13, 1, 4},
-			expected: autogold.Expect(result{err: "incorrect length"}),
+			expected: result{err: "incorrect length"},
 		},
 		{
 			input:    []int32{3, -1, 4},
-			expected: autogold.Expect(result{err: "negative offsets"}),
+			expected: result{err: "negative offsets"},
 		},
 	}
 
@@ -231,7 +229,7 @@ func TestNewRange_UnitTests(t *testing.T) {
 			if err != nil {
 				errStr = err.Error()
 			}
-			tc.expected.Equal(t, result{range_: r, err: errStr})
+			require.Equal(t, tc.expected, result{range_: r, err: errStr})
 		}, "panicked for input: %v", tc.input)
 	}
 }
