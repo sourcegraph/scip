@@ -14,7 +14,6 @@ require (
 	github.com/sourcegraph/scip/bindings/go/scip v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.11.1
 	github.com/urfave/cli/v2 v2.25.7
-	golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa
 	google.golang.org/protobuf v1.36.6
 	zombiezen.com/go/sqlite v1.0.0
 )

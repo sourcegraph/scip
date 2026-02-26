@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"cmp"
 	"path/filepath"
+	"slices"
 	"testing"
 
 	"github.com/klauspost/compress/zstd"
 	"github.com/stretchr/testify/require"
-	"golang.org/x/exp/slices"
 	"zombiezen.com/go/sqlite"
 	"zombiezen.com/go/sqlite/sqlitex"
 
