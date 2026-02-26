@@ -156,13 +156,13 @@ func TestCompareReverse(t *testing.T) {
 }
 
 func TestNewRange_UnitTests(t *testing.T) {
-	type testCase struct {
-		input    []int32
-		expected result
-	}
 	type result struct {
 		range_ Range
 		err    string
+	}
+	type testCase struct {
+		input    []int32
+		expected result
 	}
 	testCases := []testCase{
 		{
