@@ -316,10 +316,6 @@
     "named": false
   },
   {
-    "type": "global",
-    "named": false
-  },
-  {
     "type": "implements",
     "named": false
   },

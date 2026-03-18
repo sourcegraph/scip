@@ -324,10 +324,6 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "global"
-        },
-        {
           "type": "FIELD",
           "name": "project_name",
           "content": {

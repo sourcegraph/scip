@@ -58,14 +58,9 @@ module.exports = grammar({
         field('global', $.global_identifier),
         $.name
       ),
-    local_identifier: $ =>
-      seq('local', field('name', $.name)),
+    local_identifier: $ => seq('local', field('name', $.name)),
     global_identifier: $ =>
-      seq(
-        'global',
-        field('project_name', $.name),
-        field('descriptors', $.name)
-      ),
+      seq(field('project_name', $.name), field('descriptors', $.name)),
     name: $ => /[^\s]+/,
   },
 })
