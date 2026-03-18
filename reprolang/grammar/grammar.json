@@ -1,7 +1,7 @@
 {
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "reprolang",
-  "word": "workspace_identifier",
+  "word": "name",
   "rules": {
     "source_file": {
       "type": "REPEAT",
@@ -298,12 +298,8 @@
           }
         },
         {
-          "type": "FIELD",
-          "name": "workspace",
-          "content": {
-            "type": "SYMBOL",
-            "name": "workspace_identifier"
-          }
+          "type": "SYMBOL",
+          "name": "name"
         }
       ]
     },
@@ -319,7 +315,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "workspace_identifier"
+            "name": "name"
           }
         }
       ]
@@ -336,7 +332,7 @@
           "name": "project_name",
           "content": {
             "type": "SYMBOL",
-            "name": "workspace_identifier"
+            "name": "name"
           }
         },
         {
@@ -344,12 +340,12 @@
           "name": "descriptors",
           "content": {
             "type": "SYMBOL",
-            "name": "workspace_identifier"
+            "name": "name"
           }
         }
       ]
     },
-    "workspace_identifier": {
+    "name": {
       "type": "PATTERN",
       "value": "[^\\s]+"
     }

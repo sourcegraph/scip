@@ -82,7 +82,7 @@
         "required": true,
         "types": [
           {
-            "type": "workspace_identifier",
+            "type": "name",
             "named": true
           }
         ]
@@ -92,7 +92,7 @@
         "required": true,
         "types": [
           {
-            "type": "workspace_identifier",
+            "type": "name",
             "named": true
           }
         ]
@@ -122,17 +122,17 @@
             "named": true
           }
         ]
-      },
-      "workspace": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "workspace_identifier",
-            "named": true
-          }
-        ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -160,7 +160,7 @@
         "required": true,
         "types": [
           {
-            "type": "workspace_identifier",
+            "type": "name",
             "named": true
           }
         ]
@@ -328,6 +328,10 @@
     "named": false
   },
   {
+    "type": "name",
+    "named": true
+  },
+  {
     "type": "reference",
     "named": false
   },
@@ -342,9 +346,5 @@
   {
     "type": "type_defines",
     "named": false
-  },
-  {
-    "type": "workspace_identifier",
-    "named": true
   }
 ]
