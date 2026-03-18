@@ -2,7 +2,6 @@ package repro
 
 import (
 	"fmt"
-	"strings"
 
 	sitter "github.com/tree-sitter/go-tree-sitter"
 
@@ -34,6 +33,7 @@ type referenceStatement struct {
 type identifier struct {
 	value    string
 	symbol   string
+	isLocal  bool
 	position *scip.Range
 }
 
@@ -45,6 +45,15 @@ func newIdentifier(s *reproSourceFile, n *sitter.Node) *identifier {
 		panic("expected identifier, obtained " + n.Kind())
 	}
 	value := s.nodeText(n)
+	isLocal := false
+	localIdentifier := n.ChildByFieldName("local")
+	if localIdentifier != nil {
+		isLocal = true
+		nameNode := localIdentifier.ChildByFieldName("name")
+		if nameNode != nil {
+			value = s.nodeText(nameNode)
+		}
+	}
 	globalIdentifier := n.ChildByFieldName("global")
 	if globalIdentifier != nil {
 		projectName := globalIdentifier.ChildByFieldName("project_name")
@@ -55,6 +64,7 @@ func newIdentifier(s *reproSourceFile, n *sitter.Node) *identifier {
 	}
 	return &identifier{
 		value:    value,
+		isLocal:  isLocal,
 		position: NewRangePositionFromNode(n),
 	}
 }
@@ -79,7 +89,7 @@ func NewRangePositionFromNode(node *sitter.Node) *scip.Range {
 
 func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext) error {
 	scope := context.globalScope
-	if i.isLocalSymbol() {
+	if i.isLocal {
 		scope = localScope
 	}
 	symbol, ok := scope.names[i.value]
@@ -88,8 +98,4 @@ func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext
 	}
 	i.symbol = symbol
 	return nil
-}
-
-func (i *identifier) isLocalSymbol() bool {
-	return strings.HasPrefix(i.value, "local")
 }

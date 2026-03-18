@@ -1,7 +1,7 @@
 module.exports = grammar({
   name: 'reprolang',
   extras: $ => [/\s+/],
-  word: $ => $.workspace_identifier,
+  word: $ => $.name,
 
   rules: {
     source_file: $ => repeat($._statement),
@@ -54,15 +54,13 @@ module.exports = grammar({
     docstring: $ => seq('# docstring:', /.*/),
     identifier: $ =>
       choice(
+        field('local', $.local_identifier),
         field('global', $.global_identifier),
-        field('workspace', $.workspace_identifier)
+        $.name
       ),
+    local_identifier: $ => seq('local', field('name', $.name)),
     global_identifier: $ =>
-      seq(
-        'global',
-        field('project_name', $.workspace_identifier),
-        field('descriptors', $.workspace_identifier)
-      ),
-    workspace_identifier: $ => /[^\s]+/,
+      seq(field('project_name', $.name), field('descriptors', $.name)),
+    name: $ => /[^\s]+/,
   },
 })

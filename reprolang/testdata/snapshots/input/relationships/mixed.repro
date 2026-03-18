@@ -1,4 +1,4 @@
-definition local1
-definition local2
-definition local3
-definition local4 implements local1 references local2 type_defines local3
+definition local sym1
+definition local sym2
+definition local sym3
+definition local sym4 implements local sym1 references local sym2 type_defines local sym3

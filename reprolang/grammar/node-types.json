@@ -82,7 +82,7 @@
         "required": true,
         "types": [
           {
-            "type": "workspace_identifier",
+            "type": "name",
             "named": true
           }
         ]
@@ -92,7 +92,7 @@
         "required": true,
         "types": [
           {
-            "type": "workspace_identifier",
+            "type": "name",
             "named": true
           }
         ]
@@ -113,16 +113,26 @@
           }
         ]
       },
-      "workspace": {
+      "local": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "workspace_identifier",
+            "type": "local_identifier",
             "named": true
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -135,6 +145,22 @@
         "types": [
           {
             "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "local_identifier",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
             "named": true
           }
         ]
@@ -290,12 +316,16 @@
     "named": false
   },
   {
-    "type": "global",
+    "type": "implements",
     "named": false
   },
   {
-    "type": "implements",
+    "type": "local",
     "named": false
+  },
+  {
+    "type": "name",
+    "named": true
   },
   {
     "type": "reference",
@@ -312,9 +342,5 @@
   {
     "type": "type_defines",
     "named": false
-  },
-  {
-    "type": "workspace_identifier",
-    "named": true
   }
 ]

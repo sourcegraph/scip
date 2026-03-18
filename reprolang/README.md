@@ -10,12 +10,25 @@ relationships between them. The indexer parses these files with a tree-sitter
 grammar and emits a complete SCIP index, making it possible to write concise,
 deterministic test cases for any SCIP capability.
 
+## Symbol scoping
+
+Reprolang supports two levels of symbol scope:
+
+- **Global** (default): Visible across all files in the same project.
+  No keyword needed. Use the `global` keyword with a project name and
+  descriptors to reference symbols from an external project/dependency.
+- **Local**: Scoped to a single file. Use the `local` keyword.
+
 ## Example
 
 ```
-# Define a symbol and reference it
+# Define a global symbol and reference it
 definition hello().
 reference hello().
+
+# Local symbol (file-scoped)
+definition local myHelper
+reference local myHelper
 
 # Forward reference (reference before definition)
 reference forward_definition abc#
