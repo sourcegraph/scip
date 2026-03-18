@@ -1,11 +1,11 @@
- definition local1
-#           ^^^^^^ definition local 1
+ definition local sym1
+#           ^^^^^^^^^^ definition local sym1
 #           documentation
-#           > signature of local1
- definition local2 references local1
-#           ^^^^^^ definition local 2
+#           > signature of sym1
+ definition local sym2 references local sym1
+#           ^^^^^^^^^^ definition local sym2
 #           documentation
-#           > signature of local2
-#           relationship local 1 reference
-#                             ^^^^^^ reference local 1
+#           > signature of sym2
+#           relationship local sym1 reference
+#                                 ^^^^^^^^^^ reference local sym1
  

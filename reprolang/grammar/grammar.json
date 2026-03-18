@@ -283,6 +283,14 @@
       "members": [
         {
           "type": "FIELD",
+          "name": "local",
+          "content": {
+            "type": "SYMBOL",
+            "name": "local_identifier"
+          }
+        },
+        {
+          "type": "FIELD",
           "name": "global",
           "content": {
             "type": "SYMBOL",
@@ -292,6 +300,23 @@
         {
           "type": "FIELD",
           "name": "workspace",
+          "content": {
+            "type": "SYMBOL",
+            "name": "workspace_identifier"
+          }
+        }
+      ]
+    },
+    "local_identifier": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "local"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
           "content": {
             "type": "SYMBOL",
             "name": "workspace_identifier"

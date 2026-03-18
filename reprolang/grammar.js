@@ -54,9 +54,12 @@ module.exports = grammar({
     docstring: $ => seq('# docstring:', /.*/),
     identifier: $ =>
       choice(
+        field('local', $.local_identifier),
         field('global', $.global_identifier),
         field('workspace', $.workspace_identifier)
       ),
+    local_identifier: $ =>
+      seq('local', field('name', $.workspace_identifier)),
     global_identifier: $ =>
       seq(
         'global',

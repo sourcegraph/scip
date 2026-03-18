@@ -44,7 +44,7 @@ func (s *reproSourceFile) enterDefinitions(context *reproContext) {
 		}
 		var symbol string
 		if name.isLocalSymbol() {
-			symbol = fmt.Sprintf("local %s", defName.value[len("local"):])
+			symbol = fmt.Sprintf("local %s", defName.value)
 		} else {
 			symbol = newGlobalSymbol(context.pkg, s, defName)
 		}

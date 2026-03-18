@@ -1,2 +1,2 @@
-definition local1
-definition local2 references local1
+definition local sym1
+definition local sym2 references local sym1
