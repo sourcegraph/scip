@@ -12,7 +12,7 @@ import (
 func (d *reproDependency) enterGlobalDefinitions(context *reproContext) error {
 	var errs error
 	enter := func(file *reproSourceFile, name *identifier) {
-		if name.isLocalSymbol() {
+		if name.isLocal {
 			return
 		}
 		symbol := newGlobalSymbol(d.Package, file, name)
@@ -39,11 +39,11 @@ func (d *reproDependency) enterGlobalDefinitions(context *reproContext) error {
 func (s *reproSourceFile) enterDefinitions(context *reproContext) {
 	enter := func(name *identifier, defName *identifier) {
 		scope := context.globalScope
-		if name.isLocalSymbol() {
+		if name.isLocal {
 			scope = s.localScope
 		}
 		var symbol string
-		if name.isLocalSymbol() {
+		if name.isLocal {
 			symbol = fmt.Sprintf("local %s", defName.value)
 		} else {
 			symbol = newGlobalSymbol(context.pkg, s, defName)

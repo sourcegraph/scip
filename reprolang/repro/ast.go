@@ -89,7 +89,7 @@ func NewRangePositionFromNode(node *sitter.Node) *scip.Range {
 
 func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext) error {
 	scope := context.globalScope
-	if i.isLocalSymbol() {
+	if i.isLocal {
 		scope = localScope
 	}
 	symbol, ok := scope.names[i.value]
@@ -98,8 +98,4 @@ func (i *identifier) resolveSymbol(localScope *reproScope, context *reproContext
 	}
 	i.symbol = symbol
 	return nil
-}
-
-func (i *identifier) isLocalSymbol() bool {
-	return i.isLocal
 }
