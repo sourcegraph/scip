@@ -7,8 +7,13 @@ assignees: ''
 ---
 
 ## Summary
+
 ## Motivation
+
 ## Proposed Design
+
 ## Compatibility and Breaking Changes
+
 ## Alternatives Considered
+
 ## Unresolved Questions
