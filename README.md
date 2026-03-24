@@ -70,4 +70,4 @@ We welcome questions, suggestions as well as code and docs contributions.
 For submitting contributions, check out [Development.md](./docs/Development.md)
 to better understand project structure and common workflows.
 
-Contributors should abide by the [Sourcegraph Code of Conduct](https://handbook.sourcegraph.com/company-info-and-process/communication/code_of_conduct/).
+Contributors should abide by the [Code of Conduct](https://scip-code.org/code-of-conduct.html).
