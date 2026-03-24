@@ -95,8 +95,6 @@ jobs:
             asset_name: scip-linux-amd64
           - runner: ubuntu-latest-arm
             asset_name: scip-linux-arm64
-          - runner: macos-13
-            asset_name: scip-darwin-amd64
           - runner: macos-latest
             asset_name: scip-darwin-arm64
 
