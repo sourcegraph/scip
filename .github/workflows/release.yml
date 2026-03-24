@@ -86,6 +86,8 @@ jobs:
 
   build-go-binaries:
     needs: publish
+    permissions:
+      contents: write
     strategy:
       matrix:
         include:
