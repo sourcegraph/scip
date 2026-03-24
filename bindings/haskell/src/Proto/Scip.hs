@@ -6421,7 +6421,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B/Z-github.com/sourcegraph/scip/bindings/go/scip/J\188\183\STX\n\
+    \\ETXZig\DLE&B-Z+github.com/scip-code/scip/bindings/go/scip/J\188\183\STX\n\
     \\a\DC2\ENQ\n\
     \\NUL\239\ACK\SOH\n\
     \\130\EOT\n\
@@ -6439,9 +6439,9 @@ packedFileDescriptor
     \\b\n\
     \\SOH\STX\DC2\ETX\f\NUL\r\n\
     \\b\n\
-    \\SOH\b\DC2\ETX\SO\NULD\n\
+    \\SOH\b\DC2\ETX\SO\NULB\n\
     \\t\n\
-    \\STX\b\v\DC2\ETX\SO\NULD\n\
+    \\STX\b\v\DC2\ETX\SO\NULB\n\
     \\208\ETX\n\
     \\STX\EOT\NUL\DC2\EOT\SYN\NUL#\SOH\SUB\195\ETX Index represents a complete SCIP index for a workspace this is rooted at a\n\
     \ single directory. An Index message payload can have a large memory footprint\n\
