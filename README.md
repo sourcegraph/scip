@@ -34,13 +34,13 @@ Also, check out the [Debugging section][] in the Development docs.
 
 Several indexers currently emit SCIP data:
 
-- [scip-java](https://github.com/scip-code/scip-java): Java, Scala, Kotlin
-- [scip-typescript](https://github.com/scip-code/scip-typescript): TypeScript, JavaScript
+- [scip-java](https://github.com/sourcegraph/scip-java): Java, Scala, Kotlin
+- [scip-typescript](https://github.com/sourcegraph/scip-typescript): TypeScript, JavaScript
 - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): Rust
-- [scip-clang](https://github.com/scip-code/scip-clang): C++, C
-- [scip-ruby](https://github.com/scip-code/scip-ruby): Ruby
-- [scip-python](https://github.com/scip-code/scip-python): Python
-- [scip-dotnet](https://github.com/scip-code/scip-dotnet): C#, Visual Basic
+- [scip-clang](https://github.com/sourcegraph/scip-clang): C++, C
+- [scip-ruby](https://github.com/sourcegraph/scip-ruby): Ruby
+- [scip-python](https://github.com/sourcegraph/scip-python): Python
+- [scip-dotnet](https://github.com/sourcegraph/scip-dotnet): C#, Visual Basic
 - [scip-dart](https://github.com/Workiva/scip-dart): Dart
 - [scip-php](https://github.com/davidrjenni/scip-php): PHP
 
