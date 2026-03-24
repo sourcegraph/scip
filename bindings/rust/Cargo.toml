@@ -6,7 +6,7 @@ license = "Apache-2.0"
 description = """
 SCIP (pronunciation: "skip") is a language-agnostic protocol for indexing source code, which can be used to power code navigation functionality such as Go to definition, Find references, and Find implementations.
 """
-repository = "https://github.com/sourcegraph/scip"
+repository = "https://github.com/scip-code/scip"
 readme = "../../README.md"
 
 # We need >= 1.81.0 because: we only test against that

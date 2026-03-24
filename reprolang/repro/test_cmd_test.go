@@ -11,8 +11,8 @@ import (
 	"github.com/hexops/autogold/v2"
 	"github.com/stretchr/testify/require"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
-	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
+	"github.com/scip-code/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip/testutil"
 )
 
 func unwrap[T any](v T, err error) func(*testing.T) T {

@@ -8,7 +8,7 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip"
 )
 
 func lintCommand() cli.Command {

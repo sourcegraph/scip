@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
-	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
+	"github.com/scip-code/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip/testutil"
 )
 
 var debugSnapshotAbspaths = flag.Bool("debug-snapshot-abspaths", false, "use absolute paths in snapshot outputs, useful for making uploads to test code navigation")

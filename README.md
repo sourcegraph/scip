@@ -23,7 +23,7 @@ check out our documentation on
 Also, check out the [Debugging section][] in the Development docs.
 
 If you're interested in consuming SCIP data,
-you can either use one of the [provided language bindings](https://github.com/sourcegraph/scip/tree/main/bindings),
+you can either use one of the [provided language bindings](https://github.com/scip-code/scip/tree/main/bindings),
 or generate code for the [SCIP Protobuf schema](./scip.proto)
 using the Protobuf toolchain for your language ecosystem.
 Also, check out the [Debugging section][] in the Development docs.
@@ -52,11 +52,11 @@ and the SCIP CLI in this repo.
 
 ## Installing the `scip` CLI
 
-You can find binaries for the `scip` CLI tool [here](https://github.com/sourcegraph/scip/releases).
+You can find binaries for the `scip` CLI tool [here](https://github.com/scip-code/scip/releases).
 You can also compile a binary locally using:
 
 ```sh
-git clone https://github.com/sourcegraph/scip.git --depth=1
+git clone https://github.com/scip-code/scip.git --depth=1
 cd scip
 go build ./cmd/scip
 ```

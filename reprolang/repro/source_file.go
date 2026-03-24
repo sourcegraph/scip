@@ -3,7 +3,7 @@ package repro
 import (
 	sitter "github.com/tree-sitter/go-tree-sitter"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip"
 )
 
 type reproSourceFile struct {

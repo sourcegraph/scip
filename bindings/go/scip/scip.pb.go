@@ -2905,7 +2905,7 @@ const file_scip_proto_rawDesc = "" +
 	"\x03XML\x10\x1f\x12\a\n" +
 	"\x03XSL\x10 \x12\b\n" +
 	"\x04YAML\x10J\x12\a\n" +
-	"\x03Zig\x10&B/Z-github.com/sourcegraph/scip/bindings/go/scip/b\x06proto3"
+	"\x03Zig\x10&B-Z+github.com/scip-code/scip/bindings/go/scip/b\x06proto3"
 
 var (
 	file_scip_proto_rawDescOnce sync.Once

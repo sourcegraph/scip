@@ -50,7 +50,7 @@ jobs:
             exit 0
           fi
           {
-            echo "See the [CHANGELOG](https://github.com/sourcegraph/scip/blob/main/CHANGELOG.md) to see what's new in scip $TAG."
+            echo "See the [CHANGELOG](https://github.com/scip-code/scip/blob/main/CHANGELOG.md) to see what's new in scip $TAG."
             echo ''
             echo 'Download the CLI for your current platform using:'
             echo ''
@@ -59,7 +59,7 @@ jobs:
             echo "  TAG=\"$TAG\" \\"
             echo '  OS="$(uname -s | tr '"'"'[:upper:]'"'"' '"'"'[:lower:]'"'"')" \'
             echo '  ARCH="$(uname -m | sed -e '"'"'s/x86_64/amd64/'"'"')" \'
-            echo '  bash -c '"'"'curl -L "https://github.com/sourcegraph/scip/releases/download/$TAG/scip-$OS-$ARCH.tar.gz"'"'"' \'
+            echo '  bash -c '"'"'curl -L "https://github.com/scip-code/scip/releases/download/$TAG/scip-$OS-$ARCH.tar.gz"'"'"' \'
             echo '| tar xzf - scip'
             echo '```'
           } | gh release create "$TAG" --title "scip $TAG" --notes-file -

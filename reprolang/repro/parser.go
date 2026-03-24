@@ -3,9 +3,9 @@ package repro
 import (
 	sitter "github.com/tree-sitter/go-tree-sitter"
 
-	reproGrammar "github.com/sourcegraph/scip/reprolang/grammar"
+	reproGrammar "github.com/scip-code/scip/reprolang/grammar"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip"
 )
 
 func parseSourceFile(source *scip.SourceFile) (*reproSourceFile, error) {

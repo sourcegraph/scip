@@ -12,7 +12,7 @@ import (
 
 	"github.com/fatih/color"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip"
 )
 
 // RunTests validates whether the SCIP data present in an index matches that

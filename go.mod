@@ -1,15 +1,15 @@
-module github.com/sourcegraph/scip
+module github.com/scip-code/scip
 
 go 1.25.0
 
-replace github.com/sourcegraph/scip/bindings/go/scip => ./bindings/go/scip
+replace github.com/scip-code/scip/bindings/go/scip => ./bindings/go/scip
 
 require (
 	github.com/hhatto/gocloc v0.4.2
 	github.com/k0kubun/pp/v3 v3.1.0
 	github.com/klauspost/compress v1.18.0
 	github.com/montanaflynn/stats v0.7.1
-	github.com/sourcegraph/scip/bindings/go/scip v0.0.0-00010101000000-000000000000
+	github.com/scip-code/scip/bindings/go/scip v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.11.1
 	github.com/urfave/cli/v2 v2.25.7
 	google.golang.org/protobuf v1.36.6

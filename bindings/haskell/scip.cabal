@@ -7,7 +7,7 @@ license:            Apache-2.0
 license-file:       LICENSE
 author:             SCIP Maintainers
 maintainer:         code-intel@sourcegraph.com
-homepage:           https://github.com/sourcegraph/scip
+homepage:           https://github.com/scip-code/scip
 category:           Language
 build-type:         Simple
 

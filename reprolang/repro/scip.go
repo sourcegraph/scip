@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip"
 )
 
 func (i *identifier) occurrence(roles scip.SymbolRole) *scip.Occurrence {

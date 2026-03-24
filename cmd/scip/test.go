@@ -6,7 +6,7 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
+	"github.com/scip-code/scip/bindings/go/scip/testutil"
 )
 
 type testFlags struct {
@@ -26,7 +26,7 @@ func testCommand() cli.Command {
 matches that specified in human-readable test files, using syntax
 similar to the 'snapshot' subcommand. Test file syntax reference:
 
-    https://github.com/sourcegraph/scip/blob/v%s/docs/test_file_format.md
+    https://github.com/scip-code/scip/blob/v%s/docs/test_file_format.md
 
 The test files are located based on the relative_path field
 in the SCIP document, interpreted relative to the the directory

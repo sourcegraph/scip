@@ -61,7 +61,7 @@ func scipApp() *cli.App {
 		Name:        "scip",
 		Version:     fmt.Sprintf("v%s%s", strings.TrimSpace(version), gitSuffix()),
 		Usage:       "SCIP Code Intelligence Protocol CLI",
-		Description: "For more details, see the project README at:\n\n\thttps://github.com/sourcegraph/scip",
+		Description: "For more details, see the project README at:\n\n\thttps://github.com/scip-code/scip",
 		Commands:    commands(),
 	}
 	return app
