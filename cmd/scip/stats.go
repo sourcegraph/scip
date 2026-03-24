@@ -15,7 +15,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip"
 )
 
 type statsFlags struct {

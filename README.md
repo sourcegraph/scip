@@ -23,7 +23,7 @@ check out our documentation on
 Also, check out the [Debugging section][] in the Development docs.
 
 If you're interested in consuming SCIP data,
-you can either use one of the [provided language bindings](https://github.com/sourcegraph/scip/tree/main/bindings),
+you can either use one of the [provided language bindings](https://github.com/scip-code/scip/tree/main/bindings),
 or generate code for the [SCIP Protobuf schema](./scip.proto)
 using the Protobuf toolchain for your language ecosystem.
 Also, check out the [Debugging section][] in the Development docs.
@@ -34,13 +34,13 @@ Also, check out the [Debugging section][] in the Development docs.
 
 Several indexers currently emit SCIP data:
 
-- [scip-java](https://github.com/sourcegraph/scip-java): Java, Scala, Kotlin
-- [scip-typescript](https://github.com/sourcegraph/scip-typescript): TypeScript, JavaScript
+- [scip-java](https://github.com/scip-code/scip-java): Java, Scala, Kotlin
+- [scip-typescript](https://github.com/scip-code/scip-typescript): TypeScript, JavaScript
 - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): Rust
-- [scip-clang](https://github.com/sourcegraph/scip-clang): C++, C
-- [scip-ruby](https://github.com/sourcegraph/scip-ruby): Ruby
-- [scip-python](https://github.com/sourcegraph/scip-python): Python
-- [scip-dotnet](https://github.com/sourcegraph/scip-dotnet): C#, Visual Basic
+- [scip-clang](https://github.com/scip-code/scip-clang): C++, C
+- [scip-ruby](https://github.com/scip-code/scip-ruby): Ruby
+- [scip-python](https://github.com/scip-code/scip-python): Python
+- [scip-dotnet](https://github.com/scip-code/scip-dotnet): C#, Visual Basic
 - [scip-dart](https://github.com/Workiva/scip-dart): Dart
 - [scip-php](https://github.com/davidrjenni/scip-php): PHP
 
@@ -52,11 +52,11 @@ and the SCIP CLI in this repo.
 
 ## Installing the `scip` CLI
 
-You can find binaries for the `scip` CLI tool [here](https://github.com/sourcegraph/scip/releases).
+You can find binaries for the `scip` CLI tool [here](https://github.com/scip-code/scip/releases).
 You can also compile a binary locally using:
 
 ```sh
-git clone https://github.com/sourcegraph/scip.git --depth=1
+git clone https://github.com/scip-code/scip.git --depth=1
 cd scip
 go build ./cmd/scip
 ```

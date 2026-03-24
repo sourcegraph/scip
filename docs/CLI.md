@@ -23,7 +23,7 @@ VERSION:
 DESCRIPTION:
    For more details, see the project README at:
 
-     https://github.com/sourcegraph/scip
+     https://github.com/scip-code/scip
 
 COMMANDS:
    lint          Flag potential issues with a SCIP index
@@ -117,7 +117,7 @@ DESCRIPTION:
    in a given SCIP index matches that specified in human-readable test files,
    using syntax similar to the 'snapshot subcommand'. Test file syntax reference:
 
-       https://github.com/sourcegraph/scip/blob/v0.6.1/docs/test_file_format.md
+       https://github.com/scip-code/scip/blob/v0.6.1/docs/test_file_format.md
 
    The test files are located based on the relative_path field
    in the SCIP document, interpreted relative to the the directory

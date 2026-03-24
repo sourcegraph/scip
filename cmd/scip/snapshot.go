@@ -7,8 +7,8 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
-	"github.com/sourcegraph/scip/bindings/go/scip/testutil"
+	"github.com/scip-code/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip/testutil"
 )
 
 type snapshotFlags struct {

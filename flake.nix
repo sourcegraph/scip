@@ -1,5 +1,5 @@
 {
-  description = "SCIP - Source Code Intelligence Protocol";
+  description = "SCIP - SCIP Code Intelligence Protocol";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
@@ -35,7 +35,7 @@
 
             meta = {
               description = "SCIP Code Intelligence Protocol";
-              homepage = "https://github.com/sourcegraph/scip";
+              homepage = "https://github.com/scip-code/scip";
               license = pkgs.lib.licenses.asl20;
               mainProgram = "scip";
             };

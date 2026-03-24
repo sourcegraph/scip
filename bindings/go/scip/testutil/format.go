@@ -10,7 +10,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/sourcegraph/scip/bindings/go/scip"
+	"github.com/scip-code/scip/bindings/go/scip"
 )
 
 // FormatSnapshots renders the provided SCIP index into a pretty-printed text format

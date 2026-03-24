@@ -1,12 +1,12 @@
-module github.com/sourcegraph/scip/reprolang
+module github.com/scip-code/scip/reprolang
 
 go 1.25.0
 
-replace github.com/sourcegraph/scip/bindings/go/scip => ../bindings/go/scip
+replace github.com/scip-code/scip/bindings/go/scip => ../bindings/go/scip
 
 require (
 	github.com/hexops/autogold/v2 v2.3.1
-	github.com/sourcegraph/scip/bindings/go/scip v0.0.0-00010101000000-000000000000
+	github.com/scip-code/scip/bindings/go/scip v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.11.1
 	github.com/tree-sitter/go-tree-sitter v0.25.0
 )

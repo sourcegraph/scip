@@ -1,4 +1,4 @@
-module github.com/sourcegraph/scip/bindings/go/scip
+module github.com/scip-code/scip/bindings/go/scip
 
 go 1.25.0
 
