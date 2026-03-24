@@ -45,7 +45,7 @@ func newIdentifier(s *reproSourceFile, n *sitter.Node) *identifier {
 		panic("expected identifier, obtained " + n.Kind())
 	}
 	value := s.nodeText(n)
-	isLocal := false
+	isLocal := true
 	localIdentifier := n.ChildByFieldName("local")
 	if localIdentifier != nil {
 		isLocal = true
