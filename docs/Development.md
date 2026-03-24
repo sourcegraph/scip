@@ -86,7 +86,7 @@ version in `cmd/scip/version.txt`, `bindings/rust/Cargo.toml`,
 
 After landing a commit with those two changes, trigger the
 [release workflow](/.github/workflows/release.yml) from the
-Actions tab on GitHub, providing the version number (e.g. `0.6.1`).
+Actions tab on GitHub, providing the version number (e.g. `0.7.0`).
 The workflow will validate the CHANGELOG and version.txt, create and push
 tags, create the GitHub release, publish the Rust crate, and build and
 upload CLI binaries.

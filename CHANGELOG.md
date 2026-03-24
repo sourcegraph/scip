@@ -1,5 +1,44 @@
 # ChangeLog
 
+## v0.7.0
+
+General:
+
+- BREAKING CHANGE: The project has moved from `sourcegraph/scip` to `scip-code/scip`.
+  All import paths and references have been updated accordingly.
+  (https://github.com/scip-code/scip/pull/377)
+- All bindings (Go, Rust, TypeScript, Haskell) now follow the same
+  version number as the repository.
+- Adopted Nix for building and CI.
+  (https://github.com/scip-code/scip/pull/356)
+- Removed all LSIF references now that LSIF is fully deprecated.
+  (https://github.com/scip-code/scip/pull/369)
+
+Go bindings:
+
+- BREAKING CHANGE: Go bindings have been split into a separate module
+  at `github.com/scip-code/scip/bindings/go/scip` to reduce
+  the dependency footprint for consumers.
+  (https://github.com/scip-code/scip/pull/364,
+  https://github.com/scip-code/scip/pull/371)
+- Removed old V1 symbol parser, speedtest, and sample indexes.
+  (https://github.com/scip-code/scip/pull/365)
+- Updated protoc-gen-go from v1.31.0 to v1.36.6.
+  (https://github.com/scip-code/scip/pull/358)
+
+Rust bindings:
+
+- Fixed symbol formatting to use character count instead of byte length,
+  fixing issues with multibyte identifiers.
+  (https://github.com/scip-code/scip/pull/346)
+- Fixed symbol backtick escaping to match the Go implementation.
+  (https://github.com/scip-code/scip/pull/368)
+
+TypeScript bindings:
+
+- BREAKING CHANGE: Migrated protobuf bindings from protoc-gen-ts to protobuf-es.
+  (https://github.com/scip-code/scip/pull/361)
+
 ## v0.6.1
 
 Go bindings:
