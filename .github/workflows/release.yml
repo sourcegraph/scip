@@ -92,13 +92,21 @@ jobs:
       matrix:
         include:
           - runner: ubuntu-latest
+            goos: linux
+            goarch: amd64
             asset_name: scip-linux-amd64
-          - runner: ubuntu-latest-arm
+          - runner: ubuntu-latest
+            goos: linux
+            goarch: arm64
             asset_name: scip-linux-arm64
-          - runner: macos-13
-            asset_name: scip-darwin-amd64
           - runner: macos-latest
+            goos: darwin
+            goarch: arm64
             asset_name: scip-darwin-arm64
+          - runner: macos-latest
+            goos: darwin
+            goarch: amd64
+            asset_name: scip-darwin-amd64
 
     runs-on: ${{ matrix.runner }}
 
@@ -106,15 +114,21 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: v${{ inputs.version }}
-      - uses: DeterminateSystems/nix-installer-action@v21
-      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
       - name: Build
-        run: nix build .#scip
+        env:
+          CGO_ENABLED: '0'
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          GOWORK: 'off'
+        run: go build -ldflags '-X main.Reproducible=true' -o scip ./cmd/scip
       - name: Package
         env:
           ASSET: ${{ matrix.asset_name }}
         run: |
-          tar czf "$ASSET.tar.gz" -C result/bin scip -C "$GITHUB_WORKSPACE" LICENSE
+          tar czf "$ASSET.tar.gz" scip LICENSE
           sha256sum "$ASSET.tar.gz" > "$ASSET.tar.gz.sha256" 2>/dev/null || \
             shasum -a 256 "$ASSET.tar.gz" > "$ASSET.tar.gz.sha256"
       - name: Upload release assets
