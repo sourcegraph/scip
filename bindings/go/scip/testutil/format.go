@@ -103,7 +103,7 @@ func FormatSnapshot(
 
 		line = strings.TrimSuffix(line, "\r")
 		b.WriteString(strings.Repeat(" ", len(commentSyntax)))
-		b.WriteString(strings.ReplaceAll(line, "\t", " "))
+		b.WriteString(strings.ReplaceAll(line, "\t", "  "))
 		b.WriteString("\n")
 		for i < len(document.Occurrences) && document.Occurrences[i].Range[0] == int32(lineNumber) {
 			occ := document.Occurrences[i]
