@@ -95,13 +95,11 @@ message Document {
   // Relationship.is_definition).
   repeated SymbolInformation symbols = 3;
 
-  // (optional) Text contents of the this document. Indexers are not expected to
-  // include the text by default. It's preferrable that clients read the text
+  // (optional) Text contents of this document. Indexers are not expected to
+  // include the text by default. It's preferable that clients read the text
   // contents from the file system by resolving the absolute path from joining
-  // `Index.metadata.project_root` and `Document.relative_path`. This field was
-  // introduced to support `SymbolInformation.signature_documentation`, but it
-  // can be used for other purposes as well, for example testing or when working
-  // with virtual/in-memory documents.
+  // `Index.metadata.project_root` and `Document.relative_path`. This field
+  // can be useful for testing or when working with virtual/in-memory documents.
   string text = 5;
 
   // Specifies the encoding used for source ranges in this Document.
@@ -226,6 +224,25 @@ message Descriptor {
   Suffix suffix = 3;
   // NOTE: If you add new fields here, make sure to update the prepareSlot()
   // function responsible for parsing symbols.
+}
+
+// SignatureDocumentation represents the signature of a symbol as it's displayed
+// in API documentation or hover tooltips. It uses a subset of Document's fields
+// with the same field numbers for wire compatibility with older indexes that
+// encoded signatures using the Document message type.
+message SignatureDocumentation {
+  // The language of the signature, e.g. "java", "go", "python".
+  string language = 4;
+  // The text content of the signature, e.g. "void add(int a, int b)".
+  string text = 5;
+  // (optional) Occurrences within the signature text that reference other
+  // symbols, enabling hyperlinking of types in the signature. Ranges are
+  // relative to the `text` field.
+  repeated Occurrence occurrences = 2;
+
+  // Reserved field numbers from the Document message to prevent accidental
+  // reuse, which would break wire compatibility with older indexes.
+  reserved 1, 3, 6;
 }
 
 // SymbolInformation defines metadata about a symbol, such as the symbol's
@@ -417,11 +434,11 @@ message SymbolInformation {
   string display_name = 6;
   // (optional) The signature of this symbol as it's displayed in API
   // documentation or in hover tooltips. For example, a Java method that adds
-  // two numbers this would have `Document.language = "java"` and `Document.text
-  // = "void add(int a, int b)". The `language` and `text` fields are required
-  // while other fields such as `Documentation.occurrences` can be optionally
+  // two numbers would have `SignatureDocumentation.language = "java"` and
+  // `SignatureDocumentation.text = "void add(int a, int b)"`. The `language`
+  // and `text` fields are required while `occurrences` can be optionally
   // included to support hyperlinking referenced symbols in the signature.
-  Document signature_documentation = 7;
+  SignatureDocumentation signature_documentation = 7;
   // (optional) The enclosing symbol if this is a local symbol.  For non-local
   // symbols, the enclosing symbol should be parsed from the `symbol` field
   // using the `Descriptor` grammar.
