@@ -115,25 +115,6 @@ message Document {
   PositionEncoding position_encoding = 6;
 }
 
-// SignatureDocumentation represents the signature of a symbol as it's displayed
-// in API documentation or hover tooltips. It uses a subset of Document's fields
-// with the same field numbers for wire compatibility with older indexes that
-// encoded signatures using the Document message type.
-message SignatureDocumentation {
-  // The language of the signature, e.g. "java", "go", "python".
-  string language = 4;
-  // The text content of the signature, e.g. "void add(int a, int b)".
-  string text = 5;
-  // (optional) Occurrences within the signature text that reference other
-  // symbols, enabling hyperlinking of types in the signature. Ranges are
-  // relative to the `text` field.
-  repeated Occurrence occurrences = 2;
-
-  // Reserved field numbers from the Document message to prevent accidental
-  // reuse, which would break wire compatibility with older indexes.
-  reserved 1, 3, 6;
-}
-
 // Encoding used to interpret the 'character' value in source ranges.
 enum PositionEncoding {
   // Default value. This value should not be used by new SCIP indexers
@@ -243,6 +224,25 @@ message Descriptor {
   Suffix suffix = 3;
   // NOTE: If you add new fields here, make sure to update the prepareSlot()
   // function responsible for parsing symbols.
+}
+
+// SignatureDocumentation represents the signature of a symbol as it's displayed
+// in API documentation or hover tooltips. It uses a subset of Document's fields
+// with the same field numbers for wire compatibility with older indexes that
+// encoded signatures using the Document message type.
+message SignatureDocumentation {
+  // The language of the signature, e.g. "java", "go", "python".
+  string language = 4;
+  // The text content of the signature, e.g. "void add(int a, int b)".
+  string text = 5;
+  // (optional) Occurrences within the signature text that reference other
+  // symbols, enabling hyperlinking of types in the signature. Ranges are
+  // relative to the `text` field.
+  repeated Occurrence occurrences = 2;
+
+  // Reserved field numbers from the Document message to prevent accidental
+  // reuse, which would break wire compatibility with older indexes.
+  reserved 1, 3, 6;
 }
 
 // SymbolInformation defines metadata about a symbol, such as the symbol's
