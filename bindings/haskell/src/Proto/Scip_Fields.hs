@@ -38,6 +38,12 @@ code ::
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "code" a) =>
   Lens.Family2.LensLike' f s a
 code = Data.ProtoLens.Field.field @"code"
+definition ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "definition" a) =>
+  Lens.Family2.LensLike' f s a
+definition = Data.ProtoLens.Field.field @"definition"
 descriptors ::
   forall f s a.
   (Prelude.Functor f,
@@ -92,6 +98,12 @@ externalSymbols ::
    Data.ProtoLens.Field.HasField s "externalSymbols" a) =>
   Lens.Family2.LensLike' f s a
 externalSymbols = Data.ProtoLens.Field.field @"externalSymbols"
+implementations ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "implementations" a) =>
+  Lens.Family2.LensLike' f s a
+implementations = Data.ProtoLens.Field.field @"implementations"
 isDefinition ::
   forall f s a.
   (Prelude.Functor f,
@@ -208,6 +220,12 @@ range ::
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "range" a) =>
   Lens.Family2.LensLike' f s a
 range = Data.ProtoLens.Field.field @"range"
+references ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "references" a) =>
+  Lens.Family2.LensLike' f s a
+references = Data.ProtoLens.Field.field @"references"
 relationships ::
   forall f s a.
   (Prelude.Functor f,
@@ -293,6 +311,12 @@ toolInfo ::
    Data.ProtoLens.Field.HasField s "toolInfo" a) =>
   Lens.Family2.LensLike' f s a
 toolInfo = Data.ProtoLens.Field.field @"toolInfo"
+typeDefinitions ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "typeDefinitions" a) =>
+  Lens.Family2.LensLike' f s a
+typeDefinitions = Data.ProtoLens.Field.field @"typeDefinitions"
 vec'arguments ::
   forall f s a.
   (Prelude.Functor f,
@@ -337,6 +361,13 @@ vec'externalSymbols ::
   Lens.Family2.LensLike' f s a
 vec'externalSymbols
   = Data.ProtoLens.Field.field @"vec'externalSymbols"
+vec'implementations ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "vec'implementations" a) =>
+  Lens.Family2.LensLike' f s a
+vec'implementations
+  = Data.ProtoLens.Field.field @"vec'implementations"
 vec'occurrences ::
   forall f s a.
   (Prelude.Functor f,
@@ -356,6 +387,12 @@ vec'range ::
    Data.ProtoLens.Field.HasField s "vec'range" a) =>
   Lens.Family2.LensLike' f s a
 vec'range = Data.ProtoLens.Field.field @"vec'range"
+vec'references ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "vec'references" a) =>
+  Lens.Family2.LensLike' f s a
+vec'references = Data.ProtoLens.Field.field @"vec'references"
 vec'relationships ::
   forall f s a.
   (Prelude.Functor f,
@@ -374,6 +411,13 @@ vec'tags ::
    Data.ProtoLens.Field.HasField s "vec'tags" a) =>
   Lens.Family2.LensLike' f s a
 vec'tags = Data.ProtoLens.Field.field @"vec'tags"
+vec'typeDefinitions ::
+  forall f s a.
+  (Prelude.Functor f,
+   Data.ProtoLens.Field.HasField s "vec'typeDefinitions" a) =>
+  Lens.Family2.LensLike' f s a
+vec'typeDefinitions
+  = Data.ProtoLens.Field.field @"vec'typeDefinitions"
 version ::
   forall f s a.
   (Prelude.Functor f, Data.ProtoLens.Field.HasField s "version" a) =>
