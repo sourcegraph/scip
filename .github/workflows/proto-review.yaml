@@ -1,0 +1,24 @@
+name: SCIP protocol review
+
+on:
+  pull_request:
+    paths: [scip.proto]
+  pull_request_review:
+
+jobs:
+  proto-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Automattic/action-required-review@v5
+        with:
+          token: ${{ github.token }}
+          request-reviews: true
+          requirements: |
+            - name: SCIP CSC
+              paths:
+                - scip.proto
+              teams:
+                - all-of:
+                    - '@jupblb'
+                    - '@CatherineGasnier'
+                    - '@jamydev'
