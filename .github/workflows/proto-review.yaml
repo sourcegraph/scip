@@ -1,46 +1,24 @@
-name: Proto review
+name: SCIP protocol review
 
 on:
   pull_request:
     paths: [scip.proto]
   pull_request_review:
-    types: [submitted]
 
 jobs:
   proto-review:
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Check approvals
-        run: |
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          REPO="${{ github.repository }}"
-          PR=$(gh pr view "$PR_NUMBER" --repo "$REPO" \
-            --json author,reviews,files)
-
-          echo "$PR" \
-            | jq -e '.files[] | select(.path == "scip.proto")' \
-            > /dev/null 2>&1 || {
-            echo "scip.proto not modified, skipping"
-            exit 0
-          }
-
-          AUTHOR=$(echo "$PR" | jq -r '.author.login')
-          APPROVED=$(echo "$PR" | jq -r '
-            [.reviews[]
-              | select(.state == "APPROVED")
-              | .author.login]
-            | unique | .[]')
-
-          MISSING=""
-          for REVIEWER in jupblb CatherineGasnier jamydev; do
-            [ "$REVIEWER" = "$AUTHOR" ] && continue
-            echo "$APPROVED" | grep -q "^${REVIEWER}$" \
-              || MISSING="${MISSING} ${REVIEWER}"
-          done
-
-          if [ -n "$MISSING" ]; then
-            echo "::error::Missing approvals from:${MISSING}"
-            exit 1
-          fi
+      - uses: Automattic/action-required-review@v5
+        with:
+          token: ${{ github.token }}
+          request-reviews: true
+          requirements: |
+            - name: SCIP CSC
+              paths:
+                - scip.proto
+              teams:
+                - all-of:
+                    - '@jupblb'
+                    - '@CatherineGasnier'
+                    - '@jamydev'
