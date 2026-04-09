@@ -1958,11 +1958,11 @@ func (x *Descriptor) GetSuffix() Descriptor_Suffix {
 	return Descriptor_UnspecifiedSuffix
 }
 
-// SignatureDocumentation represents the signature of a symbol as it's displayed
-// in API documentation or hover tooltips. It uses a subset of Document's fields
-// with the same field numbers for wire compatibility with older indexes that
-// encoded signatures using the Document message type.
-type SignatureDocumentation struct {
+// Signature represents the signature of a symbol as it's displayed in API
+// documentation or hover tooltips. It uses a subset of Document's fields with
+// the same field numbers for wire compatibility with older indexes that encoded
+// signatures using the Document message type.
+type Signature struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The language of the signature, e.g. "java", "go", "python".
 	Language string `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`
@@ -1976,20 +1976,20 @@ type SignatureDocumentation struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignatureDocumentation) Reset() {
-	*x = SignatureDocumentation{}
+func (x *Signature) Reset() {
+	*x = Signature{}
 	mi := &file_scip_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SignatureDocumentation) String() string {
+func (x *Signature) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SignatureDocumentation) ProtoMessage() {}
+func (*Signature) ProtoMessage() {}
 
-func (x *SignatureDocumentation) ProtoReflect() protoreflect.Message {
+func (x *Signature) ProtoReflect() protoreflect.Message {
 	mi := &file_scip_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2001,26 +2001,26 @@ func (x *SignatureDocumentation) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SignatureDocumentation.ProtoReflect.Descriptor instead.
-func (*SignatureDocumentation) Descriptor() ([]byte, []int) {
+// Deprecated: Use Signature.ProtoReflect.Descriptor instead.
+func (*Signature) Descriptor() ([]byte, []int) {
 	return file_scip_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *SignatureDocumentation) GetLanguage() string {
+func (x *Signature) GetLanguage() string {
 	if x != nil {
 		return x.Language
 	}
 	return ""
 }
 
-func (x *SignatureDocumentation) GetText() string {
+func (x *Signature) GetText() string {
 	if x != nil {
 		return x.Text
 	}
 	return ""
 }
 
-func (x *SignatureDocumentation) GetOccurrences() []*Occurrence {
+func (x *Signature) GetOccurrences() []*Occurrence {
 	if x != nil {
 		return x.Occurrences
 	}
@@ -2059,11 +2059,11 @@ type SymbolInformation struct {
 	DisplayName string `protobuf:"bytes,6,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// (optional) The signature of this symbol as it's displayed in API
 	// documentation or in hover tooltips. For example, a Java method that adds
-	// two numbers would have `SignatureDocumentation.language = "java"` and
-	// `SignatureDocumentation.text = "void add(int a, int b)"`. The `language`
-	// and `text` fields are required while `occurrences` can be optionally
-	// included to support hyperlinking referenced symbols in the signature.
-	SignatureDocumentation *SignatureDocumentation `protobuf:"bytes,7,opt,name=signature_documentation,json=signatureDocumentation,proto3" json:"signature_documentation,omitempty"`
+	// two numbers would have `Signature.language = "java"` and
+	// `Signature.text = "void add(int a, int b)"`. The `language` and `text`
+	// fields are required while `occurrences` can be optionally included to
+	// support hyperlinking referenced symbols in the signature.
+	SignatureDocumentation *Signature `protobuf:"bytes,7,opt,name=signature_documentation,json=signatureDocumentation,proto3" json:"signature_documentation,omitempty"`
 	// (optional) The enclosing symbol if this is a local symbol.  For non-local
 	// symbols, the enclosing symbol should be parsed from the `symbol` field
 	// using the `Descriptor` grammar.
@@ -2151,7 +2151,7 @@ func (x *SymbolInformation) GetDisplayName() string {
 	return ""
 }
 
-func (x *SymbolInformation) GetSignatureDocumentation() *SignatureDocumentation {
+func (x *SymbolInformation) GetSignatureDocumentation() *Signature {
 	if x != nil {
 		return x.SignatureDocumentation
 	}
@@ -2623,18 +2623,18 @@ const file_scip_proto_rawDesc = "" +
 	"\tParameter\x10\x06\x12\b\n" +
 	"\x04Meta\x10\a\x12\t\n" +
 	"\x05Local\x10\b\x12\t\n" +
-	"\x05Macro\x10\t\x1a\x02\x10\x01\"\x8e\x01\n" +
-	"\x16SignatureDocumentation\x12\x1a\n" +
+	"\x05Macro\x10\t\x1a\x02\x10\x01\"\x81\x01\n" +
+	"\tSignature\x12\x1a\n" +
 	"\blanguage\x18\x04 \x01(\tR\blanguage\x12\x12\n" +
 	"\x04text\x18\x05 \x01(\tR\x04text\x122\n" +
-	"\voccurrences\x18\x02 \x03(\v2\x10.scip.OccurrenceR\voccurrencesJ\x04\b\x01\x10\x02J\x04\b\x03\x10\x04J\x04\b\x06\x10\a\"\xe0\f\n" +
+	"\voccurrences\x18\x02 \x03(\v2\x10.scip.OccurrenceR\voccurrencesJ\x04\b\x01\x10\x02J\x04\b\x03\x10\x04J\x04\b\x06\x10\a\"\xd3\f\n" +
 	"\x11SymbolInformation\x12\x16\n" +
 	"\x06symbol\x18\x01 \x01(\tR\x06symbol\x12$\n" +
 	"\rdocumentation\x18\x03 \x03(\tR\rdocumentation\x128\n" +
 	"\rrelationships\x18\x04 \x03(\v2\x12.scip.RelationshipR\rrelationships\x120\n" +
 	"\x04kind\x18\x05 \x01(\x0e2\x1c.scip.SymbolInformation.KindR\x04kind\x12!\n" +
-	"\fdisplay_name\x18\x06 \x01(\tR\vdisplayName\x12U\n" +
-	"\x17signature_documentation\x18\a \x01(\v2\x1c.scip.SignatureDocumentationR\x16signatureDocumentation\x12)\n" +
+	"\fdisplay_name\x18\x06 \x01(\tR\vdisplayName\x12H\n" +
+	"\x17signature_documentation\x18\a \x01(\v2\x0f.scip.SignatureR\x16signatureDocumentation\x12)\n" +
 	"\x10enclosing_symbol\x18\b \x01(\tR\x0fenclosingSymbol\"\xfb\t\n" +
 	"\x04Kind\x12\x13\n" +
 	"\x0fUnspecifiedKind\x10\x00\x12\x12\n" +
@@ -2993,28 +2993,28 @@ func file_scip_proto_rawDescGZIP() []byte {
 var file_scip_proto_enumTypes = make([]protoimpl.EnumInfo, 10)
 var file_scip_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_scip_proto_goTypes = []any{
-	(ProtocolVersion)(0),           // 0: scip.ProtocolVersion
-	(TextEncoding)(0),              // 1: scip.TextEncoding
-	(PositionEncoding)(0),          // 2: scip.PositionEncoding
-	(SymbolRole)(0),                // 3: scip.SymbolRole
-	(SyntaxKind)(0),                // 4: scip.SyntaxKind
-	(Severity)(0),                  // 5: scip.Severity
-	(DiagnosticTag)(0),             // 6: scip.DiagnosticTag
-	(Language)(0),                  // 7: scip.Language
-	(Descriptor_Suffix)(0),         // 8: scip.Descriptor.Suffix
-	(SymbolInformation_Kind)(0),    // 9: scip.SymbolInformation.Kind
-	(*Index)(nil),                  // 10: scip.Index
-	(*Metadata)(nil),               // 11: scip.Metadata
-	(*ToolInfo)(nil),               // 12: scip.ToolInfo
-	(*Document)(nil),               // 13: scip.Document
-	(*Symbol)(nil),                 // 14: scip.Symbol
-	(*Package)(nil),                // 15: scip.Package
-	(*Descriptor)(nil),             // 16: scip.Descriptor
-	(*SignatureDocumentation)(nil), // 17: scip.SignatureDocumentation
-	(*SymbolInformation)(nil),      // 18: scip.SymbolInformation
-	(*Relationship)(nil),           // 19: scip.Relationship
-	(*Occurrence)(nil),             // 20: scip.Occurrence
-	(*Diagnostic)(nil),             // 21: scip.Diagnostic
+	(ProtocolVersion)(0),        // 0: scip.ProtocolVersion
+	(TextEncoding)(0),           // 1: scip.TextEncoding
+	(PositionEncoding)(0),       // 2: scip.PositionEncoding
+	(SymbolRole)(0),             // 3: scip.SymbolRole
+	(SyntaxKind)(0),             // 4: scip.SyntaxKind
+	(Severity)(0),               // 5: scip.Severity
+	(DiagnosticTag)(0),          // 6: scip.DiagnosticTag
+	(Language)(0),               // 7: scip.Language
+	(Descriptor_Suffix)(0),      // 8: scip.Descriptor.Suffix
+	(SymbolInformation_Kind)(0), // 9: scip.SymbolInformation.Kind
+	(*Index)(nil),               // 10: scip.Index
+	(*Metadata)(nil),            // 11: scip.Metadata
+	(*ToolInfo)(nil),            // 12: scip.ToolInfo
+	(*Document)(nil),            // 13: scip.Document
+	(*Symbol)(nil),              // 14: scip.Symbol
+	(*Package)(nil),             // 15: scip.Package
+	(*Descriptor)(nil),          // 16: scip.Descriptor
+	(*Signature)(nil),           // 17: scip.Signature
+	(*SymbolInformation)(nil),   // 18: scip.SymbolInformation
+	(*Relationship)(nil),        // 19: scip.Relationship
+	(*Occurrence)(nil),          // 20: scip.Occurrence
+	(*Diagnostic)(nil),          // 21: scip.Diagnostic
 }
 var file_scip_proto_depIdxs = []int32{
 	11, // 0: scip.Index.metadata:type_name -> scip.Metadata
@@ -3029,10 +3029,10 @@ var file_scip_proto_depIdxs = []int32{
 	15, // 9: scip.Symbol.package:type_name -> scip.Package
 	16, // 10: scip.Symbol.descriptors:type_name -> scip.Descriptor
 	8,  // 11: scip.Descriptor.suffix:type_name -> scip.Descriptor.Suffix
-	20, // 12: scip.SignatureDocumentation.occurrences:type_name -> scip.Occurrence
+	20, // 12: scip.Signature.occurrences:type_name -> scip.Occurrence
 	19, // 13: scip.SymbolInformation.relationships:type_name -> scip.Relationship
 	9,  // 14: scip.SymbolInformation.kind:type_name -> scip.SymbolInformation.Kind
-	17, // 15: scip.SymbolInformation.signature_documentation:type_name -> scip.SignatureDocumentation
+	17, // 15: scip.SymbolInformation.signature_documentation:type_name -> scip.Signature
 	4,  // 16: scip.Occurrence.syntax_kind:type_name -> scip.SyntaxKind
 	21, // 17: scip.Occurrence.diagnostics:type_name -> scip.Diagnostic
 	5,  // 18: scip.Diagnostic.severity:type_name -> scip.Severity

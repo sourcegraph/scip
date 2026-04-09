@@ -226,11 +226,11 @@ message Descriptor {
   // function responsible for parsing symbols.
 }
 
-// SignatureDocumentation represents the signature of a symbol as it's displayed
-// in API documentation or hover tooltips. It uses a subset of Document's fields
-// with the same field numbers for wire compatibility with older indexes that
-// encoded signatures using the Document message type.
-message SignatureDocumentation {
+// Signature represents the signature of a symbol as it's displayed in API
+// documentation or hover tooltips. It uses a subset of Document's fields with
+// the same field numbers for wire compatibility with older indexes that encoded
+// signatures using the Document message type.
+message Signature {
   // The language of the signature, e.g. "java", "go", "python".
   string language = 4;
   // The text content of the signature, e.g. "void add(int a, int b)".
@@ -434,11 +434,11 @@ message SymbolInformation {
   string display_name = 6;
   // (optional) The signature of this symbol as it's displayed in API
   // documentation or in hover tooltips. For example, a Java method that adds
-  // two numbers would have `SignatureDocumentation.language = "java"` and
-  // `SignatureDocumentation.text = "void add(int a, int b)"`. The `language`
-  // and `text` fields are required while `occurrences` can be optionally
-  // included to support hyperlinking referenced symbols in the signature.
-  SignatureDocumentation signature_documentation = 7;
+  // two numbers would have `Signature.language = "java"` and
+  // `Signature.text = "void add(int a, int b)"`. The `language` and `text`
+  // fields are required while `occurrences` can be optionally included to
+  // support hyperlinking referenced symbols in the signature.
+  Signature signature_documentation = 7;
   // (optional) The enclosing symbol if this is a local symbol.  For non-local
   // symbols, the enclosing symbol should be parsed from the `symbol` field
   // using the `Descriptor` grammar.

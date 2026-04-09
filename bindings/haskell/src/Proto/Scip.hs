@@ -14,7 +14,7 @@ module Proto.Scip (
         PositionEncoding'UnrecognizedValue, ProtocolVersion(..),
         ProtocolVersion(), ProtocolVersion'UnrecognizedValue,
         Relationship(), Severity(..), Severity(),
-        Severity'UnrecognizedValue, SignatureDocumentation(), Symbol(),
+        Severity'UnrecognizedValue, Signature(), Symbol(),
         SymbolInformation(), SymbolInformation'Kind(..),
         SymbolInformation'Kind(), SymbolInformation'Kind'UnrecognizedValue,
         SymbolRole(..), SymbolRole(), SymbolRole'UnrecognizedValue,
@@ -3783,57 +3783,55 @@ instance Control.DeepSeq.NFData Severity where
   rnf x__ = Prelude.seq x__ ()
 {- | Fields :
      
-         * 'Proto.Scip_Fields.language' @:: Lens' SignatureDocumentation Data.Text.Text@
-         * 'Proto.Scip_Fields.text' @:: Lens' SignatureDocumentation Data.Text.Text@
-         * 'Proto.Scip_Fields.occurrences' @:: Lens' SignatureDocumentation [Occurrence]@
-         * 'Proto.Scip_Fields.vec'occurrences' @:: Lens' SignatureDocumentation (Data.Vector.Vector Occurrence)@ -}
-data SignatureDocumentation
-  = SignatureDocumentation'_constructor {_SignatureDocumentation'language :: !Data.Text.Text,
-                                         _SignatureDocumentation'text :: !Data.Text.Text,
-                                         _SignatureDocumentation'occurrences :: !(Data.Vector.Vector Occurrence),
-                                         _SignatureDocumentation'_unknownFields :: !Data.ProtoLens.FieldSet}
+         * 'Proto.Scip_Fields.language' @:: Lens' Signature Data.Text.Text@
+         * 'Proto.Scip_Fields.text' @:: Lens' Signature Data.Text.Text@
+         * 'Proto.Scip_Fields.occurrences' @:: Lens' Signature [Occurrence]@
+         * 'Proto.Scip_Fields.vec'occurrences' @:: Lens' Signature (Data.Vector.Vector Occurrence)@ -}
+data Signature
+  = Signature'_constructor {_Signature'language :: !Data.Text.Text,
+                            _Signature'text :: !Data.Text.Text,
+                            _Signature'occurrences :: !(Data.Vector.Vector Occurrence),
+                            _Signature'_unknownFields :: !Data.ProtoLens.FieldSet}
   deriving stock (Prelude.Eq, Prelude.Ord)
-instance Prelude.Show SignatureDocumentation where
+instance Prelude.Show Signature where
   showsPrec _ __x __s
     = Prelude.showChar
         '{'
         (Prelude.showString
            (Data.ProtoLens.showMessageShort __x) (Prelude.showChar '}' __s))
-instance Data.ProtoLens.Field.HasField SignatureDocumentation "language" Data.Text.Text where
+instance Data.ProtoLens.Field.HasField Signature "language" Data.Text.Text where
   fieldOf _
     = (Prelude..)
         (Lens.Family2.Unchecked.lens
-           _SignatureDocumentation'language
-           (\ x__ y__ -> x__ {_SignatureDocumentation'language = y__}))
+           _Signature'language (\ x__ y__ -> x__ {_Signature'language = y__}))
         Prelude.id
-instance Data.ProtoLens.Field.HasField SignatureDocumentation "text" Data.Text.Text where
+instance Data.ProtoLens.Field.HasField Signature "text" Data.Text.Text where
   fieldOf _
     = (Prelude..)
         (Lens.Family2.Unchecked.lens
-           _SignatureDocumentation'text
-           (\ x__ y__ -> x__ {_SignatureDocumentation'text = y__}))
+           _Signature'text (\ x__ y__ -> x__ {_Signature'text = y__}))
         Prelude.id
-instance Data.ProtoLens.Field.HasField SignatureDocumentation "occurrences" [Occurrence] where
+instance Data.ProtoLens.Field.HasField Signature "occurrences" [Occurrence] where
   fieldOf _
     = (Prelude..)
         (Lens.Family2.Unchecked.lens
-           _SignatureDocumentation'occurrences
-           (\ x__ y__ -> x__ {_SignatureDocumentation'occurrences = y__}))
+           _Signature'occurrences
+           (\ x__ y__ -> x__ {_Signature'occurrences = y__}))
         (Lens.Family2.Unchecked.lens
            Data.Vector.Generic.toList
            (\ _ y__ -> Data.Vector.Generic.fromList y__))
-instance Data.ProtoLens.Field.HasField SignatureDocumentation "vec'occurrences" (Data.Vector.Vector Occurrence) where
+instance Data.ProtoLens.Field.HasField Signature "vec'occurrences" (Data.Vector.Vector Occurrence) where
   fieldOf _
     = (Prelude..)
         (Lens.Family2.Unchecked.lens
-           _SignatureDocumentation'occurrences
-           (\ x__ y__ -> x__ {_SignatureDocumentation'occurrences = y__}))
+           _Signature'occurrences
+           (\ x__ y__ -> x__ {_Signature'occurrences = y__}))
         Prelude.id
-instance Data.ProtoLens.Message SignatureDocumentation where
-  messageName _ = Data.Text.pack "scip.SignatureDocumentation"
+instance Data.ProtoLens.Message Signature where
+  messageName _ = Data.Text.pack "scip.Signature"
   packedMessageDescriptor _
     = "\n\
-      \\SYNSignatureDocumentation\DC2\SUB\n\
+      \\tSignature\DC2\SUB\n\
       \\blanguage\CAN\EOT \SOH(\tR\blanguage\DC2\DC2\n\
       \\EOTtext\CAN\ENQ \SOH(\tR\EOTtext\DC22\n\
       \\voccurrences\CAN\STX \ETX(\v2\DLE.scip.OccurrenceR\voccurrencesJ\EOT\b\SOH\DLE\STXJ\EOT\b\ETX\DLE\EOTJ\EOT\b\ACK\DLE\a"
@@ -3848,7 +3846,7 @@ instance Data.ProtoLens.Message SignatureDocumentation where
               (Data.ProtoLens.PlainField
                  Data.ProtoLens.Optional
                  (Data.ProtoLens.Field.field @"language")) ::
-              Data.ProtoLens.FieldDescriptor SignatureDocumentation
+              Data.ProtoLens.FieldDescriptor Signature
         text__field_descriptor
           = Data.ProtoLens.FieldDescriptor
               "text"
@@ -3856,7 +3854,7 @@ instance Data.ProtoLens.Message SignatureDocumentation where
                  Data.ProtoLens.FieldTypeDescriptor Data.Text.Text)
               (Data.ProtoLens.PlainField
                  Data.ProtoLens.Optional (Data.ProtoLens.Field.field @"text")) ::
-              Data.ProtoLens.FieldDescriptor SignatureDocumentation
+              Data.ProtoLens.FieldDescriptor Signature
         occurrences__field_descriptor
           = Data.ProtoLens.FieldDescriptor
               "occurrences"
@@ -3865,7 +3863,7 @@ instance Data.ProtoLens.Message SignatureDocumentation where
               (Data.ProtoLens.RepeatedField
                  Data.ProtoLens.Unpacked
                  (Data.ProtoLens.Field.field @"occurrences")) ::
-              Data.ProtoLens.FieldDescriptor SignatureDocumentation
+              Data.ProtoLens.FieldDescriptor Signature
       in
         Data.Map.fromList
           [(Data.ProtoLens.Tag 4, language__field_descriptor),
@@ -3873,20 +3871,20 @@ instance Data.ProtoLens.Message SignatureDocumentation where
            (Data.ProtoLens.Tag 2, occurrences__field_descriptor)]
   unknownFields
     = Lens.Family2.Unchecked.lens
-        _SignatureDocumentation'_unknownFields
-        (\ x__ y__ -> x__ {_SignatureDocumentation'_unknownFields = y__})
+        _Signature'_unknownFields
+        (\ x__ y__ -> x__ {_Signature'_unknownFields = y__})
   defMessage
-    = SignatureDocumentation'_constructor
-        {_SignatureDocumentation'language = Data.ProtoLens.fieldDefault,
-         _SignatureDocumentation'text = Data.ProtoLens.fieldDefault,
-         _SignatureDocumentation'occurrences = Data.Vector.Generic.empty,
-         _SignatureDocumentation'_unknownFields = []}
+    = Signature'_constructor
+        {_Signature'language = Data.ProtoLens.fieldDefault,
+         _Signature'text = Data.ProtoLens.fieldDefault,
+         _Signature'occurrences = Data.Vector.Generic.empty,
+         _Signature'_unknownFields = []}
   parseMessage
     = let
         loop ::
-          SignatureDocumentation
+          Signature
           -> Data.ProtoLens.Encoding.Growing.Growing Data.Vector.Vector Data.ProtoLens.Encoding.Growing.RealWorld Occurrence
-             -> Data.ProtoLens.Encoding.Bytes.Parser SignatureDocumentation
+             -> Data.ProtoLens.Encoding.Bytes.Parser Signature
         loop x mutable'occurrences
           = do end <- Data.ProtoLens.Encoding.Bytes.atEnd
                if end then
@@ -3952,7 +3950,7 @@ instance Data.ProtoLens.Message SignatureDocumentation where
           (do mutable'occurrences <- Data.ProtoLens.Encoding.Parser.Unsafe.unsafeLiftIO
                                        Data.ProtoLens.Encoding.Growing.new
               loop Data.ProtoLens.defMessage mutable'occurrences)
-          "SignatureDocumentation"
+          "Signature"
   buildMessage
     = \ _x
         -> (Data.Monoid.<>)
@@ -4002,17 +4000,16 @@ instance Data.ProtoLens.Message SignatureDocumentation where
                          (Data.ProtoLens.Field.field @"vec'occurrences") _x))
                    (Data.ProtoLens.Encoding.Wire.buildFieldSet
                       (Lens.Family2.view Data.ProtoLens.unknownFields _x))))
-instance Control.DeepSeq.NFData SignatureDocumentation where
+instance Control.DeepSeq.NFData Signature where
   rnf
     = \ x__
         -> Control.DeepSeq.deepseq
-             (_SignatureDocumentation'_unknownFields x__)
+             (_Signature'_unknownFields x__)
              (Control.DeepSeq.deepseq
-                (_SignatureDocumentation'language x__)
+                (_Signature'language x__)
                 (Control.DeepSeq.deepseq
-                   (_SignatureDocumentation'text x__)
-                   (Control.DeepSeq.deepseq
-                      (_SignatureDocumentation'occurrences x__) ())))
+                   (_Signature'text x__)
+                   (Control.DeepSeq.deepseq (_Signature'occurrences x__) ())))
 {- | Fields :
      
          * 'Proto.Scip_Fields.scheme' @:: Lens' Symbol Data.Text.Text@
@@ -4255,8 +4252,8 @@ instance Control.DeepSeq.NFData Symbol where
          * 'Proto.Scip_Fields.vec'relationships' @:: Lens' SymbolInformation (Data.Vector.Vector Relationship)@
          * 'Proto.Scip_Fields.kind' @:: Lens' SymbolInformation SymbolInformation'Kind@
          * 'Proto.Scip_Fields.displayName' @:: Lens' SymbolInformation Data.Text.Text@
-         * 'Proto.Scip_Fields.signatureDocumentation' @:: Lens' SymbolInformation SignatureDocumentation@
-         * 'Proto.Scip_Fields.maybe'signatureDocumentation' @:: Lens' SymbolInformation (Prelude.Maybe SignatureDocumentation)@
+         * 'Proto.Scip_Fields.signatureDocumentation' @:: Lens' SymbolInformation Signature@
+         * 'Proto.Scip_Fields.maybe'signatureDocumentation' @:: Lens' SymbolInformation (Prelude.Maybe Signature)@
          * 'Proto.Scip_Fields.enclosingSymbol' @:: Lens' SymbolInformation Data.Text.Text@ -}
 data SymbolInformation
   = SymbolInformation'_constructor {_SymbolInformation'symbol :: !Data.Text.Text,
@@ -4264,7 +4261,7 @@ data SymbolInformation
                                     _SymbolInformation'relationships :: !(Data.Vector.Vector Relationship),
                                     _SymbolInformation'kind :: !SymbolInformation'Kind,
                                     _SymbolInformation'displayName :: !Data.Text.Text,
-                                    _SymbolInformation'signatureDocumentation :: !(Prelude.Maybe SignatureDocumentation),
+                                    _SymbolInformation'signatureDocumentation :: !(Prelude.Maybe Signature),
                                     _SymbolInformation'enclosingSymbol :: !Data.Text.Text,
                                     _SymbolInformation'_unknownFields :: !Data.ProtoLens.FieldSet}
   deriving stock (Prelude.Eq, Prelude.Ord)
@@ -4327,7 +4324,7 @@ instance Data.ProtoLens.Field.HasField SymbolInformation "displayName" Data.Text
            _SymbolInformation'displayName
            (\ x__ y__ -> x__ {_SymbolInformation'displayName = y__}))
         Prelude.id
-instance Data.ProtoLens.Field.HasField SymbolInformation "signatureDocumentation" SignatureDocumentation where
+instance Data.ProtoLens.Field.HasField SymbolInformation "signatureDocumentation" Signature where
   fieldOf _
     = (Prelude..)
         (Lens.Family2.Unchecked.lens
@@ -4335,7 +4332,7 @@ instance Data.ProtoLens.Field.HasField SymbolInformation "signatureDocumentation
            (\ x__ y__
               -> x__ {_SymbolInformation'signatureDocumentation = y__}))
         (Data.ProtoLens.maybeLens Data.ProtoLens.defMessage)
-instance Data.ProtoLens.Field.HasField SymbolInformation "maybe'signatureDocumentation" (Prelude.Maybe SignatureDocumentation) where
+instance Data.ProtoLens.Field.HasField SymbolInformation "maybe'signatureDocumentation" (Prelude.Maybe Signature) where
   fieldOf _
     = (Prelude..)
         (Lens.Family2.Unchecked.lens
@@ -4359,8 +4356,8 @@ instance Data.ProtoLens.Message SymbolInformation where
       \\rdocumentation\CAN\ETX \ETX(\tR\rdocumentation\DC28\n\
       \\rrelationships\CAN\EOT \ETX(\v2\DC2.scip.RelationshipR\rrelationships\DC20\n\
       \\EOTkind\CAN\ENQ \SOH(\SO2\FS.scip.SymbolInformation.KindR\EOTkind\DC2!\n\
-      \\fdisplay_name\CAN\ACK \SOH(\tR\vdisplayName\DC2U\n\
-      \\ETBsignature_documentation\CAN\a \SOH(\v2\FS.scip.SignatureDocumentationR\SYNsignatureDocumentation\DC2)\n\
+      \\fdisplay_name\CAN\ACK \SOH(\tR\vdisplayName\DC2H\n\
+      \\ETBsignature_documentation\CAN\a \SOH(\v2\SI.scip.SignatureR\SYNsignatureDocumentation\DC2)\n\
       \\DLEenclosing_symbol\CAN\b \SOH(\tR\SIenclosingSymbol\"\251\t\n\
       \\EOTKind\DC2\DC3\n\
       \\SIUnspecifiedKind\DLE\NUL\DC2\DC2\n\
@@ -4512,7 +4509,7 @@ instance Data.ProtoLens.Message SymbolInformation where
           = Data.ProtoLens.FieldDescriptor
               "signature_documentation"
               (Data.ProtoLens.MessageField Data.ProtoLens.MessageType ::
-                 Data.ProtoLens.FieldTypeDescriptor SignatureDocumentation)
+                 Data.ProtoLens.FieldTypeDescriptor Signature)
               (Data.ProtoLens.OptionalField
                  (Data.ProtoLens.Field.field @"maybe'signatureDocumentation")) ::
               Data.ProtoLens.FieldDescriptor SymbolInformation
@@ -6304,18 +6301,18 @@ packedFileDescriptor
     \\tParameter\DLE\ACK\DC2\b\n\
     \\EOTMeta\DLE\a\DC2\t\n\
     \\ENQLocal\DLE\b\DC2\t\n\
-    \\ENQMacro\DLE\t\SUB\STX\DLE\SOH\"\142\SOH\n\
-    \\SYNSignatureDocumentation\DC2\SUB\n\
+    \\ENQMacro\DLE\t\SUB\STX\DLE\SOH\"\129\SOH\n\
+    \\tSignature\DC2\SUB\n\
     \\blanguage\CAN\EOT \SOH(\tR\blanguage\DC2\DC2\n\
     \\EOTtext\CAN\ENQ \SOH(\tR\EOTtext\DC22\n\
-    \\voccurrences\CAN\STX \ETX(\v2\DLE.scip.OccurrenceR\voccurrencesJ\EOT\b\SOH\DLE\STXJ\EOT\b\ETX\DLE\EOTJ\EOT\b\ACK\DLE\a\"\224\f\n\
+    \\voccurrences\CAN\STX \ETX(\v2\DLE.scip.OccurrenceR\voccurrencesJ\EOT\b\SOH\DLE\STXJ\EOT\b\ETX\DLE\EOTJ\EOT\b\ACK\DLE\a\"\211\f\n\
     \\DC1SymbolInformation\DC2\SYN\n\
     \\ACKsymbol\CAN\SOH \SOH(\tR\ACKsymbol\DC2$\n\
     \\rdocumentation\CAN\ETX \ETX(\tR\rdocumentation\DC28\n\
     \\rrelationships\CAN\EOT \ETX(\v2\DC2.scip.RelationshipR\rrelationships\DC20\n\
     \\EOTkind\CAN\ENQ \SOH(\SO2\FS.scip.SymbolInformation.KindR\EOTkind\DC2!\n\
-    \\fdisplay_name\CAN\ACK \SOH(\tR\vdisplayName\DC2U\n\
-    \\ETBsignature_documentation\CAN\a \SOH(\v2\FS.scip.SignatureDocumentationR\SYNsignatureDocumentation\DC2)\n\
+    \\fdisplay_name\CAN\ACK \SOH(\tR\vdisplayName\DC2H\n\
+    \\ETBsignature_documentation\CAN\a \SOH(\v2\SI.scip.SignatureR\SYNsignatureDocumentation\DC2)\n\
     \\DLEenclosing_symbol\CAN\b \SOH(\tR\SIenclosingSymbol\"\251\t\n\
     \\EOTKind\DC2\DC3\n\
     \\SIUnspecifiedKind\DLE\NUL\DC2\DC2\n\
@@ -6657,7 +6654,7 @@ packedFileDescriptor
     \\ETXXML\DLE\US\DC2\a\n\
     \\ETXXSL\DLE \DC2\b\n\
     \\EOTYAML\DLEJ\DC2\a\n\
-    \\ETXZig\DLE&B-Z+github.com/scip-code/scip/bindings/go/scip/J\138\191\STX\n\
+    \\ETXZig\DLE&B-Z+github.com/scip-code/scip/bindings/go/scip/J\227\190\STX\n\
     \\a\DC2\ENQ\n\
     \\NUL\128\a\SOH\n\
     \\130\EOT\n\
@@ -7215,14 +7212,14 @@ packedFileDescriptor
     \\ENQ\EOT\ACK\STX\STX\SOH\DC2\EOT\223\SOH\t\SI\n\
     \\r\n\
     \\ENQ\EOT\ACK\STX\STX\ETX\DC2\EOT\223\SOH\DC2\DC3\n\
-    \\174\STX\n\
-    \\STX\EOT\a\DC2\ACK\232\SOH\NUL\245\SOH\SOH\SUB\159\STX SignatureDocumentation represents the signature of a symbol as it's displayed\n\
-    \ in API documentation or hover tooltips. It uses a subset of Document's fields\n\
-    \ with the same field numbers for wire compatibility with older indexes that\n\
-    \ encoded signatures using the Document message type.\n\
+    \\161\STX\n\
+    \\STX\EOT\a\DC2\ACK\232\SOH\NUL\245\SOH\SOH\SUB\146\STX Signature represents the signature of a symbol as it's displayed in API\n\
+    \ documentation or hover tooltips. It uses a subset of Document's fields with\n\
+    \ the same field numbers for wire compatibility with older indexes that encoded\n\
+    \ signatures using the Document message type.\n\
     \\n\
     \\v\n\
-    \\ETX\EOT\a\SOH\DC2\EOT\232\SOH\b\RS\n\
+    \\ETX\EOT\a\SOH\DC2\EOT\232\SOH\b\DC1\n\
     \K\n\
     \\EOT\EOT\a\STX\NUL\DC2\EOT\234\SOH\STX\SYN\SUB= The language of the signature, e.g. \"java\", \"go\", \"python\".\n\
     \\n\
@@ -7962,20 +7959,20 @@ packedFileDescriptor
     \\ENQ\EOT\b\STX\EOT\SOH\DC2\EOT\177\ETX\t\NAK\n\
     \\r\n\
     \\ENQ\EOT\b\STX\EOT\ETX\DC2\EOT\177\ETX\CAN\EM\n\
-    \\185\ETX\n\
-    \\EOT\EOT\b\STX\ENQ\DC2\EOT\184\ETX\STX5\SUB\170\ETX (optional) The signature of this symbol as it's displayed in API\n\
+    \\159\ETX\n\
+    \\EOT\EOT\b\STX\ENQ\DC2\EOT\184\ETX\STX(\SUB\144\ETX (optional) The signature of this symbol as it's displayed in API\n\
     \ documentation or in hover tooltips. For example, a Java method that adds\n\
-    \ two numbers would have `SignatureDocumentation.language = \"java\"` and\n\
-    \ `SignatureDocumentation.text = \"void add(int a, int b)\"`. The `language`\n\
-    \ and `text` fields are required while `occurrences` can be optionally\n\
-    \ included to support hyperlinking referenced symbols in the signature.\n\
+    \ two numbers would have `Signature.language = \"java\"` and\n\
+    \ `Signature.text = \"void add(int a, int b)\"`. The `language` and `text`\n\
+    \ fields are required while `occurrences` can be optionally included to\n\
+    \ support hyperlinking referenced symbols in the signature.\n\
     \\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\ENQ\ACK\DC2\EOT\184\ETX\STX\CAN\n\
+    \\ENQ\EOT\b\STX\ENQ\ACK\DC2\EOT\184\ETX\STX\v\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\ENQ\SOH\DC2\EOT\184\ETX\EM0\n\
+    \\ENQ\EOT\b\STX\ENQ\SOH\DC2\EOT\184\ETX\f#\n\
     \\r\n\
-    \\ENQ\EOT\b\STX\ENQ\ETX\DC2\EOT\184\ETX34\n\
+    \\ENQ\EOT\b\STX\ENQ\ETX\DC2\EOT\184\ETX&'\n\
     \\201\b\n\
     \\EOT\EOT\b\STX\ACK\DC2\EOT\202\ETX\STX\RS\SUB\186\b (optional) The enclosing symbol if this is a local symbol.  For non-local\n\
     \ symbols, the enclosing symbol should be parsed from the `symbol` field\n\

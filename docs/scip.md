@@ -312,12 +312,12 @@ symbol to the matching symbol in mixins.
 
 Update registerInverseRelationships on adding a new field here.
 
-### SignatureDocumentation
+### Signature
 
-SignatureDocumentation represents the signature of a symbol as it's displayed
-in API documentation or hover tooltips. It uses a subset of Document's fields
-with the same field numbers for wire compatibility with older indexes that
-encoded signatures using the Document message type.
+Signature represents the signature of a symbol as it's displayed in API
+documentation or hover tooltips. It uses a subset of Document's fields with
+the same field numbers for wire compatibility with older indexes that encoded
+signatures using the Document message type.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -392,7 +392,7 @@ docstring or what package it's defined it.
 | repeated **relationships** | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).
 |  **kind** | Kind | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.
 |  **display_name** | string | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:
-|  **signature_documentation** | SignatureDocumentation | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers would have `SignatureDocumentation.language = "java"` and `SignatureDocumentation.text = "void add(int a, int b)"`. The `language` and `text` fields are required while `occurrences` can be optionally included to support hyperlinking referenced symbols in the signature.
+|  **signature_documentation** | Signature | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers would have `Signature.language = "java"` and `Signature.text = "void add(int a, int b)"`. The `language` and `text` fields are required while `occurrences` can be optionally included to support hyperlinking referenced symbols in the signature.
 |  **enclosing_symbol** | string | (optional) The enclosing symbol if this is a local symbol.  For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.
 
 
