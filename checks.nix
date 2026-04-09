@@ -3,6 +3,19 @@
   version,
 }:
 {
+  github-actions = pkgs.stdenv.mkDerivation {
+    pname = "scip-github-actions";
+    inherit version;
+    src = ./.;
+    nativeBuildInputs = [ pkgs.action-validator ];
+    buildPhase = ''
+      for f in .github/workflows/*.yml .github/workflows/*.yaml; do
+        [ -e "$f" ] && action-validator -v "$f"
+      done
+    '';
+    installPhase = "touch $out";
+  };
+
   formatting = pkgs.stdenv.mkDerivation {
     pname = "scip-formatting";
     inherit version;
