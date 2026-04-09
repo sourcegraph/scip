@@ -13,10 +13,18 @@ jobs:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
       - id: checks
-        run: echo "result=$(nix eval .#checks.x86_64-linux --apply builtins.attrNames --json)" >> "$GITHUB_OUTPUT"
+        run: >
+          echo "result=$(
+            nix eval .#checks.x86_64-linux --apply builtins.attrNames --json
+          )" >> "$GITHUB_OUTPUT"
       - id: packages
-        run: |
-          echo "result=$(nix eval .#packages.x86_64-linux --apply 'ps: builtins.filter (n: n != "default") (builtins.attrNames ps)' --json)" >> "$GITHUB_OUTPUT"
+        run: >
+          echo "result=$(
+            nix eval .#packages.x86_64-linux
+              --apply builtins.attrNames
+              --apply 'builtins.filter (n: n != "default")'
+              --json
+          )" >> "$GITHUB_OUTPUT"
 
   checks:
     needs: list
@@ -30,7 +38,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v13
       - run: nix build .#checks.x86_64-linux.${{ matrix.check }}
 
-  runs:
+  packages:
     needs: list
     runs-on: ubuntu-latest
     strategy:
@@ -45,7 +53,7 @@ jobs:
 
   nix-checks-pass:
     if: always()
-    needs: [checks, runs]
+    needs: [checks, packages]
     runs-on: ubuntu-latest
     steps:
       - if: >-
