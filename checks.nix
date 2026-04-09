@@ -6,10 +6,10 @@
   github-actions = pkgs.stdenv.mkDerivation {
     pname = "scip-github-actions";
     inherit version;
-    src = ./.github/workflows;
+    src = ./.;
     nativeBuildInputs = [ pkgs.action-validator ];
     buildPhase = ''
-      for f in *.yml *.yaml; do
+      for f in .github/workflows/*.yml .github/workflows/*.yaml; do
         [ -e "$f" ] && action-validator -v "$f"
       done
     '';
