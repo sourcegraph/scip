@@ -4,19 +4,26 @@ on:
   pull_request:
 
 jobs:
+  list:
+    runs-on: ubuntu-latest
+    outputs:
+      checks: ${{ steps.checks.outputs.result }}
+      packages: ${{ steps.packages.outputs.result }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - id: checks
+        run: echo "result=$(nix eval .#checks.x86_64-linux --apply builtins.attrNames --json)" >> "$GITHUB_OUTPUT"
+      - id: packages
+        run: |
+          echo "result=$(nix eval .#packages.x86_64-linux --apply 'ps: builtins.filter (n: n != "default") (builtins.attrNames ps)' --json)" >> "$GITHUB_OUTPUT"
+
   checks:
+    needs: list
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        check:
-          - github-actions
-          - formatting
-          - go-bindings
-          - haskell-bindings
-          - reprolang
-          - reprolang-generated
-          - rust-bindings
-          - typescript-bindings
+        check: ${{ fromJSON(needs.list.outputs.checks) }}
     steps:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
@@ -24,12 +31,11 @@ jobs:
       - run: nix build .#checks.x86_64-linux.${{ matrix.check }}
 
   runs:
+    needs: list
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package:
-          - scip
-          - proto-generate
+        package: ${{ fromJSON(needs.list.outputs.packages) }}
     steps:
       - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v21
