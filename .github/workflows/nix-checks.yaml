@@ -9,6 +9,7 @@ jobs:
     strategy:
       matrix:
         check:
+          - github-actions
           - formatting
           - go-bindings
           - haskell-bindings
