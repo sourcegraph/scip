@@ -57,6 +57,16 @@ func FormatSnapshots(
 	if documentErrors != nil {
 		return nil, documentErrors
 	}
+
+	if len(index.ExternalSymbols) > 0 {
+		formatted := formatExternalSymbols(index.ExternalSymbols, symbolFormatter)
+		result = append(result, scip.NewSourceFile(
+			filepath.Join(localSourcesRoot, "external_symbols.txt"),
+			"external_symbols.txt",
+			formatted,
+		))
+	}
+
 	return result, nil
 }
 
@@ -153,23 +163,7 @@ func FormatSnapshot(
 					writeDocumentation(&b, documentation, prefix, false)
 				}
 
-				sort.SliceStable(info.Relationships, func(i, j int) bool {
-					return info.Relationships[i].Symbol < info.Relationships[j].Symbol
-				})
-				for _, relationship := range info.Relationships {
-					b.WriteString(prefix)
-					b.WriteString("relationship ")
-					b.WriteString(formatSymbol(relationship.Symbol))
-					if relationship.IsImplementation {
-						b.WriteString(" implementation")
-					}
-					if relationship.IsReference {
-						b.WriteString(" reference")
-					}
-					if relationship.IsTypeDefinition {
-						b.WriteString(" type_definition")
-					}
-				}
+				writeRelationships(&b, info.Relationships, prefix, formatSymbol)
 			}
 
 			for _, diagnostic := range occ.Diagnostics {
@@ -190,6 +184,56 @@ func FormatSnapshot(
 		}
 	}
 	return b.String(), formattingError
+}
+
+func formatExternalSymbols(symbols []*scip.SymbolInformation, formatter scip.SymbolFormatter) string {
+	var b strings.Builder
+
+	sorted := make([]*scip.SymbolInformation, len(symbols))
+	copy(sorted, symbols)
+	sort.Slice(sorted, func(i, j int) bool {
+		return sorted[i].Symbol < sorted[j].Symbol
+	})
+
+	formatSymbol := func(symbol string) string {
+		formatted, err := formatter.Format(symbol)
+		if err != nil {
+			return symbol
+		}
+		return formatted
+	}
+
+	for i, sym := range sorted {
+		if i > 0 {
+			b.WriteString("\n")
+		}
+		b.WriteString(formatSymbol(sym.Symbol))
+		writeRelationships(&b, sym.Relationships, "\n  ", formatSymbol)
+	}
+
+	return b.String()
+}
+
+func writeRelationships(b *strings.Builder, relationships []*scip.Relationship, prefix string, formatSymbol func(string) string) {
+	sorted := make([]*scip.Relationship, len(relationships))
+	copy(sorted, relationships)
+	sort.SliceStable(sorted, func(i, j int) bool {
+		return sorted[i].Symbol < sorted[j].Symbol
+	})
+	for _, relationship := range sorted {
+		b.WriteString(prefix)
+		b.WriteString("relationship ")
+		b.WriteString(formatSymbol(relationship.Symbol))
+		if relationship.IsImplementation {
+			b.WriteString(" implementation")
+		}
+		if relationship.IsReference {
+			b.WriteString(" reference")
+		}
+		if relationship.IsTypeDefinition {
+			b.WriteString(" type_definition")
+		}
+	}
 }
 
 func writeMultiline(b *strings.Builder, prefix string, paragraph string) {
