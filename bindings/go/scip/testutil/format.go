@@ -186,7 +186,9 @@ func FormatSnapshot(
 	return b.String(), formattingError
 }
 
-func formatExternalSymbols(symbols []*scip.SymbolInformation, formatter scip.SymbolFormatter) string {
+func formatExternalSymbols(
+	symbols []*scip.SymbolInformation, formatter scip.SymbolFormatter,
+) string {
 	var b strings.Builder
 
 	sorted := make([]*scip.SymbolInformation, len(symbols))
@@ -214,7 +216,12 @@ func formatExternalSymbols(symbols []*scip.SymbolInformation, formatter scip.Sym
 	return b.String()
 }
 
-func writeRelationships(b *strings.Builder, relationships []*scip.Relationship, prefix string, formatSymbol func(string) string) {
+func writeRelationships(
+	b *strings.Builder,
+	relationships []*scip.Relationship,
+	prefix string,
+	formatSymbol func(string) string,
+) {
 	sorted := make([]*scip.Relationship, len(relationships))
 	copy(sorted, relationships)
 	sort.SliceStable(sorted, func(i, j int) bool {
