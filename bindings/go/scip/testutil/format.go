@@ -41,12 +41,9 @@ func FormatSnapshots(
 	for _, document := range index.Documents {
 		sourceFilePath := filepath.Join(localSourcesRoot, document.RelativePath)
 		snapshot, err := FormatSnapshot(document, commentSyntax, symbolFormatter, sourceFilePath)
-		err = symbolFormatter.OnError(err)
-		if err != nil {
+		if err = symbolFormatter.OnError(err); err != nil {
 			documentErrors = errors.Join(
-				documentErrors,
-				fmt.Errorf("%s: %w", document.RelativePath, err),
-			)
+				documentErrors, fmt.Errorf("%s: %w", document.RelativePath, err))
 		}
 		sourceFile := scip.NewSourceFile(sourceFilePath,
 			document.RelativePath,
@@ -54,14 +51,11 @@ func FormatSnapshots(
 		)
 		result = append(result, sourceFile)
 	}
-	if documentErrors != nil {
-		return nil, documentErrors
-	}
-
 	if len(index.ExternalSymbols) > 0 {
 		formatted, err := formatExternalSymbols(index.ExternalSymbols, symbolFormatter)
 		if err = symbolFormatter.OnError(err); err != nil {
-			return nil, fmt.Errorf("external_symbols: %w", err)
+			documentErrors = errors.Join(
+				documentErrors, fmt.Errorf("external_symbols: %w", err))
 		}
 		result = append(result, scip.NewSourceFile(
 			filepath.Join(localSourcesRoot, "external_symbols.txt"),
@@ -70,7 +64,7 @@ func FormatSnapshots(
 		))
 	}
 
-	return result, nil
+	return result, documentErrors
 }
 
 // FormatSnapshot renders the provided SCIP index into a pretty-printed text format
