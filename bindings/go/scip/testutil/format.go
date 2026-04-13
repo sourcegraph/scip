@@ -59,7 +59,10 @@ func FormatSnapshots(
 	}
 
 	if len(index.ExternalSymbols) > 0 {
-		formatted := formatExternalSymbols(index.ExternalSymbols, symbolFormatter)
+		formatted, err := formatExternalSymbols(index.ExternalSymbols, symbolFormatter)
+		if err = symbolFormatter.OnError(err); err != nil {
+			return nil, fmt.Errorf("external_symbols: %w", err)
+		}
 		result = append(result, scip.NewSourceFile(
 			filepath.Join(localSourcesRoot, "external_symbols.txt"),
 			"external_symbols.txt",
@@ -188,8 +191,9 @@ func FormatSnapshot(
 
 func formatExternalSymbols(
 	symbols []*scip.SymbolInformation, formatter scip.SymbolFormatter,
-) string {
+) (string, error) {
 	var b strings.Builder
+	var formattingError error
 
 	sorted := make([]*scip.SymbolInformation, len(symbols))
 	copy(sorted, symbols)
@@ -200,6 +204,8 @@ func formatExternalSymbols(
 	formatSymbol := func(symbol string) string {
 		formatted, err := formatter.Format(symbol)
 		if err != nil {
+			formattingError = errors.Join(
+				formattingError, fmt.Errorf("%s: %w", symbol, err))
 			return symbol
 		}
 		return formatted
@@ -213,7 +219,7 @@ func formatExternalSymbols(
 		writeRelationships(&b, sym.Relationships, "\n  ", formatSymbol)
 	}
 
-	return b.String()
+	return b.String(), formattingError
 }
 
 func writeRelationships(
