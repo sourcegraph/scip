@@ -1,10 +1,10 @@
  # docstring: local is a local method
  definition local Example
 #           ^^^^^^^^^^^^^ definition local Example
-#           documentation
-#           > signature of Example
-#           documentation
-#           > : local is a local method
+#                         documentation
+#                         > signature of Example
+#                         documentation
+#                         > : local is a local method
  reference local Example
 #          ^^^^^^^^^^^^^ reference local Example
  

@@ -132,7 +132,7 @@ func FormatSnapshot(
 			b.WriteRune(' ')
 			b.WriteString(formatSymbol(occ.Symbol))
 
-			prefix := "\n" + commentSyntax + strings.Repeat(" ", int(pos.Start.Character))
+			prefix := "\n" + commentSyntax + strings.Repeat(" ", int(pos.End.Character)+1)
 
 			hasOverrideDocumentation := len(occ.OverrideDocumentation) > 0
 			if hasOverrideDocumentation {
@@ -145,6 +145,18 @@ func FormatSnapshot(
 					b.WriteString(prefix)
 					b.WriteString("kind ")
 					b.WriteString(info.Kind.String())
+				}
+
+				if info.DisplayName != "" {
+					b.WriteString(prefix)
+					b.WriteString("display_name ")
+					b.WriteString(info.DisplayName)
+				}
+
+				if info.SignatureDocumentation != nil && info.SignatureDocumentation.Text != "" {
+					b.WriteString(prefix)
+					b.WriteString("signature_documentation")
+					writeMultiline(&b, prefix, info.SignatureDocumentation.Text)
 				}
 
 				for _, documentation := range info.Documentation {
