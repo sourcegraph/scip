@@ -132,7 +132,7 @@ func FormatSnapshot(
 			b.WriteRune(' ')
 			b.WriteString(formatSymbol(occ.Symbol))
 
-			prefix := "\n" + commentSyntax + strings.Repeat(" ", int(pos.Start.Character))
+			prefix := "\n" + commentSyntax + strings.Repeat(" ", int(pos.End.Character)+1)
 
 			hasOverrideDocumentation := len(occ.OverrideDocumentation) > 0
 			if hasOverrideDocumentation {

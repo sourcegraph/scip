@@ -1,22 +1,22 @@
  definition local sym1
 #           ^^^^^^^^^^ definition local sym1
-#           documentation
-#           > signature of sym1
+#                      documentation
+#                      > signature of sym1
  definition local sym2
 #           ^^^^^^^^^^ definition local sym2
-#           documentation
-#           > signature of sym2
+#                      documentation
+#                      > signature of sym2
  definition local sym3
 #           ^^^^^^^^^^ definition local sym3
-#           documentation
-#           > signature of sym3
+#                      documentation
+#                      > signature of sym3
  definition local sym4 implements local sym1 references local sym2 type_defines local sym3
 #           ^^^^^^^^^^ definition local sym4
-#           documentation
-#           > signature of sym4
-#           relationship local sym1 implementation
-#           relationship local sym2 reference
-#           relationship local sym3 type_definition
+#                      documentation
+#                      > signature of sym4
+#                      relationship local sym1 implementation
+#                      relationship local sym2 reference
+#                      relationship local sym3 type_definition
 #                                 ^^^^^^^^^^ reference local sym1
 #                                                       ^^^^^^^^^^ reference local sym2
 #                                                                               ^^^^^^^^^^ reference local sym3

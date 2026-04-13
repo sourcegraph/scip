@@ -1,11 +1,11 @@
  definition local sym1
 #           ^^^^^^^^^^ definition local sym1
-#           documentation
-#           > signature of sym1
+#                      documentation
+#                      > signature of sym1
  definition local sym2 type_defines local sym1
 #           ^^^^^^^^^^ definition local sym2
-#           documentation
-#           > signature of sym2
-#           relationship local sym1 type_definition
+#                      documentation
+#                      > signature of sym2
+#                      relationship local sym1 type_definition
 #                                   ^^^^^^^^^^ reference local sym1
  
