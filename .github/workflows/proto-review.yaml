@@ -5,6 +5,10 @@ on:
     paths: [scip.proto]
   pull_request_review:
 
+permissions:
+  pull-requests: write
+  statuses: write
+
 jobs:
   proto-review:
     runs-on: ubuntu-latest
