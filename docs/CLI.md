@@ -18,7 +18,7 @@ USAGE:
    scip [global options] command [command options] [arguments...]
 
 VERSION:
-   v0.7.0
+   v0.7.1
 
 DESCRIPTION:
    For more details, see the project README at:
@@ -55,6 +55,9 @@ DESCRIPTION:
 
    You may want to filter the output using `grep -v <pattern>`
    to narrow down on certain classes of errors.
+
+OPTIONS:
+   --help, -h  show help
 ```
 
 ## `scip print`
@@ -95,12 +98,14 @@ DESCRIPTION:
    along with 'git diff' or equivalent, or you can use the dedicated
    'test' subcommand for more targeted checks.
 
+
 OPTIONS:
    --from value            Path to SCIP index file (default: "index.scip")
    --to value              Path to output directory for snapshot files (default: "scip-snapshot")
-   --project-root value    Override project root in the SCIP file. For example, this can be helpful when the SCIP index was created inside a Docker image or created on another computer
+   --project-root value    Override project root in the SCIP file. This can be helpful when the SCIP index was created on another computer
    --strict                If true, fail fast on errors (default: true)
    --comment-syntax value  Comment syntax to use for snapshot files (default: "//")
+   --help, -h              show help
 ```
 
 ## `scip test`
@@ -113,11 +118,12 @@ USAGE:
    scip test [command options] [arguments...]
 
 DESCRIPTION:
-   Validates whether the SCIP data as
-   in a given SCIP index matches that specified in human-readable test files,
-   using syntax similar to the 'snapshot subcommand'. Test file syntax reference:
+   Validates whether the SCIP data present in an index
+   matches that specified in human-readable test files, using syntax
+   similar to the 'snapshot' subcommand. Test file syntax reference:
 
-       https://github.com/scip-code/scip/blob/v0.7.0/docs/test_file_format.md
+       https://github.com/scip-code/scip/blob/v0.7.1
+   /docs/test_file_format.md
 
    The test files are located based on the relative_path field
    in the SCIP document, interpreted relative to the the directory
@@ -130,6 +136,7 @@ OPTIONS:
    --from value                                           Path to SCIP index file (default: "index.scip")
    --comment-syntax value                                 Comment syntax to use for snapshot files (default: "//")
    --filter value, -f value [ --filter value, -f value ]  Explicit list of test files to check. Can be specified multiple times. If not specified, all files are tested.
+   --check-documents                                      Whether or not to validate whether every file in the test directory has a correlating document in the SCIP index. (default: false)
    --help, -h                                             show help
 ```
 
@@ -143,7 +150,9 @@ USAGE:
    scip stats [command options] [arguments...]
 
 OPTIONS:
-   --from value  Path to SCIP index file (default: index.scip)
+   --from value          Path to SCIP index file (default: "index.scip")
+   --project-root value  Override project root in the SCIP file. This can be helpful when the SCIP index was created on another computer
+   --help, -h            show help
 ```
 
 ## `scip expt-convert`

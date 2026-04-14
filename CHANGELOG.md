@@ -1,5 +1,14 @@
 # ChangeLog
 
+## v0.7.1
+
+Go bindings:
+
+- Render external symbols in snapshot outputs.
+  (https://github.com/scip-code/scip/pull/390)
+- Render `display_name` and `signature_documentation` in snapshots.
+  (https://github.com/scip-code/scip/pull/391)
+
 ## v0.7.0
 
 General:
