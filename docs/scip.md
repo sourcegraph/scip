@@ -66,7 +66,7 @@ Document defines the metadata about a source file on disk.
 |  **relative_path** | string | (Required) Unique path to the text document.
 | repeated **occurrences** | Occurrence | Occurrences that appear in this file.
 | repeated **symbols** | SymbolInformation | Symbols that are "defined" within this document.
-|  **text** | string | (optional) Text contents of the this document. Indexers are not expected to include the text by default. It's preferrable that clients read the text contents from the file system by resolving the absolute path from joining `Index.metadata.project_root` and `Document.relative_path`. This field was introduced to support `SymbolInformation.signature_documentation`, but it can be used for other purposes as well, for example testing or when working with virtual/in-memory documents.
+|  **text** | string | (optional) Text contents of this document. Indexers are not expected to include the text by default. It's preferable that clients read the text contents from the file system by resolving the absolute path from joining `Index.metadata.project_root` and `Document.relative_path`. This field can be useful for testing or when working with virtual/in-memory documents.
 |  **position_encoding** | PositionEncoding | Specifies the encoding used for source ranges in this Document.
 
 
@@ -312,6 +312,21 @@ symbol to the matching symbol in mixins.
 
 Update registerInverseRelationships on adding a new field here.
 
+### Signature
+
+Signature represents the signature of a symbol as it's displayed in API
+documentation or hover tooltips. It uses a subset of Document's fields with
+the same field numbers for wire compatibility with older indexes that encoded
+signatures using the Document message type.
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|  **language** | string | The language of the signature, e.g. "java", "go", "python".
+|  **text** | string | The text content of the signature, e.g. "void add(int a, int b)".
+| repeated **occurrences** | Occurrence | (optional) Occurrences within the signature text that reference other symbols, enabling hyperlinking of types in the signature. Ranges are relative to the `text` field.
+
+
+
 ### Symbol
 
 Symbol is similar to a URI, it identifies a class, method, or a local
@@ -377,7 +392,7 @@ docstring or what package it's defined it.
 | repeated **relationships** | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).
 |  **kind** | Kind | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.
 |  **display_name** | string | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:
-|  **signature_documentation** | Document | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers this would have `Document.language = "java"` and `Document.text = "void add(int a, int b)". The `language` and `text` fields are required while other fields such as `Documentation.occurrences` can be optionally included to support hyperlinking referenced symbols in the signature.
+|  **signature_documentation** | Signature | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers would have `Signature.language = "java"` and `Signature.text = "void add(int a, int b)"`. The `language` and `text` fields are required while `occurrences` can be optionally included to support hyperlinking referenced symbols in the signature.
 |  **enclosing_symbol** | string | (optional) The enclosing symbol if this is a local symbol.  For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.
 
 
