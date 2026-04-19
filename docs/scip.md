@@ -374,11 +374,15 @@ docstring or what package it's defined it.
 | ---- | ---- | ----------- |
 |  **symbol** | string | Identifier of this symbol, which can be referenced from `Occurence.symbol`. The string must be formatted according to the grammar in `Symbol`.
 | repeated **documentation** | string | (optional, but strongly recommended) The markdown-formatted documentation for this symbol. Use `SymbolInformation.signature_documentation` to document the method/class/type signature of this symbol. Due to historical reasons, indexers may include signature documentation in this field by rendering markdown code blocks. New indexers should only include non-code documentation in this field, for example docstrings.
-| repeated **relationships** | Relationship | (optional) Relationships to other symbols (e.g., implements, type definition).
+| repeated **relationships** | Relationship | Deprecated: Use the typed relationship fields instead (implementations, references, type_definitions, definition, enclosing_symbol).
 |  **kind** | Kind | The kind of this symbol. Use this field instead of `SymbolDescriptor.Suffix` to determine whether something is, for example, a class or a method.
 |  **display_name** | string | (optional) The name of this symbol as it should be displayed to the user. For example, the symbol "com/example/MyClass#myMethod(+1)." should have the display name "myMethod". The `symbol` field is not a reliable source of the display name for several reasons:
 |  **signature_documentation** | Document | (optional) The signature of this symbol as it's displayed in API documentation or in hover tooltips. For example, a Java method that adds two numbers this would have `Document.language = "java"` and `Document.text = "void add(int a, int b)". The `language` and `text` fields are required while other fields such as `Documentation.occurrences` can be optionally included to support hyperlinking referenced symbols in the signature.
-|  **enclosing_symbol** | string | (optional) The enclosing symbol if this is a local symbol.  For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.
+|  **enclosing_symbol** | string | (optional) The enclosing symbol if this is a local symbol. For non-local symbols, the enclosing symbol should be parsed from the `symbol` field using the `Descriptor` grammar.
+| repeated **implementations** | string | (optional) Symbols that this symbol implements or overrides. For "Find implementations" on the target symbol, this symbol will be included in the results.
+| repeated **references** | string | (optional) Symbols whose references should be included when performing "Find references" on this symbol.
+| repeated **type_definitions** | string | (optional) Symbols that this symbol is a type definition for. Used for "Go to type definition" navigation.
+|  **definition** | string | (optional) Allows overriding the behavior of "Go to definition" and "Find references" for symbols which do not have a definition of their own or could potentially have multiple definitions.
 
 
 
@@ -400,23 +404,70 @@ the display name for several reasons:
 
 Additional notes on **enclosing_symbol**:
 
-(optional) The enclosing symbol if this is a local symbol.  For non-local
+(optional) The enclosing symbol if this is a local symbol. For non-local
 symbols, the enclosing symbol should be parsed from the `symbol` field
 using the `Descriptor` grammar.
 
-The primary use-case for this field is to allow local symbol to be displayed
-in a symbol hierarchy for API documentation. It's OK to leave this field
-empty for local variables since local variables usually don't belong in API
-documentation. However, in the situation that you wish to include a local
-symbol in the hierarchy, then you can use `enclosing_symbol` to locate the
-"parent" or "owner" of this local symbol. For example, a Java indexer may
-choose to use local symbols for private class fields while providing an
-`enclosing_symbol` to reference the enclosing class to allow the field to
-be part of the class documentation hierarchy. From the perspective of an
-author of an indexer, the decision to use a local symbol or global symbol
-should exclusively be determined whether the local symbol is accessible
-outside the document, not by the capability to find the enclosing
-symbol.
+The primary use-case for this field is to allow local symbols to be
+displayed in a symbol hierarchy for API documentation. It's OK to leave
+this field empty for local variables since local variables usually don't
+belong in API documentation. However, in the situation that you wish to
+include a local symbol in the hierarchy, then you can use
+`enclosing_symbol` to locate the "parent" or "owner" of this local symbol.
+For example, a Java indexer may choose to use local symbols for private
+class fields while providing an `enclosing_symbol` to reference the
+enclosing class to allow the field to be part of the class documentation
+hierarchy. From the perspective of an author of an indexer, the decision
+to use a local symbol or global symbol should exclusively be determined
+by whether the local symbol is accessible outside the document, not by the
+capability to find the enclosing symbol.
+
+
+Additional notes on **implementations**:
+
+(optional) Symbols that this symbol implements or overrides.
+For "Find implementations" on the target symbol, this symbol will be
+included in the results.
+
+For example, consider the following TypeScript code:
+```ts
+interface Animal {
+  sound(): string
+}
+class Dog implements Animal {
+  public sound(): string { return "woof" }
+}
+```
+Here, `Dog#` would list `Animal#` in `implementations`, and `Dog#sound()`
+would list `Animal#sound()` in `implementations`.
+
+
+Additional notes on **references**:
+
+(optional) Symbols whose references should be included when performing
+"Find references" on this symbol.
+
+Continuing the TypeScript example above, `Dog#sound()` would list
+`Animal#sound()` in `references`. This means doing "Find references" on
+`Dog#sound()` would also include references to `Animal#sound()`, and
+vice-versa.
+
+It's common for a symbol to appear in both `implementations` and
+`references`, but not always. For example, `Dog#` lists `Animal#` in
+`implementations` but NOT in `references`, because "Find references" on
+`Animal#` should not return `Dog#`.
+
+
+
+Additional notes on **definition**:
+
+(optional) Allows overriding the behavior of "Go to definition" and
+"Find references" for symbols which do not have a definition of their own
+or could potentially have multiple definitions.
+
+For example, in a language with single inheritance and some form of mixins,
+you can use `definition` to relate the symbol to the matching symbol in an
+ancestor class.
 
 #### Kind
 
