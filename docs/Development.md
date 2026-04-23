@@ -80,13 +80,13 @@ go test ./cmd/scip -update-snapshots
 
 ## Release a new version
 
-First, add release notes to the [CHANGELOG](../CHANGELOG.md). Next, update the
-version in `cmd/scip/version.txt`, `bindings/rust/Cargo.toml`,
-`bindings/rust/Cargo.lock`, and `docs/CLI.md`
+Update the version in `cmd/scip/version.txt`, `bindings/rust/Cargo.toml`,
+`bindings/rust/Cargo.lock`, and `docs/CLI.md`, then land a commit with those
+changes.
 
-After landing a commit with those two changes, trigger the
+After the commit is on `main`, trigger the
 [release workflow](/.github/workflows/release.yml) from the
 Actions tab on GitHub, providing the version number (e.g. `0.7.0`).
-The workflow will validate the CHANGELOG and version.txt, create and push
-tags, create the GitHub release, publish the Rust crate, and build and
-upload CLI binaries.
+The workflow will validate version.txt, create and push tags, create a draft
+GitHub release (with auto-generated notes), publish the Rust crate, build and
+upload CLI binaries, and finally mark the release as non-draft.
