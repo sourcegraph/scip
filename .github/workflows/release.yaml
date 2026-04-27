@@ -18,13 +18,6 @@ jobs:
         with:
           ref: main
 
-      - name: Validate CHANGELOG entry
-        run: |
-          if ! grep -q "## v${{ inputs.version }}" CHANGELOG.md; then
-            echo "::error::Missing CHANGELOG entry for v${{ inputs.version }}"
-            exit 1
-          fi
-
       - name: Validate version.txt
         run: |
           if ! grep -q "${{ inputs.version }}" cmd/scip/version.txt; then
@@ -36,22 +29,34 @@ jobs:
         run: |
           TAG="v${{ inputs.version }}"
           BINDINGS_TAG="bindings/go/scip/$TAG"
-          git tag "$TAG" 2>/dev/null || echo "Tag $TAG already exists"
-          git tag "$BINDINGS_TAG" 2>/dev/null || echo "Tag $BINDINGS_TAG already exists"
+          for t in "$TAG" "$BINDINGS_TAG"; do
+            if git rev-parse "$t" &>/dev/null; then
+              if [ "$(git rev-parse "$t"^{})" != "$(git rev-parse HEAD)" ]; then
+                echo "::error::Tag $t exists but points to a different commit"
+                exit 1
+              fi
+              echo "Tag $t already exists at HEAD, skipping"
+            else
+              git tag "$t"
+            fi
+          done
           git push origin "$TAG" "$BINDINGS_TAG" 2>/dev/null || echo "Tags already pushed"
 
-      - name: Create GitHub release
+      - name: Create draft GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="v${{ inputs.version }}"
           if gh release view "$TAG" &>/dev/null; then
-            echo "Release $TAG already exists, skipping creation"
+            DRAFT=$(gh release view "$TAG" --json isDraft -q '.isDraft')
+            if [ "$DRAFT" = "false" ]; then
+              echo "::error::Release $TAG is already published"
+              exit 1
+            fi
+            echo "Draft release $TAG already exists, skipping creation"
             exit 0
           fi
           {
-            echo "See the [CHANGELOG](https://github.com/scip-code/scip/blob/main/CHANGELOG.md) to see what's new in scip $TAG."
-            echo ''
             echo 'Download the CLI for your current platform using:'
             echo ''
             echo '```bash'
@@ -62,7 +67,7 @@ jobs:
             echo '  bash -c '"'"'curl -L "https://github.com/scip-code/scip/releases/download/$TAG/scip-$OS-$ARCH.tar.gz"'"'"' \'
             echo '| tar xzf - scip'
             echo '```'
-          } | gh release create "$TAG" --title "scip $TAG" --notes-file -
+          } | gh release create "$TAG" --title "scip $TAG" --generate-notes --draft --notes-file -
 
   release-crate:
     needs: publish
@@ -135,4 +140,23 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ASSET: ${{ matrix.asset_name }}
-        run: gh release upload "v${{ inputs.version }}" "$ASSET.tar.gz" "$ASSET.tar.gz.sha256" --clobber
+        run: |
+          TAG="v${{ inputs.version }}"
+          DRAFT=$(gh release view "$TAG" --json isDraft -q '.isDraft')
+          if [ "$DRAFT" = "false" ]; then
+            echo "::error::Release $TAG is already published, refusing to upload"
+            exit 1
+          fi
+          gh release upload "$TAG" "$ASSET.tar.gz" "$ASSET.tar.gz.sha256" --clobber
+
+  finalize-release:
+    needs: [release-crate, build-go-binaries]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Mark release as non-draft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release edit "v${{ inputs.version }}" --draft=false
