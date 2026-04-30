@@ -1399,7 +1399,7 @@ func (x SymbolInformation_Kind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SymbolInformation_Kind.Descriptor instead.
 func (SymbolInformation_Kind) EnumDescriptor() ([]byte, []int) {
-	return file_scip_proto_rawDescGZIP(), []int{7, 0}
+	return file_scip_proto_rawDescGZIP(), []int{8, 0}
 }
 
 // Index represents a complete SCIP index for a workspace this is rooted at a
@@ -1640,13 +1640,11 @@ type Document struct {
 	// but have a reference and are defined by some other symbol (see
 	// Relationship.is_definition).
 	Symbols []*SymbolInformation `protobuf:"bytes,3,rep,name=symbols,proto3" json:"symbols,omitempty"`
-	// (optional) Text contents of the this document. Indexers are not expected to
-	// include the text by default. It's preferrable that clients read the text
+	// (optional) Text contents of this document. Indexers are not expected to
+	// include the text by default. It's preferable that clients read the text
 	// contents from the file system by resolving the absolute path from joining
-	// `Index.metadata.project_root` and `Document.relative_path`. This field was
-	// introduced to support `SymbolInformation.signature_documentation`, but it
-	// can be used for other purposes as well, for example testing or when working
-	// with virtual/in-memory documents.
+	// `Index.metadata.project_root` and `Document.relative_path`. This field
+	// can be useful for testing or when working with virtual/in-memory documents.
 	Text string `protobuf:"bytes,5,opt,name=text,proto3" json:"text,omitempty"`
 	// Specifies the encoding used for source ranges in this Document.
 	//
@@ -1960,6 +1958,75 @@ func (x *Descriptor) GetSuffix() Descriptor_Suffix {
 	return Descriptor_UnspecifiedSuffix
 }
 
+// Signature represents the signature of a symbol as it's displayed in API
+// documentation or hover tooltips. It uses a subset of Document's fields with
+// the same field numbers for wire compatibility with older indexes that encoded
+// signatures using the Document message type.
+type Signature struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The language of the signature, e.g. "java", "go", "python".
+	Language string `protobuf:"bytes,4,opt,name=language,proto3" json:"language,omitempty"`
+	// The text content of the signature, e.g. "void add(int a, int b)".
+	Text string `protobuf:"bytes,5,opt,name=text,proto3" json:"text,omitempty"`
+	// (optional) Occurrences within the signature text that reference other
+	// symbols, enabling hyperlinking of types in the signature. Ranges are
+	// relative to the `text` field.
+	Occurrences   []*Occurrence `protobuf:"bytes,2,rep,name=occurrences,proto3" json:"occurrences,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Signature) Reset() {
+	*x = Signature{}
+	mi := &file_scip_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Signature) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Signature) ProtoMessage() {}
+
+func (x *Signature) ProtoReflect() protoreflect.Message {
+	mi := &file_scip_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Signature.ProtoReflect.Descriptor instead.
+func (*Signature) Descriptor() ([]byte, []int) {
+	return file_scip_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *Signature) GetLanguage() string {
+	if x != nil {
+		return x.Language
+	}
+	return ""
+}
+
+func (x *Signature) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+func (x *Signature) GetOccurrences() []*Occurrence {
+	if x != nil {
+		return x.Occurrences
+	}
+	return nil
+}
+
 // SymbolInformation defines metadata about a symbol, such as the symbol's
 // docstring or what package it's defined it.
 type SymbolInformation struct {
@@ -1992,11 +2059,11 @@ type SymbolInformation struct {
 	DisplayName string `protobuf:"bytes,6,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// (optional) The signature of this symbol as it's displayed in API
 	// documentation or in hover tooltips. For example, a Java method that adds
-	// two numbers this would have `Document.language = "java"` and `Document.text
-	// = "void add(int a, int b)". The `language` and `text` fields are required
-	// while other fields such as `Documentation.occurrences` can be optionally
-	// included to support hyperlinking referenced symbols in the signature.
-	SignatureDocumentation *Document `protobuf:"bytes,7,opt,name=signature_documentation,json=signatureDocumentation,proto3" json:"signature_documentation,omitempty"`
+	// two numbers would have `Signature.language = "java"` and
+	// `Signature.text = "void add(int a, int b)"`. The `language` and `text`
+	// fields are required while `occurrences` can be optionally included to
+	// support hyperlinking referenced symbols in the signature.
+	SignatureDocumentation *Signature `protobuf:"bytes,7,opt,name=signature_documentation,json=signatureDocumentation,proto3" json:"signature_documentation,omitempty"`
 	// (optional) The enclosing symbol if this is a local symbol.  For non-local
 	// symbols, the enclosing symbol should be parsed from the `symbol` field
 	// using the `Descriptor` grammar.
@@ -2021,7 +2088,7 @@ type SymbolInformation struct {
 
 func (x *SymbolInformation) Reset() {
 	*x = SymbolInformation{}
-	mi := &file_scip_proto_msgTypes[7]
+	mi := &file_scip_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2033,7 +2100,7 @@ func (x *SymbolInformation) String() string {
 func (*SymbolInformation) ProtoMessage() {}
 
 func (x *SymbolInformation) ProtoReflect() protoreflect.Message {
-	mi := &file_scip_proto_msgTypes[7]
+	mi := &file_scip_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2046,7 +2113,7 @@ func (x *SymbolInformation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SymbolInformation.ProtoReflect.Descriptor instead.
 func (*SymbolInformation) Descriptor() ([]byte, []int) {
-	return file_scip_proto_rawDescGZIP(), []int{7}
+	return file_scip_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *SymbolInformation) GetSymbol() string {
@@ -2084,7 +2151,7 @@ func (x *SymbolInformation) GetDisplayName() string {
 	return ""
 }
 
-func (x *SymbolInformation) GetSignatureDocumentation() *Document {
+func (x *SymbolInformation) GetSignatureDocumentation() *Signature {
 	if x != nil {
 		return x.SignatureDocumentation
 	}
@@ -2163,7 +2230,7 @@ type Relationship struct {
 
 func (x *Relationship) Reset() {
 	*x = Relationship{}
-	mi := &file_scip_proto_msgTypes[8]
+	mi := &file_scip_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2175,7 +2242,7 @@ func (x *Relationship) String() string {
 func (*Relationship) ProtoMessage() {}
 
 func (x *Relationship) ProtoReflect() protoreflect.Message {
-	mi := &file_scip_proto_msgTypes[8]
+	mi := &file_scip_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2188,7 +2255,7 @@ func (x *Relationship) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Relationship.ProtoReflect.Descriptor instead.
 func (*Relationship) Descriptor() ([]byte, []int) {
-	return file_scip_proto_rawDescGZIP(), []int{8}
+	return file_scip_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Relationship) GetSymbol() string {
@@ -2345,7 +2412,7 @@ type Occurrence struct {
 
 func (x *Occurrence) Reset() {
 	*x = Occurrence{}
-	mi := &file_scip_proto_msgTypes[9]
+	mi := &file_scip_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2357,7 +2424,7 @@ func (x *Occurrence) String() string {
 func (*Occurrence) ProtoMessage() {}
 
 func (x *Occurrence) ProtoReflect() protoreflect.Message {
-	mi := &file_scip_proto_msgTypes[9]
+	mi := &file_scip_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2370,7 +2437,7 @@ func (x *Occurrence) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Occurrence.ProtoReflect.Descriptor instead.
 func (*Occurrence) Descriptor() ([]byte, []int) {
-	return file_scip_proto_rawDescGZIP(), []int{9}
+	return file_scip_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Occurrence) GetRange() []int32 {
@@ -2442,7 +2509,7 @@ type Diagnostic struct {
 
 func (x *Diagnostic) Reset() {
 	*x = Diagnostic{}
-	mi := &file_scip_proto_msgTypes[10]
+	mi := &file_scip_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2454,7 +2521,7 @@ func (x *Diagnostic) String() string {
 func (*Diagnostic) ProtoMessage() {}
 
 func (x *Diagnostic) ProtoReflect() protoreflect.Message {
-	mi := &file_scip_proto_msgTypes[10]
+	mi := &file_scip_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2467,7 +2534,7 @@ func (x *Diagnostic) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Diagnostic.ProtoReflect.Descriptor instead.
 func (*Diagnostic) Descriptor() ([]byte, []int) {
-	return file_scip_proto_rawDescGZIP(), []int{10}
+	return file_scip_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Diagnostic) GetSeverity() Severity {
@@ -2556,14 +2623,18 @@ const file_scip_proto_rawDesc = "" +
 	"\tParameter\x10\x06\x12\b\n" +
 	"\x04Meta\x10\a\x12\t\n" +
 	"\x05Local\x10\b\x12\t\n" +
-	"\x05Macro\x10\t\x1a\x02\x10\x01\"\xd2\f\n" +
+	"\x05Macro\x10\t\x1a\x02\x10\x01\"\x81\x01\n" +
+	"\tSignature\x12\x1a\n" +
+	"\blanguage\x18\x04 \x01(\tR\blanguage\x12\x12\n" +
+	"\x04text\x18\x05 \x01(\tR\x04text\x122\n" +
+	"\voccurrences\x18\x02 \x03(\v2\x10.scip.OccurrenceR\voccurrencesJ\x04\b\x01\x10\x02J\x04\b\x03\x10\x04J\x04\b\x06\x10\a\"\xd3\f\n" +
 	"\x11SymbolInformation\x12\x16\n" +
 	"\x06symbol\x18\x01 \x01(\tR\x06symbol\x12$\n" +
 	"\rdocumentation\x18\x03 \x03(\tR\rdocumentation\x128\n" +
 	"\rrelationships\x18\x04 \x03(\v2\x12.scip.RelationshipR\rrelationships\x120\n" +
 	"\x04kind\x18\x05 \x01(\x0e2\x1c.scip.SymbolInformation.KindR\x04kind\x12!\n" +
-	"\fdisplay_name\x18\x06 \x01(\tR\vdisplayName\x12G\n" +
-	"\x17signature_documentation\x18\a \x01(\v2\x0e.scip.DocumentR\x16signatureDocumentation\x12)\n" +
+	"\fdisplay_name\x18\x06 \x01(\tR\vdisplayName\x12H\n" +
+	"\x17signature_documentation\x18\a \x01(\v2\x0f.scip.SignatureR\x16signatureDocumentation\x12)\n" +
 	"\x10enclosing_symbol\x18\b \x01(\tR\x0fenclosingSymbol\"\xfb\t\n" +
 	"\x04Kind\x12\x13\n" +
 	"\x0fUnspecifiedKind\x10\x00\x12\x12\n" +
@@ -2920,7 +2991,7 @@ func file_scip_proto_rawDescGZIP() []byte {
 }
 
 var file_scip_proto_enumTypes = make([]protoimpl.EnumInfo, 10)
-var file_scip_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_scip_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_scip_proto_goTypes = []any{
 	(ProtocolVersion)(0),        // 0: scip.ProtocolVersion
 	(TextEncoding)(0),           // 1: scip.TextEncoding
@@ -2939,36 +3010,38 @@ var file_scip_proto_goTypes = []any{
 	(*Symbol)(nil),              // 14: scip.Symbol
 	(*Package)(nil),             // 15: scip.Package
 	(*Descriptor)(nil),          // 16: scip.Descriptor
-	(*SymbolInformation)(nil),   // 17: scip.SymbolInformation
-	(*Relationship)(nil),        // 18: scip.Relationship
-	(*Occurrence)(nil),          // 19: scip.Occurrence
-	(*Diagnostic)(nil),          // 20: scip.Diagnostic
+	(*Signature)(nil),           // 17: scip.Signature
+	(*SymbolInformation)(nil),   // 18: scip.SymbolInformation
+	(*Relationship)(nil),        // 19: scip.Relationship
+	(*Occurrence)(nil),          // 20: scip.Occurrence
+	(*Diagnostic)(nil),          // 21: scip.Diagnostic
 }
 var file_scip_proto_depIdxs = []int32{
 	11, // 0: scip.Index.metadata:type_name -> scip.Metadata
 	13, // 1: scip.Index.documents:type_name -> scip.Document
-	17, // 2: scip.Index.external_symbols:type_name -> scip.SymbolInformation
+	18, // 2: scip.Index.external_symbols:type_name -> scip.SymbolInformation
 	0,  // 3: scip.Metadata.version:type_name -> scip.ProtocolVersion
 	12, // 4: scip.Metadata.tool_info:type_name -> scip.ToolInfo
 	1,  // 5: scip.Metadata.text_document_encoding:type_name -> scip.TextEncoding
-	19, // 6: scip.Document.occurrences:type_name -> scip.Occurrence
-	17, // 7: scip.Document.symbols:type_name -> scip.SymbolInformation
+	20, // 6: scip.Document.occurrences:type_name -> scip.Occurrence
+	18, // 7: scip.Document.symbols:type_name -> scip.SymbolInformation
 	2,  // 8: scip.Document.position_encoding:type_name -> scip.PositionEncoding
 	15, // 9: scip.Symbol.package:type_name -> scip.Package
 	16, // 10: scip.Symbol.descriptors:type_name -> scip.Descriptor
 	8,  // 11: scip.Descriptor.suffix:type_name -> scip.Descriptor.Suffix
-	18, // 12: scip.SymbolInformation.relationships:type_name -> scip.Relationship
-	9,  // 13: scip.SymbolInformation.kind:type_name -> scip.SymbolInformation.Kind
-	13, // 14: scip.SymbolInformation.signature_documentation:type_name -> scip.Document
-	4,  // 15: scip.Occurrence.syntax_kind:type_name -> scip.SyntaxKind
-	20, // 16: scip.Occurrence.diagnostics:type_name -> scip.Diagnostic
-	5,  // 17: scip.Diagnostic.severity:type_name -> scip.Severity
-	6,  // 18: scip.Diagnostic.tags:type_name -> scip.DiagnosticTag
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	20, // 12: scip.Signature.occurrences:type_name -> scip.Occurrence
+	19, // 13: scip.SymbolInformation.relationships:type_name -> scip.Relationship
+	9,  // 14: scip.SymbolInformation.kind:type_name -> scip.SymbolInformation.Kind
+	17, // 15: scip.SymbolInformation.signature_documentation:type_name -> scip.Signature
+	4,  // 16: scip.Occurrence.syntax_kind:type_name -> scip.SyntaxKind
+	21, // 17: scip.Occurrence.diagnostics:type_name -> scip.Diagnostic
+	5,  // 18: scip.Diagnostic.severity:type_name -> scip.Severity
+	6,  // 19: scip.Diagnostic.tags:type_name -> scip.DiagnosticTag
+	20, // [20:20] is the sub-list for method output_type
+	20, // [20:20] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_scip_proto_init() }
@@ -2982,7 +3055,7 @@ func file_scip_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_scip_proto_rawDesc), len(file_scip_proto_rawDesc)),
 			NumEnums:      10,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
