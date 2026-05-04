@@ -1974,7 +1974,10 @@ type SymbolInformation struct {
 	// this field by rendering markdown code blocks. New indexers should only
 	// include non-code documentation in this field, for example docstrings.
 	Documentation []string `protobuf:"bytes,3,rep,name=documentation,proto3" json:"documentation,omitempty"`
-	// (optional) Relationships to other symbols (e.g., implements, type definition).
+	// Deprecated: Use the typed relationship fields instead (implementations,
+	// references, type_definitions, definition, enclosing_symbol).
+	//
+	// Deprecated: Marked as deprecated in scip.proto.
 	Relationships []*Relationship `protobuf:"bytes,4,rep,name=relationships,proto3" json:"relationships,omitempty"`
 	// The kind of this symbol. Use this field instead of
 	// `SymbolDescriptor.Suffix` to determine whether something is, for example, a
@@ -1997,26 +2000,69 @@ type SymbolInformation struct {
 	// while other fields such as `Documentation.occurrences` can be optionally
 	// included to support hyperlinking referenced symbols in the signature.
 	SignatureDocumentation *Document `protobuf:"bytes,7,opt,name=signature_documentation,json=signatureDocumentation,proto3" json:"signature_documentation,omitempty"`
-	// (optional) The enclosing symbol if this is a local symbol.  For non-local
+	// (optional) The enclosing symbol if this is a local symbol. For non-local
 	// symbols, the enclosing symbol should be parsed from the `symbol` field
 	// using the `Descriptor` grammar.
 	//
-	// The primary use-case for this field is to allow local symbol to be displayed
-	// in a symbol hierarchy for API documentation. It's OK to leave this field
-	// empty for local variables since local variables usually don't belong in API
-	// documentation. However, in the situation that you wish to include a local
-	// symbol in the hierarchy, then you can use `enclosing_symbol` to locate the
-	// "parent" or "owner" of this local symbol. For example, a Java indexer may
-	// choose to use local symbols for private class fields while providing an
-	// `enclosing_symbol` to reference the enclosing class to allow the field to
-	// be part of the class documentation hierarchy. From the perspective of an
-	// author of an indexer, the decision to use a local symbol or global symbol
-	// should exclusively be determined whether the local symbol is accessible
-	// outside the document, not by the capability to find the enclosing
-	// symbol.
+	// The primary use-case for this field is to allow local symbols to be
+	// displayed in a symbol hierarchy for API documentation. It's OK to leave
+	// this field empty for local variables since local variables usually don't
+	// belong in API documentation. However, in the situation that you wish to
+	// include a local symbol in the hierarchy, then you can use
+	// `enclosing_symbol` to locate the "parent" or "owner" of this local symbol.
+	// For example, a Java indexer may choose to use local symbols for private
+	// class fields while providing an `enclosing_symbol` to reference the
+	// enclosing class to allow the field to be part of the class documentation
+	// hierarchy. From the perspective of an author of an indexer, the decision
+	// to use a local symbol or global symbol should exclusively be determined
+	// by whether the local symbol is accessible outside the document, not by the
+	// capability to find the enclosing symbol.
 	EnclosingSymbol string `protobuf:"bytes,8,opt,name=enclosing_symbol,json=enclosingSymbol,proto3" json:"enclosing_symbol,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// (optional) Symbols that this symbol implements or overrides.
+	// For "Find implementations" on the target symbol, this symbol will be
+	// included in the results.
+	//
+	// For example, consider the following TypeScript code:
+	// ```ts
+	//
+	//	interface Animal {
+	//	  sound(): string
+	//	}
+	//
+	//	class Dog implements Animal {
+	//	  public sound(): string { return "woof" }
+	//	}
+	//
+	// ```
+	// Here, `Dog#` would list `Animal#` in `implementations`, and `Dog#sound()`
+	// would list `Animal#sound()` in `implementations`.
+	Implementations []string `protobuf:"bytes,9,rep,name=implementations,proto3" json:"implementations,omitempty"`
+	// (optional) Symbols whose references should be included when performing
+	// "Find references" on this symbol.
+	//
+	// Continuing the TypeScript example above, `Dog#sound()` would list
+	// `Animal#sound()` in `references`. This means doing "Find references" on
+	// `Dog#sound()` would also include references to `Animal#sound()`, and
+	// vice-versa.
+	//
+	// It's common for a symbol to appear in both `implementations` and
+	// `references`, but not always. For example, `Dog#` lists `Animal#` in
+	// `implementations` but NOT in `references`, because "Find references" on
+	// `Animal#` should not return `Dog#`.
+	References []string `protobuf:"bytes,10,rep,name=references,proto3" json:"references,omitempty"`
+	// (optional) Symbols that this symbol is a type definition for.
+	// Used for "Go to type definition" navigation.
+	TypeDefinitions []string `protobuf:"bytes,11,rep,name=type_definitions,json=typeDefinitions,proto3" json:"type_definitions,omitempty"`
+	// (optional) Allows overriding the behavior of "Go to definition" and
+	// "Find references" for symbols which do not have a definition of their own
+	// or could potentially have multiple definitions.
+	//
+	// For example, in a language with single inheritance and some form of mixins,
+	// you can use `definition` to relate the symbol to the matching symbol in an
+	// ancestor class.
+	Definition    string `protobuf:"bytes,12,opt,name=definition,proto3" json:"definition,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SymbolInformation) Reset() {
@@ -2063,6 +2109,7 @@ func (x *SymbolInformation) GetDocumentation() []string {
 	return nil
 }
 
+// Deprecated: Marked as deprecated in scip.proto.
 func (x *SymbolInformation) GetRelationships() []*Relationship {
 	if x != nil {
 		return x.Relationships
@@ -2094,6 +2141,34 @@ func (x *SymbolInformation) GetSignatureDocumentation() *Document {
 func (x *SymbolInformation) GetEnclosingSymbol() string {
 	if x != nil {
 		return x.EnclosingSymbol
+	}
+	return ""
+}
+
+func (x *SymbolInformation) GetImplementations() []string {
+	if x != nil {
+		return x.Implementations
+	}
+	return nil
+}
+
+func (x *SymbolInformation) GetReferences() []string {
+	if x != nil {
+		return x.References
+	}
+	return nil
+}
+
+func (x *SymbolInformation) GetTypeDefinitions() []string {
+	if x != nil {
+		return x.TypeDefinitions
+	}
+	return nil
+}
+
+func (x *SymbolInformation) GetDefinition() string {
+	if x != nil {
+		return x.Definition
 	}
 	return ""
 }
@@ -2556,15 +2631,24 @@ const file_scip_proto_rawDesc = "" +
 	"\tParameter\x10\x06\x12\b\n" +
 	"\x04Meta\x10\a\x12\t\n" +
 	"\x05Local\x10\b\x12\t\n" +
-	"\x05Macro\x10\t\x1a\x02\x10\x01\"\xd2\f\n" +
+	"\x05Macro\x10\t\x1a\x02\x10\x01\"\xeb\r\n" +
 	"\x11SymbolInformation\x12\x16\n" +
 	"\x06symbol\x18\x01 \x01(\tR\x06symbol\x12$\n" +
-	"\rdocumentation\x18\x03 \x03(\tR\rdocumentation\x128\n" +
-	"\rrelationships\x18\x04 \x03(\v2\x12.scip.RelationshipR\rrelationships\x120\n" +
+	"\rdocumentation\x18\x03 \x03(\tR\rdocumentation\x12<\n" +
+	"\rrelationships\x18\x04 \x03(\v2\x12.scip.RelationshipB\x02\x18\x01R\rrelationships\x120\n" +
 	"\x04kind\x18\x05 \x01(\x0e2\x1c.scip.SymbolInformation.KindR\x04kind\x12!\n" +
 	"\fdisplay_name\x18\x06 \x01(\tR\vdisplayName\x12G\n" +
 	"\x17signature_documentation\x18\a \x01(\v2\x0e.scip.DocumentR\x16signatureDocumentation\x12)\n" +
-	"\x10enclosing_symbol\x18\b \x01(\tR\x0fenclosingSymbol\"\xfb\t\n" +
+	"\x10enclosing_symbol\x18\b \x01(\tR\x0fenclosingSymbol\x12(\n" +
+	"\x0fimplementations\x18\t \x03(\tR\x0fimplementations\x12\x1e\n" +
+	"\n" +
+	"references\x18\n" +
+	" \x03(\tR\n" +
+	"references\x12)\n" +
+	"\x10type_definitions\x18\v \x03(\tR\x0ftypeDefinitions\x12\x1e\n" +
+	"\n" +
+	"definition\x18\f \x01(\tR\n" +
+	"definition\"\xfb\t\n" +
 	"\x04Kind\x12\x13\n" +
 	"\x0fUnspecifiedKind\x10\x00\x12\x12\n" +
 	"\x0eAbstractMethod\x10B\x12\f\n" +
