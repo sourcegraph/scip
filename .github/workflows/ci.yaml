@@ -60,7 +60,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - if: steps.filter.outputs.relevant == 'true'
-        uses: DeterminateSystems/nix-installer-action@v22
+        uses: DeterminateSystems/nix-installer-action@v23
         with:
           summarize: false
       - if: steps.filter.outputs.relevant == 'true'
@@ -128,7 +128,7 @@ jobs:
       packages: ${{ steps.packages.outputs.result }}
     steps:
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
       - id: checks
         run: |
           CHECKS=$(nix eval .#checks.x86_64-linux \
@@ -150,7 +150,7 @@ jobs:
         check: ${{ fromJSON(needs.list.outputs.checks) }}
     steps:
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
       - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           use-flakehub: "disabled"
@@ -165,7 +165,7 @@ jobs:
         package: ${{ fromJSON(needs.list.outputs.packages) }}
     steps:
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
       - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           use-flakehub: "disabled"
