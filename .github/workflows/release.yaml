@@ -89,7 +89,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: v${{ needs.publish.outputs.version }}
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
       - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           use-flakehub: "disabled"
@@ -114,7 +114,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: v${{ needs.publish.outputs.version }}
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
       - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           use-flakehub: "disabled"
@@ -153,7 +153,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: v${{ needs.publish.outputs.version }}
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v23
       - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           use-flakehub: "disabled"
