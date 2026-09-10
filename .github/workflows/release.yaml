@@ -90,7 +90,7 @@ jobs:
         with:
           ref: v${{ needs.publish.outputs.version }}
       - uses: DeterminateSystems/nix-installer-action@v22
-      - uses: DeterminateSystems/magic-nix-cache-action@v14
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           use-flakehub: "disabled"
       - name: Publish crate
@@ -115,7 +115,7 @@ jobs:
         with:
           ref: v${{ needs.publish.outputs.version }}
       - uses: DeterminateSystems/nix-installer-action@v22
-      - uses: DeterminateSystems/magic-nix-cache-action@v14
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           use-flakehub: "disabled"
       # LICENSE and README.md are packed into the nupkg; LICENSE is a symlink
@@ -154,7 +154,7 @@ jobs:
         with:
           ref: v${{ needs.publish.outputs.version }}
       - uses: DeterminateSystems/nix-installer-action@v22
-      - uses: DeterminateSystems/magic-nix-cache-action@v14
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           use-flakehub: "disabled"
       - name: Build sdist
